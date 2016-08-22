@@ -4,3 +4,5 @@ magrittr::`%>%`
 
 #' @import data.table
 #' @import tidyr
+
+NULL
