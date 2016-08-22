@@ -14,6 +14,8 @@
 #' @param cols Numeric vector length 1. The number of columns by which to
 #' offset.  Negative values offset left.
 #' @export
+#' @examples
+#' # Please see the vignette for examples.
 offset <- function(bag, cells, rows = 0, cols = 0) {
   bag %>%
     select(row, col) %>%

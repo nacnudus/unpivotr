@@ -41,4 +41,7 @@ A bag may have ragged rows or ragged cols. Gaps will not be filled
 in, and the edge that is extended will be justified up to the first
 row/column in which the boundary condition is met.
 }
+\examples{
+# Please see the vignette for examples.
+}
 

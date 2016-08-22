@@ -18,7 +18,8 @@
 \alias{WNW}
 \alias{WSW}
 \alias{join_header}
-\title{Join a bag of data cells to some header, by proximity in a given direction, e.g. NNW is up and up-left.}
+\title{Join a bag of data cells to some header, by proximity in a given direction,
+e.g. NNW searches up and up-left from a data cell to find a header cell.}
 \usage{
 join_header(bag, header, direction, colname = "newheader")
 
@@ -129,4 +130,7 @@ own functions, wrapping the concept of 'join_header'.
 
 \item \code{RIGHT}: Join nearest header in the 'RIGHT' direction.
 }}
+\examples{
+# Please see the vignette for examples.
+}
 

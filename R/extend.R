@@ -26,6 +26,8 @@
 #' in, and the edge that is extended will be justified up to the first
 #' row/column in which the boundary condition is met.
 #' @export
+#' @examples
+#' # Please see the vignette for examples.
 extend <- function(bag, cells, direction, boundary = FALSE, include = FALSE) {
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.

@@ -26,4 +26,7 @@ columns 'row' and 'col', as well as any others that carry information about
 the cells, e.g. their values.  The position of this bag may be moved across
 the sheet, exchanging the cells which are included in the bag.
 }
+\examples{
+# Please see the vignette for examples.
+}
 

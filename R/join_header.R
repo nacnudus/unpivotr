@@ -1,4 +1,5 @@
-#' Join a bag of data cells to some header, by proximity in a given direction, e.g. NNW is up and up-left.
+#' Join a bag of data cells to some header, by proximity in a given direction,
+#' e.g. NNW searches up and up-left from a data cell to find a header cell.
 #'
 #' @description A bag of data cells is a data frame with at least the
 #' columns 'row' and 'col', as well as any others that carry information about
@@ -34,6 +35,8 @@
 #' own functions, wrapping the concept of 'join_header'.
 #' @name join_header
 #' @export
+#' @examples
+#' # Please see the vignette for examples.
 join_header <- function(bag, header, direction, colname = "newheader") {
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
