@@ -10,15 +10,6 @@ Example
 
 ``` r
 library(unpivotr)
-#> 
-#> Attaching package: 'unpivotr'
-#> The following objects are masked from 'package:tidyxl':
-#> 
-#>     ABOVE, BELOW, E, ENE, ESE, extend, join_header, LEFT, N, NNE,
-#>     NNW, offset, RIGHT, S, SSE, SSW, W, WNW, WSW
-#> The following object is masked from 'package:stats':
-#> 
-#>     offset
 library(tidyxl)
 library(readxl)
 library(dplyr)
@@ -226,3 +217,17 @@ read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
 ```
 
 The functions `extend()` and `offset` can be used when selecting cells relative to an intial anchor cell (or group of cells, called a 'bag').
+
+Similar projects
+----------------
+
+[unpivotr](https://github.com/nacnudus/unpivotr) is inspired by the United Kingdom Office of National Statistics [ONSdatabaker](https://github.com/ONS-OpenData/ONSdatabaker), which is implemented in Python. [unpivotr](https://github.com/nacnudus/unpivotr) differs already by using compass directions, and further developments are planned.
+
+The [rsheets](https://github.com/rsheets) project of several R packages is in the early stages of importing spreadsheet information from Excel and Google Sheets into R, manipulating it, and potentially parsing and processing formulas and writing out to spreadsheet files. In particular, [jailbreaker](https://github.com/rsheets/jailbreakr) attempts to extract non-tabular data from spreadsheets into tabular structures automatically via some clever algorithms.
+
+[unpivot](https://github.com/nacnudus/unpivotr) differs from [jailbreaker](https://github.com/rsheets/jailbreakr) in that it provides tools for unpivoting complex and non-tabular data layouts using I not AI (intelligence, not artificial intelligence).
+
+Roadmap
+-------
+
+\[ \] Implement boundaries for the `ABOVE()`, `BELOW()`, `LEFT()`, `RIGHT()` functions to search within boundaries for a header cell, e.g. within an area bounded by borders. This will make it possible in many cases to break ties between header cells that are equidistant from a data cell.
