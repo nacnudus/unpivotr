@@ -1,23 +1,34 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-unpivotr
-========
 
-Tools for converting data from complex or irregular layouts to a columnar structure. For example, tables with multi-level column or row headers, or spreadsheets. Header and data cells are selected by their contents, position and formatting, and are associated with one other by their relative positions.
 
-Example
--------
 
-``` r
+# unpivotr
+
+Tools for converting data from complex or irregular layouts to a columnar
+structure.  For example, tables with multi-level column or row headers, or
+spreadsheets.  Header and data cells are selected by their contents, position
+and formatting, and are associated with one other by their relative positions.
+
+## Example
+
+
+```r
 library(unpivotr)
 library(tidyxl)
 library(readxl)
 library(dplyr)
 ```
 
-The package includes a spreadsheet, 'purpose.xlsx', which has tables that have multi-row column headers and multi-column row-headers. A popular package for importing spreadsheets does the following:
+The package includes a spreadsheet, 'purpose.xlsx', which has tables that have
+multi-row column headers and multi-column row-headers.  A popular package for
+importing spreadsheets does the following:
 
-``` r
+
+```r
 read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
 #> # A tibble: 22 x 6
 #>                              Female     NA  Male     NA
@@ -35,9 +46,11 @@ read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
 #> # ... with 12 more rows
 ```
 
-The [tidyxl](https://github.com/nacnudus/tidyxl) package imports the same table into a format suitable for unpivotr:
+The [tidyxl](https://github.com/nacnudus/tidyxl) package imports the same table
+into a format suitable for unpivotr:
 
-``` r
+
+```r
 (pivoted <- contents("./inst/extdata/purpose.xlsx", "NNW WNW")[[1]])
 #> # A tibble: 128 x 14
 #>    address   row   col content formula formula_type formula_ref
@@ -57,9 +70,12 @@ The [tidyxl](https://github.com/nacnudus/tidyxl) package imports the same table 
 #> #   style_format_id <dbl>, local_format_id <dbl>
 ```
 
-We can identify each row of column headers, each column of row headers, and the data cells, using any method. Here, we use some [dplyr](https://github.com/hadley/dplyr) and some base R functions.
+We can identify each row of column headers, each column of row headers, and the
+data cells, using any method.  Here, we use some
+[dplyr](https://github.com/hadley/dplyr) and some base R functions.
 
-``` r
+
+```r
 col_headers <- 
   pivoted %>%
   filter(row <= 3, !is.na(content)) %>%
@@ -144,9 +160,11 @@ datacells
 #> # ... with 70 more rows
 ```
 
-Using `unpivotr` functions, we associate the data cells with the headers, by proximity in given compass directions.
+Using `unpivotr` functions, we associate the data cells with the headers, by
+proximity in given compass directions.
 
-``` r
+
+```r
 unpivoted <- 
   datacells %>%
   NNW(col_headers[[1]], "sex") %>%
@@ -170,9 +188,11 @@ unpivoted
 #> # ... with 70 more rows
 ```
 
-We can re-pivot the final data in R using `ftable()` to check that it has been imported correctly.
+We can re-pivot the final data in R using `ftable()` to check that it has been
+imported correctly.
 
-``` r
+
+```r
 ftable(unpivoted, 
        row.vars = c("education", "age"),
        col.vars = c("sex", "purpose"))
@@ -216,18 +236,33 @@ read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
 #> # ... with 12 more rows
 ```
 
-The functions `extend()` and `offset` can be used when selecting cells relative to an intial anchor cell (or group of cells, called a 'bag').
+The functions `extend()` and `offset` can be used when selecting cells relative
+to an intial anchor cell (or group of cells, called a 'bag').
 
-Similar projects
-----------------
+## Similar projects
 
-[unpivotr](https://github.com/nacnudus/unpivotr) is inspired by the United Kingdom Office of National Statistics [ONSdatabaker](https://github.com/ONS-OpenData/ONSdatabaker), which is implemented in Python. [unpivotr](https://github.com/nacnudus/unpivotr) differs already by using compass directions, and further developments are planned.
+[unpivotr](https://github.com/nacnudus/unpivotr) is inspired by the United
+Kingdom Office of National Statistics
+[ONSdatabaker](https://github.com/ONS-OpenData/ONSdatabaker), which is
+implemented in Python.  [unpivotr](https://github.com/nacnudus/unpivotr) differs
+already by using compass directions, and further developments are planned.
 
-The [rsheets](https://github.com/rsheets) project of several R packages is in the early stages of importing spreadsheet information from Excel and Google Sheets into R, manipulating it, and potentially parsing and processing formulas and writing out to spreadsheet files. In particular, [jailbreaker](https://github.com/rsheets/jailbreakr) attempts to extract non-tabular data from spreadsheets into tabular structures automatically via some clever algorithms.
+The [rsheets](https://github.com/rsheets) project of several R packages is in
+the early stages of importing spreadsheet information from Excel and Google
+Sheets into R, manipulating it, and potentially parsing and processing formulas
+and writing out to spreadsheet files.  In particular,
+[jailbreaker](https://github.com/rsheets/jailbreakr) attempts to extract
+non-tabular data from spreadsheets into tabular structures automatically via
+some clever algorithms.
 
-[unpivot](https://github.com/nacnudus/unpivotr) differs from [jailbreaker](https://github.com/rsheets/jailbreakr) in that it provides tools for unpivoting complex and non-tabular data layouts using I not AI (intelligence, not artificial intelligence).
+[unpivot](https://github.com/nacnudus/unpivotr) differs from
+[jailbreaker](https://github.com/rsheets/jailbreakr) in that it provides tools
+for unpivoting complex and non-tabular data layouts using I not AI
+(intelligence, not artificial intelligence).
 
-Roadmap
--------
+## Roadmap
 
-\[ \] Implement boundaries for the `ABOVE()`, `BELOW()`, `LEFT()`, `RIGHT()` functions to search within boundaries for a header cell, e.g. within an area bounded by borders. This will make it possible in many cases to break ties between header cells that are equidistant from a data cell.
+- [ ] Implement boundaries for the `ABOVE()`, `BELOW()`, `LEFT()`, `RIGHT()`
+functions to search within boundaries for a header cell, e.g. within an area
+bounded by borders.  This will make it possible in many cases to break ties
+between header cells that are equidistant from a data cell.
