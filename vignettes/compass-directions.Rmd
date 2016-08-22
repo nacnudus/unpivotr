@@ -1,0 +1,360 @@
+---
+title: "Compass Directions"
+author: "Duncan Garmonsway"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Compase Directions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Compass directions
+
+This vignette for the [unpivotr](https://github.com/nacnudus/unpivotr) package
+demonstrates unpivoting pivot tables of various kinds imported from a
+spreadsheet via the [tidyxl](https://github.com/nacnudus/tidyxl) package.
+
+The spreadsheet is in the package directory at `../inst/extdata/purpose.xlsx`.
+
+```{r, echo = TRUE}
+library(dplyr)
+library(tidyxl)
+```
+
+## NNW WNW example
+
+```{r, echo = TRUE}
+cells <- contents("../inst/extdata/purpose.xlsx", "NNW WNW")[[1]]
+```
+
+### Headers
+
+```{r, echo = TRUE}
+row_headers <- 
+  cells %>%
+  filter(col <= 3, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$col)
+row_headers
+
+col_headers <- 
+  cells %>%
+  filter(row <= 3, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$row)
+col_headers
+```
+
+### Data
+
+```{r, echo = TRUE}
+datacells <- 
+  cells %>%
+  filter(row >= 4, col >= 4) %>%
+  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  select(row, col, value = as.integer(content))
+```
+
+### Join headers to data
+
+```{r, echo = TRUE}
+datacells <- 
+  datacells %>%
+  NNW(col_headers[[1]], "sex") %>%
+  N(col_headers[[2]], "purpose") %>%
+  WNW(row_headers[[1]], "education") %>% 
+  W(row_headers[[2]], "age")
+```
+
+### Result
+
+```{r, echo = TRUE}
+datacells %>% as.data.frame
+
+NNW_WNW <- datacells
+```
+
+## NNE WSW example
+
+```{r, echo = TRUE}
+cells <- contents("../inst/extdata/purpose.xlsx", "NNE WSW")[[1]]
+```
+
+### Headers (same as NNW WNW)
+
+```{r, echo = TRUE}
+row_headers <- 
+  cells %>%
+  filter(col <= 3, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$col)
+row_headers
+
+col_headers <- 
+  cells %>%
+  filter(row <= 3, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$row)
+col_headers
+```
+
+### Data (same as NNW WNW)
+
+```{r, echo = TRUE}
+datacells <- 
+  cells %>%
+  filter(row >= 4, col >= 4) %>%
+  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  select(row, col, value = as.integer(content))
+```
+
+### Join headers to data (different from NNW WNW)
+
+```{r, echo = TRUE}
+datacells <- 
+  datacells %>%
+  NNE(col_headers[[1]], "sex") %>% # Different from NNW WNW
+  N(col_headers[[2]], "purpose") %>% # Same as NNW WNW
+  WSW(row_headers[[1]], "education") %>% # Different from NNW WNW
+  W(row_headers[[2]], "age") # Same as NNW WNW
+```
+
+### Result
+
+```{r, echo = TRUE}
+datacells %>% as.data.frame
+
+NNE_WSW <- datacells
+```
+
+## SSE ESE example
+
+```{r, echo = TRUE}
+cells <- contents("../inst/extdata/purpose.xlsx", "SSE ESE")[[1]]
+```
+
+### Headers
+
+```{r, echo = TRUE}
+row_headers <- 
+  cells %>%
+  filter(col >= 8, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$col)
+row_headers
+
+col_headers <- 
+  cells %>%
+  filter(row >= 24, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$row)
+col_headers
+```
+
+### Data
+
+```{r, echo = TRUE}
+datacells <- 
+  cells %>%
+  filter(row <= 23, col <= 7) %>%
+  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  select(row, col, value = as.integer(content))
+datacells
+```
+
+### Join headers to data
+
+```{r, echo = TRUE}
+datacells <- 
+  datacells %>%
+  SSE(col_headers[[2]], "sex") %>%
+  S(col_headers[[1]], "purpose") %>%
+  ESE(row_headers[[2]], "education") %>%
+  E(row_headers[[1]], "age")
+```
+
+### Result
+
+```{r, echo = TRUE}
+datacells %>% as.data.frame
+
+SSE_ESE <- datacells
+```
+
+## SSW ENE example
+
+```{r, echo = TRUE}
+cells <- contents("../inst/extdata/purpose.xlsx", "SSW ENE")[[1]]
+```
+
+### Headers (same as SSE ESE)
+
+```{r, echo = TRUE}
+row_headers <- 
+  cells %>%
+  filter(col >= 8, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$col)
+row_headers
+
+col_headers <- 
+  cells %>%
+  filter(row >= 24, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$row)
+col_headers
+```
+
+### Data (same as SSE ESE)
+
+```{r, echo = TRUE}
+datacells <- 
+  cells %>%
+  filter(row <= 23, col <= 7) %>%
+  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  select(row, col, value = as.integer(content))
+datacells
+```
+
+### Join headers to data
+
+```{r, echo = TRUE}
+datacells <- 
+  datacells %>%
+  SSW(col_headers[[2]], "sex") %>% # Different from SSE ESE
+  S(col_headers[[1]], "purpose") %>% # Same as SSE ESE
+  ENE(row_headers[[2]], "education") %>% # Different from SSE ESE
+  E(row_headers[[1]], "age") # Same as SSE ESE
+```
+
+### Result
+
+```{r, echo = TRUE}
+datacells %>% as.data.frame
+
+SSW_ENE <- datacells
+```
+
+## Check that all sheets are parsed correctly
+
+```{r, echo = TRUE}
+identical(NNW_WNW, NNE_WSW)
+identical(NNW_WNW, SSE_ESE)
+identical(NNW_WNW, SSW_ENE)
+```
+
+## ABOVE LEFT example
+
+```{r, echo = TRUE}
+cells <- contents("../inst/extdata/purpose.xlsx", "ABOVE LEFT")[[1]]
+```
+
+### Headers
+
+```{r, echo = TRUE}
+row_headers <- 
+  cells %>%
+  filter(col <= 3, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$col)
+row_headers
+
+col_headers <- 
+  cells %>%
+  filter(row <= 3, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$row)
+col_headers
+```
+
+### Data
+
+```{r, echo = TRUE}
+datacells <- 
+  cells %>%
+  filter(row >= 4, col >= 4) %>%
+  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  select(row, col, value = as.integer(content))
+datacells
+```
+
+### Join headers to data
+
+```{r, echo = TRUE}
+datacells <- 
+  datacells %>%
+  ABOVE(col_headers[[1]], "purpose") %>% # Different from SSE ESE
+  N(col_headers[[2]], "age") %>% # Same as SSE ESE
+  LEFT(row_headers[[1]], "sex") %>% # Different from SSE ESE
+  W(row_headers[[2]], "education") # Same as SSE ESE
+```
+
+### Result
+
+```{r, echo = TRUE}
+datacells %>% as.data.frame
+
+ABOVE_LEFT <- datacells
+```
+
+## BELOW RIGHT example
+
+```{r, echo = TRUE}
+cells <- contents("../inst/extdata/purpose.xlsx", "BELOW RIGHT")[[1]]
+```
+
+### Headers
+
+```{r, echo = TRUE}
+row_headers <- 
+  cells %>%
+  filter(col >= 10, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$col)
+row_headers
+
+col_headers <- 
+  cells %>%
+  filter(row >= 14, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$row)
+col_headers
+```
+
+### Data
+
+```{r, echo = TRUE}
+datacells <- 
+  cells %>%
+  filter(row <= 13, col <= 9) %>%
+  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  select(row, col, value = as.integer(content))
+datacells
+```
+
+### Join headers to data
+
+```{r, echo = TRUE}
+datacells <- 
+  datacells %>%
+  BELOW(col_headers[[2]], "purpose") %>%
+  S(col_headers[[1]], "age") %>%
+  RIGHT(row_headers[[2]], "sex") %>%
+  E(row_headers[[1]], "education")
+```
+
+### Result
+
+```{r, echo = TRUE}
+datacells %>% as.data.frame
+
+BELOW_RIGHT <- datacells
+```
+
+## Check that all sheets are parsed correctly
+
+```{r, echo = TRUE}
+identical(ABOVE_LEFT, BELOW_RIGHT)
+```
+
