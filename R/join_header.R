@@ -37,6 +37,7 @@
 #' @export
 #' @examples
 #' # Please see the vignette for examples.
+#' vignette("compass-directions", "unpivotr")
 join_header <- function(bag, header, direction, colname = "newheader") {
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.

@@ -15,7 +15,8 @@
 #' offset.  Negative values offset left.
 #' @export
 #' @examples
-#' # Please see the vignette for examples.
+#' # Please see the vignette for examples (not yet written in vignette, sorry!)
+#' vignette("compass-directions", "unpivotr")
 offset <- function(bag, cells, rows = 0, cols = 0) {
   bag %>%
     select(row, col) %>%

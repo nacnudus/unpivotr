@@ -132,5 +132,6 @@ own functions, wrapping the concept of 'join_header'.
 }}
 \examples{
 # Please see the vignette for examples.
+vignette("compass-directions", "unpivotr")
 }
 

@@ -42,6 +42,7 @@ in, and the edge that is extended will be justified up to the first
 row/column in which the boundary condition is met.
 }
 \examples{
-# Please see the vignette for examples.
+# Please see the vignette for examples (not yet written in vignette, sorry!)
+vignette("compass-directions", "unpivotr")
 }
 

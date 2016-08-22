@@ -27,7 +27,8 @@
 #' row/column in which the boundary condition is met.
 #' @export
 #' @examples
-#' # Please see the vignette for examples.
+#' # Please see the vignette for examples (not yet written in vignette, sorry!)
+#' vignette("compass-directions", "unpivotr")
 extend <- function(bag, cells, direction, boundary = FALSE, include = FALSE) {
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
