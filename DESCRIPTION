@@ -1,35 +1,27 @@
-Package: tidyxl
-Title: Read Untidy Excel Files
+Package: unpivotr
+Title: Un-pivot complex and irregular data layouts.
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Duncan", "Garmonsway", email = "nacnudus@gmail.com", role = c("aut", "cre")),
-    person("Hadley", "Wickham", role = c("ctb"), comment = "Author of included readxl fragments"),
-    person("RStudio", role = "cph", comment = "Copyright holder of included readxl fragments"),
-    person("Marcin", "Kalicinski", role = c("ctb", "cph"), comment = "Author of included RapidXML code")
+    person("Duncan", "Garmonsway", email = "nacnudus@gmail.com", role = c("aut", "cre"))
     )
-Description: Imports non-tabular from Excel files into R.  Exposes cell content,
-    position and formatting in a tidy structure for further manipulation.
-    Provides functions for selecting cells by position and relative position,
-    and for associating data cells with header cells by proximity in given
-    directions.  Supports '.xlsx' and '.xlsm' via the embedded 'RapidXML' C++
-    library (http://rapidxml.sourceforge.net).  Does not support '.xlsb' or
-    '.xls'.
+Description: Tools for converting data from complex or irregular layouts to a
+    columnar structure.  For example, tables with multi-level column or row
+    headers, or spreadsheets.  Header and data cells are selected by their
+    contents, position and formatting, and are associated with one other by
+    their relative positions.
 Depends:
     R (>= 3.3.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-LinkingTo: Rcpp
 Imports:
-    Rcpp, 
     magrittr,
     data.table (>= 1.9.7),
     dplyr,
     dtplyr,
     purrr,
     tidyr,
-    tibble,
-    xml2
-URL: https://github.com/nacnudus/tidyxl
-BugReports: https://github.com/nacnudus/tidyxl/issues
+    tibble
+URL: https://github.com/nacnudus/unpivotr
+BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 5.0.1
