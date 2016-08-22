@@ -12,49 +12,85 @@ knitr::opts_chunk$set(
 )
 ```
 
-***This package is in early development.***
+# unpivotr
 
-# tidyxl
+Tools for converting data from complex or irregular layouts to a columnar
+structure.  For example, tables with multi-level column or row headers, or
+spreadsheets.  Header and data cells are selected by their contents, position
+and formatting, and are associated with one other by their relative positions.
 
-Imports untidy Excel files into R without forcing the data into data frames.
-Exposes cell content, position and formatting in a tidy structure for further
-manipulation.  Supports '.xlsx' and '.xlsm' via the embedded
-[RapidXML](http://rapidxml.sourceforge.net) C++ library.  Does not support
-'.xlsb' or '.xls'. 
+## Example
 
-## Introduction
+```{r, echo = TRUE}
+library(unpivotr)
+library(tidyxl)
+library(readxl)
+library(dplyr)
+```
 
-Information in in many spreadsheets cannot be easily imported into R.  Why?
+The package includes a spreadsheet, 'purpose.xlsx', which has tables that have
+multi-row column headers and multi-column row-headers.  A popular package for
+importing spreadsheets does the following:
 
-Most R packages that import spreadsheets have difficulty unless the layout of
-the spreadsheet conforms to a strict definition of a 'table', e.g.:
+```{r, echo = TRUE}
+read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
+```
 
-* observations in rows
-* variables in columns
-* a single header row
-* all information represented by characters, whether textual, logical, or
-  numeric
+The [tidyxl](https://github.com/nacnudus/tidyxl) package imports the same table
+into a format suitable for unpivotr:
 
-These rules are designed to eliminate ambiguity in the interpretation of the
-information.  But most spreadsheeting software relaxes these rules in a trade of
-ambiguity for expression via other media:
+```{r, echo = TRUE}
+(pivoted <- contents("./inst/extdata/purpose.xlsx", "NNW WNW")[[1]])
+```
 
-* proximity (other than headers, i.e. other than being the first value at the
-  top of a column)
-* formatting (colours and borders)
+We can identify each row of column headers, each column of row headers, and the
+data cells, using any method.  Here, we use some
+[dplyr](https://github.com/hadley/dplyr) and some base R functions.
 
-Humans can usually resolve the ambiguities with contextual knowledge, but
-computers are limited by their ignorance.  Programmers are hampered by:
+```{r, echo = TRUE}
+col_headers <- 
+  pivoted %>%
+  filter(row <= 3, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$row)
+col_headers 
 
-* their language's expressiveness
-* loss of information in transfer from spreadsheet to programming library
+row_headers <- 
+  pivoted %>%
+  filter(col <= 3, !is.na(content)) %>%
+  select(row, col, header = character) %>%
+  split(.$col)
+row_headers
 
-Information is lost when software discards it in order to force the data into
-tabular form.  Sometimes date formatting is retained, but mostly formatting 
-is lost, and position has to be inferred again.
+datacells <- 
+  pivoted %>%
+  filter(row >= 4, col >= 4) %>%
+  select(row, col, value = as.integer(content))
+datacells
+```
 
-The `tidyxl` package addresses the programmer's problems by not discarding
-information.  It imports the content, position and formatting of cells, leaving
-it up to the user to associate the different forms of information, and to
-re-encode them in tabular form without loss.  Further packages are planned to
-assist with that step.
+Using `unpivotr` functions, we associate the data cells with the headers, by
+proximity in given compass directions.
+
+```{r, echo = TRUE}
+unpivoted <- 
+  datacells %>%
+  NNW(col_headers[[1]], "sex") %>%
+  N(col_headers[[2]], "purpose") %>%
+  WNW(row_headers[[1]], "education") %>% 
+  W(row_headers[[2]], "age")
+unpivoted
+```
+
+We can re-pivot the final data in R using `ftable()` to check that it has been
+imported correctly.
+
+```{r, echo = TRUE}
+ftable(unpivoted, 
+       row.vars = c("education", "age"),
+       col.vars = c("sex", "purpose"))
+read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
+```
+
+The functions `extend()` and `offset` can be used when selecting cells relative
+to an intial anchor cell (or group of cells, called a 'bag').
