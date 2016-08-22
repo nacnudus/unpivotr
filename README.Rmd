@@ -118,6 +118,7 @@ for unpivoting complex and non-tabular data layouts using I not AI
 
 ## Roadmap
 
+- [ ] Write tests
 - [ ] Implement boundaries for the `ABOVE()`, `BELOW()`, `LEFT()`, `RIGHT()`
 functions to search within boundaries for a header cell, e.g. within an area
 bounded by borders.  This will make it possible in many cases to break ties
