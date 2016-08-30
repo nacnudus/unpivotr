@@ -168,8 +168,6 @@ NNW <- function(bag, header, colname = "newheader") {
 #' @describeIn join_header Join nearest header in the 'NNE' direction.
 #' @export
 NNE <- function(bag, header, colname = "newheader") {
-  bag <- datacells
-  header <- col_headers[[1]]
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -334,7 +332,7 @@ ABOVE <- function(bag, header, colname = "newheader") {
     # x1 and x2 are half-way (rounded down) from the cell to headers either
     # side in the same row
     dplyr::group_by(row) %>%
-    dplyr::mutate(x1 = floor((col + lag(as.numeric(col), default = -Inf) + 2)/2),
+    dplyr::mutate(x1 = floor((col + lag(as.numeric(col), default = 1) + 2)/2),
            x2 = ceiling((col + lead(as.numeric(col), default = Inf) - 2)/2)) %>%
     # y2 goes up to just before the next header in any column
     tidyr::nest() %>%
@@ -357,7 +355,7 @@ BELOW <- function(bag, header, colname = "newheader") {
     # x1 and x2 are half-way (rounded down) from the cell to headers either
     # side in the same row
     dplyr::group_by(row) %>%
-    dplyr::mutate(x1 = floor((col + lag(as.numeric(col), default = -Inf) + 2)/2),
+    dplyr::mutate(x1 = floor((col + lag(as.numeric(col), default = 1) + 2)/2),
            x2 = ceiling((col + lead(as.numeric(col), default = Inf) - 2)/2)) %>%
     # y1 goes back to just after the previous header in any column
     tidyr::nest() %>%
@@ -380,7 +378,7 @@ LEFT <- function(bag, header, colname = "newheader") {
     # y1 and y2 are half-way (rounded down) from the cell to headers either
     # side in the same column
     dplyr::group_by(col) %>%
-    dplyr::mutate(y1 = floor((row + lag(as.numeric(row), default = -Inf) + 2)/2),
+    dplyr::mutate(y1 = floor((row + lag(as.numeric(row), default = 1) + 2)/2),
            y2 = ceiling((row + lead(as.numeric(row), default = Inf) - 2)/2)) %>%
     # x2 goes up to just before the next header in any row
     tidyr::nest() %>%
@@ -403,7 +401,7 @@ RIGHT <- function(bag, header, colname = "newheader") {
     # y1 and y2 are half-way (rounded down) from the cell to headers either
     # side in the same column
     dplyr::group_by(col) %>%
-    dplyr::mutate(y1 = floor((row + lag(as.numeric(row), default = -Inf) + 2)/2),
+    dplyr::mutate(y1 = floor((row + lag(as.numeric(row), default = 1) + 2)/2),
            y2 = ceiling((row + lead(as.numeric(row), default = Inf) - 2)/2)) %>%
     # x1 goes back to just after the previous header in any row
     tidyr::nest() %>%
