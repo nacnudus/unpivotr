@@ -49,20 +49,20 @@ extend_N <- function(bag, cells, boundary, include) {
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
   bag %>%
-    group_by(col) %>%
-    do({
+    dplyr::group_by(col) %>%
+    dplyr::do({
       bagrow <- .
       cells %>%
         # Look in the relevant row
-        filter(col == bagrow$col[1], row < min(bagrow$row)) %>%
-        arrange(-row) %>%
-        mutate_(boundary = boundary) %>% # Apply the rule
+        dplyr::filter(col == bagrow$col[1], row < min(bagrow$row)) %>%
+        dplyr::arrange(-row) %>%
+        dplyr::mutate_(boundary = boundary) %>% # Apply the rule
         # Take cells up to (and conditionally including) boundary
-        filter(cumsum(cumsum(boundary)) <= include) %>%
-        select(-boundary) %>%
-        bind_rows(bagrow)
+        dplyr::filter(cumsum(cumsum(boundary)) <= include) %>%
+        dplyr::select(-boundary) %>%
+        dplyr::bind_rows(bagrow)
     }) %>%
-    ungroup
+    dplyr::ungroup()
 }
 
 extend_E <- function(bag, cells, boundary, include) {
@@ -70,20 +70,20 @@ extend_E <- function(bag, cells, boundary, include) {
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
   bag %>%
-    group_by(row) %>%
-    do({
+    dplyr::group_by(row) %>%
+    dplyr::do({
       bagrow <- .
       cells %>%
         # Look in the relevant row
-        filter(row == bagrow$row[1], col > max(bagrow$col)) %>%
-        arrange(col) %>%
-        mutate_(boundary = boundary) %>% # Apply the rule
+        dplyr::filter(row == bagrow$row[1], col > max(bagrow$col)) %>%
+        dplyr::arrange(col) %>%
+        dplyr::mutate_(boundary = boundary) %>% # Apply the rule
         # Take cells up to (and conditionally including) boundary
-        filter(cumsum(cumsum(boundary)) <= include) %>%
-        select(-boundary) %>%
-        bind_rows(bagrow)
+        dplyr::filter(cumsum(cumsum(boundary)) <= include) %>%
+        dplyr::select(-boundary) %>%
+        dplyr::bind_rows(bagrow)
     }) %>%
-    ungroup
+    dplyr::ungroup()
 }
 
 extend_S <- function(bag, cells, boundary, include) {
@@ -91,20 +91,20 @@ extend_S <- function(bag, cells, boundary, include) {
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
   bag %>%
-    group_by(col) %>%
-    do({
+    dplyr::group_by(col) %>%
+    dplyr::do({
       bagrow <- .
       cells %>%
         # Look in the relevant row
-        filter(col == bagrow$col[1], row > max(bagrow$row)) %>%
-        arrange(row) %>%
-        mutate_(boundary = boundary) %>% # Apply the rule
+        dplyr::filter(col == bagrow$col[1], row > max(bagrow$row)) %>%
+        dplyr::arrange(row) %>%
+        dplyr::mutate_(boundary = boundary) %>% # Apply the rule
         # Take cells up to (and conditionally including) boundary
-        filter(cumsum(cumsum(boundary)) <= include) %>%
-        select(-boundary) %>%
-        bind_rows(bagrow)
+        dplyr::filter(cumsum(cumsum(boundary)) <= include) %>%
+        dplyr::select(-boundary) %>%
+        dplyr::bind_rows(bagrow)
     }) %>%
-    ungroup
+    dplyr::ungroup()
 }
 
 extend_W <- function(bag, cells, boundary, include) {
@@ -112,18 +112,18 @@ extend_W <- function(bag, cells, boundary, include) {
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
   bag %>%
-    group_by(row) %>%
-    do({
+    dplyr::group_by(row) %>%
+    dplyr::do({
       bagrow <- .
       cells %>%
         # Look in the relevant row
-        filter(row == bagrow$row[1], col < min(bagrow$col)) %>%
-        arrange(-col) %>%
-        mutate_(boundary = boundary) %>% # Apply the rule
+        dplyr::filter(row == bagrow$row[1], col < min(bagrow$col)) %>%
+        dplyr::arrange(-col) %>%
+        dplyr::mutate_(boundary = boundary) %>% # Apply the rule
         # Take cells up to (and conditionally including) boundary
-        filter(cumsum(cumsum(boundary)) <= include) %>%
-        select(-boundary) %>%
-        bind_rows(bagrow)
+        dplyr::filter(cumsum(cumsum(boundary)) <= include) %>%
+        dplyr::select(-boundary) %>%
+        dplyr::bind_rows(bagrow)
     }) %>%
-    ungroup
+    dplyr::ungroup()
 }
