@@ -45,48 +45,18 @@
 #' # Please see the vignette for examples.
 #' vignette("compass-directions", "unpivotr")
 join_header <- function(bag, header, direction, colname, boundaries = NULL) {
-  # Extends an existing bag of cells along an axis up to a boundary, by row or
-  # by column depending on the axis.
-  # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
-  # Prototype extending right
-  if (!is.null(boundary) 
-      && (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT"))) {
-    warning("Boundaries are ignored in the direction '", direction, "'.")
+  if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
+    do.call(direction, list(bag, header, colname, boundaries))
+  } else if (direction %in% c("N", "E", "S", "W", 
+                             "NNW", "NNE", 
+                             "ENE", "ESE", 
+                             "SSE", "SSW", 
+                             "WSW", "WNW")) {
+    do.call(direction, list(bag, header, colname))
+  } else {
+    stop("The direction ", direction, 
+         ", is either not recognised or not yet supported.")
   }
-  if (direction == "N") {
-    N(bag, header, colname)
-  } else if (direction == "E") {
-    E(bag, header, colname)
-  } else if (direction == "S") {
-    S(bag, header, colname)
-  } else if (direction == "W") {
-    W(bag, header, colname)
-  } else if (direction == "NNW") {
-    NNW(bag, header, colname)
-  } else if (direction == "NNE") {
-    NNE(bag, header, colname)
-  } else if (direction == "ENE") {
-    ENE(bag, header, colname)
-  } else if (direction == "ESE") {
-    ESE(bag, header, colname)
-  } else if (direction == "SSE") {
-    SSE(bag, header, colname)
-  } else if (direction == "SSW") {
-    SSW(bag, header, colname)
-  } else if (direction == "WSW") {
-    WSW(bag, header, colname)
-  } else if (direction == "WNW") {
-    WNW(bag, header, colname)
-  } else if (direction == "ABOVE") {
-    ABOVE(bag, header, colname, boundaries)
-  } else if (direction == "RIGHT") {
-    RIGHT(bag, header, colname, boundaries)
-  } else if (direction == "BELOW") {
-    BELOW(bag, header, colname, boundaries)
-  } else if (direction == "LEFT") {
-    LEFT(bag, header, colname, boundaries)
-  } else {stop("The direction ", direction, 
-               ", is either not recognised or not yet supported.")}
 }
 
 #' @describeIn join_header Join nearest header in the 'N' direction.
