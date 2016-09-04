@@ -21,39 +21,39 @@
 \title{Join a bag of data cells to some header, by proximity in a given direction,
 e.g. NNW searches up and up-left from a data cell to find a header cell.}
 \usage{
-join_header(bag, header, direction, colname = "newheader")
+join_header(bag, header, direction, colname, boundaries = NULL)
 
-N(bag, header, colname = "newheader")
+N(bag, header, colname)
 
-E(bag, header, colname = "newheader")
+E(bag, header, colname)
 
-S(bag, header, colname = "newheader")
+S(bag, header, colname)
 
-W(bag, header, colname = "newheader")
+W(bag, header, colname)
 
-NNW(bag, header, colname = "newheader")
+NNW(bag, header, colname)
 
-NNE(bag, header, colname = "newheader")
+NNE(bag, header, colname)
 
-ENE(bag, header, colname = "newheader")
+ENE(bag, header, colname)
 
-ESE(bag, header, colname = "newheader")
+ESE(bag, header, colname)
 
-SSE(bag, header, colname = "newheader")
+SSE(bag, header, colname)
 
-SSW(bag, header, colname = "newheader")
+SSW(bag, header, colname)
 
-WSW(bag, header, colname = "newheader")
+WSW(bag, header, colname)
 
-WNW(bag, header, colname = "newheader")
+WNW(bag, header, colname)
 
-ABOVE(bag, header, colname = "newheader")
+ABOVE(bag, header, colname, boundaries = NULL)
 
-BELOW(bag, header, colname = "newheader")
+RIGHT(bag, header, colname, boundaries = NULL)
 
-LEFT(bag, header, colname = "newheader")
+BELOW(bag, header, colname, boundaries = NULL)
 
-RIGHT(bag, header, colname = "newheader")
+LEFT(bag, header, colname, boundaries = NULL)
 }
 \arguments{
 \item{bag}{Data frame. A bag of data cells including at least the columns
@@ -71,6 +71,13 @@ might contain the values `c("dog", "cat", "mouse")`.}
 \item{colname}{Character vector length one. Column name to give the header
 values once they are joined to the 'bag'.  Continuing the example, this might
 be "animal_type".}
+
+\item{boundary}{Data frame. Only applies to the directions "ABOVE", "RIGHT",
+"BELOW" and "LEFT".  A bag of cells in one row or one column,
+demarking boundaries within which to match headers with cells.  For example,
+a boundary could be a bag of cells with borders on one side.  This is useful
+when the nearest header might be the wrong header because it lies on the 
+other side of a border.}
 }
 \description{
 A bag of data cells is a data frame with at least the
@@ -124,11 +131,11 @@ own functions, wrapping the concept of 'join_header'.
 
 \item \code{ABOVE}: Join nearest header in the 'ABOVE' direction.
 
+\item \code{RIGHT}: Join nearest header in the 'RIGHT' direction.
+
 \item \code{BELOW}: Join nearest header in the 'BELOW' direction.
 
 \item \code{LEFT}: Join nearest header in the 'LEFT' direction.
-
-\item \code{RIGHT}: Join nearest header in the 'RIGHT' direction.
 }}
 \examples{
 # Please see the vignette for examples.

@@ -13,19 +13,25 @@ vignette: >
 
 This vignette for the [unpivotr](https://github.com/nacnudus/unpivotr) package
 demonstrates unpivoting pivot tables of various kinds imported from a
-spreadsheet via the [tidyxl](https://github.com/nacnudus/tidyxl) package.
+spreadsheet via the [tidyxl](https://github.com/nacnudus/tidyxl) package.  It is
+best read with the spreadsheet open in a spreadsheet program, e.g. Excel,
+LibreOffice Calc or Gnumeric.
 
 The spreadsheet is in the package directory at `../inst/extdata/purpose.xlsx`.
 
 ```{r, echo = TRUE}
 library(dplyr)
 library(tidyxl)
+library(unpivotr)
+
+# Load spreadsheet of examples
+spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
 ```
 
 ## NNW WNW example
 
 ```{r, echo = TRUE}
-cells <- contents("../inst/extdata/purpose.xlsx", "NNW WNW")[[1]]
+cells <- contents(spreadsheet, "NNW WNW")[[1]]
 ```
 
 ### Headers
@@ -33,15 +39,15 @@ cells <- contents("../inst/extdata/purpose.xlsx", "NNW WNW")[[1]]
 ```{r, echo = TRUE}
 row_headers <- 
   cells %>%
-  filter(col <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
-  split(.$col)
+  filter(col <= 3, !is.na(content)) %>% # Select all rows of headers at once
+  select(row, col, value = character) %>%
+  split(.$col) # Return each row of headers in its own element of a list
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$row)
 col_headers
 ```
@@ -78,7 +84,7 @@ NNW_WNW <- datacells
 ## NNE WSW example
 
 ```{r, echo = TRUE}
-cells <- contents("../inst/extdata/purpose.xlsx", "NNE WSW")[[1]]
+cells <- contents(spreadsheet, "NNE WSW")[[1]]
 ```
 
 ### Headers (same as NNW WNW)
@@ -87,14 +93,14 @@ cells <- contents("../inst/extdata/purpose.xlsx", "NNE WSW")[[1]]
 row_headers <- 
   cells %>%
   filter(col <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$row)
 col_headers
 ```
@@ -131,7 +137,7 @@ NNE_WSW <- datacells
 ## SSE ESE example
 
 ```{r, echo = TRUE}
-cells <- contents("../inst/extdata/purpose.xlsx", "SSE ESE")[[1]]
+cells <- contents(spreadsheet, "SSE ESE")[[1]]
 ```
 
 ### Headers
@@ -140,14 +146,14 @@ cells <- contents("../inst/extdata/purpose.xlsx", "SSE ESE")[[1]]
 row_headers <- 
   cells %>%
   filter(col >= 8, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row >= 24, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$row)
 col_headers
 ```
@@ -185,7 +191,7 @@ SSE_ESE <- datacells
 ## SSW ENE example
 
 ```{r, echo = TRUE}
-cells <- contents("../inst/extdata/purpose.xlsx", "SSW ENE")[[1]]
+cells <- contents(spreadsheet, "SSW ENE")[[1]]
 ```
 
 ### Headers (same as SSE ESE)
@@ -194,14 +200,14 @@ cells <- contents("../inst/extdata/purpose.xlsx", "SSW ENE")[[1]]
 row_headers <- 
   cells %>%
   filter(col >= 8, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row >= 24, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$row)
 col_headers
 ```
@@ -247,7 +253,7 @@ identical(NNW_WNW, SSW_ENE)
 ## ABOVE LEFT example
 
 ```{r, echo = TRUE}
-cells <- contents("../inst/extdata/purpose.xlsx", "ABOVE LEFT")[[1]]
+cells <- contents(spreadsheet, "ABOVE LEFT")[[1]]
 ```
 
 ### Headers
@@ -256,14 +262,14 @@ cells <- contents("../inst/extdata/purpose.xlsx", "ABOVE LEFT")[[1]]
 row_headers <- 
   cells %>%
   filter(col <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$row)
 col_headers
 ```
@@ -301,7 +307,7 @@ ABOVE_LEFT <- datacells
 ## BELOW RIGHT example
 
 ```{r, echo = TRUE}
-cells <- contents("../inst/extdata/purpose.xlsx", "BELOW RIGHT")[[1]]
+cells <- contents(spreadsheet, "BELOW RIGHT")[[1]]
 ```
 
 ### Headers
@@ -310,14 +316,14 @@ cells <- contents("../inst/extdata/purpose.xlsx", "BELOW RIGHT")[[1]]
 row_headers <- 
   cells %>%
   filter(col >= 10, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row >= 14, !is.na(content)) %>%
-  select(row, col, header = character) %>%
+  select(row, col, value = character) %>%
   split(.$row)
 col_headers
 ```
@@ -356,5 +362,164 @@ BELOW_RIGHT <- datacells
 
 ```{r, echo = TRUE}
 identical(ABOVE_LEFT, BELOW_RIGHT)
+```
+
+## ABOVE LEFT border example
+
+```{r, echo = TRUE}
+cells <- contents(spreadsheet, "ABOVE LEFT border")[[1]]
+```
+
+### Headers
+
+```{r, echo = TRUE}
+# Same as ABOVE LEFT without borders
+row_headers <- 
+  cells %>%
+  filter(col <= 3, !is.na(content)) %>%
+  select(row, col, value = character) %>%
+  split(.$col)
+row_headers
+
+col_headers <- 
+  cells %>%
+  filter(row <= 3, !is.na(content)) %>%
+  select(row, col, value = character) %>%
+  split(.$row)
+col_headers
+```
+
+### Data
+
+```{r, echo = TRUE}
+# Same as ABOVE LEFT without borders
+datacells <- 
+  cells %>%
+  filter(row >= 4, col >= 4) %>%
+  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  select(row, col, value = as.integer(content))
+datacells
+```
+
+### Borders
+
+```{r, echo = TRUE}
+# Different from ABOVE LEFT without borders
+# Find cells with borders on the bottom, and ones with borders on the left
+formatting <- formats(spreadsheet)
+left_borders <- which(!is.na(formatting$local$border$left$style))
+top_borders <- which(!is.na(formatting$local$border$top$style))
+
+left_border_cells <- 
+  cells %>%
+  filter(row == 2, local_format_id %in% left_borders) %>%
+  select(row, col, value = content) # value doesn't matter
+top_border_cells <- 
+  cells %>%
+  filter(col == 2, local_format_id %in% top_borders) %>%
+  select(row, col, value = content) # value doesn't matter
+```
+
+### Join headers to data
+
+```{r, echo = TRUE}
+datacells <- 
+  datacells %>%
+  ABOVE(col_headers[[1]], "purpose", left_border_cells) %>% # Different from ABOVE LEFT
+  N(col_headers[[2]], "age") %>% # Same as ABOVE LEFT
+  LEFT(row_headers[[1]], "sex", top_border_cells) %>% # Different from ABOVE LEFT
+  W(row_headers[[2]], "education") # Same as ABOVE LEFT
+```
+
+### Result
+
+```{r, echo = TRUE}
+datacells %>% as.data.frame
+
+ABOVE_LEFT_borders <- datacells
+ABOVE_LEFT
+```
+
+## BELOW RIGHT border example
+
+```{r, echo = TRUE}
+cells <- contents(spreadsheet, "BELOW RIGHT border")[[1]]
+```
+
+### Headers
+
+```{r, echo = TRUE}
+# Same as BELOW RIGHT without borders
+row_headers <- 
+  cells %>%
+  filter(col >= 10, !is.na(content)) %>%
+  select(row, col, value = character) %>%
+  split(.$col)
+row_headers
+
+col_headers <- 
+  cells %>%
+  filter(row >= 14, !is.na(content)) %>%
+  select(row, col, value = character) %>%
+  split(.$row)
+col_headers
+```
+
+### Data
+
+```{r, echo = TRUE}
+# Same as BELOW RIGHT without borders
+datacells <- 
+  cells %>%
+  filter(row <= 13, col <= 9) %>%
+  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  select(row, col, value = as.integer(content))
+datacells
+```
+
+### Borders
+
+```{r, echo = TRUE}
+# Different from BELOW RIGHT without borders
+# Find cells with borders on the bottom, and ones with borders on the left
+formatting <- formats(spreadsheet)
+left_borders <- which(!is.na(formatting$local$border$left$style))
+top_borders <- which(!is.na(formatting$local$border$top$style))
+
+left_border_cells <- 
+  cells %>%
+  filter(row == 14, local_format_id %in% left_borders) %>%
+  select(row, col, value = content) # value doesn't matter
+top_border_cells <- 
+  cells %>%
+  filter(col == 11, local_format_id %in% top_borders) %>%
+  select(row, col, value = content) # value doesn't matter
+```
+
+### Join headers to data
+
+```{r, echo = TRUE}
+datacells <- 
+  datacells %>%
+  BELOW(col_headers[[2]], "purpose", left_border_cells) %>% # Different from BELOW RIGHT
+  S(col_headers[[1]], "age") %>% # Same as BELOW RIGHT
+  RIGHT(row_headers[[2]], "sex", top_border_cells) %>% # Different from BELOW RIGHT
+  E(row_headers[[1]], "education") # Same as BELOW RIGHT
+```
+
+### Result
+
+```{r, echo = TRUE}
+datacells %>% as.data.frame
+
+BELOW_RIGHT_borders <- datacells
+```
+
+## Check that all sheets are parsed correctly
+
+```{r, echo = TRUE}
+identical(ABOVE_LEFT, BELOW_RIGHT)
+identical(ABOVE_LEFT, ABOVE_LEFT_borders)
+identical(ABOVE_LEFT, BELOW_RIGHT_borders)
 ```
 

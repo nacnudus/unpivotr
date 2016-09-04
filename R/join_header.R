@@ -15,6 +15,12 @@
 #' describes the data.  For example, for data cells recording a number of
 #' animals, and a header describing the type of animal, then the 'header' column
 #' might contain the values `c("dog", "cat", "mouse")`.
+#' @param boundary Data frame. Only applies to the directions "ABOVE", "RIGHT",
+#' "BELOW" and "LEFT".  A bag of cells in one row or one column,
+#' demarking boundaries within which to match headers with cells.  For example,
+#' a boundary could be a bag of cells with borders on one side.  This is useful
+#' when the nearest header might be the wrong header because it lies on the 
+#' other side of a border.
 #' @param direction Character vector length 1. A compass direction to search for the nearest header.  See
 #' 'details'.
 #' @param colname Character vector length one. Column name to give the header
@@ -38,30 +44,60 @@
 #' @examples
 #' # Please see the vignette for examples.
 #' vignette("compass-directions", "unpivotr")
-join_header <- function(bag, header, direction, colname = "newheader") {
+join_header <- function(bag, header, direction, colname, boundaries = NULL) {
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
   # Prototype extending right
+  if (!is.null(boundary) 
+      && (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT"))) {
+    warning("Boundaries are ignored in the direction '", direction, "'.")
+  }
   if (direction == "N") {
     N(bag, header, colname)
+  } else if (direction == "E") {
+    E(bag, header, colname)
+  } else if (direction == "S") {
+    S(bag, header, colname)
   } else if (direction == "W") {
     W(bag, header, colname)
   } else if (direction == "NNW") {
     NNW(bag, header, colname)
+  } else if (direction == "NNE") {
+    NNE(bag, header, colname)
+  } else if (direction == "ENE") {
+    ENE(bag, header, colname)
+  } else if (direction == "ESE") {
+    ESE(bag, header, colname)
+  } else if (direction == "SSE") {
+    SSE(bag, header, colname)
+  } else if (direction == "SSW") {
+    SSW(bag, header, colname)
+  } else if (direction == "WSW") {
+    WSW(bag, header, colname)
   } else if (direction == "WNW") {
     WNW(bag, header, colname)
   } else if (direction == "ABOVE") {
-    ABOVE(bag, header, colname)
+    ABOVE(bag, header, colname, boundaries)
+  } else if (direction == "RIGHT") {
+    RIGHT(bag, header, colname, boundaries)
+  } else if (direction == "BELOW") {
+    BELOW(bag, header, colname, boundaries)
   } else if (direction == "LEFT") {
-    LEFT(bag, header, colname)
+    LEFT(bag, header, colname, boundaries)
   } else {stop("The direction ", direction, 
                ", is either not recognised or not yet supported.")}
 }
 
 #' @describeIn join_header Join nearest header in the 'N' direction.
 #' @export
-N <- function(bag, header, colname = "newheader") {
+N <- function(bag, header, colname) {
+  domains <- N_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+N_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -74,15 +110,20 @@ N <- function(bag, header, colname = "newheader") {
     # y2 goes up to just before the next header in any column
     dplyr::group_by(row) %>%
     tidyr::nest() %>%
-    dplyr::mutate(y2 = lead(as.numeric(row) - 1, default = Inf)) %>%
+    dplyr::mutate(y2 = dplyr::lead(as.numeric(row) - 1, default = Inf)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'E' direction.
 #' @export
-E <- function(bag, header, colname = "newheader") {
+E <- function(bag, header, colname) {
+  domains <- E_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+E_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -95,15 +136,20 @@ E <- function(bag, header, colname = "newheader") {
     # x1 goes back to just after the previous header in any row
     dplyr::group_by(col) %>%
     tidyr::nest() %>%
-    dplyr::mutate(x1 = lag(as.numeric(col) + 1, default = 1)) %>%
+    dplyr::mutate(x1 = dplyr::lag(as.numeric(col) + 1, default = 1)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'S' direction.
 #' @export
-S <- function(bag, header, colname = "newheader") {
+S <- function(bag, header, colname) {
+  domains <- S_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+S_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -116,15 +162,20 @@ S <- function(bag, header, colname = "newheader") {
     # y1 goes back to just after the previous header in any column
     dplyr::group_by(row) %>%
     tidyr::nest() %>%
-    dplyr::mutate(y1 = lag(as.numeric(row) + 1, default = 1)) %>%
+    dplyr::mutate(y1 = dplyr::lag(as.numeric(row) + 1, default = 1)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'W' direction.
 #' @export
-W <- function(bag, header, colname = "newheader") {
+W <- function(bag, header, colname) {
+  domains <- W_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+W_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -137,15 +188,20 @@ W <- function(bag, header, colname = "newheader") {
     # x2 goes up to just before the next header in any row
     dplyr::group_by(col) %>%
     tidyr::nest() %>%
-    dplyr::mutate(x2 = lead(as.numeric(col) - 1, default = Inf)) %>%
+    dplyr::mutate(x2 = dplyr::lead(as.numeric(col) - 1, default = Inf)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'NNW' direction.
 #' @export
-NNW <- function(bag, header, colname = "newheader") {
+NNW <- function(bag, header, colname) {
+  domains <- NNW_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+NNW_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -156,18 +212,23 @@ NNW <- function(bag, header, colname = "newheader") {
            y1 = as.numeric(row)) %>%
     # x2 goes up to just before the next header in the row
     dplyr::group_by(row) %>%
-    dplyr::mutate(x2 = lead(as.numeric(col) - 1, default = Inf)) %>%
+    dplyr::mutate(x2 = dplyr::lead(as.numeric(col) - 1, default = Inf)) %>%
     # y2 goes up to just before the next header in any column
     tidyr::nest() %>%
-    dplyr::mutate(y2 = lead(as.numeric(row) - 1, default = Inf)) %>%
+    dplyr::mutate(y2 = dplyr::lead(as.numeric(row) - 1, default = Inf)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'NNE' direction.
 #' @export
-NNE <- function(bag, header, colname = "newheader") {
+NNE <- function(bag, header, colname) {
+  domains <- NNE_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+NNE_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -178,18 +239,23 @@ NNE <- function(bag, header, colname = "newheader") {
            y1 = as.numeric(row)) %>%
     # x1 goes back to just after the previous header in the row
     dplyr::group_by(row) %>%
-    dplyr::mutate(x1 = lag(as.numeric(col) + 1, default = 1)) %>%
+    dplyr::mutate(x1 = dplyr::lag(as.numeric(col) + 1, default = 1)) %>%
     # y2 goes up to just before the next header in any column
     tidyr::nest() %>%
-    dplyr::mutate(y2 = lead(as.numeric(row) - 1, default = Inf)) %>%
+    dplyr::mutate(y2 = dplyr::lead(as.numeric(row) - 1, default = Inf)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'ENE' direction.
 #' @export
-ENE <- function(bag, header, colname = "newheader") {
+ENE <- function(bag, header, colname) {
+  domains <- ENE_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+ENE_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -200,18 +266,23 @@ ENE <- function(bag, header, colname = "newheader") {
            y1 = as.numeric(row)) %>%
     # y2 goes up to just before the next header in the column
     dplyr::group_by(col) %>%
-    dplyr::mutate(y2 = lead(as.numeric(row) - 1, default = Inf)) %>%
+    dplyr::mutate(y2 = dplyr::lead(as.numeric(row) - 1, default = Inf)) %>%
     # x1 goes back to just after the previous header in any row
     tidyr::nest() %>%
-    dplyr::mutate(x1 = lag(as.numeric(col) + 1, default = 1)) %>%
+    dplyr::mutate(x1 = dplyr::lag(as.numeric(col) + 1, default = 1)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'ESE' direction.
 #' @export
-ESE <- function(bag, header, colname = "newheader") {
+ESE <- function(bag, header, colname) {
+  domains <- ESE_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+ESE_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -222,18 +293,23 @@ ESE <- function(bag, header, colname = "newheader") {
            y2 = as.numeric(row)) %>%
     # y1 goes back to just after the previous header in the column
     dplyr::group_by(col) %>%
-    dplyr::mutate(y1 = lag(as.numeric(row) + 1, default = 1)) %>%
+    dplyr::mutate(y1 = dplyr::lag(as.numeric(row) + 1, default = 1)) %>%
     # x1 goes back to just after the previous header in any row
     tidyr::nest() %>%
-    dplyr::mutate(x1 = lag(as.numeric(col) + 1, default = 1)) %>%
+    dplyr::mutate(x1 = dplyr::lag(as.numeric(col) + 1, default = 1)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'SSE' direction.
 #' @export
-SSE <- function(bag, header, colname = "newheader") {
+SSE <- function(bag, header, colname) {
+  domains <- SSE_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+SSE_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -244,18 +320,23 @@ SSE <- function(bag, header, colname = "newheader") {
            y2 = as.numeric(row)) %>%
     # x1 goes back to just after the previous header in any row
     dplyr::group_by(row) %>%
-    dplyr::mutate(x1 = lag(as.numeric(col) + 1, default = 1)) %>%
+    dplyr::mutate(x1 = dplyr::lag(as.numeric(col) + 1, default = 1)) %>%
     # y1 goes back to just after the previous header in the column
     tidyr::nest() %>%
-    dplyr::mutate(y1 = lag(as.numeric(row) + 1, default = 1)) %>%
+    dplyr::mutate(y1 = dplyr::lag(as.numeric(row) + 1, default = 1)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'SSW' direction.
 #' @export
-SSW <- function(bag, header, colname = "newheader") {
+SSW <- function(bag, header, colname) {
+  domains <- SSW_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+SSW_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -266,18 +347,23 @@ SSW <- function(bag, header, colname = "newheader") {
            y2 = as.numeric(row)) %>%
     # x2 goes up to just before the next header in any row
     dplyr::group_by(row) %>%
-    dplyr::mutate(x2 = lead(as.numeric(col) - 1, default = Inf)) %>%
+    dplyr::mutate(x2 = dplyr::lead(as.numeric(col) - 1, default = Inf)) %>%
     # y1 goes back to just after the previous header in the column
     tidyr::nest() %>%
-    dplyr::mutate(y1 = lag(as.numeric(row) + 1, default = 1)) %>%
+    dplyr::mutate(y1 = dplyr::lag(as.numeric(row) + 1, default = 1)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'WSW' direction.
 #' @export
-WSW <- function(bag, header, colname = "newheader") {
+WSW <- function(bag, header, colname) {
+  domains <- WSW_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+WSW_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -288,18 +374,23 @@ WSW <- function(bag, header, colname = "newheader") {
            y2 = as.numeric(row)) %>%
     # y1 goes back to just after the previous header in the column
     dplyr::group_by(col) %>%
-    dplyr::mutate(y1 = lag(as.numeric(row) + 1, default = 1)) %>%
+    dplyr::mutate(y1 = dplyr::lag(as.numeric(row) + 1, default = 1)) %>%
     # x2 goes up to just before the next header in any row
     tidyr::nest() %>%
-    dplyr::mutate(x2 = lead(as.numeric(col) - 1, default = Inf)) %>%
+    dplyr::mutate(x2 = dplyr::lead(as.numeric(col) - 1, default = Inf)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'WNW' direction.
 #' @export
-WNW <- function(bag, header, colname = "newheader") {
+WNW <- function(bag, header, colname) {
+  domains <- WNW_domains(header)
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+WNW_domains <- function(header) {
   # Join header to cells by proximity
   # First, the domain of each header
   domains <- 
@@ -310,122 +401,199 @@ WNW <- function(bag, header, colname = "newheader") {
            y1 = as.numeric(row)) %>%
     # y2 goes up to just before the next header in the column
     dplyr::group_by(col) %>%
-    dplyr::mutate(y2 = lead(as.numeric(row) - 1, default = Inf)) %>%
+    dplyr::mutate(y2 = dplyr::lead(as.numeric(row) - 1, default = Inf)) %>%
     # x2 goes up to just before the next header in any row
     tidyr::nest() %>%
-    dplyr::mutate(x2 = lead(as.numeric(col) - 1, default = Inf)) %>%
+    dplyr::mutate(x2 = dplyr::lead(as.numeric(col) - 1, default = Inf)) %>%
     tidyr::unnest() %>%
     dplyr::ungroup()
-  get_header(bag, domains, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'ABOVE' direction.
 #' @export
-ABOVE <- function(bag, header, colname = "newheader") {
-  # Join header to cells by proximity
-  # First, the domain of each header
-  domains <- 
-    header %>%
-    dplyr::arrange(row, col) %>%
-    # y1 is the cell itself
-    dplyr::mutate(y1 = as.numeric(row)) %>%
-    # x1 and x2 are half-way (rounded down) from the cell to headers either
-    # side in the same row
-    dplyr::group_by(row) %>%
-    dplyr::mutate(x1 = floor((col + lag(as.numeric(col), default = 1) + 2)/2),
-           x2 = ceiling((col + lead(as.numeric(col), default = Inf) - 2)/2)) %>%
-    # y2 goes up to just before the next header in any column
-    tidyr::nest() %>%
-    dplyr::mutate(y2 = lead(as.numeric(row) - 1, default = Inf)) %>%
-    tidyr::unnest() %>%
-    dplyr::ungroup()
-  get_header(bag, domains, colname)
-}
- 
-#' @describeIn join_header Join nearest header in the 'BELOW' direction.
-#' @export
-BELOW <- function(bag, header, colname = "newheader") {
-  # Join header to cells by proximity
-  # First, the domain of each header
-  domains <- 
-    header %>%
-    dplyr::arrange(row, col) %>%
-    # y2 is the cell itself
-    dplyr::mutate(y2 = as.numeric(row)) %>%
-    # x1 and x2 are half-way (rounded down) from the cell to headers either
-    # side in the same row
-    dplyr::group_by(row) %>%
-    dplyr::mutate(x1 = floor((col + lag(as.numeric(col), default = 1) + 2)/2),
-           x2 = ceiling((col + lead(as.numeric(col), default = Inf) - 2)/2)) %>%
-    # y1 goes back to just after the previous header in any column
-    tidyr::nest() %>%
-    dplyr::mutate(y1 = lag(as.numeric(row) + 1, default = 1)) %>%
-    tidyr::unnest() %>%
-    dplyr::ungroup()
-  get_header(bag, domains, colname)
-}
-
-#' @describeIn join_header Join nearest header in the 'LEFT' direction.
-#' @export
-LEFT <- function(bag, header, colname = "newheader") {
-  # Join header to cells by proximity
-  # First, the domain of each header
-  domains <- 
-    header %>%
-    dplyr::arrange(col, row) %>%
-    # x1 is the cell itself
-    dplyr::mutate(x1 = as.numeric(col)) %>%
-    # y1 and y2 are half-way (rounded down) from the cell to headers either
-    # side in the same column
-    dplyr::group_by(col) %>%
-    dplyr::mutate(y1 = floor((row + lag(as.numeric(row), default = 1) + 2)/2),
-           y2 = ceiling((row + lead(as.numeric(row), default = Inf) - 2)/2)) %>%
-    # x2 goes up to just before the next header in any row
-    tidyr::nest() %>%
-    dplyr::mutate(x2 = lead(as.numeric(col) - 1, default = Inf)) %>%
-    tidyr::unnest() %>%
-    dplyr::ungroup()
-  get_header(bag, domains, colname)
+ABOVE <- function(bag, header, colname, boundaries = NULL) {
+  if (is.null(boundaries)) {
+    # Join header to cells by proximity
+    # First, the domain of each header
+    domains <- 
+      header %>%
+      dplyr::arrange(row, col) %>%
+      # y1 is the cell itself
+      dplyr::mutate(y1 = as.numeric(row)) %>%
+      # x1 and x2 are half-way (rounded down) from the cell to headers either
+      # side in the same row
+      dplyr::group_by(row) %>%
+      dplyr::mutate(
+        x1 = floor((col + dplyr::lag(as.numeric(col), default = 1) + 2)/2),
+        x2 = ceiling((col + dplyr::lead(as.numeric(col), default = Inf) - 2)/2)
+      ) %>%
+      # y2 goes up to just before the next header in any column
+      tidyr::nest() %>%
+      dplyr::mutate(y2 = dplyr::lead(as.numeric(row) - 1, default = Inf)) %>%
+      tidyr::unnest() %>%
+      dplyr::ungroup()
+  } else {
+    # Domain of each boundary
+    boundaries$row <- 1 # universal boundary for every cell in the sheet
+    boundary_domains <- NNW_domains(boundaries)
+    # Give the headers the same domains, but then limit them by each-other's
+    # proximity within the same boundaries.
+    domains <- 
+      anchor(header, boundary_domains) %>%
+      dplyr::arrange(row, col) %>%
+      dplyr::group_by(y1, x1) %>%
+      dplyr::mutate(x2 = dplyr::lead(col - 1, default = first(x2))) %>%
+      dplyr::ungroup()
+  }
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
 }
 
 #' @describeIn join_header Join nearest header in the 'RIGHT' direction.
 #' @export
-RIGHT <- function(bag, header, colname = "newheader") {
-  # Join header to cells by proximity
-  # First, the domain of each header
-  domains <- 
-    header %>%
-    dplyr::arrange(col, row) %>%
-    # x2 is the cell itself
-    dplyr::mutate(x2 = as.numeric(col)) %>%
-    # y1 and y2 are half-way (rounded down) from the cell to headers either
-    # side in the same column
-    dplyr::group_by(col) %>%
-    dplyr::mutate(y1 = floor((row + lag(as.numeric(row), default = 1) + 2)/2),
-           y2 = ceiling((row + lead(as.numeric(row), default = Inf) - 2)/2)) %>%
-    # x1 goes back to just after the previous header in any row
-    tidyr::nest() %>%
-    dplyr::mutate(x1 = lag(as.numeric(col) + 1, default = 1)) %>%
-    tidyr::unnest() %>%
-    dplyr::ungroup()
-  get_header(bag, domains, colname)
+RIGHT <- function(bag, header, colname, boundaries = NULL) {
+  if (is.null(boundaries)) {
+    # Join header to cells by proximity
+    # First, the domain of each header
+    domains <- 
+      header %>%
+      dplyr::arrange(col, row) %>%
+      # x2 is the cell itself
+      dplyr::mutate(x2 = as.numeric(col)) %>%
+      # y1 and y2 are half-way (rounded down) from the cell to headers either
+      # side in the same column
+      dplyr::group_by(col) %>%
+      dplyr::mutate(
+        y1 = floor((row + dplyr::lag(as.numeric(row), default = 1) + 2)/2),
+        y2 = ceiling((row + dplyr::lead(as.numeric(row), default = Inf) - 2)/2)
+      ) %>%
+      # x1 goes back to just after the previous header in any row
+      tidyr::nest() %>%
+      dplyr::mutate(x1 = dplyr::lag(as.numeric(col) + 1, default = 1)) %>%
+      tidyr::unnest() %>%
+      dplyr::ungroup()
+  } else {
+    # Domain of each boundary
+    boundaries$col <- Inf # universal boundary for every cell in the sheet
+    boundary_domains <- NNE_domains(boundaries)
+    # Give the headers the same domains, but then limit them by each-other's
+    # proximity within the same boundaries.
+    domains <- 
+      anchor(header, boundary_domains) %>%
+      dplyr::arrange(col, row) %>%
+      dplyr::group_by(x1, y1) %>%
+      dplyr::mutate(y2 = dplyr::lead(row - 1, default = first(y2))) %>%
+      dplyr::ungroup()
+  }
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
 }
 
-get_header <- function(bag, domains, colname) {
+#' @describeIn join_header Join nearest header in the 'BELOW' direction.
+#' @export
+BELOW <- function(bag, header, colname, boundaries = NULL) {
+  if (is.null(boundaries)) {
+    # Join header to cells by proximity
+    # First, the domain of each header
+    domains <- 
+      header %>%
+      dplyr::arrange(row, col) %>%
+      # y2 is the cell itself
+      dplyr::mutate(y2 = as.numeric(row)) %>%
+      # x1 and x2 are half-way (rounded down) from the cell to headers either
+      # side in the same row
+      dplyr::group_by(row) %>%
+      dplyr::mutate(
+        x1 = floor((col + dplyr::lag(as.numeric(col), default = 1) + 2)/2),
+        x2 = ceiling((col + dplyr::lead(as.numeric(col), default = Inf) - 2)/2)
+      ) %>%
+      # y1 goes back to just after the previous header in any column
+      tidyr::nest() %>%
+      dplyr::mutate(y1 = dplyr::lag(as.numeric(row) + 1, default = 1)) %>%
+      tidyr::unnest() %>%
+      dplyr::ungroup()
+  } else {
+    # Domain of each boundary
+    boundaries$row <- Inf # universal boundary for every cell in the sheet
+    boundary_domains <- SSW_domains(boundaries)
+    # Give the headers the same domains, but then limit them by each-other's
+    # proximity within the same boundaries.
+    domains <- 
+      anchor(header, boundary_domains) %>%
+      dplyr::arrange(row, col) %>%
+      dplyr::group_by(y1, x1) %>%
+      dplyr::mutate(x2 = dplyr::lead(col - 1, default = first(x2))) %>%
+      dplyr::ungroup()
+  }
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+#' @describeIn join_header Join nearest header in the 'LEFT' direction.
+#' @export
+LEFT <- function(bag, header, colname, boundaries = NULL) {
+  if (is.null(boundaries)) {
+    # Join header to cells by proximity
+    # First, the domain of each header
+    domains <- 
+      header %>%
+      dplyr::arrange(col, row) %>%
+      # x1 is the cell itself
+      dplyr::mutate(x1 = as.numeric(col)) %>%
+      # y1 and y2 are half-way (rounded down) from the cell to headers either
+      # side in the same column
+      dplyr::group_by(col) %>%
+      dplyr::mutate(
+        y1 = floor((row + dplyr::lag(as.numeric(row), default = 1) + 2)/2),
+        y2 = ceiling((row + dplyr::lead(as.numeric(row), default = Inf) - 2)/2)
+      ) %>%
+      # x2 goes up to just before the next header in any row
+      tidyr::nest() %>%
+      dplyr::mutate(x2 = dplyr::lead(as.numeric(col) - 1, default = Inf)) %>%
+      tidyr::unnest() %>%
+      dplyr::ungroup()
+  } else {
+    # Domain of each boundary
+    boundaries$col <- 1 # universal boundary for every cell in the sheet
+    boundary_domains <- WNW_domains(boundaries)
+    # Give the headers the same domains, but then limit them by each-other's
+    # proximity within the same boundaries.
+    domains <- 
+      anchor(header, boundary_domains) %>%
+      dplyr::arrange(col, row) %>%
+      dplyr::group_by(x1, y1) %>%
+      dplyr::mutate(y2 = dplyr::lead(row - 1, default = first(y2))) %>%
+      dplyr::ungroup()
+  }
+  joined <- anchor(bag, domains)
+  get_header(bag, joined, colname)
+}
+
+anchor <- function(bag, domains) {
   # Use data.table non-equi join to join header with cells.
   bag <-
     bag %>%
     dplyr::mutate(row = as.numeric(row), col = as.numeric(col)) # joins with columns that are numeric to allow NA
   bag <- data.table(bag)         # Must be done without %>%
   domains <- data.table(domains) # Must be done without %>%
-  joined <- 
-    bag[domains,
-          .(row = x.row, col = x.col, header = i.header),
-          on = .(row >= y1, row <= y2, col >= x1, col <= x2)] %>%
-    rename_(.dots = setNames(list(~header), colname))
+  bag[domains,
+      .(row = x.row, col = x.col, 
+        x1 = i.x1, x2 = i.x2, 
+        y1 = i.y1, y2 = i.y2,
+        header = i.value,
+        value = x.value),
+        on = .(row >= y1, row <= y2, col >= x1, col <= x2)] %>%
+  dplyr::tbl_df()
+}
+
+get_header <- function(bag, joined, colname) {
   # Finally, join back on the cells (this step is necessary because data.table
   # returns weird columns from a non-equi join)
-  bag %>%
-    inner_join(joined, by = c("row", "col")) %>%
-    tbl_df
+  joined %>%
+    select(-matches("value")) %>%
+    dplyr::inner_join(bag, by = c("row", "col")) %>%
+    dplyr::rename_(.dots = setNames(list(~header), colname)) %>%
+    # dplyr::select(-x1, -x2, -y1, -y2)
+    dplyr::select(-x1, -x2, -y1, -y2) %>%
+    dplyr::select(row, col, dplyr::matches("address"), dplyr::everything())
 }
