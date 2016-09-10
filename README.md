@@ -8,10 +8,14 @@ output: github_document
 
 # unpivotr
 
-Tools for converting data from complex or irregular layouts to a columnar
-structure.  For example, tables with multi-level column or row headers, or
-spreadsheets.  Header and data cells are selected by their contents, position
-and formatting, and are associated with one other by their relative positions.
+[unpivotr](https://github.com/nacnudus/unpivotr) provides ools for converting
+data from complex or irregular layouts to a columnar structure.  For example,
+tables with multi-level column or row headers, or spreadsheets.  Header and data
+cells are selected by their contents, position and formatting, and are
+associated with one other by their relative positions.
+
+Use [unpivotr](https://github.com/nacnudus/unpivotr) on Excel (.xlsx) files via
+the [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
 ## Installation
 
@@ -25,9 +29,22 @@ devtools::install_github("nacnudus/tidyxl")
 
 ```r
 library(unpivotr)
+#> 
+#> Attaching package: 'unpivotr'
+#> The following object is masked from 'package:stats':
+#> 
+#>     offset
 library(tidyxl)
 library(readxl)
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 ```
 
 The package includes a spreadsheet, 'purpose.xlsx', which has tables that have
@@ -37,29 +54,16 @@ importing spreadsheets does the following:
 
 ```r
 read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
-#> # A tibble: 22 x 6
-#>                              Female     NA  Male     NA
-#>                <chr>   <chr>  <chr>  <chr> <chr>  <chr>
-#> 1               <NA>    <NA>  0 - 6 7 - 10 0 - 6 7 - 10
-#> 2  Bachelor's degree 15 - 24   7000  27000  <NA>  13000
-#> 3               <NA> 25 - 44  12000 137000  9000  81000
-#> 4               <NA> 45 - 64  10000  64000  7000  66000
-#> 5               <NA>     65+   <NA>  18000  7000  17000
-#> 6        Certificate 15 - 24  29000 161000 30000 190000
-#> 7               <NA> 25 - 44  34000 179000 31000 219000
-#> 8               <NA> 45 - 64  30000 210000 23000 199000
-#> 9               <NA>     65+  12000  77000  8000 107000
-#> 10           Diploma 15 - 24   <NA>  14000  9000  11000
-#> # ... with 12 more rows
+#> Error in x[needs_ticks] <- paste0("`", gsub("`", "\\\\`", x[needs_ticks]), : NAs are not allowed in subscripted assignments
 ```
 
 The [tidyxl](https://github.com/nacnudus/tidyxl) package imports the same table
-into a format suitable for unpivotr:
+into a format suitable for [unpivotr](https://github.com/nacnudus/unpivotr):
 
 
 ```r
 (pivoted <- contents("./inst/extdata/purpose.xlsx", "NNW WNW")[[1]])
-#> # A tibble: 128 x 14
+#> # A tibble: 128 × 15
 #>    address   row   col content formula formula_type formula_ref
 #>      <chr> <int> <int>   <chr>   <chr>        <chr>       <chr>
 #> 1       D2     2     4      16    <NA>         <NA>        <NA>
@@ -72,9 +76,9 @@ into a format suitable for unpivotr:
 #> 8       G3     3     7      20    <NA>         <NA>        <NA>
 #> 9       B4     4     2      13    <NA>         <NA>        <NA>
 #> 10      C4     4     3       7    <NA>         <NA>        <NA>
-#> # ... with 118 more rows, and 7 more variables: formula_group <int>,
+#> # ... with 118 more rows, and 8 more variables: formula_group <int>,
 #> #   type <chr>, character <chr>, height <dbl>, width <dbl>,
-#> #   style_format_id <dbl>, local_format_id <dbl>
+#> #   style_format_id <dbl>, local_format_id <dbl>, comment <chr>
 ```
 
 We can identify each row of column headers, each column of row headers, and the
@@ -90,14 +94,14 @@ col_headers <-
   split(.$row)
 col_headers 
 #> $`2`
-#> # A tibble: 2 x 3
+#> # A tibble: 2 × 3
 #>     row   col header
 #>   <int> <int>  <chr>
 #> 1     2     4 Female
 #> 2     2     6   Male
 #> 
 #> $`3`
-#> # A tibble: 4 x 3
+#> # A tibble: 4 × 3
 #>     row   col header
 #>   <int> <int>  <chr>
 #> 1     3     4  0 - 6
@@ -112,7 +116,7 @@ row_headers <-
   split(.$col)
 row_headers
 #> $`2`
-#> # A tibble: 5 x 3
+#> # A tibble: 5 × 3
 #>     row   col                     header
 #>   <int> <int>                      <chr>
 #> 1     4     2          Bachelor's degree
@@ -122,7 +126,7 @@ row_headers
 #> 5    20     2 Postgraduate qualification
 #> 
 #> $`3`
-#> # A tibble: 20 x 3
+#> # A tibble: 20 × 3
 #>      row   col  header
 #>    <int> <int>   <chr>
 #> 1      4     3 15 - 24
@@ -151,7 +155,7 @@ datacells <-
   filter(row >= 4, col >= 4) %>%
   select(row, col, value = as.integer(content))
 datacells
-#> # A tibble: 80 x 3
+#> # A tibble: 80 × 3
 #>      row   col  value
 #>    <int> <int>  <chr>
 #> 1      4     4   7000
@@ -167,8 +171,8 @@ datacells
 #> # ... with 70 more rows
 ```
 
-Using `unpivotr` functions, we associate the data cells with the headers, by
-proximity in given compass directions.
+Using [unpivotr](https://github.com/nacnudus/unpivotr) functions, we associate
+the data cells with the headers, by proximity in given compass directions.
 
 
 ```r
@@ -178,21 +182,9 @@ unpivoted <-
   N(col_headers[[2]], "purpose") %>%
   WNW(row_headers[[1]], "education") %>% 
   W(row_headers[[2]], "age")
+#> Error in eval(expr, envir, enclos): object 'i.value' not found
 unpivoted
-#> # A tibble: 80 x 7
-#>      row   col  value    sex purpose         education     age
-#>    <dbl> <dbl>  <chr>  <chr>   <chr>             <chr>   <chr>
-#> 1      4     4   7000 Female   0 - 6 Bachelor's degree 15 - 24
-#> 2      4     5  27000 Female  7 - 10 Bachelor's degree 15 - 24
-#> 3      4     6   <NA>   Male   0 - 6 Bachelor's degree 15 - 24
-#> 4      4     7  13000   Male  7 - 10 Bachelor's degree 15 - 24
-#> 5      5     4  12000 Female   0 - 6 Bachelor's degree 25 - 44
-#> 6      5     5 137000 Female  7 - 10 Bachelor's degree 25 - 44
-#> 7      5     6   9000   Male   0 - 6 Bachelor's degree 25 - 44
-#> 8      5     7  81000   Male  7 - 10 Bachelor's degree 25 - 44
-#> 9      6     4  10000 Female   0 - 6 Bachelor's degree 45 - 64
-#> 10     6     5  64000 Female  7 - 10 Bachelor's degree 45 - 64
-#> # ... with 70 more rows
+#> Error in eval(expr, envir, enclos): object 'unpivoted' not found
 ```
 
 We can re-pivot the final data in R using `ftable()` to check that it has been
@@ -203,48 +195,44 @@ imported correctly.
 ftable(unpivoted, 
        row.vars = c("education", "age"),
        col.vars = c("sex", "purpose"))
-#>                                    sex     Female         Male       
-#>                                    purpose  0 - 6 7 - 10 0 - 6 7 - 10
-#> education                  age                                       
-#> Bachelor's degree          15 - 24              1      1     0      1
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  0      1     1      1
-#> Certificate                15 - 24              1      1     1      1
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  1      1     1      1
-#> Diploma                    15 - 24              0      1     1      1
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  1      1     1      1
-#> No Qualification           15 - 24              1      1     1      1
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  1      1     1      1
-#> Postgraduate qualification 15 - 24              0      1     0      0
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  0      1     0      1
+#> Error in ftable(unpivoted, row.vars = c("education", "age"), col.vars = c("sex", : object 'unpivoted' not found
 read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
-#> # A tibble: 22 x 6
-#>                              Female     NA  Male     NA
-#>                <chr>   <chr>  <chr>  <chr> <chr>  <chr>
-#> 1               <NA>    <NA>  0 - 6 7 - 10 0 - 6 7 - 10
-#> 2  Bachelor's degree 15 - 24   7000  27000  <NA>  13000
-#> 3               <NA> 25 - 44  12000 137000  9000  81000
-#> 4               <NA> 45 - 64  10000  64000  7000  66000
-#> 5               <NA>     65+   <NA>  18000  7000  17000
-#> 6        Certificate 15 - 24  29000 161000 30000 190000
-#> 7               <NA> 25 - 44  34000 179000 31000 219000
-#> 8               <NA> 45 - 64  30000 210000 23000 199000
-#> 9               <NA>     65+  12000  77000  8000 107000
-#> 10           Diploma 15 - 24   <NA>  14000  9000  11000
-#> # ... with 12 more rows
+#> Error in x[needs_ticks] <- paste0("`", gsub("`", "\\\\`", x[needs_ticks]), : NAs are not allowed in subscripted assignments
 ```
 
 The functions `extend()` and `offset` can be used when selecting cells relative
 to an intial anchor cell (or group of cells, called a 'bag').
+
+## Philosophy
+
+Information in in many spreadsheets cannot be easily imported into R.  Why?
+
+Most R packages that import spreadsheets have difficulty unless the layout of
+the spreadsheet conforms to a strict definition of a 'table', e.g.:
+
+* observations in rows
+* variables in columns
+* a single header row
+* all information represented by characters, whether textual, logical, or
+  numeric
+
+These rules are designed to eliminate ambiguity in the interpretation of the
+information.  But most spreadsheeting software relaxes these rules in a trade of
+ambiguity for expression via other media:
+
+* proximity (other than headers, i.e. other than being the first value at the
+  top of a column)
+* formatting (colours and borders)
+
+Humans can usually resolve the ambiguities with contextual knowledge, but
+computers are limited by their ignorance.  Programmers are hampered by:
+
+* their language's expressiveness
+* loss of information in transfer from spreadsheet to programming library
+
+Information is lost when software discards it in order to force the data into
+tabular form.  Sometimes date formatting is retained, but mostly formatting 
+and comments are lost, and position has to be inferred.
 
 ## Similar projects
 
@@ -262,14 +250,12 @@ and writing out to spreadsheet files.  In particular,
 non-tabular data from spreadsheets into tabular structures automatically via
 some clever algorithms.
 
-[unpivot](https://github.com/nacnudus/unpivotr) differs from
+[unpivotr](https://github.com/nacnudus/unpivotr) differs from
 [jailbreaker](https://github.com/rsheets/jailbreakr) in that it provides tools
 for unpivoting complex and non-tabular data layouts using I not AI
 (intelligence, not artificial intelligence).
 
 ## Roadmap
 
-- [ ] Implement boundaries for the `ABOVE()`, `BELOW()`, `LEFT()`, `RIGHT()`
-functions to search within boundaries for a header cell, e.g. within an area
-bounded by borders.  This will make it possible in many cases to break ties
-between header cells that are equidistant from a data cell.
+- [ ] Write tests
+- [ ] Combine long header titles that are spread across cells.

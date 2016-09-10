@@ -14,10 +14,14 @@ knitr::opts_chunk$set(
 
 # unpivotr
 
-Tools for converting data from complex or irregular layouts to a columnar
-structure.  For example, tables with multi-level column or row headers, or
-spreadsheets.  Header and data cells are selected by their contents, position
-and formatting, and are associated with one other by their relative positions.
+[unpivotr](https://github.com/nacnudus/unpivotr) provides ools for converting
+data from complex or irregular layouts to a columnar structure.  For example,
+tables with multi-level column or row headers, or spreadsheets.  Header and data
+cells are selected by their contents, position and formatting, and are
+associated with one other by their relative positions.
+
+Use [unpivotr](https://github.com/nacnudus/unpivotr) on Excel (.xlsx) files via
+the [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
 ## Installation
 
@@ -43,7 +47,7 @@ read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
 ```
 
 The [tidyxl](https://github.com/nacnudus/tidyxl) package imports the same table
-into a format suitable for unpivotr:
+into a format suitable for [unpivotr](https://github.com/nacnudus/unpivotr):
 
 ```{r, echo = TRUE}
 (pivoted <- contents("./inst/extdata/purpose.xlsx", "NNW WNW")[[1]])
@@ -75,8 +79,8 @@ datacells <-
 datacells
 ```
 
-Using `unpivotr` functions, we associate the data cells with the headers, by
-proximity in given compass directions.
+Using [unpivotr](https://github.com/nacnudus/unpivotr) functions, we associate
+the data cells with the headers, by proximity in given compass directions.
 
 ```{r, echo = TRUE}
 unpivoted <- 
@@ -101,6 +105,37 @@ read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
 The functions `extend()` and `offset` can be used when selecting cells relative
 to an intial anchor cell (or group of cells, called a 'bag').
 
+## Philosophy
+
+Information in in many spreadsheets cannot be easily imported into R.  Why?
+
+Most R packages that import spreadsheets have difficulty unless the layout of
+the spreadsheet conforms to a strict definition of a 'table', e.g.:
+
+* observations in rows
+* variables in columns
+* a single header row
+* all information represented by characters, whether textual, logical, or
+  numeric
+
+These rules are designed to eliminate ambiguity in the interpretation of the
+information.  But most spreadsheeting software relaxes these rules in a trade of
+ambiguity for expression via other media:
+
+* proximity (other than headers, i.e. other than being the first value at the
+  top of a column)
+* formatting (colours and borders)
+
+Humans can usually resolve the ambiguities with contextual knowledge, but
+computers are limited by their ignorance.  Programmers are hampered by:
+
+* their language's expressiveness
+* loss of information in transfer from spreadsheet to programming library
+
+Information is lost when software discards it in order to force the data into
+tabular form.  Sometimes date formatting is retained, but mostly formatting 
+and comments are lost, and position has to be inferred.
+
 ## Similar projects
 
 [unpivotr](https://github.com/nacnudus/unpivotr) is inspired by the United
@@ -117,7 +152,7 @@ and writing out to spreadsheet files.  In particular,
 non-tabular data from spreadsheets into tabular structures automatically via
 some clever algorithms.
 
-[unpivot](https://github.com/nacnudus/unpivotr) differs from
+[unpivotr](https://github.com/nacnudus/unpivotr) differs from
 [jailbreaker](https://github.com/rsheets/jailbreakr) in that it provides tools
 for unpivoting complex and non-tabular data layouts using I not AI
 (intelligence, not artificial intelligence).
@@ -125,7 +160,4 @@ for unpivoting complex and non-tabular data layouts using I not AI
 ## Roadmap
 
 - [ ] Write tests
-- [ ] Implement boundaries for the `ABOVE()`, `BELOW()`, `LEFT()`, `RIGHT()`
-functions to search within boundaries for a header cell, e.g. within an area
-bounded by borders.  This will make it possible in many cases to break ties
-between header cells that are equidistant from a data cell.
+- [ ] Combine long header titles that are spread across cells.
