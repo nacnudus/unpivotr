@@ -23,8 +23,7 @@
 #' is no cell in the 50th column, then the first cell beyond the 50th column
 #' will be included.
 #' @details A bag may have ragged rows or ragged cols. Gaps will not be filled
-#' in, and the edge that is extended will be justified up to the first
-#' row/column in which the boundary condition is met.
+#' in.
 #' @export
 #' @examples
 #' # Please see the vignette for examples (not yet written in vignette, sorry!)
@@ -127,3 +126,6 @@ extend_W <- function(bag, cells, boundary, include) {
     }) %>%
     dplyr::ungroup()
 }
+
+# TODO: Extend by a number of rows/cells, not only up to a boundary
+# TODO: Extend to the first blank cell
