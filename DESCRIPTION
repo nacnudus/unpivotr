@@ -4,7 +4,6 @@ Version: 0.0.0.9000
 Authors@R: c(
     person("Duncan", "Garmonsway", email = "nacnudus@gmail.com", role = c("aut", "cre"))
     )
-
 Description: Tools for converting data from complex or irregular layouts to a
     columnar structure.  For example, tables with multi-level column or row
     headers, or spreadsheets.  Header and data cells are selected by their
