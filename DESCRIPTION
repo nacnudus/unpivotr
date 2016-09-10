@@ -4,11 +4,12 @@ Version: 0.0.0.9000
 Authors@R: c(
     person("Duncan", "Garmonsway", email = "nacnudus@gmail.com", role = c("aut", "cre"))
     )
+
 Description: Tools for converting data from complex or irregular layouts to a
     columnar structure.  For example, tables with multi-level column or row
     headers, or spreadsheets.  Header and data cells are selected by their
-    contents, position and formatting, and are associated with one other by
-    their relative positions.
+    contents and position, as well as formatting and comments where available,
+    and are associated with one other by their proximity in given directions.
 Depends:
     R (>= 3.3.0)
 License: GPL-3
