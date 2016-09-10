@@ -13,6 +13,13 @@ structure.  For example, tables with multi-level column or row headers, or
 spreadsheets.  Header and data cells are selected by their contents, position
 and formatting, and are associated with one other by their relative positions.
 
+## Installation
+
+
+```r
+devtools::install_github("nacnudus/tidyxl")
+```
+
 ## Example
 
 
