@@ -20,11 +20,11 @@ to be interpreted as data, further columns containing the 'value' of the cell
 are, of course, necessary for there to be any point in using this package,
 though they are not actually required for any of the given functions.
 
-Data meeting these requirements may be imported from plain text files such as
-.csv files, spreadsheet files such as .xlsx (Excel) and .ods files, and
-presumably many others.  The 'tidyxl' package imports .xlsx (Excel) files in
-a form suitable for 'unpivotr', and is available at
-\url{https://github.com/nacnudus/tidyxl}.
+Data frames and matrices can be converted into a format meeting these
+requirements by using the \code{\link{tidytable}} function.  Excel (.xlsx)
+files can be imported directly into the required format with the 'tidyxl'
+package, available at \url{https://github.com/nacnudus/tidyxl}, which has the
+advantage that it retains cell formatting and comments.
 
 The functions are documented in \code{\link{join_header}},
 \code{\link{extend}} and \code{\link{offset}}.  All functions are designed to
