@@ -7,7 +7,7 @@
 #' relative positions.
 #'
 #' The input data must be a data frame with the columns 'row' and 'col' to
-#' describe the position of a 'cell' of data.  In addition, a 'header' column is
+#' describe the position of a 'cell' of data.  In addition, a 'value' column is
 #' required for cells that are to be interpreted as headers.  For cells that are
 #' to be interpreted as data, further columns containing the 'value' of the cell
 #' are, of course, necessary for there to be any point in using this package,
