@@ -2,10 +2,22 @@
 % Please edit documentation in R/extend.R
 \name{extend}
 \alias{extend}
+\alias{extend_E}
+\alias{extend_N}
+\alias{extend_S}
+\alias{extend_W}
 \title{Extend a bag of cells in one direction, optionally up to a boundary
 condition.}
 \usage{
 extend(bag, cells, direction, boundary = FALSE, include = FALSE)
+
+extend_N(bag, cells, boundary = FALSE, include = FALSE)
+
+extend_E(bag, cells, boundary = FALSE, include = FALSE)
+
+extend_S(bag, cells, boundary = FALSE, include = FALSE)
+
+extend_W(bag, cells, boundary = FALSE, include = FALSE)
 }
 \arguments{
 \item{bag}{Data frame. The original selection, including at least the columns
@@ -18,10 +30,11 @@ columns referred to by the bounadry formula.}
 \item{direction}{Character vector length 1. The direction in which to extend,
 among the compass directions "N", "E", "S", "W", where "N" is north (up).}
 
-\item{boundary}{Formula to express a boundary condition. Defaults to
-`FALSE`, which means the extension will go to the boundary of the sheet. `~
-col <= 50` would up to the 50th column, but see 'details' for how this might
-behave unpredictably depending on 'include'.}
+\item{boundary}{Formula to express a boundary condition, or "blank". Defaults
+to `FALSE`, which means the extension will go to the boundary of the sheet.
+`~ col <= 50` would go up to the 50th column. "blank" goes up to just before
+a blank row/col when 'include' is FALSE, otherwise it goes up to the next
+non-blank cell after a blank one.}
 
 \item{include}{Logical vector length 1. Whether to include in the extension
 the first cell at which the boundary condition is met.  Can be unpredictable
@@ -38,11 +51,29 @@ specified, all cells up to the edge of the sheet will be added.
 }
 \details{
 A bag may have ragged rows or ragged cols. Gaps will not be filled
-in, and the edge that is extended will be justified up to the first
-row/column in which the boundary condition is met.
+in.
 }
+\section{Functions}{
+\itemize{
+\item \code{extend_N}: Extend a bag of cells to the north
+
+\item \code{extend_E}: Extend a bag of cells to the east
+
+\item \code{extend_S}: Extend a bag of cells to the south
+
+\item \code{extend_W}: Extend a bag of cells to the west
+}}
 \examples{
-# Please see the vignette for examples (not yet written in vignette, sorry!)
-vignette("compass-directions", "unpivotr")
+# Load some pivoted data
+(x <- purpose$`NNW WNW`)
+# Make a tidy representation
+cells <- tidytable(x, rownames = FALSE, colnames = FALSE)
+cells <- cells[!is.na(cells$character), ]
+# Select a particular cell
+cell <- cells[which(cells$row == 10 & cells$col == 3), ]
+# Extend the selection upwards, stopping before the NA.
+extend_N(cell, cells, boundary = "blank")
+# Extend the selection right, up to and including the fifth column.
+extend_E(cell, cells, boundary = ~ col == 5, include = TRUE)
 }
 

@@ -13,10 +13,11 @@
 #' columns referred to by the bounadry formula.
 #' @param direction Character vector length 1. The direction in which to extend,
 #' among the compass directions "N", "E", "S", "W", where "N" is north (up).
-#' @param boundary Formula to express a boundary condition. Defaults to
-#' `FALSE`, which means the extension will go to the boundary of the sheet. `~
-#' col <= 50` would up to the 50th column, but see 'details' for how this might
-#' behave unpredictably depending on 'include'.
+#' @param boundary Formula to express a boundary condition, or "blank". Defaults
+#' to `FALSE`, which means the extension will go to the boundary of the sheet.
+#' `~ col <= 50` would go up to the 50th column. "blank" goes up to just before
+#' a blank row/col when 'include' is FALSE, otherwise it goes up to the next
+#' non-blank cell after a blank one.
 #' @param include Logical vector length 1. Whether to include in the extension
 #' the first cell at which the boundary condition is met.  Can be unpredictable
 #' when `TRUE` if `boundary` is something like `~ col <= 50`, because if there
@@ -24,29 +25,40 @@
 #' will be included.
 #' @details A bag may have ragged rows or ragged cols. Gaps will not be filled
 #' in.
+#' @name extend
 #' @export
 #' @examples
-#' # Please see the vignette for examples (not yet written in vignette, sorry!)
-#' vignette("compass-directions", "unpivotr")
+#' # Load some pivoted data
+#' (x <- purpose$`NNW WNW`)
+#' # Make a tidy representation
+#' cells <- tidytable(x, rownames = FALSE, colnames = FALSE)
+#' cells <- cells[!is.na(cells$character), ]
+#' # Select a particular cell
+#' cell <- cells[which(cells$row == 10 & cells$col == 3), ]
+#' # Extend the selection upwards, stopping before the NA.
+#' extend_N(cell, cells, boundary = "blank")
+#' # Extend the selection right, up to and including the fifth column.
+#' extend_E(cell, cells, boundary = ~ col == 5, include = TRUE)
 extend <- function(bag, cells, direction, boundary = FALSE, include = FALSE) {
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
-  if (direction == "N") {
-    extend_N(bag, cells, boundary, include)
-  } else if (direction == "E") {
-    extend_E(bag, cells, boundary, include)
-  } else if (direction == "S") {
-    extend_S(bag, cells, boundary, include)
-  } else if (direction == "W") {
-    extend_W(bag, cells, boundary, include)
+  if (direction %in% c("N", "E", "S", "W")) {
+    do.call(paste0("extend_", direction), list(bag, cells, boundary, include))
+  } else {
+    stop("'direction' must be one of 'N', 'E', 'S', 'W'")
   }
 }
 
-extend_N <- function(bag, cells, boundary, include) {
+#' @describeIn extend Extend a bag of cells to the north
+#' @export
+extend_N <- function(bag, cells, boundary = FALSE, include = FALSE) {
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
+  if (boundary == "blank") {
+    boundary = ~ dplyr::lag(row, default = min(bag$row)) - row > 1
+  }
   bag %>%
     dplyr::group_by(col) %>%
     dplyr::do({
@@ -64,7 +76,12 @@ extend_N <- function(bag, cells, boundary, include) {
     dplyr::ungroup()
 }
 
-extend_E <- function(bag, cells, boundary, include) {
+#' @describeIn extend Extend a bag of cells to the east
+#' @export
+extend_E <- function(bag, cells, boundary = FALSE, include = FALSE) {
+  if (boundary == "blank") {
+    boundary = ~ col - dplyr::lag(col, default = max(bag$col)) > 1
+  }
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
@@ -85,10 +102,18 @@ extend_E <- function(bag, cells, boundary, include) {
     dplyr::ungroup()
 }
 
-extend_S <- function(bag, cells, boundary, include) {
+#' @describeIn extend Extend a bag of cells to the south
+#' @export
+extend_S <- function(bag, cells, boundary = FALSE, include = FALSE) {
+  if (boundary == "blank") {
+    boundary = ~ row - dplyr::lag(row, default = max(bag$row)) > 1
+  }
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
+  if (boundary == "blank") {
+    boundary = ~ row - dplyr::lag(row, default = Inf) > 1
+  }
   bag %>%
     dplyr::group_by(col) %>%
     dplyr::do({
@@ -106,7 +131,12 @@ extend_S <- function(bag, cells, boundary, include) {
     dplyr::ungroup()
 }
 
-extend_W <- function(bag, cells, boundary, include) {
+#' @describeIn extend Extend a bag of cells to the west
+#' @export
+extend_W <- function(bag, cells, boundary = FALSE, include = FALSE) {
+  if (boundary == "blank") {
+    boundary = ~ dplyr::lag(col, default = min(bag$col)) - col > 1
+  }
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
