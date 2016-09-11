@@ -550,8 +550,7 @@ anchor <- function(bag, domains) {
       .(row = x.row, col = x.col, 
         x1 = i.x1, x2 = i.x2, 
         y1 = i.y1, y2 = i.y2,
-        header = i.value,
-        value = x.value),
+        header = i.value),
         on = .(row >= y1, row <= y2, col >= x1, col <= x2)] %>%
   dplyr::tbl_df()
 }
@@ -560,7 +559,6 @@ get_header <- function(bag, joined, colname) {
   # Finally, join back on the cells (this step is necessary because data.table
   # returns weird columns from a non-equi join)
   joined %>%
-    select(-matches("value")) %>%
     dplyr::inner_join(bag, by = c("row", "col")) %>%
     dplyr::rename_(.dots = setNames(list(~header), colname)) %>%
     # dplyr::select(-x1, -x2, -y1, -y2)
