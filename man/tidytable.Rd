@@ -4,10 +4,12 @@
 \alias{tidytable}
 \title{Convert data frames into a tidy structure}
 \usage{
-tidytable(x)
+tidytable(x, rownames = TRUE, colnames = TRUE)
 }
 \arguments{
-\item{x}{A data.frame or a matrix}
+\item{x}{A data.frame or a matrix
+colnames Whether to include the row names in the output
+rownames Whether to include the column names in the output}
 }
 \value{
 A data.frame with six columns: 'row' and 'col' (integer) giving the

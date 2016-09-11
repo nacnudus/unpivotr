@@ -9,7 +9,10 @@
 #'
 #' This is an S3 generic.
 #' 
-#' @param x A data.frame or a matrix
+#' @param
+#' x A data.frame or a matrix
+#' colnames Whether to include the row names in the output
+#' rownames Whether to include the column names in the output
 #' 
 #' @return A data.frame with six columns: 'row' and 'col' (integer) giving the
 #' original position of the 'cells', and 'character', 'double', 'integer' and
@@ -21,18 +24,25 @@
 #' tidytable(Formaldehyde)
 #' tidytable(as.matrix(Formaldehyde))
 #' @export
-tidytable <- function(x) {
+tidytable <- function(x, rownames = TRUE, colnames = TRUE) {
   UseMethod("tidytable")
 }
 
 #' @export
-tidytable.matrix <- function(x) {
+tidytable.matrix <- function(x, rownames = TRUE, colnames = TRUE) {
+  if (!rownames) {
+    row.names(x) <- NULL
+  }
+  if (!colnames) {
+    colnames(x) <- NULL
+  }
   out <- expand.grid(row = seq_len(nrow(x)),
                      col = seq_len(ncol(x)),
                      character = as.character(NA),
                      double = as.double(NA),
                      integer = as.integer(NA),
-                     logical = as.logical(NA))
+                     logical = as.logical(NA),
+                     stringsAsFactors = FALSE)
   x.row.names <- row.names(x)
   x.col.names <- colnames(x)
   if (!is.null(x.row.names) || !is.null(x.col.names)) {
@@ -66,6 +76,6 @@ tidytable.matrix <- function(x) {
 }
 
 #' @export
-tidytable.data.frame <- function(x) {
-  tidytable.matrix(as.matrix(x))
+tidytable.data.frame <- function(x, rownames = TRUE, colnames = TRUE) {
+  tidytable.matrix(as.matrix(x), rownames, colnames)
 }
