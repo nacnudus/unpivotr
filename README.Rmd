@@ -20,8 +20,9 @@ tables with multi-level column or row headers, or spreadsheets.  Header and data
 cells are selected by their contents, position and formatting, and are
 associated with one other by their relative positions.
 
-Use [unpivotr](https://github.com/nacnudus/unpivotr) on Excel (.xlsx) files via
-the [tidyxl](https://github.com/nacnudus/tidyxl) package.
+Excel (.xlsx) files can be prepared for
+[unpivotr](https://github.com/nacnudus/unpivotr) the
+[tidyxl](https://github.com/nacnudus/tidyxl) package.
 
 ## Installation
 
@@ -29,66 +30,75 @@ the [tidyxl](https://github.com/nacnudus/tidyxl) package.
 devtools::install_github("nacnudus/tidyxl")
 ```
 
+There are several dependencies:
+
+* data.table (>= 1.9.7)
+* dplyr
+* dtplyr
+* purrr
+* tidyr
+
 ## Example
+
+The package includes a dataset, `purpose`, which is a list of pivot tables,
+derived from a survey by Statistics New Zealand of people's sense-of-purpose.  A
+'tidy' version of the data is also included.
 
 ```{r, echo = TRUE}
 library(unpivotr)
-library(tidyxl)
-library(readxl)
+head(purpose$Tidy) # 'Tidy' version of the data
+(pivoted <- purpose$`NNW WNW`) # The same data, pivoted
+```
+
+To unpivot this table, first get a tabular representation of each cell, its
+value and its position in the original pivot table.
+
+```{r, echo = TRUE}
+cells <- tidytable(pivoted, colnames = FALSE)
+cells <- cells[!is.na(cells$character), ]
+head(cells)
+```
+
+This can easily be subset for header and data cells.
+
+```{r, echo = TRUE}
 library(dplyr)
-```
-
-The package includes a spreadsheet, 'purpose.xlsx', which has tables that have
-multi-row column headers and multi-column row-headers.  A popular package for
-importing spreadsheets does the following:
-
-```{r, echo = TRUE}
-read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
-```
-
-The [tidyxl](https://github.com/nacnudus/tidyxl) package imports the same table
-into a format suitable for [unpivotr](https://github.com/nacnudus/unpivotr):
-
-```{r, echo = TRUE}
-(pivoted <- contents("./inst/extdata/purpose.xlsx", "NNW WNW")[[1]])
-```
-
-We can identify each row of column headers, each column of row headers, and the
-data cells, using any method.  Here, we use some
-[dplyr](https://github.com/hadley/dplyr) and some base R functions.
-
-```{r, echo = TRUE}
-col_headers <- 
-  pivoted %>%
-  filter(row <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
-  split(.$row)
-col_headers 
-
-row_headers <- 
-  pivoted %>%
-  filter(col <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
-  split(.$col)
-row_headers
-
+# Select the cells containing the values
 datacells <- 
-  pivoted %>%
-  filter(row >= 4, col >= 4) %>%
-  select(row, col, value = as.integer(content))
-datacells
+  cells %>%
+  filter(row == 3, col == 3) %>% # Select an anchor cell
+  extend_E(cells) %>%            # Extend the selection across to the right edge
+  extend_S(cells)                # Extend the selection down to the bottom edge
+head(datacells)
+
+# Select the row headers
+row_headers <- 
+  cells %>%
+  filter(col <= 2) %>%
+  select(row, col, value = character) %>%
+  split(.$col) # Separate each column of headers
+lapply(row_headers, head)
+
+# Select the column headers
+col_headers <- 
+  cells %>%
+  filter(row <= 2) %>%
+  select(row, col, value = character) %>%
+  split(.$row) # Separate each row of headers
+col_headers
 ```
 
 Using [unpivotr](https://github.com/nacnudus/unpivotr) functions, we associate
 the data cells with the headers, by proximity in given compass directions.
 
 ```{r, echo = TRUE}
+# From each data cell, search for the nearest one of each of the headers
 unpivoted <- 
   datacells %>%
-  NNW(col_headers[[1]], "sex") %>%
-  N(col_headers[[2]], "purpose") %>%
-  WNW(row_headers[[1]], "education") %>% 
-  W(row_headers[[2]], "age")
+  NNW(col_headers$`1`, "sex") %>% # Search north (up) and north-west (up-left)
+  N(col_headers$`2`, "purpose") %>% # Search directly north (up)
+  WNW(row_headers$`1`, "education") %>% # Search west (left) and north-west
+  W(row_headers$`2`, "age") # Search directly left (west)
 unpivoted
 ```
 
@@ -96,14 +106,23 @@ We can re-pivot the final data in R using `ftable()` to check that it has been
 imported correctly.
 
 ```{r, echo = TRUE}
-ftable(unpivoted, 
+ftable(unpivoted[, 3:6], 
        row.vars = c("education", "age"),
        col.vars = c("sex", "purpose"))
-read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
 ```
 
-The functions `extend()` and `offset` can be used when selecting cells relative
-to an intial anchor cell (or group of cells, called a 'bag').
+## Compass directions
+
+The concept of compass directions is compactly expressed by this triptych.
+
+![](./inst/extdata/compass-compact.svg)
+
+The most useful ones are more fully explained here.
+
+![](./inst/extdata/compass-common.svg)
+
+A complete explanation is in 'poster' form
+[here](./inst/extdata/compass-complete.svg).
 
 ## Philosophy
 
@@ -159,5 +178,7 @@ for unpivoting complex and non-tabular data layouts using I not AI
 
 ## Roadmap
 
-- [ ] Write tests
-- [ ] Combine long header titles that are spread across cells.
+As common unpivoting idioms emerge, they will be generalised and added to the
+package. E.g. combining long header titles that are spelled out across cells,
+rather than being in one cell merged across others. The most urgent work to be
+done is to write some tests.

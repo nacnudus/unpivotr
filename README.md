@@ -8,14 +8,15 @@ output: github_document
 
 # unpivotr
 
-[unpivotr](https://github.com/nacnudus/unpivotr) provides ools for converting
+[unpivotr](https://github.com/nacnudus/unpivotr) provides tools for converting
 data from complex or irregular layouts to a columnar structure.  For example,
 tables with multi-level column or row headers, or spreadsheets.  Header and data
 cells are selected by their contents, position and formatting, and are
 associated with one other by their relative positions.
 
-Use [unpivotr](https://github.com/nacnudus/unpivotr) on Excel (.xlsx) files via
-the [tidyxl](https://github.com/nacnudus/tidyxl) package.
+Excel (.xlsx) files can be prepared for
+[unpivotr](https://github.com/nacnudus/unpivotr) the
+[tidyxl](https://github.com/nacnudus/tidyxl) package.
 
 ## Installation
 
@@ -24,151 +25,145 @@ the [tidyxl](https://github.com/nacnudus/tidyxl) package.
 devtools::install_github("nacnudus/tidyxl")
 ```
 
+There are several dependencies:
+
+* data.table (>= 1.9.7)
+* dplyr
+* dtplyr
+* purrr
+* tidyr
+
 ## Example
+
+The package includes a dataset, `purpose`, which is a list of pivot tables,
+derived from a survey by Statistics New Zealand of people's sense-of-purpose.  A
+'tidy' version of the data is also included.
 
 
 ```r
 library(unpivotr)
-#> 
-#> Attaching package: 'unpivotr'
-#> The following object is masked from 'package:stats':
-#> 
-#>     offset
-library(tidyxl)
-library(readxl)
+head(purpose$Tidy) # 'Tidy' version of the data
+#>    Sex Age group (Life-stages) Highest qualification Sense of purpose
+#> 1 Male                 15 - 24      No Qualification            0 - 6
+#> 2 Male                 15 - 24      No Qualification           7 - 10
+#> 3 Male                 15 - 24           Certificate            0 - 6
+#> 4 Male                 15 - 24           Certificate           7 - 10
+#> 5 Male                 15 - 24               Diploma            0 - 6
+#> 6 Male                 15 - 24               Diploma           7 - 10
+#>    Value Flags
+#> 1  12000  <NA>
+#> 2  37000  <NA>
+#> 3  30000  <NA>
+#> 4 190000  <NA>
+#> 5   9000     *
+#> 6  11000     *
+(pivoted <- purpose$`NNW WNW`) # The same data, pivoted
+#>                            X2      X3     X4     X5    X6     X7
+#> 1                        <NA>    <NA> Female   <NA>  Male   <NA>
+#> 2                        <NA>    <NA>  0 - 6 7 - 10 0 - 6 7 - 10
+#> 3           Bachelor's degree 15 - 24   7000  27000  <NA>  13000
+#> 4                        <NA> 25 - 44  12000 137000  9000  81000
+#> 5                        <NA> 45 - 64  10000  64000  7000  66000
+#> 6                        <NA>     65+   <NA>  18000  7000  17000
+#> 7                 Certificate 15 - 24  29000 161000 30000 190000
+#> 8                        <NA> 25 - 44  34000 179000 31000 219000
+#> 9                        <NA> 45 - 64  30000 210000 23000 199000
+#> 10                       <NA>     65+  12000  77000  8000 107000
+#> 11                    Diploma 15 - 24   <NA>  14000  9000  11000
+#> 12                       <NA> 25 - 44  10000  66000  8000  47000
+#> 13                       <NA> 45 - 64   6000  68000  5000  58000
+#> 14                       <NA>     65+   5000  41000  1000  34000
+#> 15           No Qualification 15 - 24  10000  43000 12000  37000
+#> 16                       <NA> 25 - 44  11000  36000 21000  50000
+#> 17                       <NA> 45 - 64  19000  91000 17000  75000
+#> 18                       <NA>     65+  16000 118000  9000  66000
+#> 19 Postgraduate qualification 15 - 24   <NA>   6000  <NA>   <NA>
+#> 20                       <NA> 25 - 44   5000  86000  7000  60000
+#> 21                       <NA> 45 - 64   6000  55000  6000  68000
+#> 22                       <NA>     65+   <NA>  13000  <NA>  18000
+```
+
+To unpivot this table, first get a tabular representation of each cell, its
+value and its position in the original pivot table.
+
+
+```r
+cells <- tidytable(pivoted, colnames = FALSE)
+cells <- cells[!is.na(cells$character), ]
+head(cells)
+#>    row col                  character double integer logical
+#> 3    3   1          Bachelor's degree     NA      NA      NA
+#> 7    7   1                Certificate     NA      NA      NA
+#> 11  11   1                    Diploma     NA      NA      NA
+#> 15  15   1           No Qualification     NA      NA      NA
+#> 19  19   1 Postgraduate qualification     NA      NA      NA
+#> 25   3   2                    15 - 24     NA      NA      NA
+```
+
+This can easily be subset for header and data cells.
+
+
+```r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-```
-
-The package includes a spreadsheet, 'purpose.xlsx', which has tables that have
-multi-row column headers and multi-column row-headers.  A popular package for
-importing spreadsheets does the following:
-
-
-```r
-read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
-#> Error in x[needs_ticks] <- paste0("`", gsub("`", "\\\\`", x[needs_ticks]), : NAs are not allowed in subscripted assignments
-```
-
-The [tidyxl](https://github.com/nacnudus/tidyxl) package imports the same table
-into a format suitable for [unpivotr](https://github.com/nacnudus/unpivotr):
-
-
-```r
-(pivoted <- contents("./inst/extdata/purpose.xlsx", "NNW WNW")[[1]])
-#> # A tibble: 128 × 15
-#>    address   row   col content formula formula_type formula_ref
-#>      <chr> <int> <int>   <chr>   <chr>        <chr>       <chr>
-#> 1       D2     2     4      16    <NA>         <NA>        <NA>
-#> 2       E2     2     5    <NA>    <NA>         <NA>        <NA>
-#> 3       F2     2     6       6    <NA>         <NA>        <NA>
-#> 4       G2     2     7    <NA>    <NA>         <NA>        <NA>
-#> 5       D3     3     4       9    <NA>         <NA>        <NA>
-#> 6       E3     3     5      20    <NA>         <NA>        <NA>
-#> 7       F3     3     6       9    <NA>         <NA>        <NA>
-#> 8       G3     3     7      20    <NA>         <NA>        <NA>
-#> 9       B4     4     2      13    <NA>         <NA>        <NA>
-#> 10      C4     4     3       7    <NA>         <NA>        <NA>
-#> # ... with 118 more rows, and 8 more variables: formula_group <int>,
-#> #   type <chr>, character <chr>, height <dbl>, width <dbl>,
-#> #   style_format_id <dbl>, local_format_id <dbl>, comment <chr>
-```
-
-We can identify each row of column headers, each column of row headers, and the
-data cells, using any method.  Here, we use some
-[dplyr](https://github.com/hadley/dplyr) and some base R functions.
-
-
-```r
-col_headers <- 
-  pivoted %>%
-  filter(row <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
-  split(.$row)
-col_headers 
-#> $`2`
-#> # A tibble: 2 × 3
-#>     row   col header
-#>   <int> <int>  <chr>
-#> 1     2     4 Female
-#> 2     2     6   Male
-#> 
-#> $`3`
-#> # A tibble: 4 × 3
-#>     row   col header
-#>   <int> <int>  <chr>
-#> 1     3     4  0 - 6
-#> 2     3     5 7 - 10
-#> 3     3     6  0 - 6
-#> 4     3     7 7 - 10
-
-row_headers <- 
-  pivoted %>%
-  filter(col <= 3, !is.na(content)) %>%
-  select(row, col, header = character) %>%
-  split(.$col)
-row_headers
-#> $`2`
-#> # A tibble: 5 × 3
-#>     row   col                     header
-#>   <int> <int>                      <chr>
-#> 1     4     2          Bachelor's degree
-#> 2     8     2                Certificate
-#> 3    12     2                    Diploma
-#> 4    16     2           No Qualification
-#> 5    20     2 Postgraduate qualification
-#> 
-#> $`3`
-#> # A tibble: 20 × 3
-#>      row   col  header
-#>    <int> <int>   <chr>
-#> 1      4     3 15 - 24
-#> 2      5     3 25 - 44
-#> 3      6     3 45 - 64
-#> 4      7     3     65+
-#> 5      8     3 15 - 24
-#> 6      9     3 25 - 44
-#> 7     10     3 45 - 64
-#> 8     11     3     65+
-#> 9     12     3 15 - 24
-#> 10    13     3 25 - 44
-#> 11    14     3 45 - 64
-#> 12    15     3     65+
-#> 13    16     3 15 - 24
-#> 14    17     3 25 - 44
-#> 15    18     3 45 - 64
-#> 16    19     3     65+
-#> 17    20     3 15 - 24
-#> 18    21     3 25 - 44
-#> 19    22     3 45 - 64
-#> 20    23     3     65+
-
+# Select the cells containing the values
 datacells <- 
-  pivoted %>%
-  filter(row >= 4, col >= 4) %>%
-  select(row, col, value = as.integer(content))
-datacells
-#> # A tibble: 80 × 3
-#>      row   col  value
-#>    <int> <int>  <chr>
-#> 1      4     4   7000
-#> 2      4     5  27000
-#> 3      4     6   <NA>
-#> 4      4     7  13000
-#> 5      5     4  12000
-#> 6      5     5 137000
-#> 7      5     6   9000
-#> 8      5     7  81000
-#> 9      6     4  10000
-#> 10     6     5  64000
-#> # ... with 70 more rows
+  cells %>%
+  filter(row == 3, col == 3) %>% # Select an anchor cell
+  extend_E(cells) %>%            # Extend the selection across to the right edge
+  extend_S(cells)                # Extend the selection down to the bottom edge
+head(datacells)
+#> # A tibble: 6 × 6
+#>     row   col character double integer logical
+#>   <int> <int>     <chr>  <dbl>   <int>   <lgl>
+#> 1     4     3     12000     NA      NA      NA
+#> 2     5     3     10000     NA      NA      NA
+#> 3     7     3     29000     NA      NA      NA
+#> 4     8     3     34000     NA      NA      NA
+#> 5     9     3     30000     NA      NA      NA
+#> 6    10     3     12000     NA      NA      NA
+
+# Select the row headers
+row_headers <- 
+  cells %>%
+  filter(col <= 2) %>%
+  select(row, col, value = character) %>%
+  split(.$col) # Separate each column of headers
+lapply(row_headers, head)
+#> $`1`
+#>   row col                      value
+#> 1   3   1          Bachelor's degree
+#> 2   7   1                Certificate
+#> 3  11   1                    Diploma
+#> 4  15   1           No Qualification
+#> 5  19   1 Postgraduate qualification
+#> 
+#> $`2`
+#>    row col   value
+#> 6    3   2 15 - 24
+#> 7    4   2 25 - 44
+#> 8    5   2 45 - 64
+#> 9    6   2     65+
+#> 10   7   2 15 - 24
+#> 11   8   2 25 - 44
+
+# Select the column headers
+col_headers <- 
+  cells %>%
+  filter(row <= 2) %>%
+  select(row, col, value = character) %>%
+  split(.$row) # Separate each row of headers
+col_headers
+#> $`1`
+#>   row col  value
+#> 1   1   3 Female
+#> 4   1   5   Male
+#> 
+#> $`2`
+#>   row col  value
+#> 2   2   3  0 - 6
+#> 3   2   4 7 - 10
+#> 5   2   5  0 - 6
+#> 6   2   6 7 - 10
 ```
 
 Using [unpivotr](https://github.com/nacnudus/unpivotr) functions, we associate
@@ -176,15 +171,29 @@ the data cells with the headers, by proximity in given compass directions.
 
 
 ```r
+# From each data cell, search for the nearest one of each of the headers
 unpivoted <- 
   datacells %>%
-  NNW(col_headers[[1]], "sex") %>%
-  N(col_headers[[2]], "purpose") %>%
-  WNW(row_headers[[1]], "education") %>% 
-  W(row_headers[[2]], "age")
-#> Error in eval(expr, envir, enclos): object 'i.value' not found
+  NNW(col_headers$`1`, "sex") %>% # Search north (up) and north-west (up-left)
+  N(col_headers$`2`, "purpose") %>% # Search directly north (up)
+  WNW(row_headers$`1`, "education") %>% # Search west (left) and north-west
+  W(row_headers$`2`, "age") # Search directly left (west)
 unpivoted
-#> Error in eval(expr, envir, enclos): object 'unpivoted' not found
+#> # A tibble: 55 × 10
+#>      row   col     age         education purpose    sex character double
+#>    <dbl> <dbl>   <chr>             <chr>   <chr>  <chr>     <chr>  <dbl>
+#> 1      3     3 15 - 24 Bachelor's degree   0 - 6 Female      7000     NA
+#> 2      3     4 15 - 24 Bachelor's degree  7 - 10 Female     27000     NA
+#> 3      3     6 15 - 24 Bachelor's degree  7 - 10   Male     13000     NA
+#> 4      4     3 25 - 44 Bachelor's degree   0 - 6 Female     12000     NA
+#> 5      4     4 25 - 44 Bachelor's degree  7 - 10 Female    137000     NA
+#> 6      4     6 25 - 44 Bachelor's degree  7 - 10   Male     81000     NA
+#> 7      5     3 45 - 64 Bachelor's degree   0 - 6 Female     10000     NA
+#> 8      5     4 45 - 64 Bachelor's degree  7 - 10 Female     64000     NA
+#> 9      5     6 45 - 64 Bachelor's degree  7 - 10   Male     66000     NA
+#> 10     6     4     65+ Bachelor's degree  7 - 10 Female     18000     NA
+#> # ... with 45 more rows, and 2 more variables: integer <int>,
+#> #   logical <lgl>
 ```
 
 We can re-pivot the final data in R using `ftable()` to check that it has been
@@ -192,16 +201,46 @@ imported correctly.
 
 
 ```r
-ftable(unpivoted, 
+ftable(unpivoted[, 3:6], 
        row.vars = c("education", "age"),
        col.vars = c("sex", "purpose"))
-#> Error in ftable(unpivoted, row.vars = c("education", "age"), col.vars = c("sex", : object 'unpivoted' not found
-read_excel("./inst/extdata/purpose.xlsx", "NNW WNW")
-#> Error in x[needs_ticks] <- paste0("`", gsub("`", "\\\\`", x[needs_ticks]), : NAs are not allowed in subscripted assignments
+#>                                    sex     Female         Male       
+#>                                    purpose  0 - 6 7 - 10 0 - 6 7 - 10
+#> education                  age                                       
+#> Bachelor's degree          15 - 24              1      1     0      1
+#>                            25 - 44              1      1     0      1
+#>                            45 - 64              1      1     0      1
+#>                            65+                  0      1     0      1
+#> Certificate                15 - 24              1      1     0      1
+#>                            25 - 44              1      1     0      1
+#>                            45 - 64              1      1     0      1
+#>                            65+                  1      1     0      1
+#> Diploma                    15 - 24              0      1     0      1
+#>                            25 - 44              1      1     0      1
+#>                            45 - 64              1      1     0      1
+#>                            65+                  1      1     0      1
+#> No Qualification           15 - 24              1      1     0      1
+#>                            25 - 44              1      1     0      1
+#>                            45 - 64              1      1     0      1
+#>                            65+                  1      1     0      1
+#> Postgraduate qualification 15 - 24              0      1     0      0
+#>                            25 - 44              1      1     0      1
+#>                            45 - 64              1      1     0      1
+#>                            65+                  0      1     0      1
 ```
 
-The functions `extend()` and `offset` can be used when selecting cells relative
-to an intial anchor cell (or group of cells, called a 'bag').
+## Compass directions
+
+The concept of compass directions is compactly expressed by this triptych.
+
+![](./inst/extdata/compass-compact.svg)
+
+The most useful ones are more fully explained here.
+
+![](./inst/extdata/compass-common.svg)
+
+A complete explanation is in 'poster' form
+[here](./inst/extdata/compass-complete.svg).
 
 ## Philosophy
 
@@ -257,5 +296,7 @@ for unpivoting complex and non-tabular data layouts using I not AI
 
 ## Roadmap
 
-- [ ] Write tests
-- [ ] Combine long header titles that are spread across cells.
+As common unpivoting idioms emerge, they will be generalised and added to the
+package. E.g. combining long header titles that are spelled out across cells,
+rather than being in one cell merged across others. The most urgent work to be
+done is to write some tests.
