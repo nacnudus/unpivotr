@@ -426,7 +426,7 @@ ABOVE <- function(bag, header, colname, boundaries = NULL) {
       # side in the same row
       dplyr::group_by(row) %>%
       dplyr::mutate(
-        x1 = floor((col + dplyr::lag(as.numeric(col), default = 1) + 2)/2),
+        x1 = floor((col + dplyr::lag(as.numeric(col), default = -Inf) + 2)/2),
         x2 = ceiling((col + dplyr::lead(as.numeric(col), default = Inf) - 2)/2)
       ) %>%
       # y2 goes up to just before the next header in any column
@@ -466,7 +466,7 @@ RIGHT <- function(bag, header, colname, boundaries = NULL) {
       # side in the same column
       dplyr::group_by(col) %>%
       dplyr::mutate(
-        y1 = floor((row + dplyr::lag(as.numeric(row), default = 1) + 2)/2),
+        y1 = floor((row + dplyr::lag(as.numeric(row), default = -Inf) + 2)/2),
         y2 = ceiling((row + dplyr::lead(as.numeric(row), default = Inf) - 2)/2)
       ) %>%
       # x1 goes back to just after the previous header in any row
@@ -506,7 +506,7 @@ BELOW <- function(bag, header, colname, boundaries = NULL) {
       # side in the same row
       dplyr::group_by(row) %>%
       dplyr::mutate(
-        x1 = floor((col + dplyr::lag(as.numeric(col), default = 1) + 2)/2),
+        x1 = floor((col + dplyr::lag(as.numeric(col), default = -Inf) + 2)/2),
         x2 = ceiling((col + dplyr::lead(as.numeric(col), default = Inf) - 2)/2)
       ) %>%
       # y1 goes back to just after the previous header in any column
@@ -546,7 +546,7 @@ LEFT <- function(bag, header, colname, boundaries = NULL) {
       # side in the same column
       dplyr::group_by(col) %>%
       dplyr::mutate(
-        y1 = floor((row + dplyr::lag(as.numeric(row), default = 1) + 2)/2),
+        y1 = floor((row + dplyr::lag(as.numeric(row), default = -Inf) + 2)/2),
         y2 = ceiling((row + dplyr::lead(as.numeric(row), default = Inf) - 2)/2)
       ) %>%
       # x2 goes up to just before the next header in any row
