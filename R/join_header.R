@@ -95,7 +95,7 @@ join_header <- function(bag, header, direction, colname, boundaries = NULL) {
 #' @export
 N <- function(bag, header, colname) {
   domains <- N_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -121,7 +121,7 @@ N_domains <- function(header) {
 #' @export
 E <- function(bag, header, colname) {
   domains <- E_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -147,7 +147,7 @@ E_domains <- function(header) {
 #' @export
 S <- function(bag, header, colname) {
   domains <- S_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -173,7 +173,7 @@ S_domains <- function(header) {
 #' @export
 W <- function(bag, header, colname) {
   domains <- W_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -199,7 +199,7 @@ W_domains <- function(header) {
 #' @export
 NNW <- function(bag, header, colname) {
   domains <- NNW_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -226,7 +226,7 @@ NNW_domains <- function(header) {
 #' @export
 NNE <- function(bag, header, colname) {
   domains <- NNE_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -253,7 +253,7 @@ NNE_domains <- function(header) {
 #' @export
 ENE <- function(bag, header, colname) {
   domains <- ENE_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -280,7 +280,7 @@ ENE_domains <- function(header) {
 #' @export
 ESE <- function(bag, header, colname) {
   domains <- ESE_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -307,7 +307,7 @@ ESE_domains <- function(header) {
 #' @export
 SSE <- function(bag, header, colname) {
   domains <- SSE_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -334,7 +334,7 @@ SSE_domains <- function(header) {
 #' @export
 SSW <- function(bag, header, colname) {
   domains <- SSW_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -361,7 +361,7 @@ SSW_domains <- function(header) {
 #' @export
 WSW <- function(bag, header, colname) {
   domains <- WSW_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -388,7 +388,7 @@ WSW_domains <- function(header) {
 #' @export
 WNW <- function(bag, header, colname) {
   domains <- WNW_domains(header)
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -441,13 +441,13 @@ ABOVE <- function(bag, header, colname, boundaries = NULL) {
     # Give the headers the same domains, but then limit them by each-other's
     # proximity within the same boundaries.
     domains <- 
-      anchor(header, boundary_domains) %>%
+      anchor_boundary(header, boundary_domains) %>%
       dplyr::arrange(row, col) %>%
       dplyr::group_by(y1, x1) %>%
       dplyr::mutate(x2 = dplyr::lead(col - 1, default = first(x2))) %>%
       dplyr::ungroup()
   }
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -481,13 +481,13 @@ RIGHT <- function(bag, header, colname, boundaries = NULL) {
     # Give the headers the same domains, but then limit them by each-other's
     # proximity within the same boundaries.
     domains <- 
-      anchor(header, boundary_domains) %>%
+      anchor_boundary(header, boundary_domains) %>%
       dplyr::arrange(col, row) %>%
       dplyr::group_by(x1, y1) %>%
       dplyr::mutate(y2 = dplyr::lead(row - 1, default = first(y2))) %>%
       dplyr::ungroup()
   }
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -517,17 +517,17 @@ BELOW <- function(bag, header, colname, boundaries = NULL) {
   } else {
     # Domain of each boundary
     boundaries$row <- Inf # universal boundary for every cell in the sheet
-    boundary_domains <- SSW_domains(boundaries)
+    boundary_domains <- unpivotr:::SSW_domains(boundaries)
     # Give the headers the same domains, but then limit them by each-other's
     # proximity within the same boundaries.
     domains <- 
-      anchor(header, boundary_domains) %>%
+      unpivotr:::anchor_boundary(header, boundary_domains) %>%
       dplyr::arrange(row, col) %>%
       dplyr::group_by(y1, x1) %>%
       dplyr::mutate(x2 = dplyr::lead(col - 1, default = first(x2))) %>%
       dplyr::ungroup()
   }
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
@@ -561,17 +561,17 @@ LEFT <- function(bag, header, colname, boundaries = NULL) {
     # Give the headers the same domains, but then limit them by each-other's
     # proximity within the same boundaries.
     domains <- 
-      anchor(header, boundary_domains) %>%
+      anchor_boundary(header, boundary_domains) %>%
       dplyr::arrange(col, row) %>%
       dplyr::group_by(x1, y1) %>%
       dplyr::mutate(y2 = dplyr::lead(row - 1, default = first(y2))) %>%
       dplyr::ungroup()
   }
-  joined <- anchor(bag, domains)
+  joined <- anchor_header(bag, domains)
   get_header(bag, joined, colname)
 }
 
-anchor <- function(bag, domains) {
+anchor_header <- function(bag, domains) {
   # Use data.table non-equi join to join header with cells.
   bag <-
     bag %>%
@@ -583,6 +583,23 @@ anchor <- function(bag, domains) {
         x1 = i.x1, x2 = i.x2, 
         y1 = i.y1, y2 = i.y2,
         header = i.value),
+        on = .(row >= y1, row <= y2, col >= x1, col <= x2)] %>%
+  dplyr::tbl_df()
+}
+
+anchor_boundary <- function(bag, domains) {
+  # Use data.table non-equi join to join boundary with cells.
+  bag <-
+    bag %>%
+    dplyr::mutate(row = as.numeric(row), col = as.numeric(col)) # joins with columns that are numeric to allow NA
+  bag <- data.table(bag)         # Must be done without %>%
+  domains <- data.table(domains) # Must be done without %>%
+  bag[domains,
+      .(row = x.row, col = x.col, 
+        x1 = i.x1, x2 = i.x2, 
+        y1 = i.y1, y2 = i.y2,
+        header = i.value,
+        value = x.value),
         on = .(row >= y1, row <= y2, col >= x1, col <= x2)] %>%
   dplyr::tbl_df()
 }
