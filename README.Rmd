@@ -115,11 +115,11 @@ ftable(unpivoted[, 3:6],
 
 The concept of compass directions is compactly expressed by this triptych.
 
-![](./inst/extdata/compass-compact.svg)
+![](./inst/extdata/compass-compact.png)
 
 The most useful ones are more fully explained here.
 
-![](./inst/extdata/compass-common.svg)
+![](./inst/extdata/compass-common.png)
 
 A complete explanation is in 'poster' form
 [here](./inst/extdata/compass-complete.svg).
