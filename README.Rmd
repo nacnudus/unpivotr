@@ -161,7 +161,8 @@ and comments are lost, and position has to be inferred.
 Kingdom Office of National Statistics
 [ONSdatabaker](https://github.com/ONS-OpenData/ONSdatabaker), which is
 implemented in Python.  [unpivotr](https://github.com/nacnudus/unpivotr) differs
-already by using compass directions, and further developments are planned.
+already by using compass directions and searching for headers between
+boundaries.
 
 The [rsheets](https://github.com/rsheets) project of several R packages is in
 the early stages of importing spreadsheet information from Excel and Google
