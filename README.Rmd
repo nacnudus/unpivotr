@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # unpivotr
 
-[unpivotr](https://github.com/nacnudus/unpivotr) provides ools for converting
+[unpivotr](https://github.com/nacnudus/unpivotr) provides tools for converting
 data from complex or irregular layouts to a columnar structure.  For example,
 tables with multi-level column or row headers, or spreadsheets.  Header and data
 cells are selected by their contents, position and formatting, and are
