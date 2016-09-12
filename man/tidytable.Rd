@@ -31,5 +31,7 @@ This is an S3 generic.
 \examples{
 tidytable(Formaldehyde)
 tidytable(as.matrix(Formaldehyde))
+tidytable(Formaldehyde, colnames = FALSE)
+tidytable(Formaldehyde, rownames = FALSE)
 }
 
