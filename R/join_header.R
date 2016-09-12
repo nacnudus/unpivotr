@@ -70,7 +70,7 @@
 #'   select(row, col, value = character) %>%
 #'   split(.$row) # Separate each row of headers
 #' col_headers
-#' # From each data cells, search for the nearest one of each of the headers
+#' # From each data cell, search for the nearest one of each of the headers
 #' datacells %>%
 #'   NNW(col_headers$`1`, "sex") %>%
 #'   N(col_headers$`2`, "purpose") %>%
