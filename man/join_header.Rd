@@ -138,7 +138,39 @@ own functions, wrapping the concept of 'join_header'.
 \item \code{LEFT}: Join nearest header in the 'LEFT' direction.
 }}
 \examples{
-# Please see the vignette for examples.
-vignette("compass-directions", "unpivotr")
+library(dplyr)
+# Load some pivoted data
+(x <- purpose$`NNW WNW`)
+# Make a tidy representation
+cells <- tidytable(x, FALSE, FALSE)
+cells <- cells[!is.na(cells$character), ]
+head(cells)
+# Select the cells containing the values
+datacells <- 
+  cells \%>\%
+  filter(row == 3, col == 3) \%>\%
+  extend_E(cells) \%>\%
+  extend_S(cells)
+head(datacells)
+# Select the row headers
+row_headers <- 
+  cells \%>\%
+  filter(col <= 2) \%>\%
+  select(row, col, value = character) \%>\%
+  split(.$col) # Separate each column of headers
+row_headers
+# Select the column headers
+col_headers <- 
+  cells \%>\%
+  filter(row <= 2) \%>\%
+  select(row, col, value = character) \%>\%
+  split(.$row) # Separate each row of headers
+col_headers
+# From each data cells, search for the nearest one of each of the headers
+datacells \%>\%
+  NNW(col_headers$`1`, "sex") \%>\%
+  N(col_headers$`2`, "purpose") \%>\%
+  WNW(row_headers$`1`, "education") \%>\%
+  W(row_headers$`2`, "age")
 }
 
