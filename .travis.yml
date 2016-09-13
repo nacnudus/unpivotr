@@ -9,7 +9,7 @@ r:
 
 cache: packages
 
-Remotes: github::Rdatatable/data.table
+Remotes: Rdatatable/data.table
 
 r_github_packages:
   - jimhester/covr
