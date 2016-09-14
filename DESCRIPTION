@@ -10,7 +10,7 @@ Description: Tools for converting data from complex or irregular layouts to a
     contents and position, as well as formatting and comments where available,
     and are associated with one other by their proximity in given directions.
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.2.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
