@@ -14,6 +14,11 @@ knitr::opts_chunk$set(
 
 # unpivotr
 
+[![Travis-CI Build Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr)
+[![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://codecov.io/gh/nacnudus/unpivotr)
+
+
 [unpivotr](https://github.com/nacnudus/unpivotr) provides tools for converting
 data from complex or irregular layouts to a columnar structure.  For example,
 tables with multi-level column or row headers, or spreadsheets.  Header and data
