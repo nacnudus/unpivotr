@@ -7,9 +7,11 @@
 tidytable(x, rownames = TRUE, colnames = TRUE)
 }
 \arguments{
-\item{x}{A data.frame or a matrix
-colnames Whether to include the row names in the output
-rownames Whether to include the column names in the output}
+\item{x}{A data.frame or a matrix}
+
+\item{rownames}{Whether to include the column names in the output}
+
+\item{colnames}{Whether to include the row names in the output}
 }
 \value{
 A data.frame with six columns: 'row' and 'col' (integer) giving the

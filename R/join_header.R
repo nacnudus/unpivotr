@@ -15,7 +15,7 @@
 #' describes the data.  For example, for data cells recording a number of
 #' animals, and a header describing the type of animal, then the 'header' column
 #' might contain the values `c("dog", "cat", "mouse")`.
-#' @param boundary Data frame. Only applies to the directions "ABOVE", "RIGHT",
+#' @param boundaries Data frame. Only applies to the directions "ABOVE", "RIGHT",
 #' "BELOW" and "LEFT".  A bag of cells in one row or one column,
 #' demarking boundaries within which to match headers with cells.  For example,
 #' a boundary could be a bag of cells with borders on one side.  This is useful
@@ -517,11 +517,11 @@ BELOW <- function(bag, header, colname, boundaries = NULL) {
   } else {
     # Domain of each boundary
     boundaries$row <- Inf # universal boundary for every cell in the sheet
-    boundary_domains <- unpivotr:::SSW_domains(boundaries)
+    boundary_domains <- SSW_domains(boundaries)
     # Give the headers the same domains, but then limit them by each-other's
     # proximity within the same boundaries.
     domains <- 
-      unpivotr:::anchor_boundary(header, boundary_domains) %>%
+      anchor_boundary(header, boundary_domains) %>%
       dplyr::arrange(row, col) %>%
       dplyr::group_by(y1, x1) %>%
       dplyr::mutate(x2 = dplyr::lead(col - 1, default = first(x2))) %>%

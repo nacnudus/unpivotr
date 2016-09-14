@@ -72,7 +72,7 @@ might contain the values `c("dog", "cat", "mouse")`.}
 values once they are joined to the 'bag'.  Continuing the example, this might
 be "animal_type".}
 
-\item{boundary}{Data frame. Only applies to the directions "ABOVE", "RIGHT",
+\item{boundaries}{Data frame. Only applies to the directions "ABOVE", "RIGHT",
 "BELOW" and "LEFT".  A bag of cells in one row or one column,
 demarking boundaries within which to match headers with cells.  For example,
 a boundary could be a bag of cells with borders on one side.  This is useful

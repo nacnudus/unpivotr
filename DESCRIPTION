@@ -1,5 +1,5 @@
 Package: unpivotr
-Title: Un-Pivot Complex and Irregular Data Layouts.
+Title: Un-Pivot Complex and Irregular Data Layouts
 Version: 0.0.0.9000
 Authors@R: c(
     person("Duncan", "Garmonsway", email = "nacnudus@gmail.com", role = c("aut", "cre"))

@@ -9,10 +9,9 @@
 #'
 #' This is an S3 generic.
 #' 
-#' @param
-#' x A data.frame or a matrix
-#' colnames Whether to include the row names in the output
-#' rownames Whether to include the column names in the output
+#' @param x A data.frame or a matrix
+#' @param colnames Whether to include the row names in the output
+#' @param rownames Whether to include the column names in the output
 #' 
 #' @return A data.frame with six columns: 'row' and 'col' (integer) giving the
 #' original position of the 'cells', and 'character', 'double', 'integer' and
