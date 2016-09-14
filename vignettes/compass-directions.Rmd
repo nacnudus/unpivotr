@@ -352,7 +352,6 @@ identical(ABOVE_LEFT[, -1:-2], BELOW_RIGHT[, -1:-2])
 ## ABOVE LEFT border example
 
 ```{r, echo = TRUE}
-library(tidyxl)
 spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
 cells <- contents(spreadsheet, "ABOVE LEFT border")[[1]]
 ```
