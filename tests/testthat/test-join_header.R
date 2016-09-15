@@ -63,7 +63,7 @@ c("Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
 "Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification", 
 "Postgraduate qualification")
 
-test_that("Basic compass directions work", {
+test_that("Compass directions N, NNW, W, and WNW work", {
   cells <- tidytable(purpose$`NNW WNW`, colnames = FALSE)
   col_headers <- 
     cells %>%
