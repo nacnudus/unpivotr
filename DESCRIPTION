@@ -27,5 +27,6 @@ BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
-    tidyxl
+    tidyxl,
+    testthat
 VignetteBuilder: knitr
