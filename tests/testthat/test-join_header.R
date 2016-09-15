@@ -75,7 +75,6 @@ test_that("Compass directions N, NNW, W, and WNW work", {
     filter(col <= 2, !is.na(character)) %>% # Select all rows of headers at once
     select(row, col, value = character) %>%
     split(.$col) # Return each row of headers in its own element of a list
-  row_headers
   datacells <- 
     cells %>%
     filter(row >= 3, col >= 3, !is.na(character)) %>%
