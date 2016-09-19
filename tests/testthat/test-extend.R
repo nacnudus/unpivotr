@@ -20,6 +20,6 @@ test_that("Extend to boundary formula and include works", {
 test_that("Boundary formulas returning NAs are handled correctly", {
   rowcol <- extend_N(cell, cells,
                      boundary = ~ as.integer(character) < 10000)$row %>% sort
-  expect_equal(rowcol, 4:10)
+  expect_equal(rowcol, c(4:5, 7:10))
 })
 
