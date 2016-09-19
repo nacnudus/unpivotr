@@ -16,3 +16,10 @@ test_that("Extend to boundary formula and include works", {
                      include = TRUE)[, c("row", "col")]
   expect_equal(rowcol, data.frame(row = 10L, col = c(4L, 5L, 3L)))
 })
+
+test_that("Boundary formulas returning NAs are handled correctly", {
+  rowcol <- extend_N(cell, cells,
+                     boundary = ~ as.integer(character) < 10000)$row %>% sort
+  expect_equal(rowcol, 4:10)
+})
+

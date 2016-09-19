@@ -63,15 +63,17 @@ extend_N <- function(bag, cells, boundary = FALSE, include = FALSE) {
     dplyr::group_by(col) %>%
     dplyr::do({
       bagrow <- .
-      cells %>%
+        cells %>%
         # Look in the relevant row
         dplyr::filter(col == bagrow$col[1], row < min(bagrow$row)) %>%
         dplyr::arrange(-row) %>%
         dplyr::mutate_(boundary = boundary) %>% # Apply the rule
+        tidyr::replace_na(list(boundary = 0)) %>%
         # Take cells up to (and conditionally including) boundary
         dplyr::filter(cumsum(cumsum(boundary)) <= include) %>%
         dplyr::select(-boundary) %>%
         dplyr::bind_rows(bagrow)
+
     }) %>%
     dplyr::ungroup()
 }
@@ -89,11 +91,12 @@ extend_E <- function(bag, cells, boundary = FALSE, include = FALSE) {
     dplyr::group_by(row) %>%
     dplyr::do({
       bagrow <- .
-      cells %>%
+        cells %>%
         # Look in the relevant row
         dplyr::filter(row == bagrow$row[1], col > max(bagrow$col)) %>%
         dplyr::arrange(col) %>%
         dplyr::mutate_(boundary = boundary) %>% # Apply the rule
+        tidyr::replace_na(list(boundary = 0)) %>%
         # Take cells up to (and conditionally including) boundary
         dplyr::filter(cumsum(cumsum(boundary)) <= include) %>%
         dplyr::select(-boundary) %>%
@@ -111,18 +114,16 @@ extend_S <- function(bag, cells, boundary = FALSE, include = FALSE) {
   # Extends an existing bag of cells along an axis up to a boundary, by row or
   # by column depending on the axis.
   # Bag may be ragged rows or ragged cols, but gaps will not be filled in.
-  if (boundary == "blank") {
-    boundary = ~ row - dplyr::lag(row, default = Inf) > 1
-  }
   bag %>%
     dplyr::group_by(col) %>%
     dplyr::do({
       bagrow <- .
-      cells %>%
+        cells %>%
         # Look in the relevant row
         dplyr::filter(col == bagrow$col[1], row > max(bagrow$row)) %>%
         dplyr::arrange(row) %>%
         dplyr::mutate_(boundary = boundary) %>% # Apply the rule
+        tidyr::replace_na(list(boundary = 0)) %>%
         # Take cells up to (and conditionally including) boundary
         dplyr::filter(cumsum(cumsum(boundary)) <= include) %>%
         dplyr::select(-boundary) %>%
@@ -144,11 +145,12 @@ extend_W <- function(bag, cells, boundary = FALSE, include = FALSE) {
     dplyr::group_by(row) %>%
     dplyr::do({
       bagrow <- .
-      cells %>%
+        cells %>%
         # Look in the relevant row
         dplyr::filter(row == bagrow$row[1], col < min(bagrow$col)) %>%
         dplyr::arrange(-col) %>%
         dplyr::mutate_(boundary = boundary) %>% # Apply the rule
+        tidyr::replace_na(list(boundary = 0)) %>%
         # Take cells up to (and conditionally including) boundary
         dplyr::filter(cumsum(cumsum(boundary)) <= include) %>%
         dplyr::select(-boundary) %>%
