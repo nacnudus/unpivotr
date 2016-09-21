@@ -26,7 +26,7 @@ Data frames and matrices represents data in a tabular structure.
 returns that information in a new data frame.  This makes certain tasks
 easier.  For example, a pivot table with multi-row headers that has been
 imported into R as a data frame may be easier to un-pivot by converting it
-with \code{tidydf} first.
+with \code{tidytable} first.
 
 This is an S3 generic.
 }
