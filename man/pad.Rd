@@ -32,6 +32,7 @@ cells <-
 (bag <- dplyr::filter(cells, row \%in\% 2:4, col \%in\% 1:2))
 # Pad the gaps
 pad(bag) # By default, the selection is squared-off to its width and height
+pad(bag, 0, 0) # Zeros are equivalent to the defaults
 pad(bag, 2:5, 1:3) # Add a row and a column
 pad(bag, 6, 4) # No gaps are left even when .rows or .cols are distant
 }
