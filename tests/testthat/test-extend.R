@@ -44,6 +44,11 @@ test_that("'n' must be a whole number", {
   expect_error(extend_N(bag, cells, 0.1))
 })
 
+test_that("'n' must be >= 0", {
+  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
+  expect_error(extend_N(bag, cells, -1))
+})
+
 test_that("'edge' and 'include' only apply when 'boundary' is specified", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
   expect_error(extend_N(bag, cells, edge = TRUE))
@@ -101,6 +106,34 @@ test_that("Boundary formulas returning NAs are ignored with a warning", {
                                   col = 2:1))
 })
 
+test_that("All compass directions work", {
+  bag <- anchor(cells, 2, 2)
+  expect_equal(extend_N(bag, cells, 1)$row, 1:2)
+  expect_equal(extend_E(bag, cells, 1)$col, 3:2)
+  expect_equal(extend_S(bag, cells, 1)$row, 3:2)
+  expect_equal(extend_W(bag, cells, 1)$col, 1:2)
+})
+
+test_that("extend() works with 'n'", {
+  bag <- anchor(cells, 2, 2)
+  expect_equal(extend(bag, cells, "N", 1)$row, 1:2)
+  expect_equal(extend(bag, cells, "E", 1)$col, 3:2)
+  expect_equal(extend(bag, cells, "S", 1)$row, 3:2)
+  expect_equal(extend(bag, cells, "W", 1)$col, 1:2)
+})
+
+test_that("extend() works with 'boundary'", {
+  bag <- anchor(cells, 2, 2)
+  expect_equal(extend(bag, cells, "N", boundary = ~ row == 1)$row, 2)
+  expect_equal(extend(bag, cells, "E", boundary = ~ col == 3)$col, 2)
+  expect_equal(extend(bag, cells, "S", boundary = ~ row == 3)$row, 2)
+  expect_equal(extend(bag, cells, "W", boundary = ~ col == 1)$col, 2)
+})
+
+test_that("'n' equal to 0 return original bag", {
+  bag <- anchor(cells, 2, 2)
+  expect_equal(extend_N(bag, cells, n = 0)$row, 2)
+})
 
 test_that("Boundaries not found return all cells in given direction", {
   bag <- anchor(cells, 1, 1)
