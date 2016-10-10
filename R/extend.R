@@ -53,7 +53,6 @@
 extend <- function(bag, cells, direction, n = NULL, boundary = NULL,
                    edge = FALSE, include = FALSE) {
   test_extend_args(bag, direction, n, boundary, edge, include)
-
   if (!is.null(n)) {
     if (n == 0) {return(bag)}
     n <- as.integer(n) # Prevents coercion of row/col to double
