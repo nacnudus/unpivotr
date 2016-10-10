@@ -5,6 +5,8 @@ magrittr::`%>%`
 #' @import data.table
 #' @import tidyr
 
+#' @importFrom methods is
+
 NULL
 
 globalVariables(c(".",
@@ -23,5 +25,6 @@ globalVariables(c(".",
                   "inner_join",
                   "mutate",
                   "select",
-                  "setNames"))
+                  "setNames",
+                  ".boundary"))
 

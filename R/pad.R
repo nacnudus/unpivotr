@@ -29,11 +29,11 @@ pad <- function(cells, rows = cells$row, cols = cells$col) {
   if (any(rows < 0) | any(cols < 0)) {
     stop("'rows' and 'cols' must be >= 0")
   }
-  rows <- rows[rows != 0]
-  cols <- cols[cols != 0]
+  rows <- rows[rows != 0L]
+  cols <- cols[cols != 0L]
   # Pad potentials
-  pad <- tidyr::crossing(row = tidyr::full_seq(c(cells$row, rows), 1),
-                         col = tidyr::full_seq(c(cells$col, cols), 1))
+  pad <- tidyr::crossing(row = tidyr::full_seq(c(cells$row, rows), 1L),
+                         col = tidyr::full_seq(c(cells$col, cols), 1L))
   dplyr::full_join(pad, cells, by = c("row", "col"))
 }
 

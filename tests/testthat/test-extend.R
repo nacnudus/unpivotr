@@ -1,25 +1,103 @@
+library(testthat)
+library(unpivotr)
 context("extend()")
 
 x <- purpose$`NNW WNW`
 cells <- tidytable(x, rownames = FALSE, colnames = FALSE)
 cells <- cells[!is.na(cells$character), ]
-cell <- cells[which(cells$row == 10 & cells$col == 3), ]
 
-test_that("Extend to boundary blank works", {
-  rowcol <- extend_N(cell, cells, boundary = "blank")[, c("row", "col")]
-  expect_equal(rowcol, data.frame(row = c(9L, 8L, 7L, 10L), col = 3L))
+test_that("Extend to non-existant cell works, returning pad", {
+  bag <- cells[1, ]
+  rowcol <- extend_N(bag, cells[FALSE, ], 1)[, c("row", "col")]
+  expect_equal(rowcol, data.frame(row = 2:3, col = 1L))
 })
 
-test_that("Extend to boundary formula and include works", {
-  rowcol <- extend_E(cell, cells,
-                     boundary = ~ col == 5,
+test_that("Extend with zero-row bag is an error", {
+  bag <- cells[FALSE, ]
+  expect_error(extend_N(bag, cells, 1, include = TRUE))
+})
+
+test_that("Extend to boundary formula with include is an error", {
+  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
+  expect_error(extend_N(bag, cells, 1, include = TRUE))
+})
+
+test_that("Extend to direction other than N, E, S, W is an error", {
+  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
+  expect_error(extend(bag, cells, "A", 1))
+})
+
+test_that("Exactly one of 'n' and 'boundary' must be specified", {
+  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
+  expect_error(extend_N(bag, cells))
+  expect_error(extend_N(bag, cells, 2, boundary = ~ TRUE))
+})
+
+test_that("'n' must be numeric", {
+  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
+  expect_error(extend_N(bag, cells, ~ TRUE))
+  expect_error(extend_N(bag, cells, "N"))
+})
+
+test_that("'n' must be a whole number", {
+  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
+  expect_error(extend_N(bag, cells, 0.1))
+})
+
+test_that("'edge' and 'include' only apply when 'boundary' is specified", {
+  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
+  expect_error(extend_N(bag, cells, edge = TRUE))
+  expect_error(extend_N(bag, cells, include = TRUE))
+})
+
+test_that("Extend to boundary formula with edge is an error", {
+  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
+  expect_error(extend_N(bag, cells, 1, edge = TRUE))
+})
+
+test_that("Extend to boundary formula without include or edge works", {
+  bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
+  rowcol <- extend_E(bag, cells,
+                     boundary = ~ !is.na(character))[, c("row", "col")]
+  expect_equal(rowcol, data.frame(row = 7L, col = 1:2))
+})
+
+test_that("Extend to boundary formula with include works", {
+  bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
+  rowcol <- extend_N(bag, cells,
+                     boundary = ~ !is.na(character),
                      include = TRUE)[, c("row", "col")]
-  expect_equal(rowcol, data.frame(row = 10L, col = c(4L, 5L, 3L)))
+  expect_equal(rowcol, data.frame(row = c(6L, 6L, 7L, 7L), 
+                                  col = c(1L, 2L, 1L, 2L)))
 })
 
-test_that("Boundary formulas returning NAs are handled correctly", {
-  rowcol <- extend_N(cell, cells,
-                     boundary = ~ as.integer(character) < 10000)$row %>% sort
-  expect_equal(rowcol, c(4:5, 7:10))
+test_that("Extend to boundary formula with edge works", {
+  bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
+  rowcol <- extend_N(bag, cells,
+                     boundary = ~ !is.na(character),
+                     edge = TRUE)[, c("row", "col")]
+  expect_equal(rowcol, data.frame(row = rep(4:7, each = 2), 
+                                  col = rep(1:2, times = 4)))
+})
+
+test_that("Extend to boundary formula with include and edge works", {
+  bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
+  rowcol <- extend_N(bag, cells,
+                     boundary = ~ !is.na(character),
+                     include = TRUE,
+                     edge = TRUE)[, c("row", "col")]
+  expect_equal(rowcol, data.frame(row = rep(3:7, each = 2), 
+                                  col = rep(1:2, times = 5)))
+})
+
+test_that("Boundary formulas returning NAs are ignored with a warning", {
+  bag <- cells[which(cells$row == 3 & cells$col == 1), ]
+  expect_warning(
+    rowcol <- extend_E(bag, cells,
+                       boundary = ~ as.integer(character) < 10000
+                       )[, c("row", "col")]
+    )
+  expect_equal(rowcol, data.frame(row = 3L, 
+                                  col = 2:1))
 })
 

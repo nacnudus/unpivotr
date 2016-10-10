@@ -52,9 +52,7 @@
 #' # Select the cells containing the values
 #' datacells <- 
 #'   cells %>%
-#'   filter(row == 3, col == 3) %>%
-#'   extend_E(cells) %>%
-#'   extend_S(cells)
+#'   filter(row >= 3, col >= 3)
 #' head(datacells)
 #' # Select the row headers
 #' row_headers <- 

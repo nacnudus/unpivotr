@@ -9,49 +9,60 @@
 \title{Extend a bag of cells in one direction, optionally up to a boundary
 condition.}
 \usage{
-extend(bag, cells, direction, boundary = FALSE, include = FALSE)
+extend(bag, cells, direction, n = NULL, boundary = NULL, edge = FALSE,
+  include = FALSE)
 
-extend_N(bag, cells, boundary = FALSE, include = FALSE)
+extend_N(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
+  include = FALSE)
 
-extend_E(bag, cells, boundary = FALSE, include = FALSE)
+extend_E(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
+  include = FALSE)
 
-extend_S(bag, cells, boundary = FALSE, include = FALSE)
+extend_S(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
+  include = FALSE)
 
-extend_W(bag, cells, boundary = FALSE, include = FALSE)
+extend_W(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
+  include = FALSE)
 }
 \arguments{
 \item{bag}{Data frame. The original selection, including at least the columns
 'row' and 'column', which are numeric/integer vectors.}
 
-\item{cells}{Data frame. All the cells in the sheet, within which to extend
-the bag. Including at least the columns 'row' and 'column', as well as any
-columns referred to by the bounadry formula.}
+\item{cells}{Data frame. All the cells in the sheet, among which to extend
+the bag (extensions beyond existing cells will be padded with blank cells).
+Must include at least the columns 'row' and 'column', as well as any columns
+referred to by the boundary formula.}
 
 \item{direction}{Character vector length 1. The direction in which to extend,
 among the compass directions "N", "E", "S", "W", where "N" is north (up).}
 
-\item{boundary}{Formula to express a boundary condition, or "blank". Defaults
-to `FALSE`, which means the extension will go to the boundary of the sheet.
-`~ col <= 50` would go up to the 50th column. "blank" goes up to just before
-a blank row/col when 'include' is FALSE, otherwise it goes up to the next
-non-blank cell after a blank one.}
+\item{n}{Integer vector length 1, >= 0. The number of rows/cols to extend by
+in the given direction.}
+
+\item{boundary}{Formula to express a boundary condition.  `~ col <= 50` would
+go up to the 50th column.  NAs are treated the same as FALSE, but with a
+warning.}
+
+\item{edge}{Logical vector length 1. Whether to require the boundary formula
+to be TRUE along the entire edge of the bag that is being extended.}
 
 \item{include}{Logical vector length 1. Whether to include in the extension
-the first cell at which the boundary condition is met.  Can be unpredictable
-when `TRUE` if `boundary` is something like `~ col <= 50`, because if there
-is no cell in the 50th column, then the first cell beyond the 50th column
-will be included.}
+the first cell (and its row/col of fellow cells) at which the boundary
+condition is met.}
 }
 \description{
 A bag of data cells is a data frame with at least the
 columns 'row' and 'col', as well as any others that carry information about
 the cells, e.g. their values.  More cells may be added to the bag by
-extending the bag in a given direction.  Unless a boundary condition is
-specified, all cells up to the edge of the sheet will be added.
+extending the bag in a given direction, either by a number of rows or
+columns, or up to (and optionally including) cells that meet a boundary
+condition.  The boundary may be required to be detected in every cell along
+the 'edge' of the bag, otherwise extension will stop at the nearest boundary
+that is detected.
 }
 \details{
-A bag may have ragged rows or ragged cols. Gaps will not be filled
-in.
+A bag may have ragged rows or ragged cols. Gaps will be filled in,
+even when n = 0.
 }
 \section{Functions}{
 \itemize{
@@ -70,10 +81,17 @@ in.
 cells <- tidytable(x, rownames = FALSE, colnames = FALSE)
 cells <- cells[!is.na(cells$character), ]
 # Select a particular cell
-cell <- cells[which(cells$row == 10 & cells$col == 3), ]
-# Extend the selection upwards, stopping before the NA.
-extend_N(cell, cells, boundary = "blank")
+cell <- cells[which(cells$row == 3 & cells$col == 3), ]
+# Extend the selection downwards, stopping before the NA.
+extend_S(cell, cells, boundary = ~ is.na(character))
 # Extend the selection right, up to and including the fifth column.
 extend_E(cell, cells, boundary = ~ col == 5, include = TRUE)
+# Extend the selection beyond the existing cells
+extend_E(cell, cells, 15)
+# This doesn't work inside formulas, because it would mean testing the
+# boundary formula on every possible cell in the given direction
+extend_E(cell, cells, boundary = ~ col == 15)
+cell <- cells[which(cells$row == 7 & cells$col \%in\% 1:2), ]
+extend_N(cell, cells, boundary = ~ !is.na(character), edge = TRUE)
 }
 
