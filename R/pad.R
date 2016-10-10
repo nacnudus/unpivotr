@@ -29,6 +29,7 @@ pad <- function(cells, rows = cells$row, cols = cells$col) {
   if (any(rows < 0) | any(cols < 0)) {
     stop("'rows' and 'cols' must be >= 0")
   }
+  if (nrow(cells) == 0) {return(cells)}
   rows <- rows[rows != 0L]
   cols <- cols[cols != 0L]
   # Pad potentials

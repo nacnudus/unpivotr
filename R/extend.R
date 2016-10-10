@@ -157,6 +157,7 @@ extend_n <- function(bag, cells, direction, n) {
 extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
   if (direction == "N") {
     rowcol_function <- max
+    rowcol_function_opposite <- min
     rowcol_formula <- ~ row
     lt_gt <- `>`
     y1 <- min(cells$row) - 1L # Zero will be padded as NA for boundary formula
@@ -167,6 +168,7 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
   }
   if (direction == "E") {
     rowcol_function <- min
+    rowcol_function_opposite <- max
     rowcol_formula <- ~ col
     lt_gt <- `<`
     y1 <- min(bag$row)
@@ -176,6 +178,7 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
   }
   if (direction == "S") {
     rowcol_function <- min
+    rowcol_function_opposite <- max
     rowcol_formula <- ~ row
     lt_gt <- `<`
     y1 <- max(bag$row) + 1L
@@ -185,6 +188,7 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
   }
   if (direction == "W") {
     rowcol_function <- max
+    rowcol_function_opposite <- min
     rowcol_formula <- ~ col
     lt_gt <- `>`
     y1 <- min(bag$row)
@@ -216,8 +220,12 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
       dplyr::filter(cells, .boundary) %>% .[[rowcol_text]]
   }
   if (length(boundaries) == 0) {
-    # Return all cells
-    return(dplyr::select(cells, -.boundary) %>% dplyr::bind_rows(bag))
+    # Return all cells by setting boundary to the padded extra row/col
+    if (nrow(cells) == 0) {
+      boundaries <- 1
+    } else {
+      boundaries <- rowcol_function_opposite(cells[[rowcol_text]])
+    }
   }
   # Get cells up to the nearest boundary in any row/col
   near_boundary <- rowcol_function(boundaries)
