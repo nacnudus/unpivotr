@@ -29,9 +29,12 @@ pad <- function(cells, rows = cells$row, cols = cells$col) {
   if (any(rows < 0) | any(cols < 0)) {
     stop("'rows' and 'cols' must be >= 0")
   }
-  if (nrow(cells) == 0) {return(cells)}
   rows <- rows[rows != 0L]
   cols <- cols[cols != 0L]
+  if (nrow(cells) == 0 & (length(rows) == 0 | length(cols) == 0)) {
+    # Neither any cells provided, nor any rows/cols to pad
+    return(cells)
+  }
   # Pad potentials
   pad <- tidyr::crossing(row = tidyr::full_seq(c(cells$row, rows), 1L),
                          col = tidyr::full_seq(c(cells$col, cols), 1L))
