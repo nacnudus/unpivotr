@@ -137,10 +137,10 @@ test_that("'n' equal to 0 return original bag", {
 
 test_that("Boundaries not found return all cells in given direction", {
   bag <- anchor(cells, 1, 1)
-  expect_equal(nrow(extend_N(bag, cells, boundary = FALSE)), 1)
-  expect_equal(nrow(extend_E(bag, cells, boundary = FALSE)), 6)
-  expect_equal(nrow(extend_S(bag, cells, boundary = FALSE)), 22)
-  expect_equal(nrow(extend_W(bag, cells, boundary = FALSE)), 1)
+  expect_equal(nrow(extend_N(bag, cells, boundary = ~ FALSE)), 1)
+  expect_equal(nrow(extend_E(bag, cells, boundary = ~ FALSE)), 6)
+  expect_equal(nrow(extend_S(bag, cells, boundary = ~ FALSE)), 22)
+  expect_equal(nrow(extend_W(bag, cells, boundary = ~ FALSE)), 1)
 })
 
 test_that("Bags cannot be extended into zero or negative space", {
