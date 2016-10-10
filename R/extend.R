@@ -118,7 +118,6 @@ test_extend_args <- function(bag, direction, n, boundary, edge, include) {
 }
 
 extend_n <- function(bag, cells, direction, n) {
-  if (n == 0) {return(bag)}
   n <- as.integer(n)
   if (direction == "N") {
     y1 <- min(bag$row) - 1L
