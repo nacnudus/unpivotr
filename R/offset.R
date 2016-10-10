@@ -3,7 +3,9 @@
 #' @description A bag of data cells is a data frame with at least the
 #' columns 'row' and 'col', as well as any others that carry information about
 #' the cells, e.g. their values.  The position of this bag may be moved across
-#' the sheet, exchanging the cells which are included in the bag.
+#' the sheet, exchanging the cells which are included in the bag.  Non-existant
+#' cells will be padded, so chains of offets preserve the shape of the original
+#' bag.
 #' @param bag Data frame. The original selection, including at least the columns
 #' 'row' and 'column', which are numeric/integer vectors.
 #' @param cells Data frame. All the cells in the sheet, within which to extend
@@ -15,13 +17,19 @@
 #' offset.  Negative values offset left.
 #' @export
 #' @examples
-#' # Please see the vignette for examples (not yet written in vignette, sorry!)
-#' vignette("compass-directions", "unpivotr")
+#' cells <- 
+#'   tidytable(purpose$`NNW WNW`, FALSE, FALSE) %>% 
+#'   dplyr::filter(!is.na(character)) # Introduce 'holes' in the data
+#' # Select an L-shape with gaps
+#' bag <- dplyr::filter(cells, row %in% 3:4, col %in% 1:2)
+#' # Offset and pad (actually anchor) the gaps (now in different parts of the L)
+#' offset(bag, cells, -1, 1)
 offset <- function(bag, cells, rows = 0, cols = 0) {
   bag %>%
-    select(row, col) %>%
-    mutate(row = row + rows, col = col + cols) %>%
-    inner_join(cells, by = c("row", "col"))
+    dplyr::select(row, col) %>%
+    dplyr::mutate(row = row + rows, col = col + cols) %>%
+    dplyr::rowwise() %>%
+    dplyr::do(anchor(cells, .$row, .$col))
 }
 
 
