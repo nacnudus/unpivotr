@@ -71,9 +71,7 @@ library(dplyr)
 # Select the cells containing the values
 datacells <- 
   cells %>%
-  filter(row == 3, col == 3) %>% # Select an anchor cell
-  extend_E(cells) %>%            # Extend the selection across to the right edge
-  extend_S(cells)                # Extend the selection down to the bottom edge
+  filter(row >= 3, col >= 3)
 head(datacells)
 
 # Select the row headers
