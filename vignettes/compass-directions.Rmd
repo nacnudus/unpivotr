@@ -28,7 +28,8 @@ library(unpivotr)
 ## NNW WNW example
 
 ```{r, echo = TRUE}
-cells <- tidytable(purpose$`NNW WNW`, colnames = FALSE)
+(original <- purpose$`NNW WNW`)
+tail(cells <- tidytable(original, colnames = FALSE))
 ```
 
 ### Headers
@@ -56,6 +57,7 @@ datacells <-
   cells %>%
   filter(row >= 3, col >= 3, !is.na(character)) %>%
   select(row, col, value = as.integer(character))
+head(datacells)
 ```
 
 ### Join headers to data
