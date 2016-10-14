@@ -45,7 +45,7 @@ The spreadsheet is distributed with the unpivotr package, so can be loaded as a
 system file.
 
 ```{r}
-path <- system.file("extdata/frank_ermis__11178__Enron Pricing Report.xlsx",
+path <- system.file("extdata/enron.xlsx",
                     package = "unpivotr")
 ```
 
@@ -262,7 +262,7 @@ library(tidyr)
 library(purrr)
 library(stringr)
 
-path <- system.file("extdata/frank_ermis__11178__Enron Pricing Report.xlsx",
+path <- system.file("extdata/enron.xlsx",
                     package = "unpivotr")
 cells <- contents(path)[[1]]
 
