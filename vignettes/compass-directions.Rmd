@@ -9,8 +9,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Compass directions
-
 This vignette for the [unpivotr](https://github.com/nacnudus/unpivotr) package
 demonstrates unpivoting pivot tables of various kinds imported from a
 spreadsheet via the [tidyxl](https://github.com/nacnudus/tidyxl) package.  It is
