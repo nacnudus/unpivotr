@@ -30,5 +30,6 @@ RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
     tidyxl,
+    stringr,
     testthat
 VignetteBuilder: knitr

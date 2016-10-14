@@ -1,0 +1,322 @@
+---
+title: "Small Multiples"
+author: "Duncan Garmonsway"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Compase Directions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette for the [unpivotr](https://github.com/nacnudus/unpivotr) package
+demonstrates unpivoting multiple similar tables from a spreadsheet via the
+[tidyxl](https://github.com/nacnudus/tidyxl) package.  It is best read with the
+spreadsheet open in a spreadsheet program, e.g. Excel, LibreOffice Calc or
+Gnumeric.
+
+## Introduction
+
+The spreadsheet is from the famous Enron subpoena, made available by [Felienne
+Hermans](http://www.felienne.com/archives/3634), and has has previously been
+publicised by Jenny Bryan and David Robinson, in particular in Robinson's
+article ['Tidying an untidyable
+dataset'](https://rpubs.com/dgrtwo/tidying-enron).
+
+Here's a screenshot:
+
+![frank_ermis__11178__Enron Pricing Report.xlsx](../inst/extdata/enron-screenshot.png)
+
+## Preparation
+
+This vignette uses several common packages.
+
+```{r}
+library(unpivotr)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(stringr)
+```
+
+The spreadsheet is distributed with the unpivotr package, so can be loaded as a
+system file.
+
+```{r}
+path <- system.file("extdata/frank_ermis__11178__Enron Pricing Report.xlsx",
+                    package = "unpivotr")
+```
+
+## Main
+
+### Importing the data
+
+Spreadsheet cells are imported with the `contents()` function.  By default, this
+returns all the sheets in the spreadsheet, as elements in a list.  Since there
+is only one sheet in this file, it is a list of length 1, but it is still a list
+for the sake of consistency.  Hence the sheet is accessed with the list
+subsetter `[[1]]`.
+
+```{r}
+cells <- contents(path)[[1]]
+```
+
+Cell formatting isn't required for this vignette, but if it were, it would be
+imported via the `formats()` function.
+
+```{r, eval = FALSE}
+formatting <- formats(path)[[1]]
+```
+
+### Importing one of the multiples
+
+The small multiples each have exactly one 'Fixed Price' header, so begin by
+selecting one of those.
+
+```{r}
+fixed_price <- filter(cells, character == "Fixed Price")[1, ]
+```
+
+From that single cell, selct the three rows of the column headers of the first
+small multiple.  The `split()` function below separates each row from one
+another, wrapping them together in a list.  They are separated so that they can
+individually be joined to the data cells later.  Another way to do this is to
+select each row one by one, assigning them to different variables.
+
+```{r}
+col_headers <- 
+  fixed_price %>%
+  offset(cells, rows = -1) %>%  # Offset up one row to "IF NWPL Rocky Mountains"
+  extend_E(cells, 3) %>%        # Extend to the right edge of the table
+  extend_S(cells, 2) %>%        # Extend down to the third row of the headers
+  filter(!is.na(content)) %>%   # Remove blanks
+  select(row, col, value = character) %>% # Prepare for joining to data cells
+  split(.$row)                  # Separate the row of headers into list elements
+col_headers
+```
+
+Now select the data cells, starting from the 'Fixed Price' header again.
+
+```{r}
+datacells <- 
+  fixed_price %>%
+  offset(cells, rows = 2) %>%
+  extend_E(cells, 4) %>%
+  extend_S(cells,                       # Extend down to a blank row
+           boundary = ~ is.na(content), # The formula detects blank cells
+           edge = TRUE) %>%             # Require the whole row to be blank
+  filter(!is.na(content)) %>%           # Remove remaining blanks
+  mutate(value = as.double(content)) %>%# Convert the values to double
+  select(row, col, value)               # Prepare for joining to headers
+print(datacells, n = Inf)
+```
+
+Finally, bind the data cells to the column headers (this is the real magic).
+For more examples of how the compass directions work (the `NNW()` and `N()`
+functions below), see the vignette called `Compass Directions`.
+
+```{r}
+datacells %>%
+  NNW(col_headers[[1]], "region") %>% # This header isn't in every column
+  NNW(col_headers[[2]], "price") %>%  # Nor is this header
+  N(col_headers[[3]], "bid_offer")    # But this one is
+```
+
+### Importing every small multiple at once
+
+The code above, for a single multiple, can easily be adapted to import every one
+of the small multiples.  Here this is done using the
+[`purrr()`](https://github.com/hadley/purrr) package to apply the code to each
+element of a list of 'Fixed Price' header cells.
+
+Get all ten 'Fixed Price' headers, and separate each into its own list element.
+Since each cell has a unique combination of `row` and `col`, that combination
+can be used to separate the cells into list elements.
+
+```{r}
+fixed_price <- 
+  cells %>%
+  filter(character == "Fixed Price") %>%
+  split(paste(.$row, .$col))
+```
+
+Adapt the code for a single multiple a 'tidy' function to tidy a general small
+multiple, starting from the 'Fixed Price' header.  Here this is done by
+substituting `x` for `fixed_price`, and wrapping the three sections of code in a
+function.  Everything else is the same.
+
+```{r}
+tidy <- function(x) {
+  col_headers <- 
+    x %>%
+    offset(cells, rows = -1) %>%
+    extend_E(cells, 3) %>%      
+    extend_S(cells, 2) %>%      
+    filter(!is.na(content)) %>% 
+    select(row, col, value = character) %>%
+    split(.$row)
+  datacells <- 
+    x %>%
+    offset(cells, rows = 2) %>%
+    extend_E(cells, 4) %>%
+    extend_S(cells,
+             boundary = ~ is.na(content),
+             edge = TRUE) %>%            
+    filter(!is.na(content)) %>%          
+    mutate(value = as.double(content)) %>%
+    select(row, col, value)               
+  datacells %>%
+    NNW(col_headers[[1]], "region") %>%
+    NNW(col_headers[[2]], "price") %>%
+    N(col_headers[[3]], "bid_offer")
+}
+```
+
+Finally, map the 'tidy' function to each 'Fixed Price' header, and bind the
+results.  into one data frame.  The [`purrr()`](https://github.com/hadley/purrr)
+package
+is used here, but this could also be done with the `apply()` family of
+functions.
+
+```{r}
+map_df(fixed_price, tidy) %>%
+  arrange(col, row) # See that, from row 39, the region changes, as it ought.
+```
+
+### Joining the row headers
+
+So far, only the column headers have been joined, but there are also row headers
+on the left-hand side of the spreadsheet.  The following code incorporates these
+into the final dataset.
+
+```{r}
+row_headers <- 
+  cells %>%
+  filter(character == "Cash") %>%
+  split(paste(.$row, .$col))
+
+row_headers <- 
+  map_df(row_headers, 
+    ~ .x %>% 
+      extend_S(cells, boundary = ~ is.na(content)) %>%
+      extend_E(cells, boundary = ~ is.na(content), edge = TRUE) %>%
+      filter(!is.na(content)) %>%
+      # This concatenates the "Dec-20 to Mar-20" cells into one column.
+      # First it converts Excel dates, via R dates, into text.
+      mutate(character = ifelse(!is.na(character),
+                                character,
+                                format(as.POSIXct(as.integer(content) * (60*60*24),
+                                       origin="1899-12-30",
+                                       tz="GMT"), "%b-%C"))) %>%
+      # Then it concatentates them by row.
+      select(row, col, character) %>%
+      spread(col, character, fill = "") %>%
+      mutate(col = 1, value = str_trim(paste(`2`, `3`, `4`))) %>%
+      select(row, col, value))
+```
+
+Since the single column of row headers applies to every row of every small
+multiple (unlike the column headers), a global `row_headers` variable can be
+joined to each small multiple by using a simple W() join. This is incorporated
+into the definition of `tidy()` below (see the bottom line).
+
+```{r}
+tidy <- function(x) {
+  col_headers <- 
+    x %>%
+    offset(cells, rows = -1) %>%
+    extend_E(cells, 3) %>%      
+    extend_S(cells, 2) %>%      
+    filter(!is.na(content)) %>% 
+    select(row, col, value = character) %>%
+    split(.$row)
+  datacells <- 
+    x %>%
+    offset(cells, rows = 2) %>%
+    extend_E(cells, 4) %>%
+    extend_S(cells,
+             boundary = ~ is.na(content),
+             edge = TRUE) %>%            
+    filter(!is.na(content)) %>%          
+    mutate(value = as.double(content)) %>%
+    select(row, col, value)               
+  datacells %>%
+    NNW(col_headers[[1]], "region") %>%
+    NNW(col_headers[[2]], "price") %>%
+    N(col_headers[[3]], "bid_offer") %>%
+    W(row_headers, "context") # This is the only new line
+}
+
+map_df(fixed_price, tidy) %>%
+  arrange(col, row) # See that, from row 39, the context loops, as it ought.
+```
+
+## 57-line code listing
+
+```{r, eval = FALSE}
+library(unpivotr)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(stringr)
+
+path <- system.file("extdata/frank_ermis__11178__Enron Pricing Report.xlsx",
+                    package = "unpivotr")
+cells <- contents(path)[[1]]
+
+fixed_price <- 
+  cells %>%
+  filter(character == "Fixed Price") %>%
+  split(paste(.$row, .$col))
+
+row_headers <- 
+  cells %>%
+  filter(character == "Cash") %>%
+  split(paste(.$row, .$col))
+
+row_headers <- 
+  map_df(row_headers, 
+    ~ .x %>% 
+      extend_S(cells, boundary = ~ is.na(content)) %>%
+      extend_E(cells, boundary = ~ is.na(content), edge = TRUE) %>%
+      filter(!is.na(content)) %>%
+      mutate(character = ifelse(!is.na(character),
+                                character,
+                                format(as.POSIXct(as.integer(content) * (60*60*24),
+                                       origin="1899-12-30",
+                                       tz="GMT"), "%b-%C"))) %>%
+      select(row, col, character) %>%
+      spread(col, character, fill = "") %>%
+      mutate(col = 1, value = str_trim(paste(`2`, `3`, `4`))) %>%
+      select(row, col, value))
+
+tidy <- function(x) {
+  col_headers <- 
+    x %>%
+    offset(cells, rows = -1) %>%
+    extend_E(cells, 3) %>%      
+    extend_S(cells, 2) %>%      
+    filter(!is.na(content)) %>% 
+    select(row, col, value = character) %>%
+    split(.$row)
+  datacells <- 
+    x %>%
+    offset(cells, rows = 2) %>%
+    extend_E(cells, 4) %>%
+    extend_S(cells,
+             boundary = ~ is.na(content),
+             edge = TRUE) %>%            
+    filter(!is.na(content)) %>%          
+    mutate(value = as.double(content)) %>%
+    select(row, col, value)               
+  datacells %>%
+    NNW(col_headers[[1]], "region") %>%
+    NNW(col_headers[[2]], "price") %>%
+    N(col_headers[[3]], "bid_offer") %>%
+    W(row_headers, "context") # This is the only new line
+}
+
+map_df(fixed_price, tidy)
+```
