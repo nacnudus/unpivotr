@@ -36,14 +36,14 @@ tail(cells <- tidytable(original, colnames = FALSE))
 row_headers <- 
   cells %>%
   filter(col <= 2, !is.na(character)) %>% # Select all rows of headers at once
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col) # Return each row of headers in its own element of a list
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row <= 2, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row)
 col_headers
 ```
@@ -63,10 +63,10 @@ head(datacells)
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  NNW(col_headers[[1]], "sex") %>%
-  N(col_headers[[2]], "purpose") %>%
-  WNW(row_headers[[1]], "education") %>% 
-  W(row_headers[[2]], "age")
+  NNW(col_headers[[1]]) %>%
+  N(col_headers[[2]]) %>%
+  WNW(row_headers[[1]]) %>% 
+  W(row_headers[[2]])
 ```
 
 ### Result
@@ -88,14 +88,14 @@ cells <- tidytable(purpose$`NNE WSW`, colnames = FALSE)
 row_headers <- 
   cells %>%
   filter(col <= 2, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row <= 2, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row)
 col_headers
 ```
@@ -107,6 +107,7 @@ datacells <-
   cells %>%
   filter(row >= 3, col >= 3, !is.na(character)) %>%
   select(row, col, value = as.integer(character))
+datacells
 ```
 
 ### Join headers to data (different from NNW WNW)
@@ -114,10 +115,10 @@ datacells <-
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  NNE(col_headers[[1]], "sex") %>% # Different from NNW WNW
-  N(col_headers[[2]], "purpose") %>% # Same as NNW WNW
-  WSW(row_headers[[1]], "education") %>% # Different from NNW WNW
-  W(row_headers[[2]], "age") # Same as NNW WNW
+  NNE(col_headers[[1]]) %>% # Different from NNW WNW
+  N(col_headers[[2]]) %>% # Same as NNW WNW
+  WSW(row_headers[[1]]) %>% # Different from NNW WNW
+  W(row_headers[[2]]) # Same as NNW WNW
 ```
 
 ### Result
@@ -139,14 +140,14 @@ cells <- tidytable(purpose$`SSE ESE`, colnames = FALSE)
 row_headers <- 
   cells %>%
   filter(col >= 5, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row >= 21, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row)
 col_headers
 ```
@@ -166,10 +167,10 @@ datacells
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  SSE(col_headers[[2]], "sex") %>%
-  S(col_headers[[1]], "purpose") %>%
-  ESE(row_headers[[2]], "education") %>%
-  E(row_headers[[1]], "age")
+  SSE(col_headers[[2]]) %>%
+  S(col_headers[[1]]) %>%
+  ESE(row_headers[[2]]) %>%
+  E(row_headers[[1]])
 ```
 
 ### Result
@@ -191,14 +192,14 @@ cells <- tidytable(purpose$`SSW ENE`, colnames = FALSE)
 row_headers <- 
   cells %>%
   filter(col >= 5, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row >= 21, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row)
 col_headers
 ```
@@ -218,10 +219,10 @@ datacells
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  SSW(col_headers[[2]], "sex") %>% # Different from SSE ESE
-  S(col_headers[[1]], "purpose") %>% # Same as SSE ESE
-  ENE(row_headers[[2]], "education") %>% # Different from SSE ESE
-  E(row_headers[[1]], "age") # Same as SSE ESE
+  SSW(col_headers[[2]]) %>% # Different from SSE ESE
+  S(col_headers[[1]]) %>% # Same as SSE ESE
+  ENE(row_headers[[2]]) %>% # Different from SSE ESE
+  E(row_headers[[1]]) # Same as SSE ESE
 ```
 
 ### Result
@@ -251,14 +252,14 @@ cells <- tidytable(purpose$`ABOVE LEFT`, colnames = FALSE)
 row_headers <- 
   cells %>%
   filter(col <= 2, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row <= 2, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row)
 col_headers
 ```
@@ -278,10 +279,10 @@ datacells
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  ABOVE(col_headers[[1]], "purpose") %>% # Different from SSE ESE
-  N(col_headers[[2]], "age") %>% # Same as SSE ESE
-  LEFT(row_headers[[1]], "sex") %>% # Different from SSE ESE
-  W(row_headers[[2]], "education") # Same as SSE ESE
+  ABOVE(col_headers[[1]]) %>% # Different from SSE ESE
+  N(col_headers[[2]]) %>% # Same as SSE ESE
+  LEFT(row_headers[[1]]) %>% # Different from SSE ESE
+  W(row_headers[[2]]) # Same as SSE ESE
 ```
 
 ### Result
@@ -303,14 +304,14 @@ cells <- tidytable(purpose$`BELOW RIGHT`, colnames = FALSE)
 row_headers <- 
   cells %>%
   filter(col >= 7, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row >= 11, !is.na(character)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row)
 col_headers
 ```
@@ -330,10 +331,10 @@ datacells
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  BELOW(col_headers[[2]], "purpose") %>%
-  S(col_headers[[1]], "age") %>%
-  RIGHT(row_headers[[2]], "sex") %>%
-  E(row_headers[[1]], "education")
+  BELOW(col_headers[[2]]) %>%
+  S(col_headers[[1]]) %>%
+  RIGHT(row_headers[[2]]) %>%
+  E(row_headers[[1]])
 ```
 
 ### Result
@@ -363,14 +364,14 @@ cells <- contents(spreadsheet, "ABOVE LEFT border")[[1]]
 row_headers <- 
   cells %>%
   filter(col <= 3, !is.na(content)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row <= 3, !is.na(content)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row)
 col_headers
 ```
@@ -399,11 +400,11 @@ top_borders <- which(!is.na(formatting$local$border$top$style))
 left_border_cells <- 
   cells %>%
   filter(row == 2, local_format_id %in% left_borders) %>%
-  select(row, col, value = content) # value doesn't matter
+  select(row, col)
 top_border_cells <- 
   cells %>%
   filter(col == 2, local_format_id %in% top_borders) %>%
-  select(row, col, value = content) # value doesn't matter
+  select(row, col)
 ```
 
 ### Join headers to data
@@ -411,10 +412,10 @@ top_border_cells <-
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  ABOVE(col_headers[[1]], "purpose", left_border_cells) %>% # Different from ABOVE LEFT
-  N(col_headers[[2]], "age") %>% # Same as ABOVE LEFT
-  LEFT(row_headers[[1]], "sex", top_border_cells) %>% # Different from ABOVE LEFT
-  W(row_headers[[2]], "education") # Same as ABOVE LEFT
+  ABOVE(col_headers[[1]], left_border_cells) %>% # Different from ABOVE LEFT
+  N(col_headers[[2]]) %>% # Same as ABOVE LEFT
+  LEFT(row_headers[[1]], top_border_cells) %>% # Different from ABOVE LEFT
+  W(row_headers[[2]]) # Same as ABOVE LEFT
 ```
 
 ### Result
@@ -437,14 +438,14 @@ cells <- contents(spreadsheet, "BELOW RIGHT border")[[1]]
 row_headers <- 
   cells %>%
   filter(col >= 10, !is.na(content)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <- 
   cells %>%
   filter(row >= 14, !is.na(content)) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row)
 col_headers
 ```
@@ -473,11 +474,11 @@ top_borders <- which(!is.na(formatting$local$border$top$style))
 left_border_cells <- 
   cells %>%
   filter(row == 14, local_format_id %in% left_borders) %>%
-  select(row, col, value = content) # value doesn't matter
+  select(row, col)
 top_border_cells <- 
   cells %>%
   filter(col == 11, local_format_id %in% top_borders) %>%
-  select(row, col, value = content) # value doesn't matter
+  select(row, col)
 ```
 
 ### Join headers to data
@@ -485,10 +486,10 @@ top_border_cells <-
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  BELOW(col_headers[[2]], "purpose", left_border_cells) %>% # Different from BELOW RIGHT
-  S(col_headers[[1]], "age") %>% # Same as BELOW RIGHT
-  RIGHT(row_headers[[2]], "sex", top_border_cells) %>% # Different from BELOW RIGHT
-  E(row_headers[[1]], "education") # Same as BELOW RIGHT
+  BELOW(col_headers[[2]], left_border_cells) %>% # Different from BELOW RIGHT
+  S(col_headers[[1]]) %>% # Same as BELOW RIGHT
+  RIGHT(row_headers[[2]], top_border_cells) %>% # Different from BELOW RIGHT
+  E(row_headers[[1]]) # Same as BELOW RIGHT
 ```
 
 ### Result

@@ -68,26 +68,26 @@ test_that("Compass directions N, NNW, W, and WNW work", {
   col_headers <- 
     cells %>%
     filter(row <= 2, !is.na(character)) %>%
-    select(row, col, value = character) %>%
+    select(row, col, header = character) %>%
     split(.$row)
   row_headers <- 
     cells %>%
     filter(col <= 2, !is.na(character)) %>% # Select all rows of headers at once
-    select(row, col, value = character) %>%
+    select(row, col, header = character) %>%
     split(.$col) # Return each row of headers in its own element of a list
   datacells <- 
     cells %>%
     filter(row >= 3, col >= 3, !is.na(character)) %>%
     select(row, col, value = as.integer(character)) %>%
-    NNW(col_headers[[1]], "sex") %>%
-    N(col_headers[[2]], "purpose") %>%
-    WNW(row_headers[[1]], "education") %>% 
-    W(row_headers[[2]], "age") %>%
+    NNW(col_headers[[1]]) %>%
+    N(col_headers[[2]]) %>%
+    WNW(row_headers[[1]]) %>% 
+    W(row_headers[[2]]) %>%
     arrange(row, col)
-  expect_equal(datacells$purpose, expect_purpose)
-  expect_equal(datacells$sex, expect_sex)
-  expect_equal(datacells$age, expect_age)
-  expect_equal(datacells$education, expect_education)
+  expect_equal(datacells[[4]], expect_sex)
+  expect_equal(datacells[[5]], expect_purpose)
+  expect_equal(datacells[[6]], expect_education)
+  expect_equal(datacells[[7]], expect_age)
 })
 
 test_that("Compass directions NNE and WSW work", {
@@ -95,22 +95,22 @@ test_that("Compass directions NNE and WSW work", {
   row_headers <- 
     cells %>%
     filter(col <= 2, !is.na(character)) %>%
-    select(row, col, value = character) %>%
+    select(row, col, header = character) %>%
     split(.$col)
   col_headers <- 
     cells %>%
     filter(row <= 2, !is.na(character)) %>%
-    select(row, col, value = character) %>%
+    select(row, col, header = character) %>%
     split(.$row)
   datacells <- 
     cells %>%
     filter(row >= 3, col >= 3, !is.na(character)) %>%
     select(row, col, value = as.integer(character)) %>%
-    NNE(col_headers[[1]], "sex") %>%
-    WSW(row_headers[[1]], "education") %>%
+    NNE(col_headers[[1]]) %>%
+    WSW(row_headers[[1]]) %>%
     arrange(row, col)
-  expect_equal(datacells$sex, expect_sex)
-  expect_equal(datacells$education, expect_education)
+  expect_equal(datacells[[4]], expect_education)
+  expect_equal(datacells[[5]], expect_sex)
 })
 
 test_that("Compass directions S, SSE , E and ESE work", {
@@ -118,26 +118,26 @@ test_that("Compass directions S, SSE , E and ESE work", {
   row_headers <- 
     cells %>%
     filter(col >= 5, !is.na(character)) %>%
-    select(row, col, value = character) %>%
+    select(row, col, header = character) %>%
     split(.$col)
   col_headers <- 
     cells %>%
     filter(row >= 21, !is.na(character)) %>%
-    select(row, col, value = character) %>%
+    select(row, col, header = character) %>%
     split(.$row)
     datacells <- 
     cells %>%
     filter(row <= 20, col <= 4, !is.na(character)) %>%
     select(row, col, value = as.integer(character)) %>%
-    SSE(col_headers[[2]], "sex") %>%
-    S(col_headers[[1]], "purpose") %>%
-    ESE(row_headers[[2]], "education") %>%
-    E(row_headers[[1]], "age") %>%
+    SSE(col_headers[[2]]) %>%
+    S(col_headers[[1]]) %>%
+    ESE(row_headers[[2]]) %>%
+    E(row_headers[[1]]) %>%
     arrange(row, col)
-  expect_equal(datacells$purpose, expect_purpose)
-  expect_equal(datacells$sex, expect_sex)
-  expect_equal(datacells$age, expect_age)
-  expect_equal(datacells$education, expect_education)
+  expect_equal(datacells[[4]], expect_sex)
+  expect_equal(datacells[[5]], expect_purpose)
+  expect_equal(datacells[[6]], expect_education)
+  expect_equal(datacells[[7]], expect_age)
 })
 
 test_that("Compass directions SSW and ENE work", {
@@ -145,21 +145,45 @@ test_that("Compass directions SSW and ENE work", {
   row_headers <- 
     cells %>%
     filter(col >= 5, !is.na(character)) %>%
-    select(row, col, value = character) %>%
+    select(row, col, header = character) %>%
     split(.$col)
   col_headers <- 
     cells %>%
     filter(row >= 21, !is.na(character)) %>%
-    select(row, col, value = character) %>%
+    select(row, col, header = character) %>%
     split(.$row)
   datacells <- 
     cells %>%
     filter(row <= 20, col <= 4, !is.na(character)) %>%
     select(row, col, value = as.integer(character)) %>%
-    SSW(col_headers[[2]], "sex") %>% # Different from SSE ESE
-    ENE(row_headers[[2]], "education") %>% # Different from SSE ESE
+    SSW(col_headers[[2]]) %>% # Different from SSE ESE
+    ENE(row_headers[[2]]) %>% # Different from SSE ESE
     arrange(row, col)
-  expect_equal(datacells$sex, expect_sex)
-  expect_equal(datacells$education, expect_education)
+  expect_equal(datacells[[4]], expect_education)
+  expect_equal(datacells[[5]], expect_sex)
 })
+
+test_that("join_header() works", {
+  cells <- tidytable(purpose$`NNW WNW`, colnames = FALSE)
+  col_headers <- 
+    cells %>%
+    filter(row <= 2, !is.na(character)) %>%
+    select(row, col, header = character) %>%
+    split(.$row)
+  datacells <- 
+    cells %>%
+    filter(row >= 3, col >= 3, !is.na(character)) %>%
+    select(row, col, value = as.integer(character))
+  expect_error(join_header(datacells, col_headers[[1]], "NORTH"))
+  expect_error(join_header(datacells, 
+                           col_headers[[1]] %>% extend_S(cells, 1),
+                           "W"))
+  expect_error(join_header(datacells, col_headers[[1]], "N", 
+                           boundaries = col_headers[[2]]))
+  expect_equal(join_header(datacells, col_headers[[1]], "ABOVE"),
+               ABOVE(datacells, col_headers[[1]]))
+  expect_equal(join_header(datacells, col_headers[[1]], "N"),
+               N(datacells, col_headers[[1]]))
+})
+
 

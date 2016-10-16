@@ -21,87 +21,84 @@
 \title{Join a bag of data cells to some header, by proximity in a given direction,
 e.g. NNW searches up and up-left from a data cell to find a header cell.}
 \usage{
-join_header(bag, header, direction, colname, boundaries = NULL)
+join_header(bag, header, direction, boundaries = NULL)
 
-N(bag, header, colname)
+N(bag, header)
 
-E(bag, header, colname)
+E(bag, header)
 
-S(bag, header, colname)
+S(bag, header)
 
-W(bag, header, colname)
+W(bag, header)
 
-NNW(bag, header, colname)
+NNW(bag, header)
 
-NNE(bag, header, colname)
+NNE(bag, header)
 
-ENE(bag, header, colname)
+ENE(bag, header)
 
-ESE(bag, header, colname)
+ESE(bag, header)
 
-SSE(bag, header, colname)
+SSE(bag, header)
 
-SSW(bag, header, colname)
+SSW(bag, header)
 
-WSW(bag, header, colname)
+WSW(bag, header)
 
-WNW(bag, header, colname)
+WNW(bag, header)
 
-ABOVE(bag, header, colname, boundaries = NULL)
+ABOVE(bag, header, boundaries = NULL)
 
-RIGHT(bag, header, colname, boundaries = NULL)
+LEFT(bag, header, boundaries = NULL)
 
-BELOW(bag, header, colname, boundaries = NULL)
+BELOW(bag, header, boundaries = NULL)
 
-LEFT(bag, header, colname, boundaries = NULL)
+RIGHT(bag, header, boundaries = NULL)
 }
 \arguments{
 \item{bag}{Data frame. A bag of data cells including at least the columns
 'row' and 'column', which are numeric/integer vectors.}
 
-\item{header}{Data frame. A bag of header cells, which currently must have
-the columns 'row', 'col' and 'header', where 'header' is a column whose value
-describes the data.  For example, for data cells recording a number of
-animals, and a header describing the type of animal, then the 'header' column
-might contain the values `c("dog", "cat", "mouse")`.}
+\item{header}{Data frame. A bag of data cells including at least the columns
+'row' and 'column', which are numeric/integer vectors.}
 
-\item{direction}{Character vector length 1. A compass direction to search for the nearest header.  See
-'details'.}
+\item{direction}{Character vector length 1. A compass direction to search for
+the nearest header.  See 'details'.}
 
-\item{colname}{Character vector length one. Column name to give the header
-values once they are joined to the 'bag'.  Continuing the example, this might
-be "animal_type".}
-
-\item{boundaries}{Data frame. Only applies to the directions "ABOVE", "RIGHT",
-"BELOW" and "LEFT".  A bag of cells in one row or one column,
+\item{boundaries}{Data frame. Only applies to the directions "ABOVE",
+"RIGHT", "BELOW" and "LEFT".  A bag of cells in one row or one column,
 demarking boundaries within which to match headers with cells.  For example,
 a boundary could be a bag of cells with borders on one side.  This is useful
-when the nearest header might be the wrong header because it lies on the 
+when the nearest header might be the wrong header because it lies on the
 other side of a border.}
 }
 \description{
-A bag of data cells is a data frame with at least the
-columns 'row' and 'col', as well as any others that carry information about
-the cells, e.g. their values.  Cells in a table are associated with header
-cells by proximity.  Having collected header cells and data cells into
-separate data frames, 'join_header' and the related functions 'NNW', 'ABOVE',
-etc., join the values in the header cells to the data cells, choose the
-nearest header to each cell, in a given direction.
+A bag of data cells is a data frame with at least the columns
+'row' and 'col', as well as any others that carry information about the
+cells, e.g. their values.  Cells in a table are associated with header cells
+by proximity.  Having collected header cells and data cells into separate
+data frames, 'join_header' and the related functions 'NNW', 'ABOVE', etc.,
+join the values in the header cells to the data cells, choose the nearest
+header to each cell, in a given direction.
 }
 \details{
 Headers are associated with data by proximity in a given direction.
 The directions are mapped to the points of the compass, where 'N' is north
-(up), 'E' is east (right), and so on.  `join_header` finds the nearest header
-to a given data cell in a given direction, and joins its value to the data
-cell.  The most common directions to search are 'NNW' (for left-aligned
+(up), 'E' is east (right), and so on.  `join_header()` finds the nearest
+header to a given data cell in a given direction, and joins its value to the
+data cell.  The most common directions to search are 'NNW' (for left-aligned
 headers at the top of the table) and 'WNW' for top-aligned headers at the
-side of the table.  There can be a tie in the directions 'ABOVE', 'BELOW',
-'LEFT' and 'RIGHT' (for headers that are not aligned to the edge of the data
-cells that they refer to), and currently ties will cause the affected cells
-not to be returned at all.  The full list of available directions is 'N',
-'E', 'S', 'W', 'NNW', 'NNE', 'ENE', 'ESE', 'SSE',
-'SSW', 'WSW', 'WNW'.  For convenience, these directions are provided as their
-own functions, wrapping the concept of 'join_header'.
+side of the table.  The difference between 'N' and 'ABOVE' (and similar pairs
+of directions) is that 'N' finds headers directly above the data cell,
+whereas 'ABOVE' matches the nearest header, whether above-left, above-right
+or directly above the data cell.  This is useful for matching headers that
+are not aligned to the edge of the data cells that they refer to.  There can
+be a tie in the directions 'ABOVE', 'BELOW', 'LEFT' and 'RIGHT' , causing NAs
+to be returned in the place of header values.  The full list of available
+directions is 'N', 'E', 'S', 'W', 'NNW', 'NNE', 'ENE', 'ESE', 'SSE', 'SSW',
+'WSW', 'WNW', 'ABOVE', 'BELOW', 'LEFT', 'RIGHT'.  For convenience, these
+directions are provided as their own functions, wrapping the concept of
+'join_header()'.
 }
 \section{Functions}{
 \itemize{
@@ -131,11 +128,11 @@ own functions, wrapping the concept of 'join_header'.
 
 \item \code{ABOVE}: Join nearest header in the 'ABOVE' direction.
 
-\item \code{RIGHT}: Join nearest header in the 'RIGHT' direction.
+\item \code{LEFT}: Join nearest header in the 'LEFT' direction.
 
 \item \code{BELOW}: Join nearest header in the 'BELOW' direction.
 
-\item \code{LEFT}: Join nearest header in the 'LEFT' direction.
+\item \code{RIGHT}: Join nearest header in the 'BELOW' direction.
 }}
 \examples{
 library(dplyr)
@@ -154,21 +151,21 @@ head(datacells)
 row_headers <- 
   cells \%>\%
   filter(col <= 2) \%>\%
-  select(row, col, value = character) \%>\%
+  select(row, col, header = character) \%>\%
   split(.$col) # Separate each column of headers
 row_headers
 # Select the column headers
 col_headers <- 
   cells \%>\%
   filter(row <= 2) \%>\%
-  select(row, col, value = character) \%>\%
+  select(row, col, header = character) \%>\%
   split(.$row) # Separate each row of headers
 col_headers
 # From each data cell, search for the nearest one of each of the headers
 datacells \%>\%
-  NNW(col_headers$`1`, "sex") \%>\%
-  N(col_headers$`2`, "purpose") \%>\%
-  WNW(row_headers$`1`, "education") \%>\%
-  W(row_headers$`2`, "age")
+  NNW(col_headers$`1`) \%>\%
+  N(col_headers$`2`) \%>\%
+  WNW(row_headers$`1`) \%>\%
+  W(row_headers$`2`)
 }
 
