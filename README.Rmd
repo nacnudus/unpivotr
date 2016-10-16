@@ -32,7 +32,7 @@ Excel (.xlsx) files can be prepared for
 ## Installation
 
 ```{r, echo = TRUE, eval = FALSE}
-devtools::install_github("nacnudus/tidyxl")
+devtools::install_github("nacnudus/tidyxl", build_vignettes = TRUE)
 ```
 
 There are several dependencies:
