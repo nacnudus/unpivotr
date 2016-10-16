@@ -27,7 +27,7 @@ Excel (.xlsx) files can be prepared for
 
 
 ```r
-devtools::install_github("nacnudus/tidyxl")
+devtools::install_github("nacnudus/tidyxl", build_vignettes = TRUE)
 ```
 
 There are several dependencies:
@@ -127,11 +127,11 @@ head(datacells)
 row_headers <- 
   cells %>%
   filter(col <= 2) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$col) # Separate each column of headers
 lapply(row_headers, head)
 #> $`1`
-#>   row col                      value
+#>   row col                     header
 #> 1   3   1          Bachelor's degree
 #> 2   7   1                Certificate
 #> 3  11   1                    Diploma
@@ -139,7 +139,7 @@ lapply(row_headers, head)
 #> 5  19   1 Postgraduate qualification
 #> 
 #> $`2`
-#>    row col   value
+#>    row col  header
 #> 6    3   2 15 - 24
 #> 7    4   2 25 - 44
 #> 8    5   2 45 - 64
@@ -151,16 +151,16 @@ lapply(row_headers, head)
 col_headers <- 
   cells %>%
   filter(row <= 2) %>%
-  select(row, col, value = character) %>%
+  select(row, col, header = character) %>%
   split(.$row) # Separate each row of headers
 col_headers
 #> $`1`
-#>   row col  value
+#>   row col header
 #> 1   1   3 Female
 #> 4   1   5   Male
 #> 
 #> $`2`
-#>   row col  value
+#>   row col header
 #> 2   2   3  0 - 6
 #> 3   2   4 7 - 10
 #> 5   2   5  0 - 6
@@ -175,26 +175,26 @@ the data cells with the headers, by proximity in given compass directions.
 # From each data cell, search for the nearest one of each of the headers
 unpivoted <- 
   datacells %>%
-  NNW(col_headers$`1`, "sex") %>% # Search north (up) and north-west (up-left)
-  N(col_headers$`2`, "purpose") %>% # Search directly north (up)
-  WNW(row_headers$`1`, "education") %>% # Search west (left) and north-west
-  W(row_headers$`2`, "age") # Search directly left (west)
+  NNW(col_headers$`1`) %>% # Search north (up) and north-west (up-left)
+  N(col_headers$`2`) %>% # Search directly north (up)
+  WNW(row_headers$`1`) %>% # Search west (left) and north-west
+  W(row_headers$`2`) # Search directly left (west)
 unpivoted
 #> # A tibble: 72 × 10
-#>      row   col     age         education purpose    sex character double
-#>    <dbl> <dbl>   <chr>             <chr>   <chr>  <chr>     <chr>  <dbl>
-#> 1      3     3 15 - 24 Bachelor's degree   0 - 6 Female      7000     NA
-#> 2      3     4 15 - 24 Bachelor's degree  7 - 10 Female     27000     NA
-#> 3      3     6 15 - 24 Bachelor's degree  7 - 10   Male     13000     NA
-#> 4      4     3 25 - 44 Bachelor's degree   0 - 6 Female     12000     NA
-#> 5      4     4 25 - 44 Bachelor's degree  7 - 10 Female    137000     NA
-#> 6      4     5 25 - 44 Bachelor's degree   0 - 6   Male      9000     NA
-#> 7      4     6 25 - 44 Bachelor's degree  7 - 10   Male     81000     NA
-#> 8      5     3 45 - 64 Bachelor's degree   0 - 6 Female     10000     NA
-#> 9      5     4 45 - 64 Bachelor's degree  7 - 10 Female     64000     NA
-#> 10     5     5 45 - 64 Bachelor's degree   0 - 6   Male      7000     NA
-#> # ... with 62 more rows, and 2 more variables: integer <int>,
-#> #   logical <lgl>
+#>      row   col character double integer logical header.data header.header
+#>    <int> <int>     <chr>  <dbl>   <int>   <lgl>       <chr>         <chr>
+#> 1      3     3      7000     NA      NA      NA      Female         0 - 6
+#> 2      4     3     12000     NA      NA      NA      Female         0 - 6
+#> 3      5     3     10000     NA      NA      NA      Female         0 - 6
+#> 4      7     3     29000     NA      NA      NA      Female         0 - 6
+#> 5      8     3     34000     NA      NA      NA      Female         0 - 6
+#> 6      9     3     30000     NA      NA      NA      Female         0 - 6
+#> 7     10     3     12000     NA      NA      NA      Female         0 - 6
+#> 8     12     3     10000     NA      NA      NA      Female         0 - 6
+#> 9     13     3      6000     NA      NA      NA      Female         0 - 6
+#> 10    14     3      5000     NA      NA      NA      Female         0 - 6
+#> # ... with 62 more rows, and 2 more variables: header.data.data <chr>,
+#> #   header.header.header <chr>
 ```
 
 We can re-pivot the final data in R using `ftable()` to check that it has been
@@ -202,32 +202,32 @@ imported correctly.
 
 
 ```r
-ftable(unpivoted[, 3:6], 
-       row.vars = c("education", "age"),
-       col.vars = c("sex", "purpose"))
-#>                                    sex     Female         Male       
-#>                                    purpose  0 - 6 7 - 10 0 - 6 7 - 10
-#> education                  age                                       
-#> Bachelor's degree          15 - 24              1      1     0      1
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  0      1     1      1
-#> Certificate                15 - 24              1      1     1      1
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  1      1     1      1
-#> Diploma                    15 - 24              0      1     1      1
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  1      1     1      1
-#> No Qualification           15 - 24              1      1     1      1
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  1      1     1      1
-#> Postgraduate qualification 15 - 24              0      1     0      0
-#>                            25 - 44              1      1     1      1
-#>                            45 - 64              1      1     1      1
-#>                            65+                  0      1     0      1
+ftable(unpivoted[7:10], 
+       row.vars = 3:4,
+       col.vars = 1:2)
+#>                                                 header.data   Female         Male       
+#>                                                 header.header  0 - 6 7 - 10 0 - 6 7 - 10
+#> header.data.data           header.header.header                                         
+#> Bachelor's degree          15 - 24                                 1      1     0      1
+#>                            25 - 44                                 1      1     1      1
+#>                            45 - 64                                 1      1     1      1
+#>                            65+                                     0      1     1      1
+#> Certificate                15 - 24                                 1      1     1      1
+#>                            25 - 44                                 1      1     1      1
+#>                            45 - 64                                 1      1     1      1
+#>                            65+                                     1      1     1      1
+#> Diploma                    15 - 24                                 0      1     1      1
+#>                            25 - 44                                 1      1     1      1
+#>                            45 - 64                                 1      1     1      1
+#>                            65+                                     1      1     1      1
+#> No Qualification           15 - 24                                 1      1     1      1
+#>                            25 - 44                                 1      1     1      1
+#>                            45 - 64                                 1      1     1      1
+#>                            65+                                     1      1     1      1
+#> Postgraduate qualification 15 - 24                                 0      1     0      0
+#>                            25 - 44                                 1      1     1      1
+#>                            45 - 64                                 1      1     1      1
+#>                            65+                                     0      1     0      1
 ```
 
 ## Compass directions
