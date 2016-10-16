@@ -471,11 +471,11 @@ formatting <- formats(spreadsheet)
 left_borders <- which(!is.na(formatting$local$border$left$style))
 top_borders <- which(!is.na(formatting$local$border$top$style))
 
-below_border_cells <- 
+left_border_cells <- 
   cells %>%
-  filter(row == 14, local_format_id %in% left_borders) %>%
+  filter(row == 15, local_format_id %in% left_borders) %>%
   select(row, col)
-right_border_cells <- 
+top_border_cells <- 
   cells %>%
   filter(col == 11, local_format_id %in% top_borders) %>%
   select(row, col)
@@ -486,9 +486,9 @@ right_border_cells <-
 ```{r, echo = TRUE}
 datacells <- 
   datacells %>%
-  BELOW(col_headers[[2]], below_border_cells) %>% # Different from BELOW RIGHT
+  BELOW(col_headers[[2]], left_border_cells) %>% # Different from BELOW RIGHT
   S(col_headers[[1]]) %>% # Same as BELOW RIGHT
-  RIGHT(row_headers[[2]], right_border_cells) %>% # Different from BELOW RIGHT
+  RIGHT(row_headers[[2]], top_border_cells) %>% # Different from BELOW RIGHT
   E(row_headers[[1]]) # Same as BELOW RIGHT
 ```
 
