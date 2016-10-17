@@ -256,4 +256,4 @@ The [rsheets](https://github.com/rsheets) project of several R packages is in th
 Roadmap
 -------
 
-As common unpivoting idioms emerge, they will be generalised and added to the package. E.g. combining long header titles that are spelled out across cells, rather than being in one cell merged across others. The most urgent work to be done is to write some tests.
+As common unpivoting idioms emerge, they will be generalised and added to the package. E.g. combining long header titles that are spelled out across cells, rather than being in one cell merged across others.
