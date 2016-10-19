@@ -9,11 +9,11 @@ pad(cells, rows = cells$row, cols = cells$col)
 \arguments{
 \item{cells}{Data frame, the cells to pad}
 
-\item{rows}{Numeric vector, the rows to be padded (exising cells will never
+\item{rows}{Numeric vector, the rows to be padded (existing cells will never
 be discarded, e.g. if this is 0, and no gaps will be left even if this is
 outside the original range of rows)}
 
-\item{cols}{Numeric vector, the columns to be padded (exising cells will
+\item{cols}{Numeric vector, the columns to be padded (existing cells will
 never be discarded, e.g. if this is 0, and no gaps will be left even if this
 is outside the original range of columns)}
 }

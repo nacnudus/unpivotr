@@ -7,10 +7,10 @@
 #' behave intuitively, as though blank cells do actually exist.
 #' 
 #' @param cells Data frame, the cells to pad
-#' @param rows Numeric vector, the rows to be padded (exising cells will never
+#' @param rows Numeric vector, the rows to be padded (existing cells will never
 #' be discarded, e.g. if this is 0, and no gaps will be left even if this is
 #' outside the original range of rows)
-#' @param cols Numeric vector, the columns to be padded (exising cells will
+#' @param cols Numeric vector, the columns to be padded (existing cells will
 #' never be discarded, e.g. if this is 0, and no gaps will be left even if this
 #' is outside the original range of columns)
 #' @export
