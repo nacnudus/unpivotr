@@ -4,28 +4,34 @@
 \alias{anchor}
 \title{Filter for a cell from which to select others}
 \usage{
-anchor(cells, row, col)
+anchor(cells, rows, cols, cross = TRUE)
 }
 \arguments{
 \item{cells}{Data frame, the cells among which the anchor will be sought}
 
-\item{row}{Numeric, the row of the intended cell}
+\item{rows}{Numeric, the rows of the intended cells}
 
-\item{col}{Numeric, the column of the intended cell}
+\item{cols}{Numeric, the columns of the intended cell}
+
+\item{cross}{Logical, whether to 'cross' the given rows and columns to
+generate all combinations. Unless this is TRUE, \code{rows} and \code{cols}
+must be the same length.  TRUE by default.}
 }
 \description{
-\code{anchor} protects you from selecting an initial cell that
-does not exist.  This is useful when choosing an inital cell from which to
-search for others, using \code{\link{offset}} and \code{\link{extend}}.
-If the chosen cell does not exist, then cell is generated at the given
-row and column, with NA in every column other than 'row' and 'col'.
+\code{anchor} protects you from selecting initial cells that do
+not exist.  This is useful when choosing inital cells from which to search
+for others, using \code{\link{offset}} and \code{\link{extend}}.  If the
+chosen cells do not exist, then cells are generated at the given rows and
+columns, with NAs in every column other than 'row' and 'col'.
 }
 \examples{
 cells <- tidytable(purpose$`NNW WNW`)
 \dontrun{
   anchor(cells, 0, 1)
+  anchor(cells, 1, 1:2)
 }
 anchor(cells, 1, 1)
+anchor(cells, 1, 1:2, cross = TRUE)
 anchor(cells, 100, 1)
 }
 
