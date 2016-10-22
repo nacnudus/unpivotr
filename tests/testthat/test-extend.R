@@ -47,8 +47,8 @@ test_that("'n' must be numeric", {
 
 test_that("'n' must be a whole number", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, 0.1,
-                        "'n' must be a whole number (e.g. 1, 1L, 1.0)"))
+  expect_error(extend_N(bag, cells, 0.1),
+                        "'n' must be a whole number \\(e.g. 1, 1L, 1.0\\)")
 })
 
 test_that("'n' must be >= 0", {
