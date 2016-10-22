@@ -14,50 +14,62 @@ test_that("Extend to non-existant cell works, returning pad", {
 
 test_that("Extend with zero-row bag is an error", {
   bag <- cells[FALSE, ]
-  expect_error(extend_N(bag, cells, 1, include = TRUE))
+  expect_error(extend_N(bag, cells, 1, include = TRUE),
+               "Cannot extend an empty bag \\('bag' has no rows\\)")
 })
 
 test_that("Extend to boundary formula with include is an error", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, 1, include = TRUE))
+  expect_error(extend_N(bag, cells, 1, include = TRUE,
+                        "'scope = \"edge\"' and 'include' only apply when 'boundary' is specified"))
 })
 
 test_that("Extend to direction other than N, E, S, W is an error", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend(bag, cells, "A", 1))
+  expect_error(extend(bag, cells, "A", 1),
+               "'direction' must be one of 'N', 'S', 'E' and 'W'")
 })
 
 test_that("Exactly one of 'n' and 'boundary' must be specified", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
   expect_error(extend_N(bag, cells))
-  expect_error(extend_N(bag, cells, 2, boundary = ~ TRUE))
+  expect_error(extend_N(bag, cells, 2, boundary = ~ TRUE,
+                        "Exactly one of 'n' and 'boundary' must be specified"))
 })
 
 test_that("'n' must be numeric", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, ~ TRUE))
-  expect_error(extend_N(bag, cells, "N"))
+  expect_error(extend_N(bag, cells, ~ TRUE),
+               "'n' must be numeric; did you intend to use 'boundary'?")
+  expect_error(extend_N(bag, cells, "N"),
+               "'n' must be numeric")
 })
 
 test_that("'n' must be a whole number", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, 0.1))
+  expect_error(extend_N(bag, cells, 0.1,
+                        "'n' must be a whole number (e.g. 1, 1L, 1.0)"))
 })
 
 test_that("'n' must be >= 0", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, -1))
+  expect_error(extend_N(bag, cells, -1), "'n' must be >= 0")
 })
 
 test_that("'scope' and 'include' only apply when 'boundary' is specified", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, scope = "edge"))
-  expect_error(extend_N(bag, cells, include = TRUE))
+  expect_error(extend_N(bag, cells, scope = "edge"), 
+               "Exactly one of 'n' and 'boundary' must be specified")
+  expect_error(extend_N(bag, cells, include = TRUE),
+               "Exactly one of 'n' and 'boundary' must be specified")
 })
 
 test_that("Extend by n with edge is an error", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, 1, edge = TRUE))
+  expect_error(extend_N(bag, cells, 1, scope = "edge"),
+               "'scope = \"edge\"' and 'include' only apply when 'boundary' is specified")
+  expect_error(extend(bag, cells, "N", 1, scope = "edge"),
+               "'scope = \"edge\"' and 'include' only apply when 'boundary' is specified")
 })
 
 test_that("Extend by n without 'include' or 'scope' works", {

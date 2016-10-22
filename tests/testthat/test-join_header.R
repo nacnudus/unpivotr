@@ -297,8 +297,12 @@ test_that("Compass directions ABOVE and LEFT work with boundaries", {
   expect_equal(datacells[[5]], expect_age_short)
   expect_equal(datacells[[6]], expect_sex_short)
   expect_equal(datacells[[7]], expect_education_short)
-  expect_error(ABOVE(datacells, col_headers[[1]], left_border_cells[-2, ]))
-  expect_error(LEFT(datacells, row_headers[[1]], top_border_cells[-2, ]))
+  expect_error(ABOVE(datacells, col_headers[[1]], left_border_cells[-2, ]),
+               "Multiple headers were detected within the same pair of boundaries.
+  Please provide boundaries to separate every header.")
+  expect_error(LEFT(datacells, row_headers[[1]], top_border_cells[-2, ]),
+               "Multiple headers were detected within the same pair of boundaries.
+  Please provide boundaries to separate every header.")
 })
 
 test_that("Compass directions BELOW and RIGHT work with boundaries", {
@@ -339,8 +343,12 @@ test_that("Compass directions BELOW and RIGHT work with boundaries", {
   expect_equal(datacells[[5]], expect_age_short)
   expect_equal(datacells[[6]], expect_sex_short)
   expect_equal(datacells[[7]], expect_education_short)
-  expect_error(BELOW(datacells, col_headers[[1]], left_border_cells[-2, ]))
-  expect_error(RIGHT(datacells, row_headers[[1]], top_border_cells[-2, ]))
+  expect_error(BELOW(datacells, col_headers[[1]], left_border_cells[-2, ]),
+               "Multiple headers were detected within the same pair of boundaries.
+  Please provide boundaries to separate every header.")
+  expect_error(RIGHT(datacells, row_headers[[1]], top_border_cells[-2, ]),
+               "Multiple headers were detected within the same pair of boundaries.
+  Please provide boundaries to separate every header.")
 })
 
 test_that("join_header() works", {
@@ -354,12 +362,15 @@ test_that("join_header() works", {
     cells %>%
     filter(row >= 3, col >= 3, !is.na(character)) %>%
     select(row, col, value = as.integer(character))
-  expect_error(join_header(datacells, col_headers[[1]], "NORTH"))
+  expect_error(join_header(datacells, col_headers[[1]], "NORTH"),
+               "The direction NORTH, is either not recognised or not yet supported.")
   expect_error(join_header(datacells, 
                            col_headers[[1]] %>% extend_S(cells, 1),
-                           "W"))
+                           "W"),
+               "Multiple lines of headers are not supported in this way*")
   expect_error(join_header(datacells, col_headers[[1]], "N", 
-                           boundaries = col_headers[[2]]))
+                           boundaries = col_headers[[2]]), 
+               "'boundaries' is only supported for the directions 'ABOVE', 'RIGHT', 'BELOW' and 'LEFT'.")
   expect_equal(join_header(datacells, col_headers[[1]], "ABOVE"),
                ABOVE(datacells, col_headers[[1]]))
   expect_equal(join_header(datacells, col_headers[[1]], "N"),
