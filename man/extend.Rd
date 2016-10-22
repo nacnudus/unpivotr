@@ -9,19 +9,19 @@
 \title{Extend a bag of cells in one direction, optionally up to a boundary
 condition.}
 \usage{
-extend(bag, cells, direction, n = NULL, boundary = NULL, scope = "single",
+extend(bag, cells, direction, n = NULL, boundary = NULL, edge = FALSE,
   include = FALSE)
 
-extend_N(bag, cells, n = NULL, boundary = NULL, scope = "single",
+extend_N(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
   include = FALSE)
 
-extend_E(bag, cells, n = NULL, boundary = NULL, scope = "single",
+extend_E(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
   include = FALSE)
 
-extend_S(bag, cells, n = NULL, boundary = NULL, scope = "single",
+extend_S(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
   include = FALSE)
 
-extend_W(bag, cells, n = NULL, boundary = NULL, scope = "single",
+extend_W(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
   include = FALSE)
 }
 \arguments{
@@ -43,10 +43,8 @@ in the given direction.}
 go up to the 50th column.  NAs are treated the same as FALSE, but with a
 warning.}
 
-\item{scope}{Character vector length 1. Whether to require the boundary
-formula to be TRUE along the entire leading edge of the bag that is being
-extended ("edge"), rather than merely one or more cells along the edge
-("single", default).}
+\item{edge}{Logical vector length 1. Whether to require the boundary formula
+to be TRUE along the entire edge of the bag that is being extended.}
 
 \item{include}{Logical vector length 1. Whether to include in the extension
 the first cell (and its row/col of fellow cells) at which the boundary
@@ -59,8 +57,8 @@ the cells, e.g. their values.  More cells may be added to the bag by
 extending the bag in a given direction, either by a number of rows or
 columns, or up to (and optionally including) cells that meet a boundary
 condition.  The boundary may be required to be detected in every cell along
-the leading 'edge' of the bag, otherwise extension will stop at the nearest
-boundary that is detected.
+the 'edge' of the bag, otherwise extension will stop at the nearest boundary
+that is detected.
 }
 \details{
 A bag may have ragged rows or ragged cols. Gaps will be filled in,
@@ -94,6 +92,6 @@ extend_E(cell, cells, 15)
 # boundary formula on every possible cell in the given direction
 extend_E(cell, cells, boundary = ~ col == 15)
 cell <- cells[which(cells$row == 7 & cells$col \%in\% 1:2), ]
-extend_N(cell, cells, boundary = ~ !is.na(character), scope = "edge")
+extend_N(cell, cells, boundary = ~ !is.na(character), edge = TRUE)
 }
 

@@ -7,8 +7,8 @@
 #' extending the bag in a given direction, either by a number of rows or
 #' columns, or up to (and optionally including) cells that meet a boundary
 #' condition.  The boundary may be required to be detected in every cell along
-#' the leading 'edge' of the bag, otherwise extension will stop at the nearest
-#' boundary that is detected.
+#' the 'edge' of the bag, otherwise extension will stop at the nearest boundary
+#' that is detected.
 #' @param bag Data frame. The original selection, including at least the columns
 #' 'row' and 'column', which are numeric/integer vectors.
 #' @param cells Data frame. All the cells in the sheet, among which to extend
@@ -25,10 +25,8 @@
 #' @param include Logical vector length 1. Whether to include in the extension
 #' the first cell (and its row/col of fellow cells) at which the boundary
 #' condition is met.
-#' @param scope Character vector length 1. Whether to require the boundary
-#' formula to be TRUE along the entire leading edge of the bag that is being
-#' extended ("edge"), rather than merely one or more cells along the edge
-#' ("single", default).
+#' @param edge Logical vector length 1. Whether to require the boundary formula
+#' to be TRUE along the entire edge of the bag that is being extended.
 #' @details A bag may have ragged rows or ragged cols. Gaps will be filled in,
 #' even when n = 0.
 #' @name extend
@@ -51,48 +49,48 @@
 #' # boundary formula on every possible cell in the given direction
 #' extend_E(cell, cells, boundary = ~ col == 15)
 #' cell <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
-#' extend_N(cell, cells, boundary = ~ !is.na(character), scope = "edge")
+#' extend_N(cell, cells, boundary = ~ !is.na(character), edge = TRUE)
 extend <- function(bag, cells, direction, n = NULL, boundary = NULL,
-                   scope = "single", include = FALSE) {
-  test_extend_args(bag, direction, n, boundary, scope, include)
+                   edge = FALSE, include = FALSE) {
+  test_extend_args(bag, direction, n, boundary, edge, include)
   if (!is.null(n)) {
     if (n == 0) {return(bag)}
     n <- as.integer(n) # Prevents coercion of row/col to double
     extend_n(bag, cells, direction, n)
   } else {
-    extend_boundary(bag, cells, direction, boundary, scope, include)
+    extend_boundary(bag, cells, direction, boundary, edge, include)
   }
 }
 
 #' @describeIn extend Extend a bag of cells to the north
 #' @export
-extend_N <- function(bag, cells, n = NULL, boundary = NULL, scope = "single",
+extend_N <- function(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
                      include = FALSE) {
-  extend(bag, cells, "N", n, boundary, scope, include)
+  extend(bag, cells, "N", n, boundary, edge, include)
 }
 
 #' @describeIn extend Extend a bag of cells to the east
 #' @export
-extend_E <- function(bag, cells, n = NULL, boundary = NULL, scope = "single",
+extend_E <- function(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
                      include = FALSE) {
-  extend(bag, cells, "E", n, boundary, scope, include)
+  extend(bag, cells, "E", n, boundary, edge, include)
 }
 
 #' @describeIn extend Extend a bag of cells to the south
 #' @export
-extend_S <- function(bag, cells, n = NULL, boundary = NULL, scope = "single",
+extend_S <- function(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
                      include = FALSE) {
-  extend(bag, cells, "S", n, boundary, scope, include)
+  extend(bag, cells, "S", n, boundary, edge, include)
 }
 
 #' @describeIn extend Extend a bag of cells to the west
 #' @export
-extend_W <- function(bag, cells, n = NULL, boundary = NULL, scope = "single",
+extend_W <- function(bag, cells, n = NULL, boundary = NULL, edge = FALSE,
                      include = FALSE) {
-  extend(bag, cells, "W", n, boundary, scope, include)
+  extend(bag, cells, "W", n, boundary, edge, include)
 }
 
-test_extend_args <- function(bag, direction, n, boundary, scope, include) {
+test_extend_args <- function(bag, direction, n, boundary, edge, include) {
   if (nrow(bag) == 0) {
     stop("Cannot extend an empty bag ('bag' has no rows)")
   }
@@ -114,8 +112,8 @@ test_extend_args <- function(bag, direction, n, boundary, scope, include) {
       if (n %% 1 != 0) {stop("'n' must be a whole number (e.g. 1, 1L, 1.0)")}
     }
   }
-  if (is.null(boundary) && ((scope != "single") || include)) {
-    stop("'scope' and 'include' only apply when 'boundary' is specified")
+  if (is.null(boundary) && (edge || include)) {
+    stop("'edge' and 'include' only apply when 'boundary' is specified")
   }
 }
 
@@ -154,7 +152,7 @@ extend_n <- function(bag, cells, direction, n) {
     dplyr::bind_rows(bag)
 }
 
-extend_boundary <- function(bag, cells, direction, boundary, scope, include) {
+extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
   if (direction == "N") {
     rowcol_function <- max
     rowcol_function_opposite <- min
@@ -207,7 +205,7 @@ extend_boundary <- function(bag, cells, direction, boundary, scope, include) {
                   col <= x2) %>%
     pad(c(y1, y2), c(x1, x2)) %>% # Pad with blanks for boundary formula's sake
     dplyr::mutate_(.boundary = boundary) # Apply the boundary formula
-  if (scope == "edge") {
+  if (edge) {
     # Filter for edges where the boundary exists in every row/col
     boundaries <- 
       cells %>%
