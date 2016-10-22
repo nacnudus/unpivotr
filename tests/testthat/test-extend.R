@@ -49,18 +49,18 @@ test_that("'n' must be >= 0", {
   expect_error(extend_N(bag, cells, -1))
 })
 
-test_that("'edge' and 'include' only apply when 'boundary' is specified", {
+test_that("'scope' and 'include' only apply when 'boundary' is specified", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, edge = TRUE))
+  expect_error(extend_N(bag, cells, scope = "edge"))
   expect_error(extend_N(bag, cells, include = TRUE))
 })
 
-test_that("Extend to boundary formula with edge is an error", {
+test_that("Extend by n with edge is an error", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
   expect_error(extend_N(bag, cells, 1, edge = TRUE))
 })
 
-test_that("Extend to boundary formula without include or edge works", {
+test_that("Extend by n without 'include' or 'scope' works", {
   bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
   rowcol <- extend_E(bag, cells,
                      boundary = ~ !is.na(character))[, c("row", "col")]
@@ -76,21 +76,21 @@ test_that("Extend to boundary formula with include works", {
                                   col = c(1L, 2L, 1L, 2L)))
 })
 
-test_that("Extend to boundary formula with edge works", {
+test_that("Extend to boundary formula with 'scope' works", {
   bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
   rowcol <- extend_N(bag, cells,
                      boundary = ~ !is.na(character),
-                     edge = TRUE)[, c("row", "col")]
+                     scope = "edge")[, c("row", "col")]
   expect_equal(rowcol, data.frame(row = rep(4:7, each = 2), 
                                   col = rep(1:2, times = 4)))
 })
 
-test_that("Extend to boundary formula with include and edge works", {
+test_that("Extend to boundary formula with include and 'scope' works", {
   bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
   rowcol <- extend_N(bag, cells,
                      boundary = ~ !is.na(character),
                      include = TRUE,
-                     edge = TRUE)[, c("row", "col")]
+                     scope = "edge")[, c("row", "col")]
   expect_equal(rowcol, data.frame(row = rep(3:7, each = 2), 
                                   col = rep(1:2, times = 5)))
 })

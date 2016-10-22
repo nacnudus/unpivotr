@@ -107,7 +107,7 @@ datacells <-
   extend_E(cells, 4) %>%
   extend_S(cells,                       # Extend down to a blank row
            boundary = ~ is.na(content), # The formula detects blank cells
-           edge = TRUE) %>%             # Require the whole row to be blank
+           scope = "edge") %>%          # Require the whole row to be blank
   filter(!is.na(content)) %>%           # Remove remaining blanks
   mutate(value = as.double(content)) %>%# Convert the values to double
   select(row, col, value)               # Prepare for joining to headers
@@ -164,7 +164,7 @@ tidy <- function(x) {
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
-             edge = TRUE) %>%            
+             scope = "edge") %>%            
     filter(!is.na(content)) %>%          
     mutate(value = as.double(content)) %>%
     select(row, col, value)               
@@ -202,7 +202,7 @@ row_headers <-
   map_df(row_headers, 
     ~ .x %>% 
       extend_S(cells, boundary = ~ is.na(content)) %>%
-      extend_E(cells, boundary = ~ is.na(content), edge = TRUE) %>%
+      extend_E(cells, boundary = ~ is.na(content), scope = "edge") %>%
       filter(!is.na(content)) %>%
       # This concatenates the "Dec-20 to Mar-20" cells into one column.
       # First it converts Excel dates, via R dates, into text.
@@ -239,7 +239,7 @@ tidy <- function(x) {
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
-             edge = TRUE) %>%            
+             scope = "edge") %>%            
     filter(!is.na(content)) %>%          
     mutate(value = as.double(content)) %>%
     select(row, col, value)               
@@ -281,7 +281,7 @@ row_headers <-
   map_df(row_headers, 
     ~ .x %>% 
       extend_S(cells, boundary = ~ is.na(content)) %>%
-      extend_E(cells, boundary = ~ is.na(content), edge = TRUE) %>%
+      extend_E(cells, boundary = ~ is.na(content), scope = "edge") %>%
       filter(!is.na(content)) %>%
       mutate(character = ifelse(!is.na(character),
                                 character,
@@ -308,7 +308,7 @@ tidy <- function(x) {
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
-             edge = TRUE) %>%            
+             scope = "edge") %>%            
     filter(!is.na(content)) %>%          
     mutate(value = as.double(content)) %>%
     select(row, col, value)               
