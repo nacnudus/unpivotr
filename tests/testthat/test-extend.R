@@ -21,7 +21,7 @@ test_that("Extend with zero-row bag is an error", {
 test_that("Extend to boundary formula with include is an error", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
   expect_error(extend_N(bag, cells, 1, include = TRUE,
-                        "'scope = \"edge\"' and 'include' only apply when 'boundary' is specified"))
+                        "'scope' and 'include' only apply when 'boundary' is specified"))
 })
 
 test_that("Extend to direction other than N, E, S, W is an error", {
@@ -67,9 +67,9 @@ test_that("'scope' and 'include' only apply when 'boundary' is specified", {
 test_that("Extend by n with edge is an error", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
   expect_error(extend_N(bag, cells, 1, scope = "edge"),
-               "'scope = \"edge\"' and 'include' only apply when 'boundary' is specified")
+               "'scope' and 'include' only apply when 'boundary' is specified")
   expect_error(extend(bag, cells, "N", 1, scope = "edge"),
-               "'scope = \"edge\"' and 'include' only apply when 'boundary' is specified")
+               "'scope' and 'include' only apply when 'boundary' is specified")
 })
 
 test_that("Extend by n without 'include' or 'scope' works", {

@@ -115,7 +115,7 @@ test_extend_args <- function(bag, direction, n, boundary, scope, include) {
     }
   }
   if (is.null(boundary) && ((scope != "single") || include)) {
-    stop("'scope = \"edge\"' and 'include' only apply when 'boundary' is specified")
+    stop("'scope' and 'include' only apply when 'boundary' is specified")
   }
 }
 
