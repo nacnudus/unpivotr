@@ -7,7 +7,7 @@ unpivotr
 
 [unpivotr](https://github.com/nacnudus/unpivotr) provides tools for converting data from complex or irregular layouts to a columnar structure. For example, tables with multi-level column or row headers, or spreadsheets. Header and data cells are selected by their contents, position and formatting, and are associated with one other by their relative positions.
 
-Excel (.xlsx) files can be prepared for [unpivotr](https://github.com/nacnudus/unpivotr) the [tidyxl](https://github.com/nacnudus/tidyxl) package.
+Excel (.xlsx) files can be prepared for [unpivotr](https://github.com/nacnudus/unpivotr) via the [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
 Installation
 ------------

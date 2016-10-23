@@ -26,7 +26,7 @@ cells are selected by their contents, position and formatting, and are
 associated with one other by their relative positions.
 
 Excel (.xlsx) files can be prepared for
-[unpivotr](https://github.com/nacnudus/unpivotr) the
+[unpivotr](https://github.com/nacnudus/unpivotr) via the
 [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
 ## Installation
