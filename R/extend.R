@@ -7,8 +7,8 @@
 #' extending the bag in a given direction, either by a number of rows or
 #' columns, or up to (and optionally including) cells that meet a boundary
 #' condition.  The boundary may be required to be detected in every cell along
-#' the 'edge' of the bag, otherwise extension will stop at the nearest boundary
-#' that is detected.
+#' the 'leading edge' of the bag, otherwise extension will stop at the nearest
+#' boundary that is detected.
 #' @param bag Data frame. The original selection, including at least the columns
 #' 'row' and 'column', which are numeric/integer vectors.
 #' @param cells Data frame. All the cells in the sheet, among which to extend
@@ -26,7 +26,7 @@
 #' the first cell (and its row/col of fellow cells) at which the boundary
 #' condition is met.
 #' @param edge Logical vector length 1. Whether to require the boundary formula
-#' to be TRUE along the entire edge of the bag that is being extended.
+#' to be TRUE along the entire leading edge of the bag that is being extended.
 #' @details A bag may have ragged rows or ragged cols. Gaps will be filled in,
 #' even when n = 0.
 #' @name extend
