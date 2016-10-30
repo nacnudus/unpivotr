@@ -47,7 +47,7 @@
 #' extend_E(cell, cells, 15)
 #' # This doesn't work inside formulas, because it would mean testing the
 #' # boundary formula on every possible cell in the given direction
-#' extend_E(cell, cells, boundary = ~ col == 15)
+#' \dontrun{extend_E(cell, cells, boundary = ~ col == 15)}
 #' cell <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
 #' extend_N(cell, cells, boundary = ~ !is.na(character), edge = TRUE)
 extend <- function(bag, cells, direction, n = NULL, boundary = NULL,
@@ -218,12 +218,7 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
       dplyr::filter(cells, .boundary) %>% .[[rowcol_text]]
   }
   if (length(boundaries) == 0) {
-    # Return all cells by setting boundary to the padded extra row/col
-    if (nrow(cells) == 0) {
-      boundaries <- 1
-    } else {
-      boundaries <- rowcol_function_opposite(cells[[rowcol_text]])
-    }
+    stop("No boundary detected")
   }
   # Get cells up to the nearest boundary in any row/col
   near_boundary <- rowcol_function(boundaries)

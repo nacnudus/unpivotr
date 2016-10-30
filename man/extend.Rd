@@ -90,7 +90,7 @@ extend_E(cell, cells, boundary = ~ col == 5, include = TRUE)
 extend_E(cell, cells, 15)
 # This doesn't work inside formulas, because it would mean testing the
 # boundary formula on every possible cell in the given direction
-extend_E(cell, cells, boundary = ~ col == 15)
+\dontrun{extend_E(cell, cells, boundary = ~ col == 15)}
 cell <- cells[which(cells$row == 7 & cells$col \%in\% 1:2), ]
 extend_N(cell, cells, boundary = ~ !is.na(character), edge = TRUE)
 }

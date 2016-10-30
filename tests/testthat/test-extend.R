@@ -141,12 +141,10 @@ test_that("'n' equal to 0 return original bag", {
   expect_equal(extend_N(bag, cells, n = 0)$row, 2)
 })
 
-test_that("Boundaries not found return all cells in given direction", {
+test_that("Undetected boundaries result in an error", {
   bag <- anchor(cells, 1, 1)
-  expect_equal(nrow(extend_N(bag, cells, boundary = ~ FALSE)), 1)
-  expect_equal(nrow(extend_E(bag, cells, boundary = ~ FALSE)), 6)
-  expect_equal(nrow(extend_S(bag, cells, boundary = ~ FALSE)), 22)
-  expect_equal(nrow(extend_W(bag, cells, boundary = ~ FALSE)), 1)
+  expect_error(extend_N(bag, cells, boundary = ~ character == "Boo!"),
+               "No boundary detected")
 })
 
 test_that("Bags cannot be extended into zero or negative space", {
