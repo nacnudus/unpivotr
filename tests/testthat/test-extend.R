@@ -18,12 +18,6 @@ test_that("Extend with zero-row bag is an error", {
                "Cannot extend an empty bag \\('bag' has no rows\\)")
 })
 
-test_that("Extend to boundary formula with include is an error", {
-  bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, 1, include = TRUE,
-                        "'edge' and 'include' only apply when 'boundary' is specified"))
-})
-
 test_that("Extend to direction other than N, E, S, W is an error", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
   expect_error(extend(bag, cells, "A", 1),
