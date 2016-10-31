@@ -36,7 +36,7 @@
 #' (x <- purpose$`NNW WNW`)
 #' # Make a tidy representation
 #' cells <- tidytable(x, rownames = FALSE, colnames = FALSE)
-#' cells <- cells[!is.na(cells$character), ]
+#' cells <- cells[!is.na(cells$character), ] # Introduce 'holes' in the data
 #' # Select a particular cell
 #' cell <- cells[which(cells$row == 3 & cells$col == 3), ]
 #' # Extend the selection downwards, stopping before the NA.
