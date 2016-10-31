@@ -89,7 +89,7 @@ select each row one by one, assigning them to different variables.
 ```{r}
 col_headers <- 
   fixed_price %>%
-  offset(cells, rows = -1) %>%  # Offset up one row to "IF NWPL Rocky Mountains"
+  offset_N(cells, n = 1) %>%    # Offset up one row to "IF NWPL Rocky Mountains"
   extend_E(cells, 3) %>%        # Extend to the right edge of the table
   extend_S(cells, 2) %>%        # Extend down to the third row of the headers
   filter(!is.na(content)) %>%   # Remove blanks
@@ -103,7 +103,7 @@ Now select the data cells, starting from the 'Fixed Price' header again.
 ```{r}
 datacells <- 
   fixed_price %>%
-  offset(cells, rows = 2) %>%
+  offset_S(cells, n = 2) %>%
   extend_E(cells, 4) %>%
   extend_S(cells,                       # Extend down to a blank row
            boundary = ~ is.na(content), # The formula detects blank cells
@@ -152,7 +152,7 @@ function.  Everything else is the same.
 tidy <- function(x) {
   col_headers <- 
     x %>%
-    offset(cells, rows = -1) %>%
+    offset_N(cells, n = 1) %>%
     extend_E(cells, 3) %>%      
     extend_S(cells, 2) %>%      
     filter(!is.na(content)) %>% 
@@ -160,7 +160,7 @@ tidy <- function(x) {
     split(.$row)
   datacells <- 
     x %>%
-    offset(cells, rows = 2) %>%
+    offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
@@ -227,7 +227,7 @@ into the definition of `tidy()` below (see the bottom line).
 tidy <- function(x) {
   col_headers <- 
     x %>%
-    offset(cells, rows = -1) %>%
+    offset_N(cells, n = 1) %>%
     extend_E(cells, 3) %>%      
     extend_S(cells, 2) %>%      
     filter(!is.na(content)) %>% 
@@ -235,7 +235,7 @@ tidy <- function(x) {
     split(.$row)
   datacells <- 
     x %>%
-    offset(cells, rows = 2) %>%
+    offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
@@ -296,7 +296,7 @@ row_headers <-
 tidy <- function(x) {
   col_headers <- 
     x %>%
-    offset(cells, rows = -1) %>%
+    offset_N(cells, n = 1) %>%
     extend_E(cells, 3) %>%      
     extend_S(cells, 2) %>%      
     filter(!is.na(content)) %>% 
@@ -304,7 +304,7 @@ tidy <- function(x) {
     split(.$row)
   datacells <- 
     x %>%
-    offset(cells, rows = 2) %>%
+    offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
