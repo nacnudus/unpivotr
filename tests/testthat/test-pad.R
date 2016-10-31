@@ -12,4 +12,6 @@ test_that("pad() returns predictable cells", {
   expect_equal(nrow(pad(bag)), 4)
   expect_equal(nrow(pad(bag, 3:5, 1:3)), 9)
   expect_equal(nrow(pad(bag, 6, 4)), 16)
+  bag <- bag[FALSE, ]
+  expect_equal(pad(bag), bag)
 })
