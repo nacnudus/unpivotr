@@ -120,7 +120,7 @@ test_extend_args <- function(bag, direction, n, boundary, edge, include) {
 extend_n <- function(bag, cells, direction, n) {
   n <- as.integer(n)
   if (direction == "N") {
-    y1 <- min(bag$row) - 1L
+    y1 <- max(min(bag$row) - 1L, 1L)
     y2 <- y1 - n + 1L
     x1 <- min(bag$col)
     x2 <- max(bag$col)
@@ -140,7 +140,7 @@ extend_n <- function(bag, cells, direction, n) {
   if (direction == "W") {
     y1 <- min(bag$row)
     y2 <- max(bag$row)
-    x1 <- min(bag$col) - 1L
+    x1 <- max(min(bag$col) - 1L, 1L)
     x2 <- x1 - n + 1L
   }
   cells %>%
@@ -158,7 +158,7 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
     rowcol_function_opposite <- min
     rowcol_formula <- ~ row
     lt_gt <- `>`
-    y1 <- min(cells$row) - 1L # Zero will be padded as NA for boundary formula
+    y1 <- max(min(cells$row) - 1L, 1L)
     y2 <- min(bag$row) - 1L
     x1 <- min(bag$col)
     x2 <- max(bag$col)
@@ -191,7 +191,7 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
     lt_gt <- `>`
     y1 <- min(bag$row)
     y2 <- max(bag$row)
-    x1 <- min(cells$col) - 1L # Zero will be padded as NA for boundary formula
+    x1 <- max(min(cells$col) - 1L, 1L)
     x2 <- min(bag$col) - 1L
     include <- 0 - include
   }
