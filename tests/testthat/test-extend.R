@@ -1,5 +1,3 @@
-library(testthat)
-library(unpivotr)
 context("extend()")
 
 x <- purpose$`NNW WNW`
@@ -27,8 +25,8 @@ test_that("Extend to direction other than N, E, S, W is an error", {
 test_that("Exactly one of 'n' and 'boundary' must be specified", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
   expect_error(extend_N(bag, cells))
-  expect_error(extend_N(bag, cells, 2, boundary = ~ TRUE,
-                        "Exactly one of 'n' and 'boundary' must be specified"))
+  expect_error(extend_N(bag, cells, 2, boundary = ~ TRUE),
+                        "Exactly one of 'n' and 'boundary' must be specified")
 })
 
 test_that("'n' must be numeric", {
