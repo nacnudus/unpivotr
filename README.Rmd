@@ -12,7 +12,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 # unpivotr
+
+**NOTE! The vignettes use an old version of
+[tidyxl](https://github.com/nacnudus/tidyxl)**
 
 [![Travis-CI Build Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr)
