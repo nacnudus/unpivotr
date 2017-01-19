@@ -3,7 +3,7 @@
 unpivotr
 ========
 
-[![Travis-CI Build Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr) [![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://codecov.io/gh/nacnudus/unpivotr)
+[![Travis-CI Build Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr) ![Cran Status](http://www.r-pkg.org/badges/version/unpivotr) ![Cran Downloads](https://cranlogs.r-pkg.org/badges/unpivotr) [![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://codecov.io/gh/nacnudus/unpivotr)
 
 [unpivotr](https://github.com/nacnudus/unpivotr) provides tools for converting data from complex or irregular layouts to a columnar structure. For example, tables with multi-level column or row headers, or spreadsheets. Header and data cells are selected by their contents, position and formatting, and are associated with one other by their relative positions.
 
@@ -31,11 +31,6 @@ The package includes a dataset, `purpose`, which is a list of pivot tables, deri
 
 ``` r
 library(unpivotr)
-#> 
-#> Attaching package: 'unpivotr'
-#> The following object is masked from 'package:stats':
-#> 
-#>     offset
 head(purpose$Tidy) # 'Tidy' version of the data
 #>    Sex Age group (Life-stages) Highest qualification Sense of purpose
 #> 1 Male                 15 - 24      No Qualification            0 - 6
@@ -96,14 +91,6 @@ This can easily be subset for header and data cells.
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 # Select the cells containing the values
 datacells <-
   cells %>%
