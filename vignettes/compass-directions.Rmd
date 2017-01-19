@@ -356,7 +356,7 @@ identical(ABOVE_LEFT[, -1:-2], BELOW_RIGHT[, -1:-2])
 
 ```{r, echo = TRUE}
 spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-cells <- contents(spreadsheet, "ABOVE LEFT border")[[1]]
+cells <- tidy_xlsx(spreadsheet, "ABOVE LEFT border")$data[[1]]
 ```
 
 ### Headers
@@ -395,7 +395,7 @@ datacells
 ```{r, echo = TRUE}
 # Different from ABOVE LEFT without borders
 # Find cells with borders on the bottom, and ones with borders on the left
-formatting <- formats(spreadsheet)
+formatting <- tidy_xlsx(spreadsheet)$formats
 left_borders <- which(!is.na(formatting$local$border$left$style))
 top_borders <- which(!is.na(formatting$local$border$top$style))
 
@@ -430,7 +430,7 @@ ABOVE_LEFT_borders <- datacells %>% arrange(row, col)
 ## BELOW RIGHT border example
 
 ```{r, echo = TRUE}
-cells <- contents(spreadsheet, "BELOW RIGHT border")[[1]]
+cells <- tidy_xlsx(spreadsheet, "BELOW RIGHT border")$data[[1]]
 ```
 
 ### Headers
@@ -469,7 +469,7 @@ datacells
 ```{r, echo = TRUE}
 # Different from BELOW RIGHT without borders
 # Find cells with borders on the bottom, and ones with borders on the left
-formatting <- formats(spreadsheet)
+formatting <- tidy_xlsx(spreadsheet)$formats
 left_borders <- which(!is.na(formatting$local$border$left$style))
 top_borders <- which(!is.na(formatting$local$border$top$style))
 

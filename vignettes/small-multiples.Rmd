@@ -54,21 +54,22 @@ path <- system.file("extdata/enron.xlsx",
 
 ### Importing the data
 
-Spreadsheet cells are imported with the `contents()` function.  By default, this
-returns all the sheets in the spreadsheet, as elements in a list.  Since there
-is only one sheet in this file, it is a list of length 1, but it is still a list
-for the sake of consistency.  Hence the sheet is accessed with the list
+Spreadsheet cells are imported with the `tidy_xlsx()` function.  By default, this
+returns all the sheets in the spreadsheet, as elements in a list, wrapped in
+another list of two elements: data and formats.  Since there is only one sheet
+in this file, the data list has length 1, but it is still a list for the sake of
+consistency.  Hence the sheet is accessed with the list
 subsetter `[[1]]`.
 
 ```{r}
-cells <- contents(path)[[1]]
+cells <- tidy_xlsx(path)$data[[1]]
 ```
 
 Cell formatting isn't required for this vignette, but if it were, it would be
-imported via the `formats()` function.
+imported via `tidy_xlsx(path)$formats`.
 
 ```{r, eval = FALSE}
-formatting <- formats(path)[[1]]
+formatting <- tidy_xlsx(path)$formats
 ```
 
 ### Importing one of the multiples
