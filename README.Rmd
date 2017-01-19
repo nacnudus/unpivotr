@@ -69,13 +69,13 @@ This can easily be subset for header and data cells.
 ```{r, echo = TRUE}
 library(dplyr)
 # Select the cells containing the values
-datacells <- 
+datacells <-
   cells %>%
   filter(row >= 3, col >= 3)
 head(datacells)
 
 # Select the row headers
-row_headers <- 
+row_headers <-
   cells %>%
   filter(col <= 2) %>%
   select(row, col, header = character) %>%
@@ -83,7 +83,7 @@ row_headers <-
 lapply(row_headers, head)
 
 # Select the column headers
-col_headers <- 
+col_headers <-
   cells %>%
   filter(row <= 2) %>%
   select(row, col, header = character) %>%
@@ -96,7 +96,7 @@ the data cells with the headers, by proximity in given compass directions.
 
 ```{r, echo = TRUE}
 # From each data cell, search for the nearest one of each of the headers
-unpivoted <- 
+unpivoted <-
   datacells %>%
   NNW(col_headers$`1`) %>% # Search north (up) and north-west (up-left)
   N(col_headers$`2`) %>% # Search directly north (up)
@@ -109,7 +109,7 @@ We can re-pivot the final data in R using `ftable()` to check that it has been
 imported correctly.
 
 ```{r, echo = TRUE}
-ftable(unpivoted[7:10], 
+ftable(unpivoted[7:10],
        row.vars = 3:4,
        col.vars = 1:2)
 ```
@@ -155,7 +155,7 @@ computers are limited by their ignorance.  Programmers are hampered by:
 * loss of information in transfer from spreadsheet to programming library
 
 Information is lost when software discards it in order to force the data into
-tabular form.  Sometimes date formatting is retained, but mostly formatting 
+tabular form.  Sometimes date formatting is retained, but mostly formatting
 and comments are lost, and position has to be inferred.
 
 ## Similar projects

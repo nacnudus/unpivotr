@@ -31,6 +31,11 @@ The package includes a dataset, `purpose`, which is a list of pivot tables, deri
 
 ``` r
 library(unpivotr)
+#> 
+#> Attaching package: 'unpivotr'
+#> The following object is masked from 'package:stats':
+#> 
+#>     offset
 head(purpose$Tidy) # 'Tidy' version of the data
 #>    Sex Age group (Life-stages) Highest qualification Sense of purpose
 #> 1 Male                 15 - 24      No Qualification            0 - 6
@@ -91,8 +96,16 @@ This can easily be subset for header and data cells.
 
 ``` r
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 # Select the cells containing the values
-datacells <- 
+datacells <-
   cells %>%
   filter(row >= 3, col >= 3)
 head(datacells)
@@ -105,7 +118,7 @@ head(datacells)
 #> 6   9   3     30000     NA      NA      NA
 
 # Select the row headers
-row_headers <- 
+row_headers <-
   cells %>%
   filter(col <= 2) %>%
   select(row, col, header = character) %>%
@@ -129,7 +142,7 @@ lapply(row_headers, head)
 #> 11   8   2 25 - 44
 
 # Select the column headers
-col_headers <- 
+col_headers <-
   cells %>%
   filter(row <= 2) %>%
   select(row, col, header = character) %>%
@@ -152,7 +165,7 @@ Using [unpivotr](https://github.com/nacnudus/unpivotr) functions, we associate t
 
 ``` r
 # From each data cell, search for the nearest one of each of the headers
-unpivoted <- 
+unpivoted <-
   datacells %>%
   NNW(col_headers$`1`) %>% # Search north (up) and north-west (up-left)
   N(col_headers$`2`) %>% # Search directly north (up)
@@ -179,7 +192,7 @@ unpivoted
 We can re-pivot the final data in R using `ftable()` to check that it has been imported correctly.
 
 ``` r
-ftable(unpivoted[7:10], 
+ftable(unpivoted[7:10],
        row.vars = 3:4,
        col.vars = 1:2)
 #>                                                 header.data   Female         Male       

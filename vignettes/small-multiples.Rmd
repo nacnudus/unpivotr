@@ -2,7 +2,7 @@
 title: "Small Multiples"
 author: "Duncan Garmonsway"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
@@ -88,7 +88,7 @@ individually be joined to the data cells later.  Another way to do this is to
 select each row one by one, assigning them to different variables.
 
 ```{r}
-col_headers <- 
+col_headers <-
   fixed_price %>%
   offset_N(cells, n = 1) %>%    # Offset up one row to "IF NWPL Rocky Mountains"
   extend_E(cells, 3) %>%        # Extend to the right edge of the table
@@ -102,7 +102,7 @@ col_headers
 Now select the data cells, starting from the 'Fixed Price' header again.
 
 ```{r}
-datacells <- 
+datacells <-
   fixed_price %>%
   offset_S(cells, n = 2) %>%
   extend_E(cells, 4) %>%
@@ -138,7 +138,7 @@ Since each cell has a unique combination of `row` and `col`, that combination
 can be used to separate the cells into list elements.
 
 ```{r}
-fixed_price <- 
+fixed_price <-
   cells %>%
   filter(character == "Fixed Price") %>%
   split(paste(.$row, .$col))
@@ -151,24 +151,24 @@ function.  Everything else is the same.
 
 ```{r}
 tidy <- function(x) {
-  col_headers <- 
+  col_headers <-
     x %>%
     offset_N(cells, n = 1) %>%
-    extend_E(cells, 3) %>%      
-    extend_S(cells, 2) %>%      
-    filter(!is.na(content)) %>% 
+    extend_E(cells, 3) %>%
+    extend_S(cells, 2) %>%
+    filter(!is.na(content)) %>%
     select(row, col, value = character) %>%
     split(.$row)
-  datacells <- 
+  datacells <-
     x %>%
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
-             edge = TRUE) %>%            
-    filter(!is.na(content)) %>%          
+             edge = TRUE) %>%
+    filter(!is.na(content)) %>%
     mutate(value = as.double(content)) %>%
-    select(row, col, value)               
+    select(row, col, value)
   datacells %>%
     NNW(col_headers[[1]]) %>%
     NNW(col_headers[[2]]) %>%
@@ -194,14 +194,14 @@ on the left-hand side of the spreadsheet.  The following code incorporates these
 into the final dataset.
 
 ```{r}
-row_headers <- 
+row_headers <-
   cells %>%
   filter(character == "Cash") %>%
   split(paste(.$row, .$col))
 
-row_headers <- 
-  map_df(row_headers, 
-    ~ .x %>% 
+row_headers <-
+  map_df(row_headers,
+    ~ .x %>%
       extend_S(cells, boundary = ~ is.na(content)) %>%
       extend_E(cells, boundary = ~ is.na(content), edge = TRUE) %>%
       filter(!is.na(content)) %>%
@@ -226,24 +226,24 @@ into the definition of `tidy()` below (see the bottom line).
 
 ```{r}
 tidy <- function(x) {
-  col_headers <- 
+  col_headers <-
     x %>%
     offset_N(cells, n = 1) %>%
-    extend_E(cells, 3) %>%      
-    extend_S(cells, 2) %>%      
-    filter(!is.na(content)) %>% 
+    extend_E(cells, 3) %>%
+    extend_S(cells, 2) %>%
+    filter(!is.na(content)) %>%
     select(row, col, value = character) %>%
     split(.$row)
-  datacells <- 
+  datacells <-
     x %>%
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
-             edge = TRUE) %>%            
-    filter(!is.na(content)) %>%          
+             edge = TRUE) %>%
+    filter(!is.na(content)) %>%
     mutate(value = as.double(content)) %>%
-    select(row, col, value)               
+    select(row, col, value)
   datacells %>%
     NNW(col_headers[[1]]) %>%
     NNW(col_headers[[2]]) %>%
@@ -266,21 +266,21 @@ library(stringr)
 
 path <- system.file("extdata/enron.xlsx",
                     package = "unpivotr")
-cells <- contents(path)[[1]]
+cells <- tidy_xlsx(path)$[[1]]
 
-fixed_price <- 
+fixed_price <-
   cells %>%
   filter(character == "Fixed Price") %>%
   split(paste(.$row, .$col))
 
-row_headers <- 
+row_headers <-
   cells %>%
   filter(character == "Cash") %>%
   split(paste(.$row, .$col))
 
-row_headers <- 
-  map_df(row_headers, 
-    ~ .x %>% 
+row_headers <-
+  map_df(row_headers,
+    ~ .x %>%
       extend_S(cells, boundary = ~ is.na(content)) %>%
       extend_E(cells, boundary = ~ is.na(content), edge = TRUE) %>%
       filter(!is.na(content)) %>%
@@ -295,24 +295,24 @@ row_headers <-
       select(row, col, value))
 
 tidy <- function(x) {
-  col_headers <- 
+  col_headers <-
     x %>%
     offset_N(cells, n = 1) %>%
-    extend_E(cells, 3) %>%      
-    extend_S(cells, 2) %>%      
-    filter(!is.na(content)) %>% 
+    extend_E(cells, 3) %>%
+    extend_S(cells, 2) %>%
+    filter(!is.na(content)) %>%
     select(row, col, value = character) %>%
     split(.$row)
-  datacells <- 
+  datacells <-
     x %>%
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
              boundary = ~ is.na(content),
-             edge = TRUE) %>%            
-    filter(!is.na(content)) %>%          
+             edge = TRUE) %>%
+    filter(!is.na(content)) %>%
     mutate(value = as.double(content)) %>%
-    select(row, col, value)               
+    select(row, col, value)
   datacells %>%
     NNW(col_headers[[1]]) %>%
     NNW(col_headers[[2]]) %>%
