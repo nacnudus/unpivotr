@@ -36,4 +36,3 @@ tidytable(as.matrix(Formaldehyde))
 tidytable(Formaldehyde, colnames = FALSE)
 tidytable(Formaldehyde, rownames = FALSE)
 }
-

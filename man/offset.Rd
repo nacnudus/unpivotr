@@ -71,6 +71,7 @@ even when n = 0.
 
 \item \code{offset_W}: Offset a bag of cells to the west
 }}
+
 \examples{
 # Load some pivoted data
 (x <- purpose$`NNW WNW`)
@@ -95,4 +96,3 @@ offset_E(cell, cells, 15)
 cell <- cells[which(cells$row == 7 & cells$col \%in\% 1:2), ]
 offset_N(cell, cells, boundary = ~ !is.na(character), edge = TRUE)
 }
-

@@ -50,7 +50,7 @@ test_that("'n' must be >= 0", {
 
 test_that("'edge' and 'include' only apply when 'boundary' is specified", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(extend_N(bag, cells, edge = TRUE), 
+  expect_error(extend_N(bag, cells, edge = TRUE),
                "Exactly one of 'n' and 'boundary' must be specified")
   expect_error(extend_N(bag, cells, include = TRUE),
                "Exactly one of 'n' and 'boundary' must be specified")
@@ -76,7 +76,7 @@ test_that("Extend to boundary formula with include works", {
   rowcol <- extend_N(bag, cells,
                      boundary = ~ !is.na(character),
                      include = TRUE)[, c("row", "col")]
-  expect_equal(rowcol, data.frame(row = c(6L, 6L, 7L, 7L), 
+  expect_equal(rowcol, data.frame(row = c(6L, 6L, 7L, 7L),
                                   col = c(1L, 2L, 1L, 2L)))
 })
 
@@ -85,7 +85,7 @@ test_that("Extend to boundary formula with 'edge' works", {
   rowcol <- extend_N(bag, cells,
                      boundary = ~ !is.na(character),
                      edge = TRUE)[, c("row", "col")]
-  expect_equal(rowcol, data.frame(row = rep(4:7, each = 2), 
+  expect_equal(rowcol, data.frame(row = rep(4:7, each = 2),
                                   col = rep(1:2, times = 4)))
 })
 
@@ -95,7 +95,7 @@ test_that("Extend to boundary formula with include and 'edge' works", {
                      boundary = ~ !is.na(character),
                      include = TRUE,
                      edge = TRUE)[, c("row", "col")]
-  expect_equal(rowcol, data.frame(row = rep(3:7, each = 2), 
+  expect_equal(rowcol, data.frame(row = rep(3:7, each = 2),
                                   col = rep(1:2, times = 5)))
 })
 
@@ -106,7 +106,7 @@ test_that("Boundary formulas returning NAs are ignored with a warning", {
                        boundary = ~ as.integer(character) < 10000
                        )[, c("row", "col")]
     )
-  expect_equal(rowcol, data.frame(row = 3L, 
+  expect_equal(rowcol, data.frame(row = 3L,
                                   col = 2:1))
 })
 
@@ -147,6 +147,6 @@ test_that("Undetected boundaries result in an error", {
 
 test_that("Bags cannot be extended into zero or negative space", {
   bag <- anchor(cells, 1, 1)
-  extend_N(bag, cells, 1) %>% as.data.frame
-  extend_W(bag, cells, 1) %>% as.data.frame
+  expect_equal(extend_N(bag, cells, 1) %>% nrow, 1)
+  expect_equal(extend_W(bag, cells, 1) %>% nrow, 1)
 })

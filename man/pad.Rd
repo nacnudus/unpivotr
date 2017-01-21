@@ -36,4 +36,3 @@ pad(bag, 0, 0) # Zeros are equivalent to the defaults
 pad(bag, 2:5, 1:3) # Add a row and a column
 pad(bag, 6, 4) # No gaps are left even when .rows or .cols are distant
 }
-

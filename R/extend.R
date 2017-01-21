@@ -145,7 +145,7 @@ extend_n <- function(bag, cells, direction, n) {
   }
   cells %>%
     dplyr::filter(row >= y1,
-           row <= y2, 
+           row <= y2,
            col >= x1,
            col <= x2) %>%
     pad(c(y1, y2), c(x1, x2)) %>%
@@ -198,7 +198,7 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
   }
   rowcol_name <- rowcol_formula[[2]] # rhs of rowcol_formula (min or max)
   rowcol_text <- deparse(rowcol_name) # "row" or "col"
-  cells <- 
+  cells <-
     cells %>%
     dplyr::filter(row >= y1,
                   row <= y2,
@@ -208,14 +208,14 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
     dplyr::mutate_(.boundary = boundary) # Apply the boundary formula
   if (edge) {
     # Filter for edges where the boundary exists in every row/col
-    boundaries <- 
+    boundaries <-
       cells %>%
       dplyr::group_by_(rowcol_text) %>%
       dplyr::summarise(.boundary = all(.boundary)) %>%
       dplyr::filter(.boundary) %>% .[[rowcol_text]]
   } else {
     # Get all individual boundaries
-    boundaries <- 
+    boundaries <-
       dplyr::filter(cells, .boundary) %>% .[[rowcol_text]]
   }
   if (length(boundaries) == 0) {

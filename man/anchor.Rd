@@ -34,4 +34,3 @@ anchor(cells, 1, 1)
 anchor(cells, 1, 1:2, cross = TRUE)
 anchor(cells, 100, 1)
 }
-

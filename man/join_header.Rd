@@ -134,6 +134,7 @@ directions are provided as their own functions, wrapping the concept of
 
 \item \code{RIGHT}: Join nearest header in the 'BELOW' direction.
 }}
+
 \examples{
 library(dplyr)
 # Load some pivoted data
@@ -168,4 +169,3 @@ datacells \%>\%
   WNW(row_headers$`1`) \%>\%
   W(row_headers$`2`)
 }
-
