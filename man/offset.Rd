@@ -2,8 +2,8 @@
 % Please edit documentation in R/offset.R
 \name{offset}
 \alias{offset}
-\alias{offset_E}
 \alias{offset_N}
+\alias{offset_E}
 \alias{offset_S}
 \alias{offset_W}
 \title{Offset a bag of cells by some rows or columns.}

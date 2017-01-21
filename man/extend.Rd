@@ -2,8 +2,8 @@
 % Please edit documentation in R/extend.R
 \name{extend}
 \alias{extend}
-\alias{extend_E}
 \alias{extend_N}
+\alias{extend_E}
 \alias{extend_S}
 \alias{extend_W}
 \title{Extend a bag of cells in one direction, optionally up to a boundary

@@ -30,4 +30,15 @@ The functions are documented in \code{\link{join_header}},
 \code{\link{extend}} and \code{\link{offset}}.  All functions are designed to
 work well with the pipe \code{\%>\%} from the magrittr package.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/nacnudus/unpivotr}
+  \item Report bugs at \url{https://github.com/nacnudus/unpivotr/issues}
+}
 
+}
+\author{
+\strong{Maintainer}: Duncan Garmonsway \email{nacnudus@gmail.com}
+
+}
