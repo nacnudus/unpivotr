@@ -150,7 +150,7 @@ extend_n <- function(bag, cells, direction, n) {
            col <= x2) %>%
     pad(c(y1, y2), c(x1, x2)) %>%
     dplyr::bind_rows(bag) %>%
-    distinct
+    dplyr::distinct()
 }
 
 extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
