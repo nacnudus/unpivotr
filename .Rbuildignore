@@ -9,3 +9,5 @@
 ^temp\.R$
 ^inst/extdata/logo\.png$
 ^inst/extdata/logo\.svg$
+^insta/extdata/logo\.png$
+^insta/extdata/logo\.svg$
