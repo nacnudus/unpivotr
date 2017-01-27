@@ -26,7 +26,7 @@ Imports:
     tibble
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
-RoxygenNote: 5.0.1
+RoxygenNote: 5.0.1.9000
 Suggests: knitr,
     rmarkdown,
     tidyxl,
