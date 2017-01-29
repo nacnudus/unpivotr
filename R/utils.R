@@ -7,6 +7,10 @@ magrittr::`%>%`
 
 #' @importFrom methods is
 
+# Spurious imports to satisfy R CMD check
+#' @importFrom dtplyr tbl_dt
+#' @importFrom purrr map
+
 NULL
 
 globalVariables(c(".",
