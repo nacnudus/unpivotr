@@ -13,12 +13,33 @@ install:
 # Adapt as necessary starting from here
 
 environment:
-  USE_RTOOLS: true
+  global:
+    WARNINGS_ARE_ERRORS: 1
+
+  matrix:
+  - R_VERSION: devel
+    GCC_PATH: mingw_32
+
+  - R_VERSION: devel
+    R_ARCH: x64
+    GCC_PATH: mingw_64
+
+  - R_VERSION: release
+    R_ARCH: x64
+
+  - R_VERSION: stable
+
+  - R_VERSION: patched
+
+  - R_VERSION: oldrel
+    RTOOLS_VERSION: 33
+    CRAN: http://cran.rstudio.com
+
+matrix:
+  fast_finish: true
 
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github Rdatatable/data.table
-  - travis-tool.sh install_github nacnudus/tidyxl
 
 test_script:
   - travis-tool.sh run_tests
@@ -45,3 +66,13 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
+
+notifications:
+ - provider: Email
+   to:
+     - nacnudus@gmail.com
+   subject: 'tidyxl build {{status}}'
+   message: "https://ci.appveyor.com/project/nacnudus/tidyxl"
+   on_build_success: false
+   on_build_failure: true
+   on_build_status_changed: true
