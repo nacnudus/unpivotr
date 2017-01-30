@@ -1,11 +1,11 @@
 Package: unpivotr
-Title: Un-Pivot Complex and Irregular Data Layouts
+Title: Unpivot Complex and Irregular Data Layouts
 Version: 0.1.0
 Authors@R: c(
     person("Duncan", "Garmonsway", email = "nacnudus@gmail.com", role = c("aut", "cre"))
     )
 Description: Tools for converting data from complex or irregular layouts to a
-    columnar structure.  For example, tables with multi-level column or row
+    columnar structure.  For example, tables with multilevel column or row
     headers, or spreadsheets.  Header and data cells are selected by their
     contents and position, as well as formatting and comments where available,
     and are associated with one other by their proximity in given directions.
