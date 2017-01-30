@@ -13,7 +13,7 @@ Installation
 ------------
 
 ``` r
-devtools::install_github("nacnudus/tidyxl", build_vignettes = TRUE)
+devtools::install_github("nacnudus/unpivotr", build_vignettes = TRUE)
 ```
 
 There are several dependencies:
@@ -31,6 +31,11 @@ The package includes a dataset, `purpose`, which is a list of pivot tables, deri
 
 ``` r
 library(unpivotr)
+#> 
+#> Attaching package: 'unpivotr'
+#> The following object is masked from 'package:stats':
+#> 
+#>     offset
 head(purpose$Tidy) # 'Tidy' version of the data
 #>    Sex Age group (Life-stages) Highest qualification Sense of purpose
 #> 1 Male                 15 - 24      No Qualification            0 - 6
@@ -91,6 +96,14 @@ This can easily be subset for header and data cells.
 
 ``` r
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 # Select the cells containing the values
 datacells <-
   cells %>%
