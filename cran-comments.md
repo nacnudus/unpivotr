@@ -29,15 +29,20 @@ There were no ERRORs or WARNINGs.
 There was 1 NOTE:
 
 * checking CRAN incoming feasibility ... NOTE
-Maintainer: ‘Duncan Garmonsway <nacnudus@gmail.com>’
+  Maintainer: ‘Duncan Garmonsway <nacnudus@gmail.com>’
 
-New submission
+  New submission
 
-License components with restrictions and base license permitting such:
-  MIT + file LICENSE
-File 'LICENSE':
-  YEAR: 2016
-  COPYRIGHT HOLDER: Duncan Garmonsway
+  License components with restrictions and base license permitting such:
+    MIT + file LICENSE
+  File 'LICENSE':
+    YEAR: 2016
+    COPYRIGHT HOLDER: Duncan Garmonsway
+
+  Possibly mis-spelled words in DESCRIPTION:
+    Unpivot (2:8)
+
+Unpivot is not a misspelling.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
