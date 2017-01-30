@@ -12,3 +12,4 @@
 ^inst/extdata/logo\.svg$
 ^insta/extdata/logo\.png$
 ^insta/extdata/logo\.svg$
+^cran-comments\.md$
