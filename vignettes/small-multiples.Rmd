@@ -27,7 +27,10 @@ dataset'](https://rpubs.com/dgrtwo/tidying-enron).
 
 Here's a screenshot:
 
-![frank_ermis__11178__Enron Pricing Report.xlsx](../inst/extdata/enron-screenshot.png)
+```{r, out.width = "850px"}
+knitr::include_graphics(system.file("extdata/enron-screenshot.png",
+                                    package = "unpivotr"))
+```
 
 ## Preparation
 
