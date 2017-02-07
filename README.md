@@ -31,11 +31,6 @@ The package includes a dataset, `purpose`, which is a list of pivot tables, deri
 
 ``` r
 library(unpivotr)
-#> 
-#> Attaching package: 'unpivotr'
-#> The following object is masked from 'package:stats':
-#> 
-#>     offset
 head(purpose$Tidy) # 'Tidy' version of the data
 #>    Sex Age group (Life-stages) Highest qualification Sense of purpose
 #> 1 Male                 15 - 24      No Qualification            0 - 6
@@ -96,14 +91,6 @@ This can easily be subset for header and data cells.
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 # Select the cells containing the values
 datacells <-
   cells %>%
@@ -225,13 +212,13 @@ Compass directions
 
 The concept of compass directions is compactly expressed by this triptych.
 
-![](./inst/extdata/compass-compact.png)
+![](./vignettes/compass-compact.png)
 
 The most useful ones are more fully explained here.
 
-![](./inst/extdata/compass-common.png)
+![](./vignettes/compass-common.png)
 
-A complete explanation is in 'poster' form [here](./inst/extdata/compass-complete.svg).
+A complete explanation is in 'poster' form [here](./vignettes/compass-complete.svg).
 
 Philosophy
 ----------
