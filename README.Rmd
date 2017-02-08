@@ -31,6 +31,14 @@ Excel (.xlsx) files can be prepared for
 [unpivotr](https://github.com/nacnudus/unpivotr) via the
 [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
+## Mailing list
+
+For bugs and/or issues, create a new issue on
+[GitHub](https://github.com/nacnudus/tidyxl/issues) For other questions or
+comments, please subscribe to the [tidyxl-devel mailing
+list](https://groups.google.com/forum/#!forum/tidyxl-devel). You must be a
+member to post messages, but anyone can read the archived discussions.
+
 ## Installation
 
 ```{r, echo = TRUE, eval = FALSE}

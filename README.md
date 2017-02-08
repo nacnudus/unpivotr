@@ -9,6 +9,11 @@ unpivotr
 
 Excel (.xlsx) files can be prepared for [unpivotr](https://github.com/nacnudus/unpivotr) via the [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
+Mailing list
+------------
+
+For bugs and/or issues, create a new issue on [GitHub](https://github.com/nacnudus/tidyxl/issues) For other questions or comments, please subscribe to the [tidyxl-devel mailing list](https://groups.google.com/forum/#!forum/tidyxl-devel). You must be a member to post messages, but anyone can read the archived discussions.
+
 Installation
 ------------
 
@@ -31,6 +36,11 @@ The package includes a dataset, `purpose`, which is a list of pivot tables, deri
 
 ``` r
 library(unpivotr)
+#> 
+#> Attaching package: 'unpivotr'
+#> The following object is masked from 'package:stats':
+#> 
+#>     offset
 head(purpose$Tidy) # 'Tidy' version of the data
 #>    Sex Age group (Life-stages) Highest qualification Sense of purpose
 #> 1 Male                 15 - 24      No Qualification            0 - 6
@@ -91,6 +101,14 @@ This can easily be subset for header and data cells.
 
 ``` r
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 # Select the cells containing the values
 datacells <-
   cells %>%
