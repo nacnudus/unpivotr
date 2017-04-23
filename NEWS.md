@@ -1,4 +1,4 @@
-# unpivotr 0.1.0.9000
+# unpivotr 0.1.1
 
 * Fixed breakages introduced by dplyr 0.6.
 
