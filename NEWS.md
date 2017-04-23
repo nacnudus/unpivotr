@@ -1,3 +1,7 @@
+# unpivotr 0.1.0.9000
+
+* Fixed breakages introduced by dplyr 0.6.
+
 # unpivotr 0.1.0
 
 * Moved images from `inst/extdata` to `vignettes`.

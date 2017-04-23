@@ -128,7 +128,8 @@ test_that("Compass directions N, NNW, W, and WNW work", {
   datacells <-
     cells %>%
     filter(row >= 3, col >= 3, !is.na(character)) %>%
-    select(row, col, value = as.integer(character)) %>%
+    mutate(value = as.integer(character)) %>%
+    select(row, col, value) %>%
     NNW(col_headers[[1]]) %>%
     N(col_headers[[2]]) %>%
     WNW(row_headers[[1]]) %>%
@@ -155,7 +156,8 @@ test_that("Compass directions NNE and WSW work", {
   datacells <-
     cells %>%
     filter(row >= 3, col >= 3, !is.na(character)) %>%
-    select(row, col, value = as.integer(character)) %>%
+    mutate(value = as.integer(character)) %>%
+    select(row, col, value) %>%
     NNE(col_headers[[1]]) %>%
     WSW(row_headers[[1]]) %>%
     arrange(row, col)
@@ -178,7 +180,8 @@ test_that("Compass directions S, SSE , E and ESE work", {
     datacells <-
     cells %>%
     filter(row <= 20, col <= 4, !is.na(character)) %>%
-    select(row, col, value = as.integer(character)) %>%
+    mutate(value = as.integer(character)) %>%
+    select(row, col, value) %>%
     SSE(col_headers[[2]]) %>%
     S(col_headers[[1]]) %>%
     ESE(row_headers[[2]]) %>%
@@ -205,7 +208,8 @@ test_that("Compass directions SSW and ENE work", {
   datacells <-
     cells %>%
     filter(row <= 20, col <= 4, !is.na(character)) %>%
-    select(row, col, value = as.integer(character)) %>%
+    mutate(value = as.integer(character)) %>%
+    select(row, col, value) %>%
     SSW(col_headers[[2]]) %>% # Different from SSE ESE
     ENE(row_headers[[2]]) %>% # Different from SSE ESE
     arrange(row, col)
@@ -228,7 +232,8 @@ test_that("Compass directions ABOVE and LEFT work", {
   datacells <-
     cells %>%
     filter(row >= 3, col >= 3, !is.na(character)) %>%
-    select(row, col, value = as.integer(character)) %>%
+    mutate(value = as.integer(character)) %>%
+    select(row, col, value) %>%
     ABOVE(col_headers[[1]]) %>%
     LEFT(row_headers[[1]]) %>%
     arrange(row, col)
@@ -251,7 +256,8 @@ test_that("Compass directions BELOW and RIGHT work", {
   datacells <-
     cells %>%
     filter(row <= 10, col <= 6, !is.na(character)) %>%
-    select(row, col, value = as.integer(character)) %>%
+    mutate(value = as.integer(character)) %>%
+    select(row, col, value) %>%
     BELOW(col_headers[[2]]) %>%
     RIGHT(row_headers[[2]]) %>%
     arrange(row, col)
@@ -287,7 +293,8 @@ test_that("Compass directions ABOVE and LEFT work with boundaries", {
     cells %>%
     filter(row >= 4, col >= 4, !is.na(content)) %>%
     mutate(content = ifelse(is.na(character), content, NA)) %>%
-    select(row, col, value = as.integer(content)) %>%
+    mutate(value = as.integer(content)) %>%
+    select(row, col, value) %>%
     ABOVE(col_headers[[1]], left_border_cells) %>% # Different from ABOVE LEFT
     N(col_headers[[2]]) %>% # Same as ABOVE LEFT
     LEFT(row_headers[[1]], top_border_cells) %>% # Different from ABOVE LEFT
@@ -333,7 +340,8 @@ test_that("Compass directions BELOW and RIGHT work with boundaries", {
     cells %>%
     filter(row <= 13, col <= 9, !is.na(content)) %>%
     mutate(content = ifelse(is.na(character), content, NA)) %>%
-    select(row, col, value = as.integer(content)) %>%
+    mutate(value = as.integer(content)) %>%
+    select(row, col, value) %>%
     BELOW(col_headers[[2]], left_border_cells) %>% # Different from BELOW RIGHT
     S(col_headers[[1]]) %>% # Same as BELOW RIGHT
     RIGHT(row_headers[[2]], top_border_cells) %>% # Different from BELOW RIGHT
@@ -361,7 +369,8 @@ test_that("join_header() works", {
   datacells <-
     cells %>%
     filter(row >= 3, col >= 3, !is.na(character)) %>%
-    select(row, col, value = as.integer(character))
+    mutate(value = as.integer(character)) %>%
+    select(row, col, value)
   expect_error(join_header(datacells, col_headers[[1]], "NORTH"),
                "The direction NORTH, is either not recognised or not yet supported.")
   expect_error(join_header(datacells,
