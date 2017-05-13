@@ -16,8 +16,6 @@ test_that("'cross' works", {
   cells <- tidytable(purpose$`NNW WNW`)
   pad <- unname(as.list(anchor(cells, 1:2, 1:3)))
   expect_equal(unlist(pad[1:2]), c(rep(c(1, 2), each = 3), rep(1:3, times = 2)))
-  expect_error(anchor(cells, 1:2, 1:3, cross = FALSE),
-               "Variables must be length 1 or 3.
-Problem variables: 'row'")
+  expect_error(anchor(cells, 1:2, 1:3, cross = FALSE))
 })
 
