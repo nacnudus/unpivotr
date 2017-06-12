@@ -17,7 +17,6 @@ test_that("'cross' works", {
   pad <- unname(as.list(anchor(cells, 1:2, 1:3)))
   expect_equal(unlist(pad[1:2]), c(rep(c(1, 2), each = 3), rep(1:3, times = 2)))
   expect_error(anchor(cells, 1:2, 1:3, cross = FALSE),
-               "Variables must be length 1 or 3.
-Problem variables: 'row'")
+               "Column `row` must be length 1 or 3, not 2")
 })
 
