@@ -71,8 +71,11 @@ tidytable.matrix <- function(x, rownames = TRUE, colnames = TRUE) {
                             logical = as.logical(NA),
                             stringsAsFactors = FALSE))
   }
-  out[out$row != !is.null(x.col.names) & out$col != !is.null(x.row.names),
-      typeof(x)] <- as.vector(x)
+  dim(x) <- NULL # efficiently flatten to a vector
+  suppressWarnings(
+    out[out$row != !is.null(x.col.names) & out$col != !is.null(x.row.names),
+        typeof(x)] <- x
+    )
   out
 }
 
