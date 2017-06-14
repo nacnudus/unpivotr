@@ -8,17 +8,17 @@
 #' with \code{tidytable} first.
 #'
 #' This is an S3 generic.
-#' 
+#'
 #' @param x A data.frame or a matrix
 #' @param colnames Whether to include the row names in the output
 #' @param rownames Whether to include the column names in the output
-#' 
+#'
 #' @return A data.frame with six columns: 'row' and 'col' (integer) giving the
 #' original position of the 'cells', and 'character', 'double', 'integer' and
 #' 'logical' giving the cell values in their original types.  Row and column
 #' names are returned in the 'character' column, and, when present, offset the
 #' other cells by one row or column.
-#' 
+#'
 #' @examples
 #' tidytable(Formaldehyde)
 #' tidytable(as.matrix(Formaldehyde))
