@@ -1,6 +1,6 @@
 #' Convert data frames into a tidy structure
 #'
-#' @description Data frames and matrices represents data in a tabular structure.
+#' @description Data frames and matrices represent data in a tabular structure.
 #' \code{tidytable} takes the row and column position of each 'cell', and
 #' returns that information in a new data frame.  This makes certain tasks
 #' easier.  For example, a pivot table with multi-row headers that has been
