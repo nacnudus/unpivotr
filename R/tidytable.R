@@ -29,6 +29,18 @@ tidytable <- function(x, rownames = TRUE, colnames = TRUE) {
   UseMethod("tidytable")
 }
 
+blank_data_frame <- function(row = 1L, col = 1L, names) {
+  out <- data.frame(row = row,
+                    col = col,
+                    character = names,
+                    double = NA_real_,
+                    integer = NA_integer_,
+                    logical = NA,
+                    stringsAsFactors = FALSE)
+  out$list <- vector("list", max(length(row), length(col)))
+  out
+}
+
 #' @export
 tidytable.matrix <- function(x, rownames = TRUE, colnames = TRUE) {
   if (!rownames) {
@@ -44,39 +56,25 @@ tidytable.matrix <- function(x, rownames = TRUE, colnames = TRUE) {
                      integer = as.integer(NA),
                      logical = as.logical(NA),
                      stringsAsFactors = FALSE)
+  out$list <- vector("list", nrow(out))
   x.row.names <- row.names(x)
   x.col.names <- colnames(x)
-  if (!is.null(x.row.names) || !is.null(x.col.names)) {
-    out$character <- as.character(NA)
-  }
   if (!is.null(x.row.names)) {
     out$col <- out$col + 1L
     out <- rbind(out,
-                 data.frame(row = seq_along(x.row.names),
-                            col = 1L,
-                            character = x.row.names,
-                            double = as.double(NA),
-                            integer = as.integer(NA),
-                            logical = as.logical(NA),
-                            stringsAsFactors = FALSE))
+                 blank_data_frame(row = seq_along(x.row.names),
+                                  names = x.row.names))
   }
   if (!is.null(x.col.names)) {
     out$row <- out$row + 1L
     out <- rbind(out,
-                 data.frame(row = 1L,
-                            col = seq_along(x.col.names) + !is.null(x.row.names),
-                            character = x.col.names,
-                            double = as.double(NA),
-                            integer = as.integer(NA),
-                            logical = as.logical(NA),
-                            stringsAsFactors = FALSE))
+                 blank_data_frame(col = seq_along(x.col.names) + !is.null(x.row.names),
+                                  names = x.col.names))
   }
   dim(x) <- NULL # efficiently flatten to a vector
-  suppressWarnings(
-    out[out$row != !is.null(x.col.names) & out$col != !is.null(x.row.names),
-        typeof(x)] <- x
-    )
-  out
+  is_data <- out$row != !is.null(x.col.names) & out$col != !is.null(x.row.names)
+  suppressWarnings(out[[typeof(x)]][is_data] <- x)
+  tibble::as_tibble(out)
 }
 
 #' @export

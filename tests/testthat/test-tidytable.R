@@ -10,5 +10,5 @@ test_that("Tidytable works with or without row and column names", {
 })
 
 test_that("Tidytable works with data frames and matrices", {
-  expect_equal(tidytable(Formaldehyde), tidytable(as.matrix(Formaldehyde)))
+  expect_identical(tidytable(Formaldehyde), tidytable(as.matrix(Formaldehyde)))
 })
