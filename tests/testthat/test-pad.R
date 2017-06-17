@@ -1,8 +1,8 @@
 context("pad()")
 
 test_that("pad() returns predictable cells", {
-  cells <- 
-    tidytable(purpose$`NNW WNW`, FALSE, FALSE) %>% 
+  cells <-
+    tidytable(purpose$`NNW WNW`, FALSE, FALSE) %>%
     dplyr::filter(!is.na(character)) # Introduce 'holes' in the data
   # Select a region with gaps
   bag <- dplyr::filter(cells, row %in% 3:4, col %in% 1:2)
