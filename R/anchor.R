@@ -32,5 +32,6 @@ anchor <- function (cells, rows, cols, cross = TRUE) {
     } else {
       left <- tibble::data_frame(row = rows, col = cols)
     }
-    dplyr::left_join(left, cells, by = c("row", "col"))
+    out <- dplyr::left_join(left, cells, by = c("row", "col"))
+    tibble::as_tibble(out)
 }

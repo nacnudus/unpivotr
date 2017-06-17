@@ -141,7 +141,8 @@ offset_n <- function(bag, cells, direction, n) {
   }
   pad <- tidyr::crossing(row = tidyr::full_seq(rows, 1L),
                          col = tidyr::full_seq(cols, 1L))
-  dplyr::left_join(pad, cells, by = c("row", "col"))
+  out <- dplyr::left_join(pad, cells, by = c("row", "col"))
+  tibble::as_tibble(out)
 }
 
 offset_boundary <- function(bag, cells, direction, boundary, edge, include) {
@@ -187,7 +188,7 @@ offset_boundary <- function(bag, cells, direction, boundary, edge, include) {
   }
   rowcol_name <- rowcol_formula[[2]] # rhs of rowcol_formula (min or max)
   rowcol_text <- deparse(rowcol_name) # "row" or "col"
-  cells <- 
+  cells <-
     cells %>%
     dplyr::filter(row >= y1,
                   row <= y2,
@@ -197,14 +198,14 @@ offset_boundary <- function(bag, cells, direction, boundary, edge, include) {
     dplyr::mutate_(.boundary = boundary) # Apply the boundary formula
   if (edge) {
     # Filter for edges where the boundary exists in every row/col
-    boundaries <- 
+    boundaries <-
       cells %>%
       dplyr::group_by_(rowcol_text) %>%
       dplyr::summarise(.boundary = all(.boundary)) %>%
       dplyr::filter(.boundary) %>% .[[rowcol_text]]
   } else {
     # Get all individual boundaries
-    boundaries <- 
+    boundaries <-
       dplyr::filter(cells, .boundary) %>% .[[rowcol_text]]
   }
   if (length(boundaries) == 0) {
@@ -216,8 +217,12 @@ offset_boundary <- function(bag, cells, direction, boundary, edge, include) {
     cells %>%
     dplyr::select(-.boundary) %>%
     dplyr::bind_rows(bag)
-  bag %>%
-    offset(cells, direction,
-           n = abs(near_boundary - 
-                   rowcol_function_opposite(bag[[rowcol_text]])) - 1 + include)
+  out <- offset(bag,
+                cells,
+                direction,
+                n = abs(near_boundary
+                        - rowcol_function_opposite(bag[[rowcol_text]]))
+                    - 1
+                    + include)
+  tibble::as_tibble(out)
 }

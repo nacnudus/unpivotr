@@ -96,17 +96,19 @@ join_header <- function(bag, header, direction, boundaries = NULL) {
 #' @export
 N <- function(bag, header) {
   check_header(header)
-  inner_join(bag, header %>% select(-row),
-             by = "col",
-             suffix = c(".data", ".header"))
+  out <- inner_join(bag, select(header, -row),
+                    by = "col",
+                    suffix = c(".data", ".header"))
+  tibble::as_tibble(out)
 }
 
 #' @describeIn join_header Join nearest header in the 'E' direction.
 #' @export
 E <- function(bag, header) {
   check_header(header)
-  inner_join(bag, header %>% select(-col), by = "row",
-             suffix = c(".data", ".header"))
+  out <- inner_join(bag, select(header, -col), by = "row",
+                    suffix = c(".data", ".header"))
+  tibble::as_tibble(out)
 }
 
 #' @describeIn join_header Join nearest header in the 'S' direction.
@@ -135,14 +137,15 @@ NNW <- function(bag, header) {
     dplyr::tbl_df() %>%
     select(-to_col) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.))))
+    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'NNE' direction.
 #' @export
 NNE <- function(bag, header) {
   check_header(header)
-  header <- 
+  header <-
     header %>%
     dplyr::select(-row) %>%
     dplyr::arrange(col) %>%
@@ -156,14 +159,15 @@ NNE <- function(bag, header) {
     dplyr::tbl_df() %>%
     select(-from_col) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.))))
+    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'ENE' direction.
 #' @export
 ENE <- function(bag, header) {
   check_header(header)
-  header <- 
+  header <-
     header %>%
     dplyr::select(-col) %>%
     dplyr::arrange(row) %>%
@@ -177,14 +181,15 @@ ENE <- function(bag, header) {
     dplyr::tbl_df() %>%
     select(-to_row) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.))))
+    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'ESE' direction.
 #' @export
 ESE <- function(bag, header) {
   check_header(header)
-  header <- 
+  header <-
     header %>%
     dplyr::select(-col) %>%
     dplyr::arrange(row) %>%
@@ -198,7 +203,8 @@ ESE <- function(bag, header) {
     dplyr::tbl_df() %>%
     select(-from_row) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.))))
+    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'SSE' direction.
@@ -268,14 +274,15 @@ ABOVE <- function(bag, header, boundaries = NULL) {
     rename(col = from_col) %>%
     select(-to_col) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.))))
+    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'LEFT' direction.
 #' @export
 LEFT <- function(bag, header, boundaries = NULL) {
   check_header(header)
-  header <- 
+  header <-
     header %>%
     dplyr::select(-col) %>%
     dplyr::arrange(row)
@@ -323,7 +330,8 @@ LEFT <- function(bag, header, boundaries = NULL) {
     rename(row = from_row) %>%
     select(-to_row) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.))))
+    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'BELOW' direction.

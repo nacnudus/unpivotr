@@ -150,7 +150,8 @@ extend_n <- function(bag, cells, direction, n) {
            col <= x2) %>%
     pad(c(y1, y2), c(x1, x2)) %>%
     dplyr::bind_rows(bag) %>%
-    dplyr::distinct()
+    dplyr::distinct() %>%
+    tibble::as_tibble()
 }
 
 extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
@@ -227,5 +228,6 @@ extend_boundary <- function(bag, cells, direction, boundary, edge, include) {
     dplyr::filter_(lazyeval::interp(~ lt_gt(rowcol, near_boundary + include),
                                     rowcol = rowcol_name)) %>%
     dplyr::select(-.boundary) %>%
-    dplyr::bind_rows(bag)
+    dplyr::bind_rows(bag) %>%
+    tibble::as_tibble()
 }

@@ -36,8 +36,9 @@ pad <- function(cells, rows = cells$row, cols = cells$col) {
     return(cells)
   }
   # Pad potentials
-  pad <- tidyr::crossing(row = tidyr::full_seq(c(cells$row, rows), 1L),
+  padding <- tidyr::crossing(row = tidyr::full_seq(c(cells$row, rows), 1L),
                          col = tidyr::full_seq(c(cells$col, cols), 1L))
-  dplyr::full_join(pad, cells, by = c("row", "col"))
+  out <- dplyr::full_join(padding, cells, by = c("row", "col"))
+  tibble::as_tibble(out)
 }
 
