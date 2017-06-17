@@ -1,7 +1,7 @@
 #' Pad a bag of cells with blanks
 #'
 #' @description When source data is sparse (e.g. spreadsheets from the 'tidyxl'
-#' package), the output of \code{\link{tidytable}} may also be sparse.  To fill
+#' package), the output of \code{\link{tidy_table}} may also be sparse.  To fill
 #' the gaps with blank cells, use \code{pad}.  Internally, \code{pad} is used to
 #' ensure that functions like \code{\link{offset}} and \code{\link{extend}}
 #' behave intuitively, as though blank cells do actually exist.
@@ -16,8 +16,8 @@
 #' @export
 #' @examples
 #' cells <-
-#'   tidytable(purpose$`NNW WNW`, FALSE, FALSE) %>%
-#'   dplyr::filter(!is.na(character)) # Introduce 'holes' in the data
+#'   tidy_table(purpose$`NNW WNW`) %>%
+#'   dplyr::filter(!is.na(chr)) # Introduce 'holes' in the data
 #' # Select a region with gaps
 #' (bag <- dplyr::filter(cells, row %in% 2:4, col %in% 1:2))
 #' # Pad the gaps

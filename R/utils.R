@@ -23,5 +23,7 @@ globalVariables(c(".",
                   "from_col",
                   "to_row",
                   "to_col",
+                  "type",
+                  "value",
                   "everything",
                   ".boundary"))

@@ -1,8 +1,8 @@
 context("offset()")
 
 x <- purpose$`NNW WNW`
-cells <- tidytable(x, rownames = FALSE, colnames = FALSE)
-cells <- cells[!is.na(cells$character), ]
+cells <- tidy_table(x)
+cells <- cells[!is.na(cells$chr), ]
 
 test_that("Offset to non-existant cell works, returning pad", {
   bag <- cells[1, ]
@@ -50,7 +50,7 @@ test_that("'n' must be >= 0", {
 
 test_that("'edge' and 'include' only apply when 'boundary' is specified", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
-  expect_error(offset_N(bag, cells, edge = TRUE), 
+  expect_error(offset_N(bag, cells, edge = TRUE),
                "Exactly one of 'n' and 'boundary' must be specified")
   expect_error(offset_N(bag, cells, include = TRUE),
                "Exactly one of 'n' and 'boundary' must be specified")
@@ -67,14 +67,14 @@ test_that("Offset by n with edge is an error", {
 test_that("Offset by n without 'include' or 'edge' works", {
   bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
   rowcol <- offset_E(bag, cells,
-                     boundary = ~ is.na(character))[, c("row", "col")]
+                     boundary = ~ is.na(chr))[, c("row", "col")]
   expect_equal(rowcol, data.frame(row = 7L, col = 5:6))
 })
 
 test_that("Offset to boundary formula with include works", {
   bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
   rowcol <- offset_N(bag, cells,
-                     boundary = ~ !is.na(character),
+                     boundary = ~ !is.na(chr),
                      include = TRUE)[, c("row", "col")]
   expect_equal(rowcol, data.frame(row = 6L, col = 1:2))
 })
@@ -82,7 +82,7 @@ test_that("Offset to boundary formula with include works", {
 test_that("Offset to boundary formula with 'edge' works", {
   bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
   rowcol <- offset_N(bag, cells,
-                     boundary = ~ !is.na(character),
+                     boundary = ~ !is.na(chr),
                      edge = TRUE)[, c("row", "col")]
   expect_equal(rowcol, data.frame(row = 4L, col = 1:2))
 })
@@ -90,7 +90,7 @@ test_that("Offset to boundary formula with 'edge' works", {
 test_that("Offset to boundary formula with include and 'edge' works", {
   bag <- cells[which(cells$row == 7 & cells$col %in% 1:2), ]
   rowcol <- offset_N(bag, cells,
-                     boundary = ~ !is.na(character),
+                     boundary = ~ !is.na(chr),
                      include = TRUE,
                      edge = TRUE)[, c("row", "col")]
   expect_equal(rowcol, data.frame(row = 3L, col = 1:2))
@@ -100,7 +100,7 @@ test_that("Boundary formulas returning NAs are ignored with a warning", {
   bag <- cells[which(cells$row == 3 & cells$col == 1), ]
   expect_warning(
     rowcol <- offset_E(bag, cells,
-                       boundary = ~ as.integer(character) < 10000
+                       boundary = ~ as.integer(chr) < 10000
                        )[, c("row", "col")]
     )
   expect_equal(rowcol, data.frame(row = 3L, col = 2L))
@@ -137,7 +137,7 @@ test_that("'n' equal to 0 return original bag", {
 
 test_that("Undetected boundaries result in an error", {
   bag <- anchor(cells, 1, 1)
-  expect_error(offset_N(bag, cells, boundary = ~ character == "Boo!"),
+  expect_error(offset_N(bag, cells, boundary = ~ chr == "Boo!"),
                "No boundary detected")
 })
 

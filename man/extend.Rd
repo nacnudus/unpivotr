@@ -79,12 +79,12 @@ even when n = 0.
 # Load some pivoted data
 (x <- purpose$`NNW WNW`)
 # Make a tidy representation
-cells <- tidytable(x, rownames = FALSE, colnames = FALSE)
-cells <- cells[!is.na(cells$character), ] # Introduce 'holes' in the data
+cells <- tidy_table(x)
+cells <- cells[!is.na(cells$chr), ] # Introduce 'holes' in the data
 # Select a particular cell
 cell <- cells[which(cells$row == 3 & cells$col == 3), ]
 # Extend the selection downwards, stopping before the NA.
-extend_S(cell, cells, boundary = ~ is.na(character))
+extend_S(cell, cells, boundary = ~ is.na(chr))
 # Extend the selection right, up to and including the fifth column.
 extend_E(cell, cells, boundary = ~ col == 5, include = TRUE)
 # Extend the selection beyond the existing cells
@@ -93,5 +93,5 @@ extend_E(cell, cells, 15)
 # boundary formula on every possible cell in the given direction
 \dontrun{extend_E(cell, cells, boundary = ~ col == 15)}
 cell <- cells[which(cells$row == 7 & cells$col \%in\% 1:2), ]
-extend_N(cell, cells, boundary = ~ !is.na(character), edge = TRUE)
+extend_N(cell, cells, boundary = ~ !is.na(chr), edge = TRUE)
 }

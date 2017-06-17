@@ -114,21 +114,21 @@ c("Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
 )
 
 test_that("Compass directions N, NNW, W, and WNW work", {
-  cells <- tidytable(purpose$`NNW WNW`, colnames = FALSE)
+  cells <- tidy_table(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(row <= 2, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$row)
   row_headers <-
     cells %>%
-    filter(col <= 2, !is.na(character)) %>% # Select all rows of headers at once
-    select(row, col, header = character) %>%
+    filter(col <= 2, !is.na(chr)) %>% # Select all rows of headers at once
+    select(row, col, header = chr) %>%
     split(.$col) # Return each row of headers in its own element of a list
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(character)) %>%
-    mutate(value = as.integer(character)) %>%
+    filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    mutate(value = as.integer(chr)) %>%
     select(row, col, value) %>%
     NNW(col_headers[[1]]) %>%
     N(col_headers[[2]]) %>%
@@ -142,21 +142,21 @@ test_that("Compass directions N, NNW, W, and WNW work", {
 })
 
 test_that("Compass directions NNE and WSW work", {
-  cells <- tidytable(purpose$`NNE WSW`, colnames = FALSE)
+  cells <- tidy_table(purpose$`NNE WSW`)
   row_headers <-
     cells %>%
-    filter(col <= 2, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(col <= 2, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(row <= 2, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(character)) %>%
-    mutate(value = as.integer(character)) %>%
+    filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    mutate(value = as.integer(chr)) %>%
     select(row, col, value) %>%
     NNE(col_headers[[1]]) %>%
     WSW(row_headers[[1]]) %>%
@@ -166,21 +166,21 @@ test_that("Compass directions NNE and WSW work", {
 })
 
 test_that("Compass directions S, SSE , E and ESE work", {
-  cells <- tidytable(purpose$`SSE ESE`, colnames = FALSE)
+  cells <- tidy_table(purpose$`SSE ESE`)
   row_headers <-
     cells %>%
-    filter(col >= 5, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(col >= 5, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row >= 21, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(row >= 21, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$row)
     datacells <-
     cells %>%
-    filter(row <= 20, col <= 4, !is.na(character)) %>%
-    mutate(value = as.integer(character)) %>%
+    filter(row <= 20, col <= 4, !is.na(chr)) %>%
+    mutate(value = as.integer(chr)) %>%
     select(row, col, value) %>%
     SSE(col_headers[[2]]) %>%
     S(col_headers[[1]]) %>%
@@ -194,21 +194,21 @@ test_that("Compass directions S, SSE , E and ESE work", {
 })
 
 test_that("Compass directions SSW and ENE work", {
-  cells <- tidytable(purpose$`SSW ENE`, colnames = FALSE)
+  cells <- tidy_table(purpose$`SSW ENE`)
   row_headers <-
     cells %>%
-    filter(col >= 5, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(col >= 5, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row >= 21, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(row >= 21, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row <= 20, col <= 4, !is.na(character)) %>%
-    mutate(value = as.integer(character)) %>%
+    filter(row <= 20, col <= 4, !is.na(chr)) %>%
+    mutate(value = as.integer(chr)) %>%
     select(row, col, value) %>%
     SSW(col_headers[[2]]) %>% # Different from SSE ESE
     ENE(row_headers[[2]]) %>% # Different from SSE ESE
@@ -218,21 +218,21 @@ test_that("Compass directions SSW and ENE work", {
 })
 
 test_that("Compass directions ABOVE and LEFT work", {
-  cells <- tidytable(purpose$`ABOVE LEFT`, colnames = FALSE)
+  cells <- tidy_table(purpose$`ABOVE LEFT`)
   row_headers <-
     cells %>%
-    filter(col <= 2, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(col <= 2, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(row <= 2, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(character)) %>%
-    mutate(value = as.integer(character)) %>%
+    filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    mutate(value = as.integer(chr)) %>%
     select(row, col, value) %>%
     ABOVE(col_headers[[1]]) %>%
     LEFT(row_headers[[1]]) %>%
@@ -242,21 +242,21 @@ test_that("Compass directions ABOVE and LEFT work", {
 })
 
 test_that("Compass directions BELOW and RIGHT work", {
-  cells <- tidytable(purpose$`BELOW RIGHT`, colnames = FALSE)
+  cells <- tidy_table(purpose$`BELOW RIGHT`)
   row_headers <-
     cells %>%
-    filter(col >= 7, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(col >= 7, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row >= 11, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(row >= 11, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row <= 10, col <= 6, !is.na(character)) %>%
-    mutate(value = as.integer(character)) %>%
+    filter(row <= 10, col <= 6, !is.na(chr)) %>%
+    mutate(value = as.integer(chr)) %>%
     select(row, col, value) %>%
     BELOW(col_headers[[2]]) %>%
     RIGHT(row_headers[[2]]) %>%
@@ -360,16 +360,16 @@ test_that("Compass directions BELOW and RIGHT work with boundaries", {
 })
 
 test_that("join_header() works", {
-  cells <- tidytable(purpose$`NNW WNW`, colnames = FALSE)
+  cells <- tidy_table(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    filter(row <= 2, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(character)) %>%
-    mutate(value = as.integer(character)) %>%
+    filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    mutate(value = as.integer(chr)) %>%
     select(row, col, value)
   expect_error(join_header(datacells, col_headers[[1]], "NORTH"),
                "The direction NORTH, is either not recognised or not yet supported.")

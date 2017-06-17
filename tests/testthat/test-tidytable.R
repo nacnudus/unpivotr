@@ -1,14 +1,10 @@
-context("tidytable()")
+context("tidy_table()")
 
 library(dplyr)
 
-test_that("Tidytable works with or without row and column names", {
-  expect_equal(nrow(tidytable(Formaldehyde)), 20)
-  expect_equal(nrow(tidytable(Formaldehyde, rownames = FALSE)), 14)
-  expect_equal(nrow(tidytable(Formaldehyde, colnames = FALSE)), 18)
-  expect_equal(nrow(tidytable(Formaldehyde, rownames = FALSE, colnames = FALSE)), 12)
-})
-
-test_that("Tidytable works with data frames and matrices", {
-  expect_identical(tidytable(Formaldehyde), tidytable(as.matrix(Formaldehyde)))
+test_that("tidy_table works with or without row and column names", {
+  expect_equal(nrow(tidy_table(Formaldehyde)), 12)
+  expect_equal(nrow(tidy_table(Formaldehyde, colnames = TRUE)), 14)
+  expect_equal(nrow(tidy_table(Formaldehyde, rownames = TRUE)), 18)
+  expect_equal(nrow(tidy_table(Formaldehyde, rownames = TRUE, colnames = TRUE)), 20)
 })

@@ -25,7 +25,7 @@ chosen cells do not exist, then cells are generated at the given rows and
 columns, with NAs in every column other than 'row' and 'col'.
 }
 \examples{
-cells <- tidytable(purpose$`NNW WNW`)
+cells <- tidy_table(purpose$`NNW WNW`)
 \dontrun{
   anchor(cells, 0, 1)
   anchor(cells, 1, 1:2)

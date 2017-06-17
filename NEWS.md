@@ -1,3 +1,27 @@
+# unpivotr 0.2.1
+
+**Major breaking changes**
+
+This release overhauls the `tidy_table()` function of unpivotr to preserve the
+original data types of table cells.
+
+* `tidytable()` has been renamed `tidy_table()`.  `tidytable()` is an error,
+    rather than a deprecation warning, because `tidy_table()` is so different
+    from before.
+* There is no `tidy_table()` method for matrices.  Convert matrices to
+    data.frames first, choosing what to do with row and column names.
+* `tidy_table()` returns only relevant columns, according to the data types of
+    the columns in the given data frame.  It uses `tibble::type_sum()` to
+    determine the column type and to name the columns, so whereas characters
+    used to be returned in a column called `character`, they are now returned in
+    a column called `chr`.  The full list of column names is in `?tidy_table`
+    and is `chr`, `cplx`, `cplx`, `dbl`, `fctr`, `int`, `lgl`, `list`.  The
+    columns `fctr` and `list` are list-columns, where each element is itself a
+    list.  This means that factors with different levels are kept separate.
+* Both `rowname` and `colname` arguments to `tidy_table()` now default to
+    `FALSE`.
+* All functions consistently return a `tibble`.
+
 # unpivotr 0.1.1
 
 * Fixed breakages introduced by dplyr 0.6.

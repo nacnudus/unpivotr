@@ -44,8 +44,8 @@
 #' # Load some pivoted data
 #' (x <- purpose$`NNW WNW`)
 #' # Make a tidy representation
-#' cells <- tidytable(x, FALSE, FALSE)
-#' cells <- cells[!is.na(cells$character), ]
+#' cells <- tidy_table(x)
+#' cells <- cells[!is.na(cells$chr), ]
 #' head(cells)
 #' # Select the cells containing the values
 #' datacells <-
@@ -56,14 +56,14 @@
 #' row_headers <-
 #'   cells %>%
 #'   filter(col <= 2) %>%
-#'   select(row, col, header = character) %>%
+#'   select(row, col, header = chr) %>%
 #'   split(.$col) # Separate each column of headers
 #' row_headers
 #' # Select the column headers
 #' col_headers <-
 #'   cells %>%
 #'   filter(row <= 2) %>%
-#'   select(row, col, header = character) %>%
+#'   select(row, col, header = chr) %>%
 #'   split(.$row) # Separate each row of headers
 #' col_headers
 #' # From each data cell, search for the nearest one of each of the headers
