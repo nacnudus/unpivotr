@@ -119,3 +119,38 @@ cell %>%
   tidy_table()
 ```
 
+## URL example
+
+A motivation for using `unpivotr::tidy_table()` is that it extracts more than
+just text -- it can extract whatever part of the HTML you need.
+
+Here, we extract URLs.
+
+```{r, echo = TRUE}
+urls <- system.file("extdata", "url.html", package = "unpivotr")
+includeHTML(urls)
+
+cell_url <- function(x) {
+  if (is.na(x)) return(NA)
+  x %>%
+    read_html %>%
+    html_nodes("a") %>%
+    html_attr("href")
+}
+
+cell_text <- function(x) {
+  if (is.na(x)) return(NA)
+  x %>%
+    read_html %>%
+    html_nodes("a") %>%
+    html_text()
+}
+
+urls %>%
+  read_html() %>%
+  tidy_table() %>%
+  .[[1]] %>%
+  mutate(text = map(html, cell_text),
+         url = map(html, cell_url)) %>%
+  unnest(text, url)
+```

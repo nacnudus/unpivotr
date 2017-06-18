@@ -23,9 +23,9 @@ knitr::opts_chunk$set(
 
 [unpivotr](https://github.com/nacnudus/unpivotr) provides tools for converting
 data from complex or irregular layouts to a columnar structure.  For example,
-tables with multi-level column or row headers, or spreadsheets.  Header and data
-cells are selected by their contents, position and formatting, and are
-associated with one other by their relative positions.
+tables with multi-level column or row headers, or spreadsheets, or nested HTML
+tables.  Header and data cells can selected by their contents, position and
+formatting, and can be associated with one other by their relative positions.
 
 Excel (.xlsx) files can be prepared for
 [unpivotr](https://github.com/nacnudus/unpivotr) via the
@@ -52,6 +52,7 @@ There are several dependencies:
 * dtplyr
 * purrr
 * tidyr
+* xml2
 
 ## Example
 
@@ -69,8 +70,8 @@ To unpivot this table, first get a tabular representation of each cell, its
 value and its position in the original pivot table.
 
 ```{r, echo = TRUE}
-cells <- tidytable(pivoted, colnames = FALSE)
-cells <- cells[!is.na(cells$character), ]
+cells <- tidy_table(pivoted, colnames = FALSE)
+cells <- cells[!is.na(cells$chr), ]
 head(cells)
 ```
 
@@ -88,7 +89,7 @@ head(datacells)
 row_headers <-
   cells %>%
   filter(col <= 2) %>%
-  select(row, col, header = character) %>%
+  select(row, col, header = chr) %>%
   split(.$col) # Separate each column of headers
 lapply(row_headers, head)
 
@@ -96,7 +97,7 @@ lapply(row_headers, head)
 col_headers <-
   cells %>%
   filter(row <= 2) %>%
-  select(row, col, header = character) %>%
+  select(row, col, header = chr) %>%
   split(.$row) # Separate each row of headers
 col_headers
 ```
@@ -119,9 +120,42 @@ We can re-pivot the final data in R using `ftable()` to check that it has been
 imported correctly.
 
 ```{r, echo = TRUE}
-ftable(unpivoted[7:10],
-       row.vars = 3:4,
-       col.vars = 1:2)
+ftable(unpivoted[3:7],
+       row.vars = 4:5,
+       col.vars = 2:3)
+```
+
+## HTML tables
+
+HTML tables can be imported in a similar way.
+
+```{r, echo = TRUE}
+urls <- system.file("extdata", "url.html", package = "unpivotr")
+includeHTML(urls)
+
+cell_url <- function(x) {
+  if (is.na(x)) return(NA)
+  x %>%
+    read_html %>%
+    html_nodes("a") %>%
+    html_attr("href")
+}
+
+cell_text <- function(x) {
+  if (is.na(x)) return(NA)
+  x %>%
+    read_html %>%
+    html_nodes("a") %>%
+    html_text()
+}
+
+urls %>%
+  read_html() %>%
+  tidy_table() %>%
+  .[[1]] %>%
+  mutate(text = map(html, cell_text),
+         url = map(html, cell_url)) %>%
+  unnest(text, url)
 ```
 
 ## Compass directions
