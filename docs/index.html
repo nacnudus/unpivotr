@@ -9,7 +9,7 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -64,19 +64,19 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="unpivotr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#unpivotr" class="anchor"> </a>unpivotr</h1></div>
+<a href="#unpivotr" class="anchor"></a>unpivotr</h1></div>
 
-<p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> provides tools for converting data from complex or irregular layouts to a columnar structure. For example, tables with multi-level column or row headers, or spreadsheets. Header and data cells are selected by their contents, position and formatting, and are associated with one other by their relative positions.</p>
+<p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> provides tools for converting data from complex or irregular layouts to a columnar structure. For example, tables with multi-level column or row headers, or spreadsheets, or nested HTML tables. Header and data cells can selected by their contents, position and formatting, and can be associated with one other by their relative positions.</p>
 <p>Excel (.xlsx) files can be prepared for <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> via the <a href="https://github.com/nacnudus/tidyxl">tidyxl</a> package.</p>
 <div id="mailing-list" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mailing-list" class="anchor"> </a>Mailing list</h2>
+<a href="#mailing-list" class="anchor"></a>Mailing list</h2>
 <p>For bugs and/or issues, create a new issue on <a href="https://github.com/nacnudus/tidyxl/issues">GitHub</a> For other questions or comments, please subscribe to the <a href="https://groups.google.com/forum/#!forum/tidyxl-devel">tidyxl-devel mailing list</a>. You must be a member to post messages, but anyone can read the archived discussions.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"> </a>Installation</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"nacnudus/unpivotr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"nacnudus/unpivotr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>There are several dependencies:</p>
 <ul>
 <li>data.table (&gt;= 1.9.7)</li>
@@ -84,14 +84,20 @@
 <li>dtplyr</li>
 <li>purrr</li>
 <li>tidyr</li>
+<li>xml2</li>
 </ul>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"> </a>Example</h2>
+<a href="#example" class="anchor"></a>Example</h2>
 <p>The package includes a dataset, <code>purpose</code>, which is a list of pivot tables, derived from a survey by Statistics New Zealand of people’s sense-of-purpose. A ‘tidy’ version of the data is also included.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(unpivotr)
-<span class="kw">head</span>(purpose$Tidy) <span class="co"># 'Tidy' version of the data</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'unpivotr'</span>
+<span class="co">#&gt; The following object is masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     offset</span>
+<span class="kw">head</span>(purpose<span class="op">$</span>Tidy) <span class="co"># 'Tidy' version of the data</span>
 <span class="co">#&gt;    Sex Age group (Life-stages) Highest qualification Sense of purpose</span>
 <span class="co">#&gt; 1 Male                 15 - 24      No Qualification            0 - 6</span>
 <span class="co">#&gt; 2 Male                 15 - 24      No Qualification           7 - 10</span>
@@ -106,7 +112,7 @@
 <span class="co">#&gt; 4 190000  &lt;NA&gt;</span>
 <span class="co">#&gt; 5   9000     *</span>
 <span class="co">#&gt; 6  11000     *</span>
-(pivoted &lt;-<span class="st"> </span>purpose$<span class="st">`</span><span class="dt">NNW WNW</span><span class="st">`</span>) <span class="co"># The same data, pivoted</span>
+(pivoted &lt;-<span class="st"> </span>purpose<span class="op">$</span><span class="st">`</span><span class="dt">NNW WNW</span><span class="st">`</span>) <span class="co"># The same data, pivoted</span>
 <span class="co">#&gt;                            X2      X3     X4     X5    X6     X7</span>
 <span class="co">#&gt; 1                        &lt;NA&gt;    &lt;NA&gt; Female   &lt;NA&gt;  Male   &lt;NA&gt;</span>
 <span class="co">#&gt; 2                        &lt;NA&gt;    &lt;NA&gt;  0 - 6 7 - 10 0 - 6 7 - 10</span>
@@ -131,101 +137,120 @@
 <span class="co">#&gt; 21                       &lt;NA&gt; 45 - 64   6000  55000  6000  68000</span>
 <span class="co">#&gt; 22                       &lt;NA&gt;     65+   &lt;NA&gt;  13000  &lt;NA&gt;  18000</span></code></pre></div>
 <p>To unpivot this table, first get a tabular representation of each cell, its value and its position in the original pivot table.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cells &lt;-<span class="st"> </span><span class="kw"><a href="reference/tidytable.html">tidytable</a></span>(pivoted, <span class="dt">colnames =</span> <span class="ot">FALSE</span>)
-cells &lt;-<span class="st"> </span>cells[!<span class="kw">is.na</span>(cells$character), ]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cells &lt;-<span class="st"> </span><span class="kw"><a href="reference/tidy_table.html">tidy_table</a></span>(pivoted, <span class="dt">colnames =</span> <span class="ot">FALSE</span>)
+cells &lt;-<span class="st"> </span>cells[<span class="op">!</span><span class="kw">is.na</span>(cells<span class="op">$</span>chr), ]
 <span class="kw">head</span>(cells)
-<span class="co">#&gt;    row col                  character double integer logical</span>
-<span class="co">#&gt; 3    3   1          Bachelor's degree     NA      NA      NA</span>
-<span class="co">#&gt; 7    7   1                Certificate     NA      NA      NA</span>
-<span class="co">#&gt; 11  11   1                    Diploma     NA      NA      NA</span>
-<span class="co">#&gt; 15  15   1           No Qualification     NA      NA      NA</span>
-<span class="co">#&gt; 19  19   1 Postgraduate qualification     NA      NA      NA</span>
-<span class="co">#&gt; 25   3   2                    15 - 24     NA      NA      NA</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 6 x 3</span>
+<span class="co">#&gt;     row   col                        chr</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;int&gt;                      &lt;chr&gt;</span>
+<span class="co">#&gt; 1     3     1          Bachelor's degree</span>
+<span class="co">#&gt; 2     7     1                Certificate</span>
+<span class="co">#&gt; 3    11     1                    Diploma</span>
+<span class="co">#&gt; 4    15     1           No Qualification</span>
+<span class="co">#&gt; 5    19     1 Postgraduate qualification</span>
+<span class="co">#&gt; 6     3     2                    15 - 24</span></code></pre></div>
 <p>This can easily be subset for header and data cells.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="co"># Select the cells containing the values</span>
 datacells &lt;-
-<span class="st">  </span>cells %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(row &gt;=<span class="st"> </span><span class="dv">3</span>, col &gt;=<span class="st"> </span><span class="dv">3</span>)
+<span class="st">  </span>cells <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>)
 <span class="kw">head</span>(datacells)
-<span class="co">#&gt;   row col character double integer logical</span>
-<span class="co">#&gt; 1   3   3      7000     NA      NA      NA</span>
-<span class="co">#&gt; 2   4   3     12000     NA      NA      NA</span>
-<span class="co">#&gt; 3   5   3     10000     NA      NA      NA</span>
-<span class="co">#&gt; 4   7   3     29000     NA      NA      NA</span>
-<span class="co">#&gt; 5   8   3     34000     NA      NA      NA</span>
-<span class="co">#&gt; 6   9   3     30000     NA      NA      NA</span>
+<span class="co">#&gt; # A tibble: 6 x 3</span>
+<span class="co">#&gt;     row   col   chr</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;</span>
+<span class="co">#&gt; 1     3     3  7000</span>
+<span class="co">#&gt; 2     4     3 12000</span>
+<span class="co">#&gt; 3     5     3 10000</span>
+<span class="co">#&gt; 4     7     3 29000</span>
+<span class="co">#&gt; 5     8     3 34000</span>
+<span class="co">#&gt; 6     9     3 30000</span>
 
 <span class="co"># Select the row headers</span>
 row_headers &lt;-
-<span class="st">  </span>cells %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(col &lt;=<span class="st"> </span><span class="dv">2</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(row, col, <span class="dt">header =</span> character) %&gt;%
-<span class="st">  </span><span class="kw">split</span>(.$col) <span class="co"># Separate each column of headers</span>
+<span class="st">  </span>cells <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col) <span class="co"># Separate each column of headers</span>
 <span class="kw">lapply</span>(row_headers, head)
 <span class="co">#&gt; $`1`</span>
-<span class="co">#&gt;   row col                     header</span>
-<span class="co">#&gt; 1   3   1          Bachelor's degree</span>
-<span class="co">#&gt; 2   7   1                Certificate</span>
-<span class="co">#&gt; 3  11   1                    Diploma</span>
-<span class="co">#&gt; 4  15   1           No Qualification</span>
-<span class="co">#&gt; 5  19   1 Postgraduate qualification</span>
+<span class="co">#&gt; # A tibble: 5 x 3</span>
+<span class="co">#&gt;     row   col                     header</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;int&gt;                      &lt;chr&gt;</span>
+<span class="co">#&gt; 1     3     1          Bachelor's degree</span>
+<span class="co">#&gt; 2     7     1                Certificate</span>
+<span class="co">#&gt; 3    11     1                    Diploma</span>
+<span class="co">#&gt; 4    15     1           No Qualification</span>
+<span class="co">#&gt; 5    19     1 Postgraduate qualification</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $`2`</span>
-<span class="co">#&gt;    row col  header</span>
-<span class="co">#&gt; 6    3   2 15 - 24</span>
-<span class="co">#&gt; 7    4   2 25 - 44</span>
-<span class="co">#&gt; 8    5   2 45 - 64</span>
-<span class="co">#&gt; 9    6   2     65+</span>
-<span class="co">#&gt; 10   7   2 15 - 24</span>
-<span class="co">#&gt; 11   8   2 25 - 44</span>
+<span class="co">#&gt; # A tibble: 6 x 3</span>
+<span class="co">#&gt;     row   col  header</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;int&gt;   &lt;chr&gt;</span>
+<span class="co">#&gt; 1     3     2 15 - 24</span>
+<span class="co">#&gt; 2     4     2 25 - 44</span>
+<span class="co">#&gt; 3     5     2 45 - 64</span>
+<span class="co">#&gt; 4     6     2     65+</span>
+<span class="co">#&gt; 5     7     2 15 - 24</span>
+<span class="co">#&gt; 6     8     2 25 - 44</span>
 
 <span class="co"># Select the column headers</span>
 col_headers &lt;-
-<span class="st">  </span>cells %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(row &lt;=<span class="st"> </span><span class="dv">2</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(row, col, <span class="dt">header =</span> character) %&gt;%
-<span class="st">  </span><span class="kw">split</span>(.$row) <span class="co"># Separate each row of headers</span>
+<span class="st">  </span>cells <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row) <span class="co"># Separate each row of headers</span>
 col_headers
 <span class="co">#&gt; $`1`</span>
-<span class="co">#&gt;   row col header</span>
-<span class="co">#&gt; 1   1   3 Female</span>
-<span class="co">#&gt; 4   1   5   Male</span>
+<span class="co">#&gt; # A tibble: 2 x 3</span>
+<span class="co">#&gt;     row   col header</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;int&gt;  &lt;chr&gt;</span>
+<span class="co">#&gt; 1     1     3 Female</span>
+<span class="co">#&gt; 2     1     5   Male</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $`2`</span>
-<span class="co">#&gt;   row col header</span>
-<span class="co">#&gt; 2   2   3  0 - 6</span>
-<span class="co">#&gt; 3   2   4 7 - 10</span>
-<span class="co">#&gt; 5   2   5  0 - 6</span>
-<span class="co">#&gt; 6   2   6 7 - 10</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 4 x 3</span>
+<span class="co">#&gt;     row   col header</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;int&gt;  &lt;chr&gt;</span>
+<span class="co">#&gt; 1     2     3  0 - 6</span>
+<span class="co">#&gt; 2     2     4 7 - 10</span>
+<span class="co">#&gt; 3     2     5  0 - 6</span>
+<span class="co">#&gt; 4     2     6 7 - 10</span></code></pre></div>
 <p>Using <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> functions, we associate the data cells with the headers, by proximity in given compass directions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># From each data cell, search for the nearest one of each of the headers</span>
 unpivoted &lt;-
-<span class="st">  </span>datacells %&gt;%
-<span class="st">  </span><span class="kw"><a href="reference/join_header.html">NNW</a></span>(col_headers$<span class="st">`</span><span class="dt">1</span><span class="st">`</span>) %&gt;%<span class="st"> </span><span class="co"># Search north (up) and north-west (up-left)</span>
-<span class="st">  </span><span class="kw"><a href="reference/join_header.html">N</a></span>(col_headers$<span class="st">`</span><span class="dt">2</span><span class="st">`</span>) %&gt;%<span class="st"> </span><span class="co"># Search directly north (up)</span>
-<span class="st">  </span><span class="kw"><a href="reference/join_header.html">WNW</a></span>(row_headers$<span class="st">`</span><span class="dt">1</span><span class="st">`</span>) %&gt;%<span class="st"> </span><span class="co"># Search west (left) and north-west</span>
-<span class="st">  </span><span class="kw"><a href="reference/join_header.html">W</a></span>(row_headers$<span class="st">`</span><span class="dt">2</span><span class="st">`</span>) <span class="co"># Search directly left (west)</span>
+<span class="st">  </span>datacells <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/join_header.html">NNW</a></span>(col_headers<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Search north (up) and north-west (up-left)</span>
+<span class="st">  </span><span class="kw"><a href="reference/join_header.html">N</a></span>(col_headers<span class="op">$</span><span class="st">`</span><span class="dt">2</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Search directly north (up)</span>
+<span class="st">  </span><span class="kw"><a href="reference/join_header.html">WNW</a></span>(row_headers<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Search west (left) and north-west</span>
+<span class="st">  </span><span class="kw"><a href="reference/join_header.html">W</a></span>(row_headers<span class="op">$</span><span class="st">`</span><span class="dt">2</span><span class="st">`</span>) <span class="co"># Search directly left (west)</span>
 unpivoted
-<span class="co">#&gt; # A tibble: 72 × 10</span>
-<span class="co">#&gt;      row   col character double integer logical header.data header.header</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;       &lt;chr&gt;         &lt;chr&gt;</span>
-<span class="co">#&gt; 1      3     3      7000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 2      4     3     12000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 3      5     3     10000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 4      7     3     29000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 5      8     3     34000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 6      9     3     30000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 7     10     3     12000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 8     12     3     10000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 9     13     3      6000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; 10    14     3      5000     NA      NA      NA      Female         0 - 6</span>
-<span class="co">#&gt; # ... with 62 more rows, and 2 more variables: header.data.data &lt;chr&gt;,</span>
-<span class="co">#&gt; #   header.header.header &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 72 x 7</span>
+<span class="co">#&gt;      row   col   chr header.data header.header  header.data.data</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;</span>
+<span class="co">#&gt;  1     3     3  7000      Female         0 - 6 Bachelor's degree</span>
+<span class="co">#&gt;  2     4     3 12000      Female         0 - 6 Bachelor's degree</span>
+<span class="co">#&gt;  3     5     3 10000      Female         0 - 6 Bachelor's degree</span>
+<span class="co">#&gt;  4     7     3 29000      Female         0 - 6       Certificate</span>
+<span class="co">#&gt;  5     8     3 34000      Female         0 - 6       Certificate</span>
+<span class="co">#&gt;  6     9     3 30000      Female         0 - 6       Certificate</span>
+<span class="co">#&gt;  7    10     3 12000      Female         0 - 6       Certificate</span>
+<span class="co">#&gt;  8    12     3 10000      Female         0 - 6           Diploma</span>
+<span class="co">#&gt;  9    13     3  6000      Female         0 - 6           Diploma</span>
+<span class="co">#&gt; 10    14     3  5000      Female         0 - 6           Diploma</span>
+<span class="co">#&gt; # ... with 62 more rows, and 1 more variables: header.header.header &lt;chr&gt;</span></code></pre></div>
 <p>We can re-pivot the final data in R using <code>ftable()</code> to check that it has been imported correctly.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ftable</span>(unpivoted[<span class="dv">7</span>:<span class="dv">10</span>],
-       <span class="dt">row.vars =</span> <span class="dv">3</span>:<span class="dv">4</span>,
-       <span class="dt">col.vars =</span> <span class="dv">1</span>:<span class="dv">2</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ftable</span>(unpivoted[<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>],
+       <span class="dt">row.vars =</span> <span class="dv">4</span><span class="op">:</span><span class="dv">5</span>,
+       <span class="dt">col.vars =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>)
 <span class="co">#&gt;                                                 header.data   Female         Male       </span>
 <span class="co">#&gt;                                                 header.header  0 - 6 7 - 10 0 - 6 7 - 10</span>
 <span class="co">#&gt; header.data.data           header.header.header                                         </span>
@@ -250,22 +275,85 @@ unpivoted
 <span class="co">#&gt;                            45 - 64                                 1      1     1      1</span>
 <span class="co">#&gt;                            65+                                     0      1     0      1</span></code></pre></div>
 </div>
+<div id="html-tables" class="section level2">
+<h2 class="hasAnchor">
+<a href="#html-tables" class="anchor"></a>HTML tables</h2>
+<p>HTML tables can be imported in a similar way.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">urls &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"url.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)
+htmltools<span class="op">::</span><span class="kw">includeHTML</span>(urls)</code></pre></div>
+
+
+  
+    <title>HTML table with rowspan</title>
+<style>
+      table {
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid;
+        padding: 10px;
+      }
+    </style>
+<br><table class="table">
+<tr>
+<td colspan="2">
+<a href="example1.co.nz">Scraping</a> <a href="example2.co.nz">HTML.</a>
+</td>
+      </tr>
+<tr>
+<td><a href="example3.co.nz">Sweet</a></td>
+        <td><a href="example4.co.nz">as?</a></td>
+          <td>
+<a href="example5.co.nz">Yeah,</a><br><a href="http://www.tui.co.nz/">right.</a>
+</td>
+      </tr>
+</table>
+<br><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+cell_url &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)
+  x <span class="op">%&gt;%</span>
+<span class="st">    </span>xml2<span class="op">::</span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
+<span class="st">    </span>xml2<span class="op">::</span><span class="kw">xml_find_all</span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span>xml2<span class="op">::</span><span class="kw">xml_attr</span>(<span class="st">"href"</span>)
+}
+
+cell_text &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)
+  x <span class="op">%&gt;%</span>
+<span class="st">    </span>xml2<span class="op">::</span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
+<span class="st">    </span>xml2<span class="op">::</span><span class="kw">xml_find_all</span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span>rvest<span class="op">::</span><span class="kw">html_text</span>()
+}
+
+urls <span class="op">%&gt;%</span>
+<span class="st">  </span>xml2<span class="op">::</span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/tidy_table.html">tidy_table</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span>.[[<span class="dv">1</span>]] <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">text =</span> purrr<span class="op">::</span><span class="kw">map</span>(html, cell_text),
+         <span class="dt">url =</span> purrr<span class="op">::</span><span class="kw">map</span>(html, cell_url)) <span class="op">%&gt;%</span>
+<span class="st">  </span>tidyr<span class="op">::</span><span class="kw">unnest</span>(text, url)
+<span class="co">#&gt; # A tibble: 2 x 5</span>
+<span class="co">#&gt;     row   col  html  text   url</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;</span>
+<span class="co">#&gt; 1     1     2  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span>
+<span class="co">#&gt; 2     1     3  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span></code></pre></div>
+</div>
 <div id="compass-directions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#compass-directions" class="anchor"> </a>Compass directions</h2>
+<a href="#compass-directions" class="anchor"></a>Compass directions</h2>
 <p>The concept of compass directions is compactly expressed by this triptych.</p>
 <div class="figure">
-<img src="vignettes/compass-compact.png">
+<img src="articles/compass-compact.png">
 </div>
 <p>The most useful ones are more fully explained here.</p>
 <div class="figure">
-<img src="vignettes/compass-common.png">
+<img src="articles/compass-common.png">
 </div>
 <p>A complete explanation is in ‘poster’ form <a href="./vignettes/compass-complete.svg">here</a>.</p>
 </div>
 <div id="philosophy" class="section level2">
 <h2 class="hasAnchor">
-<a href="#philosophy" class="anchor"> </a>Philosophy</h2>
+<a href="#philosophy" class="anchor"></a>Philosophy</h2>
 <p>Information in in many spreadsheets cannot be easily imported into R. Why?</p>
 <p>Most R packages that import spreadsheets have difficulty unless the layout of the spreadsheet conforms to a strict definition of a ‘table’, e.g.:</p>
 <ul>
@@ -288,14 +376,14 @@ unpivoted
 </div>
 <div id="similar-projects" class="section level2">
 <h2 class="hasAnchor">
-<a href="#similar-projects" class="anchor"> </a>Similar projects</h2>
+<a href="#similar-projects" class="anchor"></a>Similar projects</h2>
 <p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> is inspired by the United Kingdom Office of National Statistics <a href="https://github.com/ONS-OpenData/ONSdatabaker">ONSdatabaker</a>, which is implemented in Python. <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> differs already by using compass directions and searching for headers between boundaries.</p>
 <p>The <a href="https://github.com/rsheets">rsheets</a> project of several R packages is in the early stages of importing spreadsheet information from Excel and Google Sheets into R, manipulating it, and potentially parsing and processing formulas and writing out to spreadsheet files. In particular, <a href="https://github.com/rsheets/jailbreakr">jailbreaker</a> attempts to extract non-tabular data from spreadsheets into tabular structures automatically via some clever algorithms.</p>
 <p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> differs from <a href="https://github.com/rsheets/jailbreakr">jailbreaker</a> in that it provides tools for unpivoting complex and non-tabular data layouts using I not AI (intelligence, not artificial intelligence).</p>
 </div>
 <div id="roadmap" class="section level2">
 <h2 class="hasAnchor">
-<a href="#roadmap" class="anchor"> </a>Roadmap</h2>
+<a href="#roadmap" class="anchor"></a>Roadmap</h2>
 <p>As common unpivoting idioms emerge, they will be generalised and added to the package. E.g. combining long header titles that are spelled out across cells, rather than being in one cell merged across others.</p>
 </div>
 </div>
@@ -318,7 +406,6 @@ unpivoted
 <ul class="list-unstyled">
 <li>Duncan Garmonsway <br><small class="roles"> Author, maintainer </small> </li>
 </ul>
-<html><body>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/nacnudus/unpivotr"><img src="https://travis-ci.org/nacnudus/unpivotr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
@@ -327,7 +414,6 @@ unpivoted
 <li><a href="https://www.r-pkg.org/pkg/unpivotr"><img src="https://cranlogs.r-pkg.org/badges/unpivotr" alt="Cran Downloads"></a></li>
 <li><a href="https://codecov.io/gh/nacnudus/unpivotr"><img src="https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master" alt="codecov"></a></li>
 </ul>
-</body></html>
 </div>
 
 </div>

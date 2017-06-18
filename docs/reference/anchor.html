@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -85,43 +87,52 @@
 not exist.  This is useful when choosing inital cells from which to search
 for others, using <code><a href='offset.html'>offset</a></code> and <code><a href='extend.html'>extend</a></code>.  If the
 chosen cells do not exist, then cells are generated at the given rows and
-columns, with NAs in every column other than &#39;row&#39; and &#39;col&#39;.</p>
+columns, with NAs in every column other than 'row' and 'col'.</p>
     
 
-    <pre><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='no'>rows</span>, <span class='no'>cols</span>, <span class='kw'>cross</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='no'>rows</span>, <span class='no'>cols</span>, <span class='kw'>cross</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>cells</dt>
-      <dd>Data frame, the cells among which the anchor will be sought</dd>
-      <dt>rows</dt>
-      <dd>Numeric, the rows of the intended cells</dd>
-      <dt>cols</dt>
-      <dd>Numeric, the columns of the intended cell</dd>
-      <dt>cross</dt>
-      <dd>Logical, whether to &#39;cross&#39; the given rows and columns to
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>cells</th>
+      <td><p>Data frame, the cells among which the anchor will be sought</p></td>
+    </tr>
+    <tr>
+      <th>rows</th>
+      <td><p>Numeric, the rows of the intended cells</p></td>
+    </tr>
+    <tr>
+      <th>cols</th>
+      <td><p>Numeric, the columns of the intended cell</p></td>
+    </tr>
+    <tr>
+      <th>cross</th>
+      <td><p>Logical, whether to 'cross' the given rows and columns to
 generate all combinations. Unless this is TRUE, <code>rows</code> and <code>cols</code>
-must be the same length.  TRUE by default.</dd>
-    </dl>
+must be the same length.  TRUE by default.</p></td>
+    </tr>
+    </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidytable.html'>tidytable</a></span>(<span class='no'>purpose</span>$<span class='no'>`NNW WNW`</span>)
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'>#   anchor(cells, 0, 1)</span>
-<span class='co'>#   anchor(cells, 1, 1:2)</span>
-<span class='co'>## ---------------------------------------------</span>
-<span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     1     1        X2     NA      NA      NA</div><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>cross</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 2 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     1     1        X2     NA      NA      NA
-#&gt; 2     1     2        X3     NA      NA      NA</div><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>100</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1   100     1      &lt;NA&gt;     NA      NA      NA</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>purpose</span>$<span class='no'>`NNW WNW`</span>)
+<span class='fu'>not_run</span>({
+    <span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
+    <span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>:<span class='fl'>2</span>)
+})
+<span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
+#&gt;     row   col   chr
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1     1     1  &lt;NA&gt;</div><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>cross</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 3
+#&gt;     row   col   chr
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1     1     1  &lt;NA&gt;
+#&gt; 2     1     2  &lt;NA&gt;</div><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>100</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
+#&gt;     row   col   chr
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1   100     1  &lt;NA&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

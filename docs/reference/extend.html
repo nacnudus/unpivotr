@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Extend a bag of cells in one direction, optionally up to a boundary
- — extend • unpivotr</title>
+condition. — extend • unpivotr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -26,12 +26,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,21 +81,21 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extend a bag of cells in one direction, optionally up to a boundary
-</h1>
+condition.</h1>
     </div>
 
     
     <p>A bag of data cells is a data frame with at least the
-columns &#39;row&#39; and &#39;col&#39;, as well as any others that carry information about
+columns 'row' and 'col', as well as any others that carry information about
 the cells, e.g. their values.  More cells may be added to the bag by
 extending the bag in a given direction, either by a number of rows or
 columns, or up to (and optionally including) cells that meet a boundary
 condition.  The boundary may be required to be detected in every cell along
-the &#39;leading edge&#39; of the bag, otherwise extension will stop at the nearest
+the 'leading edge' of the bag, otherwise extension will stop at the nearest
 boundary that is detected.</p>
     
 
-    <pre><span class='fu'>extend</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='no'>direction</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>extend</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='no'>direction</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>extend_N</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -109,33 +111,48 @@ boundary that is detected.</p>
   <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>bag</dt>
-      <dd>Data frame. The original selection, including at least the columns
-&#39;row&#39; and &#39;column&#39;, which are numeric/integer vectors.</dd>
-      <dt>cells</dt>
-      <dd>Data frame. All the cells in the sheet, among which to extend
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>bag</th>
+      <td><p>Data frame. The original selection, including at least the columns
+'row' and 'column', which are numeric/integer vectors.</p></td>
+    </tr>
+    <tr>
+      <th>cells</th>
+      <td><p>Data frame. All the cells in the sheet, among which to extend
 the bag (extensions beyond existing cells will be padded with blank cells).
-Must include at least the columns &#39;row&#39; and &#39;column&#39;, as well as any columns
-referred to by the boundary formula.</dd>
-      <dt>direction</dt>
-      <dd>Character vector length 1. The direction in which to extend,
-among the compass directions &quot;N&quot;, &quot;E&quot;, &quot;S&quot;, &quot;W&quot;, where &quot;N&quot; is north (up).</dd>
-      <dt>n</dt>
-      <dd>Integer vector length 1, &gt;= 0. The number of rows/cols to extend by
-in the given direction.</dd>
-      <dt>boundary</dt>
-      <dd>Formula to express a boundary condition.  `~ col &lt;= 50` would
+Must include at least the columns 'row' and 'column', as well as any columns
+referred to by the boundary formula.</p></td>
+    </tr>
+    <tr>
+      <th>direction</th>
+      <td><p>Character vector length 1. The direction in which to extend,
+among the compass directions "N", "E", "S", "W", where "N" is north (up).</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>Integer vector length 1, &gt;= 0. The number of rows/cols to extend by
+in the given direction.</p></td>
+    </tr>
+    <tr>
+      <th>boundary</th>
+      <td><p>Formula to express a boundary condition.  `~ col &lt;= 50` would
 go up to the 50th column.  NAs are treated the same as FALSE, but with a
-warning.</dd>
-      <dt>edge</dt>
-      <dd>Logical vector length 1. Whether to require the boundary formula
-to be TRUE along the entire leading edge of the bag that is being extended.</dd>
-      <dt>include</dt>
-      <dd>Logical vector length 1. Whether to include in the extension
+warning.</p></td>
+    </tr>
+    <tr>
+      <th>edge</th>
+      <td><p>Logical vector length 1. Whether to require the boundary formula
+to be TRUE along the entire leading edge of the bag that is being extended.</p></td>
+    </tr>
+    <tr>
+      <th>include</th>
+      <td><p>Logical vector length 1. Whether to include in the extension
 the first cell (and its row/col of fellow cells) at which the boundary
-condition is met.</dd>
-    </dl>
+condition is met.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -144,16 +161,12 @@ even when n = 0.</p>
     
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
-    <p><ul>
-<li> <code>extend_N</code>: Extend a bag of cells to the north</p>
-    <p></li>
-<li> <code>extend_E</code>: Extend a bag of cells to the east</p>
-    <p></li>
-<li> <code>extend_S</code>: Extend a bag of cells to the south</p>
-    <p></li>
-<li> <code>extend_W</code>: Extend a bag of cells to the west
-</li>
-</ul></p>
+    <ul>
+<li><p><code>extend_N</code>: Extend a bag of cells to the north</p></li>
+<li><p><code>extend_E</code>: Extend a bag of cells to the east</p></li>
+<li><p><code>extend_S</code>: Extend a bag of cells to the south</p></li>
+<li><p><code>extend_W</code>: Extend a bag of cells to the west</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -161,7 +174,7 @@ even when n = 0.</p>
 (<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>purpose</span>$<span class='no'>`NNW WNW`</span>)</div><div class='output co'>#&gt;                            X2      X3     X4     X5    X6     X7
 #&gt; 1                        &lt;NA&gt;    &lt;NA&gt; Female   &lt;NA&gt;  Male   &lt;NA&gt;
 #&gt; 2                        &lt;NA&gt;    &lt;NA&gt;  0 - 6 7 - 10 0 - 6 7 - 10
-#&gt; 3           Bachelor&#39;s degree 15 - 24   7000  27000  &lt;NA&gt;  13000
+#&gt; 3           Bachelor's degree 15 - 24   7000  27000  &lt;NA&gt;  13000
 #&gt; 4                        &lt;NA&gt; 25 - 44  12000 137000  9000  81000
 #&gt; 5                        &lt;NA&gt; 45 - 64  10000  64000  7000  66000
 #&gt; 6                        &lt;NA&gt;     65+   &lt;NA&gt;  18000  7000  17000
@@ -181,56 +194,56 @@ even when n = 0.</p>
 #&gt; 20                       &lt;NA&gt; 25 - 44   5000  86000  7000  60000
 #&gt; 21                       &lt;NA&gt; 45 - 64   6000  55000  6000  68000
 #&gt; 22                       &lt;NA&gt;     65+   &lt;NA&gt;  13000  &lt;NA&gt;  18000</div><div class='input'><span class='co'># Make a tidy representation</span>
-<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidytable.html'>tidytable</a></span>(<span class='no'>x</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[!<span class='fu'>is.na</span>(<span class='no'>cells</span>$<span class='no'>character</span>), ] <span class='co'># Introduce 'holes' in the data</span>
+<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>x</span>)
+<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[!<span class='fu'>is.na</span>(<span class='no'>cells</span>$<span class='no'>chr</span>), ] <span class='co'># Introduce 'holes' in the data</span>
 <span class='co'># Select a particular cell</span>
 <span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>3</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>3</span>), ]
 <span class='co'># Extend the selection downwards, stopping before the NA.</span>
-<span class='fu'>extend_S</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='fu'>is.na</span>(<span class='no'>character</span>))</div><div class='output co'>#&gt; # A tibble: 3 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     4     3     12000     NA      NA      NA
-#&gt; 2     5     3     10000     NA      NA      NA
-#&gt; 3     3     3      7000     NA      NA      NA</div><div class='input'><span class='co'># Extend the selection right, up to and including the fifth column.</span>
-<span class='fu'>extend_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>5</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 3 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     3     4     27000     NA      NA      NA
-#&gt; 2     3     5      &lt;NA&gt;     NA      NA      NA
-#&gt; 3     3     3      7000     NA      NA      NA</div><div class='input'><span class='co'># Extend the selection beyond the existing cells</span>
-<span class='fu'>extend_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='fl'>15</span>)</div><div class='output co'>#&gt; # A tibble: 16 × 6
-#&gt;      row   col character double integer logical
-#&gt;    &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1      3     4     27000     NA      NA      NA
-#&gt; 2      3     5      &lt;NA&gt;     NA      NA      NA
-#&gt; 3      3     6     13000     NA      NA      NA
-#&gt; 4      3     7      &lt;NA&gt;     NA      NA      NA
-#&gt; 5      3     8      &lt;NA&gt;     NA      NA      NA
-#&gt; 6      3     9      &lt;NA&gt;     NA      NA      NA
-#&gt; 7      3    10      &lt;NA&gt;     NA      NA      NA
-#&gt; 8      3    11      &lt;NA&gt;     NA      NA      NA
-#&gt; 9      3    12      &lt;NA&gt;     NA      NA      NA
-#&gt; 10     3    13      &lt;NA&gt;     NA      NA      NA
-#&gt; 11     3    14      &lt;NA&gt;     NA      NA      NA
-#&gt; 12     3    15      &lt;NA&gt;     NA      NA      NA
-#&gt; 13     3    16      &lt;NA&gt;     NA      NA      NA
-#&gt; 14     3    17      &lt;NA&gt;     NA      NA      NA
-#&gt; 15     3    18      &lt;NA&gt;     NA      NA      NA
-#&gt; 16     3     3      7000     NA      NA      NA</div><div class='input'><span class='co'># This doesn't work inside formulas, because it would mean testing the</span>
+<span class='fu'>extend_S</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='fu'>is.na</span>(<span class='no'>chr</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 3
+#&gt;     row   col   chr
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1     4     3 12000
+#&gt; 2     5     3 10000
+#&gt; 3     3     3  7000</div><div class='input'><span class='co'># Extend the selection right, up to and including the fifth column.</span>
+<span class='fu'>extend_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>5</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
+#&gt;     row   col   chr
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1     3     4 27000
+#&gt; 2     3     5  &lt;NA&gt;
+#&gt; 3     3     3  7000</div><div class='input'><span class='co'># Extend the selection beyond the existing cells</span>
+<span class='fu'>extend_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='fl'>15</span>)</div><div class='output co'>#&gt; # A tibble: 16 x 3
+#&gt;      row   col   chr
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt;  1     3     4 27000
+#&gt;  2     3     5  &lt;NA&gt;
+#&gt;  3     3     6 13000
+#&gt;  4     3     7  &lt;NA&gt;
+#&gt;  5     3     8  &lt;NA&gt;
+#&gt;  6     3     9  &lt;NA&gt;
+#&gt;  7     3    10  &lt;NA&gt;
+#&gt;  8     3    11  &lt;NA&gt;
+#&gt;  9     3    12  &lt;NA&gt;
+#&gt; 10     3    13  &lt;NA&gt;
+#&gt; 11     3    14  &lt;NA&gt;
+#&gt; 12     3    15  &lt;NA&gt;
+#&gt; 13     3    16  &lt;NA&gt;
+#&gt; 14     3    17  &lt;NA&gt;
+#&gt; 15     3    18  &lt;NA&gt;
+#&gt; 16     3     3  7000</div><div class='input'><span class='co'># This doesn't work inside formulas, because it would mean testing the</span>
 <span class='co'># boundary formula on every possible cell in the given direction</span>
 <span class='co'>## Not run: extend_E(cell, cells, boundary = ~ col == 15)</span>
 <span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>7</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>), ]
-<span class='fu'>extend_N</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ !<span class='fu'>is.na</span>(<span class='no'>character</span>), <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 8 × 6
-#&gt;     row   col   character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;       &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     4     1        &lt;NA&gt;     NA      NA      NA
-#&gt; 2     4     2     25 - 44     NA      NA      NA
-#&gt; 3     5     1        &lt;NA&gt;     NA      NA      NA
-#&gt; 4     5     2     45 - 64     NA      NA      NA
-#&gt; 5     6     1        &lt;NA&gt;     NA      NA      NA
-#&gt; 6     6     2         65+     NA      NA      NA
-#&gt; 7     7     1 Certificate     NA      NA      NA
-#&gt; 8     7     2     15 - 24     NA      NA      NA</div></pre>
+<span class='fu'>extend_N</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ !<span class='fu'>is.na</span>(<span class='no'>chr</span>), <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 3
+#&gt;     row   col         chr
+#&gt;   &lt;int&gt; &lt;int&gt;       &lt;chr&gt;
+#&gt; 1     4     1        &lt;NA&gt;
+#&gt; 2     4     2     25 - 44
+#&gt; 3     5     1        &lt;NA&gt;
+#&gt; 4     5     2     45 - 64
+#&gt; 5     6     1        &lt;NA&gt;
+#&gt; 6     6     2         65+
+#&gt; 7     7     1 Certificate
+#&gt; 8     7     2     15 - 24</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -82,14 +84,14 @@
 
     
     <p>A bag of data cells is a data frame with at least the
-columns &#39;row&#39; and &#39;col&#39;, as well as any others that carry information about
+columns 'row' and 'col', as well as any others that carry information about
 the cells, e.g. their values.  The position of this bag may be moved across
 the sheet, exchanging the cells which are included in the bag.  Non-existant
 cells will be padded, so chains of offets preserve the shape of the original
 bag.</p>
     
 
-    <pre><span class='fu'>offset</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='no'>direction</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>offset</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='no'>direction</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>offset_N</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -105,33 +107,48 @@ bag.</p>
   <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>bag</dt>
-      <dd>Data frame. The original selection, including at least the columns
-&#39;row&#39; and &#39;column&#39;, which are numeric/integer vectors.</dd>
-      <dt>cells</dt>
-      <dd>Data frame. All the cells in the sheet, among which to offset
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>bag</th>
+      <td><p>Data frame. The original selection, including at least the columns
+'row' and 'column', which are numeric/integer vectors.</p></td>
+    </tr>
+    <tr>
+      <th>cells</th>
+      <td><p>Data frame. All the cells in the sheet, among which to offset
 the bag (extensions beyond existing cells will be padded with blank cells).
-Must include at least the columns &#39;row&#39; and &#39;column&#39;, as well as any columns
-referred to by the boundary formula.</dd>
-      <dt>direction</dt>
-      <dd>Character vector length 1. The direction in which to offset,
-among the compass directions &quot;N&quot;, &quot;E&quot;, &quot;S&quot;, &quot;W&quot;, where &quot;N&quot; is north (up).</dd>
-      <dt>n</dt>
-      <dd>Integer vector length 1, &gt;= 0. The number of rows/cols to offset by
-in the given direction.</dd>
-      <dt>boundary</dt>
-      <dd>Formula to express a boundary condition.  `~ col &lt;= 50` would
+Must include at least the columns 'row' and 'column', as well as any columns
+referred to by the boundary formula.</p></td>
+    </tr>
+    <tr>
+      <th>direction</th>
+      <td><p>Character vector length 1. The direction in which to offset,
+among the compass directions "N", "E", "S", "W", where "N" is north (up).</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>Integer vector length 1, &gt;= 0. The number of rows/cols to offset by
+in the given direction.</p></td>
+    </tr>
+    <tr>
+      <th>boundary</th>
+      <td><p>Formula to express a boundary condition.  `~ col &lt;= 50` would
 go up to the 50th column.  NAs are treated the same as FALSE, but with a
-warning.</dd>
-      <dt>edge</dt>
-      <dd>Logical vector length 1. Whether to require the boundary formula
-to be TRUE along the entire leading edge of the bag that is being offset</dd>
-      <dt>include</dt>
-      <dd>Logical vector length 1. Whether to include in the extension
+warning.</p></td>
+    </tr>
+    <tr>
+      <th>edge</th>
+      <td><p>Logical vector length 1. Whether to require the boundary formula
+to be TRUE along the entire leading edge of the bag that is being offset</p></td>
+    </tr>
+    <tr>
+      <th>include</th>
+      <td><p>Logical vector length 1. Whether to include in the extension
 the first cell (and its row/col of fellow cells) at which the boundary
-condition is met.</dd>
-    </dl>
+condition is met.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -140,16 +157,12 @@ even when n = 0.</p>
     
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
-    <p><ul>
-<li> <code>offset_N</code>: Offset a bag of cells to the north</p>
-    <p></li>
-<li> <code>offset_E</code>: Offset a bag of cells to the east</p>
-    <p></li>
-<li> <code>offset_S</code>: Offset a bag of cells to the south</p>
-    <p></li>
-<li> <code>offset_W</code>: Offset a bag of cells to the west
-</li>
-</ul></p>
+    <ul>
+<li><p><code>offset_N</code>: Offset a bag of cells to the north</p></li>
+<li><p><code>offset_E</code>: Offset a bag of cells to the east</p></li>
+<li><p><code>offset_S</code>: Offset a bag of cells to the south</p></li>
+<li><p><code>offset_W</code>: Offset a bag of cells to the west</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -157,7 +170,7 @@ even when n = 0.</p>
 (<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>purpose</span>$<span class='no'>`NNW WNW`</span>)</div><div class='output co'>#&gt;                            X2      X3     X4     X5    X6     X7
 #&gt; 1                        &lt;NA&gt;    &lt;NA&gt; Female   &lt;NA&gt;  Male   &lt;NA&gt;
 #&gt; 2                        &lt;NA&gt;    &lt;NA&gt;  0 - 6 7 - 10 0 - 6 7 - 10
-#&gt; 3           Bachelor&#39;s degree 15 - 24   7000  27000  &lt;NA&gt;  13000
+#&gt; 3           Bachelor's degree 15 - 24   7000  27000  &lt;NA&gt;  13000
 #&gt; 4                        &lt;NA&gt; 25 - 44  12000 137000  9000  81000
 #&gt; 5                        &lt;NA&gt; 45 - 64  10000  64000  7000  66000
 #&gt; 6                        &lt;NA&gt;     65+   &lt;NA&gt;  18000  7000  17000
@@ -177,40 +190,40 @@ even when n = 0.</p>
 #&gt; 20                       &lt;NA&gt; 25 - 44   5000  86000  7000  60000
 #&gt; 21                       &lt;NA&gt; 45 - 64   6000  55000  6000  68000
 #&gt; 22                       &lt;NA&gt;     65+   &lt;NA&gt;  13000  &lt;NA&gt;  18000</div><div class='input'><span class='co'># Make a tidy representation</span>
-<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidytable.html'>tidytable</a></span>(<span class='no'>x</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[!<span class='fu'>is.na</span>(<span class='no'>cells</span>$<span class='no'>character</span>), ] <span class='co'># Introduce 'holes' in the data</span>
+<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>x</span>)
+<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[!<span class='fu'>is.na</span>(<span class='no'>cells</span>$<span class='no'>chr</span>), ] <span class='co'># Introduce 'holes' in the data</span>
 <span class='co'># Select an L-shape with gaps</span>
 <span class='no'>bag</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>filter</span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>%in%</span> <span class='fl'>3</span>:<span class='fl'>4</span>, <span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>)
 <span class='co'># Offset, notice the L has been squared-off (padded)</span>
-<span class='fu'>offset_N</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 4 × 6
-#&gt;     row   col         character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;             &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     2     1              &lt;NA&gt;     NA      NA      NA
-#&gt; 2     2     2              &lt;NA&gt;     NA      NA      NA
-#&gt; 3     3     1 Bachelor&#39;s degree     NA      NA      NA
-#&gt; 4     3     2           15 - 24     NA      NA      NA</div><div class='input'><span class='co'># Select a particular cell</span>
+<span class='fu'>offset_N</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
+#&gt;     row   col               chr
+#&gt;   &lt;int&gt; &lt;int&gt;             &lt;chr&gt;
+#&gt; 1     2     1              &lt;NA&gt;
+#&gt; 2     2     2              &lt;NA&gt;
+#&gt; 3     3     1 Bachelor's degree
+#&gt; 4     3     2           15 - 24</div><div class='input'><span class='co'># Select a particular cell</span>
 <span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>3</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>3</span>), ]
 <span class='co'># Offset the selection downwards, stopping before the NA.</span>
-<span class='fu'>offset_S</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='fu'>is.na</span>(<span class='no'>character</span>))</div><div class='output co'>#&gt; # A tibble: 1 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     5     3     10000     NA      NA      NA</div><div class='input'><span class='co'># Offset the selection right, up to and including the fifth column.</span>
-<span class='fu'>offset_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>5</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     3     5      &lt;NA&gt;     NA      NA      NA</div><div class='input'><span class='co'># Offset the selection beyond the existing cells</span>
-<span class='fu'>offset_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='fl'>15</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     3    18      &lt;NA&gt;     NA      NA      NA</div><div class='input'><span class='co'># This doesn't work inside formulas, because it would mean testing the</span>
+<span class='fu'>offset_S</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='fu'>is.na</span>(<span class='no'>chr</span>))</div><div class='output co'>#&gt; # A tibble: 1 x 3
+#&gt;     row   col   chr
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1     5     3 10000</div><div class='input'><span class='co'># Offset the selection right, up to and including the fifth column.</span>
+<span class='fu'>offset_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>5</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
+#&gt;     row   col   chr
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1     3     5  &lt;NA&gt;</div><div class='input'><span class='co'># Offset the selection beyond the existing cells</span>
+<span class='fu'>offset_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='fl'>15</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
+#&gt;     row   col   chr
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1     3    18  &lt;NA&gt;</div><div class='input'><span class='co'># This doesn't work inside formulas, because it would mean testing the</span>
 <span class='co'># boundary formula on every possible cell in the given direction</span>
 <span class='co'>## Not run: offset_E(cell, cells, boundary = ~ col == 15)</span>
 <span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>7</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>), ]
-<span class='fu'>offset_N</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ !<span class='fu'>is.na</span>(<span class='no'>character</span>), <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 2 × 6
-#&gt;     row   col character double integer logical
-#&gt;   &lt;int&gt; &lt;int&gt;     &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt;   &lt;lgl&gt;
-#&gt; 1     4     1      &lt;NA&gt;     NA      NA      NA
-#&gt; 2     4     2   25 - 44     NA      NA      NA</div></pre>
+<span class='fu'>offset_N</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ !<span class='fu'>is.na</span>(<span class='no'>chr</span>), <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 3
+#&gt;     row   col     chr
+#&gt;   &lt;int&gt; &lt;int&gt;   &lt;chr&gt;
+#&gt; 1     4     1    &lt;NA&gt;
+#&gt; 2     4     2 25 - 44</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

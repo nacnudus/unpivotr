@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -81,40 +83,36 @@
     </div>
 
     
-    <p>&#39;Unpivotr&#39; provides tools for converting data from complex or irregular
+    <p>'Unpivotr' provides tools for converting data from complex or irregular
 layouts to a columnar structure.  For example, tables with multi-level column
-or row headers, or spreadsheets.  Header and data cells are selected by their
-contents, position and formatting, and are associated with one other by their
-relative positions.</p>
+or row headers, or spreadsheets, or nested HTML tables.  Header and data
+cells can selected by their contents, position and formatting, and can be
+associated with one other by their relative positions.</p>
     
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The input data must be a data frame with the columns &#39;row&#39; and &#39;col&#39; to
-describe the position of a &#39;cell&#39; of data.  In addition, a &#39;value&#39; column is
-required for cells that are to be interpreted as headers.  For cells that are
-to be interpreted as data, further columns containing the &#39;value&#39; of the cell
-are, of course, necessary for there to be any point in using this package,
-though they are not actually required for any of the given functions.</p>
-    <p>Data frames and matrices can be converted into a format meeting these
-requirements by using the <code><a href='tidytable.html'>tidytable</a></code> function.  Excel (.xlsx)
-files can be imported directly into the required format with the &#39;tidyxl&#39;
+    <p>The input data must be a data frame with the columns 'row' and 'col' to
+describe the position of a 'cell' of data.  For cells that are to be
+interpreted as data, further columns containing the 'value' of the cell are,
+of course, necessary for there to be any point in using this package, though
+they are not actually required for any of the given functions.</p>
+<p>Data frames and HTML tables can be converted into a format meeting these
+requirements by using the <code><a href='tidy_table.html'>tidy_table</a></code> function.  Excel (.xlsx)
+files can be imported directly into the required format with the 'tidyxl'
 package, available at <a href = 'https://github.com/nacnudus/tidyxl'>https://github.com/nacnudus/tidyxl</a>, which has the
 advantage that it retains cell formatting and comments.</p>
-    <p>The functions are documented in <code><a href='join_header.html'>join_header</a></code>,
+<p>The functions are documented in <code><a href='join_header.html'>join_header</a></code>,
 <code><a href='extend.html'>extend</a></code> and <code><a href='offset.html'>offset</a></code>.  All functions are designed to
 work well with the pipe <code>%&gt;%</code> from the magrittr package.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Useful links:
-<ul>
-<li> <a href = 'https://github.com/nacnudus/unpivotr'>https://github.com/nacnudus/unpivotr</a>
-  </li>
-<li> Report bugs at <a href = 'https://github.com/nacnudus/unpivotr/issues'>https://github.com/nacnudus/unpivotr/issues</a>
-</li>
-</ul></p>
+    <p>Useful links:</p><ul>
+<li><p><a href = 'https://github.com/nacnudus/unpivotr'>https://github.com/nacnudus/unpivotr</a></p></li>
+<li><p>Report bugs at <a href = 'https://github.com/nacnudus/unpivotr/issues'>https://github.com/nacnudus/unpivotr/issues</a></p></li>
+</ul>
     
 
   </div>

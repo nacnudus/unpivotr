@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -77,57 +79,80 @@
       <div class="row">
   <div class="col-md-9">
     <div class="page-header">
-      <h1>Function reference</h1>
-      <h4>version&nbsp;0.1.0.9000</h4>
+      <h1>
+        Reference
+        <small>version&nbsp;0.2.1</small>
+      </h1>
     </div>
 
     <div class="contents">
-      <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-      <p class="section-desc"></p>
+      <table class="ref-index">
 
-      
-      <p><a href="anchor.html">Filter for a cell from which to select others</a></p>
-      <ul>
-        <li><code><a href="anchor.html">anchor</a></code></li>
-      </ul>
-      
-      <p><a href="extend.html">Extend a bag of cells in one direction, optionally up to a boundary
-</a></p>
-      <ul>
-        <li><code><a href="extend.html">extend</a></code></li><li><code><a href="extend.html">extend_N</a></code></li><li><code><a href="extend.html">extend_E</a></code></li><li><code><a href="extend.html">extend_S</a></code></li><li><code><a href="extend.html">extend_W</a></code></li>
-      </ul>
-      
-      <p><a href="join_header.html">Join a bag of data cells to some header, by proximity in a given direction,
-</a></p>
-      <ul>
-        <li><code><a href="join_header.html">join_header</a></code></li><li><code><a href="join_header.html">N</a></code></li><li><code><a href="join_header.html">E</a></code></li><li><code><a href="join_header.html">S</a></code></li><li><code><a href="join_header.html">W</a></code></li><li><code><a href="join_header.html">NNW</a></code></li><li><code><a href="join_header.html">NNE</a></code></li><li><code><a href="join_header.html">ENE</a></code></li><li><code><a href="join_header.html">ESE</a></code></li><li><code><a href="join_header.html">SSE</a></code></li><li><code><a href="join_header.html">SSW</a></code></li><li><code><a href="join_header.html">WSW</a></code></li><li><code><a href="join_header.html">WNW</a></code></li><li><code><a href="join_header.html">ABOVE</a></code></li><li><code><a href="join_header.html">LEFT</a></code></li><li><code><a href="join_header.html">BELOW</a></code></li><li><code><a href="join_header.html">RIGHT</a></code></li>
-      </ul>
-      
-      <p><a href="offset.html">Offset a bag of cells by some rows or columns.</a></p>
-      <ul>
-        <li><code><a href="offset.html">offset</a></code></li><li><code><a href="offset.html">offset_N</a></code></li><li><code><a href="offset.html">offset_E</a></code></li><li><code><a href="offset.html">offset_S</a></code></li><li><code><a href="offset.html">offset_W</a></code></li>
-      </ul>
-      
-      <p><a href="pad.html">Pad a bag of cells with blanks</a></p>
-      <ul>
-        <li><code><a href="pad.html">pad</a></code></li>
-      </ul>
-      
-      <p><a href="purpose.html">Sense-of-purpose in the 2014 New Zealand General Social Survey</a></p>
-      <ul>
-        <li><code><a href="purpose.html">purpose</a></code></li>
-      </ul>
-      
-      <p><a href="tidytable.html">Convert data frames into a tidy structure</a></p>
-      <ul>
-        <li><code><a href="tidytable.html">tidytable</a></code></li>
-      </ul>
-      
-      <p><a href="unpivotr-package.html">Un-pivot complex and irregular data layouts.</a></p>
-      <ul>
-        <li><code><a href="unpivotr-package.html">unpivotr</a></code></li><li><code><a href="unpivotr-package.html">unpivotr-package</a></code></li>
-      </ul>
-    
+      <colgroup>
+        <col class="alias" />
+        <col class="title" />
+      </colgroup>
+
+      <tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+            <p class="section-desc"></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="anchor.html">anchor</a></code> </p>
+          </td>
+          <td><p>Filter for a cell from which to select others</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="extend.html">extend</a></code> <code><a href="extend.html">extend_N</a></code> <code><a href="extend.html">extend_E</a></code> <code><a href="extend.html">extend_S</a></code> <code><a href="extend.html">extend_W</a></code> </p>
+          </td>
+          <td><p>Extend a bag of cells in one direction, optionally up to a boundary
+condition.</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="join_header.html">join_header</a></code> <code><a href="join_header.html">N</a></code> <code><a href="join_header.html">E</a></code> <code><a href="join_header.html">S</a></code> <code><a href="join_header.html">W</a></code> <code><a href="join_header.html">NNW</a></code> <code><a href="join_header.html">NNE</a></code> <code><a href="join_header.html">ENE</a></code> <code><a href="join_header.html">ESE</a></code> <code><a href="join_header.html">SSE</a></code> <code><a href="join_header.html">SSW</a></code> <code><a href="join_header.html">WSW</a></code> <code><a href="join_header.html">WNW</a></code> <code><a href="join_header.html">ABOVE</a></code> <code><a href="join_header.html">LEFT</a></code> <code><a href="join_header.html">BELOW</a></code> <code><a href="join_header.html">RIGHT</a></code> </p>
+          </td>
+          <td><p>Join a bag of data cells to some header, by proximity in a given direction,
+e.g. NNW searches up and up-left from a data cell to find a header cell.</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="offset.html">offset</a></code> <code><a href="offset.html">offset_N</a></code> <code><a href="offset.html">offset_E</a></code> <code><a href="offset.html">offset_S</a></code> <code><a href="offset.html">offset_W</a></code> </p>
+          </td>
+          <td><p>Offset a bag of cells by some rows or columns.</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="pad.html">pad</a></code> </p>
+          </td>
+          <td><p>Pad a bag of cells with blanks</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="purpose.html">purpose</a></code> </p>
+          </td>
+          <td><p>Sense-of-purpose in the 2014 New Zealand General Social Survey</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="tidy_table.html">tidy_table</a></code> </p>
+          </td>
+          <td><p>Convert data frames into a tidy structure</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="unpivotr-package.html">unpivotr-package</a></code> </p>
+          </td>
+          <td><p>Un-pivot complex and irregular data layouts.</p></td>
+        </tr>
+      </tbody>
+      </table>
     </div>
   </div>
 
