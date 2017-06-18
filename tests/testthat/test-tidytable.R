@@ -38,7 +38,7 @@ test_that("tidy_table works with html tables", {
                            1L,   4L,                                                       NA,
                            2L,   4L,                                   "<td>cell (3, 2)</td>",
                            1L,   5L,                                                       NA,
-                           2L,   5L,                                   "<td>cell (3, 2)</td>"))
+                           2L,   5L,                                   "<td>cell (3, 3)</td>"))
   nested_correct <-
     list(tibble::tribble(~row,  ~col,                          ~html,
                            1L,    1L, "<th>Header (2, 2)(1, 1)</th>",
