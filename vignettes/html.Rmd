@@ -150,7 +150,7 @@ urls %>%
   read_html() %>%
   tidy_table() %>%
   .[[1]] %>%
-  mutate(text = map(html, cell_text),
-         url = map(html, cell_url)) %>%
-  unnest(text, url)
+  mutate(text = purrr::map(html, cell_text),
+         url = purrr::map(html, cell_url)) %>%
+  tidyr::unnest(text, url)
 ```
