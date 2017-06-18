@@ -9,6 +9,7 @@ Description: Tools for converting data from complex or irregular layouts to a
     headers, or spreadsheets.  Header and data cells are selected by their
     contents and position, as well as formatting and comments where available,
     and are associated with one other by their proximity in given directions.
+    Functions for data frames and HTML tables are provided.
 Depends:
     R (>= 3.2.0)
 License: MIT + file LICENSE
@@ -23,7 +24,8 @@ Imports:
     dtplyr,
     purrr,
     tidyr,
-    tibble
+    tibble,
+    xml2
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 6.0.1.9000
@@ -31,5 +33,7 @@ Suggests: knitr,
     rmarkdown,
     tidyxl,
     stringr,
+    htmltools,
+    rvest,
     testthat
 VignetteBuilder: knitr

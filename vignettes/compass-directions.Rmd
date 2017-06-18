@@ -17,7 +17,8 @@ spreadsheet via the [tidyxl](https://github.com/nacnudus/tidyxl) package.  It is
 best read with the spreadsheet open in a spreadsheet program, e.g. Excel,
 LibreOffice Calc or Gnumeric.
 
-The spreadsheet is in the package directory at `../inst/extdata/purpose.xlsx`.
+The spreadsheet is in the package directory at `system.file("extdata",
+"purpose.xlsx", package = "unpivotr")`.
 
 ```{r, echo = TRUE}
 library(dplyr)

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML table with colspan</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <br/>
+    <table>
+      <tr>
+        <th colspan="2" rowspan="2">Header (1:2, 1:2)</th>
+        <th>Header (2, 3)</th>
+      </tr>
+      <tr>
+        <td>cell (3, 1)</td>
+        <td>cell (3, 2)</td>
+        <td>cell (3, 2)</td>
+      </tr>
+    </table>
+  </body>
+</html>
+<br/>

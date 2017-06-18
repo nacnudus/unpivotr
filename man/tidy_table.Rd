@@ -7,7 +7,7 @@
 tidy_table(x, rownames = FALSE, colnames = FALSE)
 }
 \arguments{
-\item{x}{A data.frame}
+\item{x}{A data.frame or an HTML document}
 
 \item{rownames}{Whether to include the column names in the output, Default:
 FALSE}
@@ -19,8 +19,12 @@ FALSE}
 A data.frame with columns 'row' and 'col' (integer) giving the
 original position of the 'cells', and any relevant columns for cell values in
 their original types: 'chr', 'cplx', 'cplx', 'dbl', 'fctr', 'int', 'lgl', and
-'list'.  Row and column names, when included (default), are treated as though
-they were cells in the table.
+'list'.  The columns 'fctr' is, like 'list', a list-column (each element is
+itself a list) to avoid factor levels clashing.  For HTML tables, the column
+'html' gives the HTML of the original cell.
+
+Row and column names, when present and required, are treated as though they
+were cells in the table, and they appear in the 'chr' column.
 }
 \description{
 Data frames represent data in a
@@ -32,6 +36,13 @@ This makes certain tasks easier.  For example, a pivot table with multi-row
 headers that has been imported into R as a data frame may be easier to
 un-pivot by converting it with \code{tidy_table} first.
 
+For HTML tables, the content of each cell is returned as standalone HTML that
+can be further parsed with tools such as the rvest package.  This is
+particularly useful when an HTML cell itself contains an HTML table, or
+contains both text and a URL, which must be extracted separately.  If the
+HTML itself is poorly formatted, try passing it through the htmltidy package
+first.
+
 This is an S3 generic.
 }
 \examples{
@@ -39,4 +50,18 @@ tidy_table(Formaldehyde)
 tidy_table(tidyr::nest(chickwts, -feed))
 tidy_table(Formaldehyde, colnames = TRUE)
 tidy_table(Formaldehyde, rownames = TRUE)
+
+colspan <- system.file("extdata", "colspan.html", package = "unpivotr")
+rowspan <- system.file("extdata", "rowspan.html", package = "unpivotr")
+nested <- system.file("extdata", "nested.html", package = "unpivotr")
+
+\dontrun{
+browseURL(colspan)
+browseURL(rowspan)
+browseURL(nestedspan)
+}
+
+tidy_table(xml2::read_html(colspan))
+tidy_table(xml2::read_html(rowspan))
+tidy_table(xml2::read_html(nested))
 }

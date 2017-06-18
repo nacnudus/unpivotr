@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nested HTML table</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <br/>
+    <table>
+      <tr>
+        <th>Header (1, 1)</th>
+        <th>Header (1, 2)</th>
+      </tr>
+      <tr>
+        <td>cell (2, 1)</td>
+        <td>
+          <table>
+            <tr>
+              <th>Header (2, 2)(1, 1)</th>
+              <th>Header (2, 2)(1, 2)</th>
+            </tr>
+            <tr>
+              <td>cell (2, 2)(2, 1)</td>
+              <td>cell (2, 2)(2, 1)</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+<br/>
