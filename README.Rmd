@@ -131,31 +131,31 @@ HTML tables can be imported in a similar way.
 
 ```{r, echo = TRUE}
 urls <- system.file("extdata", "url.html", package = "unpivotr")
-includeHTML(urls)
+htmltools::includeHTML(urls)
 
 cell_url <- function(x) {
   if (is.na(x)) return(NA)
   x %>%
-    read_html %>%
-    html_nodes("a") %>%
-    html_attr("href")
+    xml2::read_html() %>%
+    xml2::xml_find_all("a") %>%
+    xml2::xml_attr("href")
 }
 
 cell_text <- function(x) {
   if (is.na(x)) return(NA)
   x %>%
-    read_html %>%
-    html_nodes("a") %>%
-    html_text()
+    xml2::read_html() %>%
+    xml2::xml_find_all("a") %>%
+    rvest::html_text()
 }
 
 urls %>%
-  read_html() %>%
+  xml2::read_html() %>%
   tidy_table() %>%
   .[[1]] %>%
-  mutate(text = map(html, cell_text),
-         url = map(html, cell_url)) %>%
-  unnest(text, url)
+  mutate(text = purrr::map(html, cell_text),
+         url = purrr::map(html, cell_url)) %>%
+  tidyr::unnest(text, url)
 ```
 
 ## Compass directions

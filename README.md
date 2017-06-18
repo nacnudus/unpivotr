@@ -37,6 +37,11 @@ The package includes a dataset, `purpose`, which is a list of pivot tables, deri
 
 ``` r
 library(unpivotr)
+#> 
+#> Attaching package: 'unpivotr'
+#> The following object is masked from 'package:stats':
+#> 
+#>     offset
 head(purpose$Tidy) # 'Tidy' version of the data
 #>    Sex Age group (Life-stages) Highest qualification Sense of purpose
 #> 1 Male                 15 - 24      No Qualification            0 - 6
@@ -99,6 +104,14 @@ This can easily be subset for header and data cells.
 
 ``` r
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 # Select the cells containing the values
 datacells <-
   cells %>%
@@ -231,7 +244,7 @@ HTML tables can be imported in a similar way.
 
 ``` r
 urls <- system.file("extdata", "url.html", package = "unpivotr")
-includeHTML(urls)
+htmltools::includeHTML(urls)
 ```
 
 <!--html_preserve-->
@@ -272,38 +285,31 @@ includeHTML(urls)
 cell_url <- function(x) {
   if (is.na(x)) return(NA)
   x %>%
-    read_html %>%
-    html_nodes("a") %>%
-    html_attr("href")
+    xml2::read_html() %>%
+    xml2::xml_find_all("a") %>%
+    xml2::xml_attr("href")
 }
 
 cell_text <- function(x) {
   if (is.na(x)) return(NA)
   x %>%
-    read_html %>%
-    html_nodes("a") %>%
-    html_text()
+    xml2::read_html() %>%
+    xml2::xml_find_all("a") %>%
+    rvest::html_text()
 }
 
 urls %>%
-  read_html() %>%
+  xml2::read_html() %>%
   tidy_table() %>%
   .[[1]] %>%
-  mutate(text = map(html, cell_text),
-         url = map(html, cell_url)) %>%
-  unnest(text, url)
-#> # A tibble: 8 x 5
-#>     row   col
-#>   <int> <int>
-#> 1     1     1
-#> 2     1     1
-#> 3     2     1
-#> 4     1     2
-#> 5     2     2
-#> 6     1     3
-#> 7     2     3
-#> 8     2     3
-#> # ... with 3 more variables: html <chr>, text <chr>, url <chr>
+  mutate(text = purrr::map(html, cell_text),
+         url = purrr::map(html, cell_url)) %>%
+  tidyr::unnest(text, url)
+#> # A tibble: 2 x 5
+#>     row   col  html  text   url
+#>   <int> <int> <chr> <chr> <chr>
+#> 1     1     2  <NA>  <NA>  <NA>
+#> 2     1     3  <NA>  <NA>  <NA>
 ```
 
 Compass directions
