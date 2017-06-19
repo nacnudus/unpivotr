@@ -313,7 +313,7 @@ cell_url &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
   <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)
   x <span class="op">%&gt;%</span>
 <span class="st">    </span>xml2<span class="op">::</span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">    </span>xml2<span class="op">::</span><span class="kw">xml_find_all</span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span>xml2<span class="op">::</span><span class="kw">xml_find_all</span>(<span class="st">"//a"</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span>xml2<span class="op">::</span><span class="kw">xml_attr</span>(<span class="st">"href"</span>)
 }
 
@@ -321,7 +321,7 @@ cell_text &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
   <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)
   x <span class="op">%&gt;%</span>
 <span class="st">    </span>xml2<span class="op">::</span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">    </span>xml2<span class="op">::</span><span class="kw">xml_find_all</span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span>xml2<span class="op">::</span><span class="kw">xml_find_all</span>(<span class="st">"//a"</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span>rvest<span class="op">::</span><span class="kw">html_text</span>()
 }
 
@@ -331,12 +331,19 @@ urls <span class="op">%&gt;%</span>
 <span class="st">  </span>.[[<span class="dv">1</span>]] <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">text =</span> purrr<span class="op">::</span><span class="kw">map</span>(html, cell_text),
          <span class="dt">url =</span> purrr<span class="op">::</span><span class="kw">map</span>(html, cell_url)) <span class="op">%&gt;%</span>
-<span class="st">  </span>tidyr<span class="op">::</span><span class="kw">unnest</span>(text, url)
-<span class="co">#&gt; # A tibble: 2 x 5</span>
-<span class="co">#&gt;     row   col  html  text   url</span>
-<span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;</span>
-<span class="co">#&gt; 1     1     2  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span>
-<span class="co">#&gt; 2     1     3  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span></code></pre></div>
+<span class="st">  </span>tidyr<span class="op">::</span><span class="kw">unnest</span>(text, url) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>html)
+<span class="co">#&gt; # A tibble: 8 x 4</span>
+<span class="co">#&gt;     row   col     text                   url</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;int&gt;    &lt;chr&gt;                 &lt;chr&gt;</span>
+<span class="co">#&gt; 1     1     1 Scraping        example1.co.nz</span>
+<span class="co">#&gt; 2     1     1    HTML.        example2.co.nz</span>
+<span class="co">#&gt; 3     2     1    Sweet        example3.co.nz</span>
+<span class="co">#&gt; 4     1     2     &lt;NA&gt;                  &lt;NA&gt;</span>
+<span class="co">#&gt; 5     2     2      as?        example4.co.nz</span>
+<span class="co">#&gt; 6     1     3     &lt;NA&gt;                  &lt;NA&gt;</span>
+<span class="co">#&gt; 7     2     3    Yeah,        example5.co.nz</span>
+<span class="co">#&gt; 8     2     3   right. http://www.tui.co.nz/</span></code></pre></div>
 </div>
 <div id="compass-directions" class="section level2">
 <h2 class="hasAnchor">

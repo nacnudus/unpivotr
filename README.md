@@ -286,7 +286,7 @@ cell_url <- function(x) {
   if (is.na(x)) return(NA)
   x %>%
     xml2::read_html() %>%
-    xml2::xml_find_all("a") %>%
+    xml2::xml_find_all("//a") %>%
     xml2::xml_attr("href")
 }
 
@@ -294,7 +294,7 @@ cell_text <- function(x) {
   if (is.na(x)) return(NA)
   x %>%
     xml2::read_html() %>%
-    xml2::xml_find_all("a") %>%
+    xml2::xml_find_all("//a") %>%
     rvest::html_text()
 }
 
@@ -304,12 +304,19 @@ urls %>%
   .[[1]] %>%
   mutate(text = purrr::map(html, cell_text),
          url = purrr::map(html, cell_url)) %>%
-  tidyr::unnest(text, url)
-#> # A tibble: 2 x 5
-#>     row   col  html  text   url
-#>   <int> <int> <chr> <chr> <chr>
-#> 1     1     2  <NA>  <NA>  <NA>
-#> 2     1     3  <NA>  <NA>  <NA>
+  tidyr::unnest(text, url) %>%
+  select(-html)
+#> # A tibble: 8 x 4
+#>     row   col     text                   url
+#>   <int> <int>    <chr>                 <chr>
+#> 1     1     1 Scraping        example1.co.nz
+#> 2     1     1    HTML.        example2.co.nz
+#> 3     2     1    Sweet        example3.co.nz
+#> 4     1     2     <NA>                  <NA>
+#> 5     2     2      as?        example4.co.nz
+#> 6     1     3     <NA>                  <NA>
+#> 7     2     3    Yeah,        example5.co.nz
+#> 8     2     3   right. http://www.tui.co.nz/
 ```
 
 Compass directions

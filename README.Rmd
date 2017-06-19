@@ -137,7 +137,7 @@ cell_url <- function(x) {
   if (is.na(x)) return(NA)
   x %>%
     xml2::read_html() %>%
-    xml2::xml_find_all("a") %>%
+    xml2::xml_find_all("//a") %>%
     xml2::xml_attr("href")
 }
 
@@ -145,7 +145,7 @@ cell_text <- function(x) {
   if (is.na(x)) return(NA)
   x %>%
     xml2::read_html() %>%
-    xml2::xml_find_all("a") %>%
+    xml2::xml_find_all("//a") %>%
     rvest::html_text()
 }
 
@@ -155,7 +155,8 @@ urls %>%
   .[[1]] %>%
   mutate(text = purrr::map(html, cell_text),
          url = purrr::map(html, cell_url)) %>%
-  tidyr::unnest(text, url)
+  tidyr::unnest(text, url) %>%
+  select(-html)
 ```
 
 ## Compass directions
