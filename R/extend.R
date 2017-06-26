@@ -99,7 +99,8 @@ test_extend_args <- function(bag, direction, n, boundary, edge, include) {
     stop("'direction' must be one of 'N', 'S', 'E' and 'W'")
   }
   if (!xor(is.null(n), is.null(boundary))) {
-    stop("Exactly one of 'n' and 'boundary' must be specified")
+    stop(paste0("Exactly one of 'n' and 'boundary' must be specified.\n",
+                "Did you forget the 'cells' argument?"))
   }
   if (!is.null(n)) {
     if (is(n, "formula")) {

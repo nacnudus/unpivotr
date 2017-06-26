@@ -26,7 +26,8 @@ test_that("Exactly one of 'n' and 'boundary' must be specified", {
   bag <- cells[which(cells$row == 10 & cells$col == 3), ]
   expect_error(offset_N(bag, cells))
   expect_error(offset_N(bag, cells, 2, boundary = ~ TRUE),
-                        "Exactly one of 'n' and 'boundary' must be specified")
+               paste0("Exactly one of 'n' and 'boundary' must be specified.\n",
+                      "Did you forget the 'cells' argument?"))
 })
 
 test_that("'n' must be numeric", {

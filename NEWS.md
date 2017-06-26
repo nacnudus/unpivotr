@@ -24,6 +24,7 @@ original data types of table cells and to support HTML tables.
 * Both `rowname` and `colname` arguments to `tidy_table()` now default to
     `FALSE`.
 * All functions consistently return a `tibble`.
+* Some error messages are more helpful.
 
 # unpivotr 0.1.1
 
