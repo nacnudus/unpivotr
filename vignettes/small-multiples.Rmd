@@ -28,8 +28,7 @@ dataset'](https://rpubs.com/dgrtwo/tidying-enron).
 Here's a screenshot:
 
 ```{r, out.width = "850px"}
-knitr::include_graphics(system.file("extdata/enron-screenshot.png",
-                                    package = "unpivotr"))
+knitr::include_graphics("enron-screenshot.png")
 ```
 
 ## Preparation
