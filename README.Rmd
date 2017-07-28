@@ -170,7 +170,7 @@ The most useful ones are more fully explained here.
 ![](./vignettes/compass-common.png)
 
 A complete explanation is in 'poster' form
-[here](./vignettes/compass-complete.svg).
+[here](https://github.com/nacnudus/unpivotr/blob/master/inst/extdata/compass-complete.svg).
 
 ## Philosophy
 
