@@ -17,7 +17,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     methods,
-    lazyeval,
+    rlang,
     magrittr,
     data.table (>= 1.9.7),
     dplyr,

@@ -147,48 +147,47 @@ offset_n <- function(bag, cells, direction, n) {
 }
 
 offset_boundary <- function(bag, cells, direction, boundary, edge, include) {
+  boundary <- rlang::f_rhs(boundary)
   if (direction == "N") {
-    rowcol_function <- max
-    rowcol_function_opposite <- min
-    rowcol_formula <- ~ row
-    lt_gt <- `>`
+    minmax <- max
+    minmax_opposite <- min
+    rowcol <- rlang::quo(row)
+    lt_gt <- rlang::quo(`>`)
     y1 <- max(min(cells$row) - 1L, 1L)
     y2 <- min(bag$row) - 1L
     x1 <- min(bag$col)
     x2 <- max(bag$col)
   }
   if (direction == "E") {
-    rowcol_function <- min
-    rowcol_function_opposite <- max
-    rowcol_formula <- ~ col
-    lt_gt <- `<`
+    minmax <- min
+    minmax_opposite <- max
+    rowcol <- rlang::quo(col)
+    lt_gt <- rlang::quo(`<`)
     y1 <- min(bag$row)
     y2 <- max(bag$row)
     x1 <- max(bag$col) + 1L
     x2 <- max(cells$col) + 1L
   }
   if (direction == "S") {
-    rowcol_function <- min
-    rowcol_function_opposite <- max
-    rowcol_formula <- ~ row
-    lt_gt <- `<`
+    minmax <- min
+    minmax_opposite <- max
+    rowcol <- rlang::quo(row)
+    lt_gt <- rlang::quo(`<`)
     y1 <- max(bag$row) + 1L
     y2 <- max(cells$row) + 1L
     x1 <- min(bag$col)
     x2 <- max(bag$col)
   }
   if (direction == "W") {
-    rowcol_function <- max
-    rowcol_function_opposite <- min
-    rowcol_formula <- ~ col
-    lt_gt <- `>`
+    minmax <- max
+    minmax_opposite <- min
+    rowcol <- rlang::quo(col)
+    lt_gt <- rlang::quo(`>`)
     y1 <- min(bag$row)
     y2 <- max(bag$row)
     x1 <- max(min(cells$col) - 1L, 1L)
     x2 <- min(bag$col) - 1L
   }
-  rowcol_name <- rowcol_formula[[2]] # rhs of rowcol_formula (min or max)
-  rowcol_text <- deparse(rowcol_name) # "row" or "col"
   cells <-
     cells %>%
     dplyr::filter(row >= y1,
@@ -196,24 +195,26 @@ offset_boundary <- function(bag, cells, direction, boundary, edge, include) {
                   col >= x1,
                   col <= x2) %>%
     pad(c(y1, y2), c(x1, x2)) %>% # Pad with blanks for boundary formula's sake
-    dplyr::mutate_(.boundary = boundary) # Apply the boundary formula
+    dplyr::mutate(.boundary = !!boundary) # Apply the boundary formula
   if (edge) {
     # Filter for edges where the boundary exists in every row/col
     boundaries <-
       cells %>%
-      dplyr::group_by_(rowcol_text) %>%
+      dplyr::group_by(!!rowcol) %>%
       dplyr::summarise(.boundary = all(.boundary)) %>%
-      dplyr::filter(.boundary) %>% .[[rowcol_text]]
+      dplyr::filter(.boundary) %>%
+      dplyr::pull(!!rowcol)
   } else {
     # Get all individual boundaries
     boundaries <-
-      dplyr::filter(cells, .boundary) %>% .[[rowcol_text]]
+      dplyr::filter(cells, .boundary) %>%
+      dplyr::pull(!!rowcol)
   }
   if (length(boundaries) == 0) {
     stop("No boundary detected")
   }
   # Get cells up to the nearest boundary in any row/col
-  near_boundary <- rowcol_function(boundaries)
+  near_boundary <- minmax(boundaries)
   cells <-
     cells %>%
     dplyr::select(-.boundary) %>%
@@ -222,7 +223,7 @@ offset_boundary <- function(bag, cells, direction, boundary, edge, include) {
                 cells,
                 direction,
                 n = abs(near_boundary
-                        - rowcol_function_opposite(bag[[rowcol_text]]))
+                        - minmax_opposite(bag[[rlang::quo_name(rowcol)]]))
                     - 1
                     + include)
   tibble::as_tibble(out)

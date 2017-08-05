@@ -137,7 +137,7 @@ NNW <- function(bag, header) {
     dplyr::tbl_df() %>%
     select(-to_col) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    select(colnames(bag), everything(.)) %>%
     tibble::as_tibble()
 }
 
@@ -159,7 +159,7 @@ NNE <- function(bag, header) {
     dplyr::tbl_df() %>%
     select(-from_col) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    select(colnames(bag), everything(.)) %>%
     tibble::as_tibble()
 }
 
@@ -181,7 +181,7 @@ ENE <- function(bag, header) {
     dplyr::tbl_df() %>%
     select(-to_row) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    select(colnames(bag), everything(.)) %>%
     tibble::as_tibble()
 }
 
@@ -203,7 +203,7 @@ ESE <- function(bag, header) {
     dplyr::tbl_df() %>%
     select(-from_row) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    select(colnames(bag), everything(.)) %>%
     tibble::as_tibble()
 }
 
@@ -274,7 +274,7 @@ ABOVE <- function(bag, header, boundaries = NULL) {
     rename(col = from_col) %>%
     select(-to_col) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    select(colnames(bag), everything(.)) %>%
     tibble::as_tibble()
 }
 
@@ -330,7 +330,7 @@ LEFT <- function(bag, header, boundaries = NULL) {
     rename(row = from_row) %>%
     select(-to_row) %>%
     mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select_(.dots = as.list(c(colnames(bag), everything(.)))) %>%
+    select(colnames(bag), everything(.)) %>%
     tibble::as_tibble()
 }
 
