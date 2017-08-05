@@ -1,5 +1,8 @@
 # unpivotr 0.2.1.9000
 
+* Updated to use the new `dplyr`/`rlang` combination instead of the old
+    `dplyr`/`lazyeval` one.
+
 # unpivotr 0.2.1
 
 **Major breaking changes**
