@@ -9,11 +9,23 @@ r:
 
 cache: packages
 
-r_github_packages:
-  - Rdatatable/data.table
-  - nacnudus/tidyxl
-  - jimhester/covr
-    #
+r_binary_packages:
+  - covr
+  - rlang,
+  - magrittr,
+  - data.table
+  - dplyr,
+  - dtplyr,
+  - purrr,
+  - tidyr,
+  - tibble,
+  - xml2,
+  - rmarkdown,
+  - stringr,
+  - htmltools,
+  - rvest,
+  - testthat
+
 # Set CXX1X for R-devel, as R-devel does not detect CXX1X support for gcc 4.6.3,
 # This was causing the error:
 # /bin/bash: line 2: -shared: command not found
