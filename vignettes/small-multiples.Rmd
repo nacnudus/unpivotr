@@ -95,7 +95,7 @@ col_headers <-
   offset_N(cells, n = 1) %>%    # Offset up one row to "IF NWPL Rocky Mountains"
   extend_E(cells, 3) %>%        # Extend to the right edge of the table
   extend_S(cells, 2) %>%        # Extend down to the third row of the headers
-  filter(!is.na(content)) %>%   # Remove blanks
+  filter(!is_blank) %>%   # Remove blanks
   select(row, col, value = character) %>% # Prepare for joining to data cells
   split(.$row)                  # Separate the row of headers into list elements
 col_headers
@@ -109,10 +109,10 @@ datacells <-
   offset_S(cells, n = 2) %>%
   extend_E(cells, 4) %>%
   extend_S(cells,                       # Extend down to a blank row
-           boundary = ~ is.na(content), # The formula detects blank cells
+           boundary = ~ is_blank, # The formula detects blank cells
            edge = TRUE) %>%          # Require the whole row to be blank
-  filter(!is.na(content)) %>%           # Remove remaining blanks
-  mutate(value = as.double(content)) %>%# Convert the values to double
+  filter(!is_blank) %>%           # Remove remaining blanks
+  mutate(value = as.double(numeric)) %>%# Convert the values to double
   select(row, col, value)               # Prepare for joining to headers
 print(datacells, n = Inf)
 ```
@@ -158,7 +158,7 @@ tidy <- function(x) {
     offset_N(cells, n = 1) %>%
     extend_E(cells, 3) %>%
     extend_S(cells, 2) %>%
-    filter(!is.na(content)) %>%
+    filter(!is_blank) %>%
     select(row, col, value = character) %>%
     split(.$row)
   datacells <-
@@ -166,10 +166,10 @@ tidy <- function(x) {
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
-             boundary = ~ is.na(content),
+             boundary = ~ is_blank,
              edge = TRUE) %>%
-    filter(!is.na(content)) %>%
-    mutate(value = as.double(content)) %>%
+    filter(!is_blank) %>%
+    mutate(value = as.double(numeric)) %>%
     select(row, col, value)
   datacells %>%
     NNW(col_headers[[1]]) %>%
@@ -204,14 +204,14 @@ row_headers <-
 row_headers <-
   map_df(row_headers,
     ~ .x %>%
-      extend_S(cells, boundary = ~ is.na(content)) %>%
-      extend_E(cells, boundary = ~ is.na(content), edge = TRUE) %>%
-      filter(!is.na(content)) %>%
+      extend_S(cells, boundary = ~ is_blank) %>%
+      extend_E(cells, boundary = ~ is_blank, edge = TRUE) %>%
+      filter(!is_blank) %>%
       # This concatenates the "Dec-20 to Mar-20" cells into one column.
       # First it converts Excel dates, via R dates, into text.
       mutate(character = ifelse(!is.na(character),
                                 character,
-                                format(as.POSIXct(as.integer(content) * (60*60*24),
+                                format(as.POSIXct(as.integer(numeric) * (60*60*24),
                                        origin="1899-12-30",
                                        tz="GMT"), "%b-%C"))) %>%
       # Then it concatentates them by row.
@@ -233,7 +233,7 @@ tidy <- function(x) {
     offset_N(cells, n = 1) %>%
     extend_E(cells, 3) %>%
     extend_S(cells, 2) %>%
-    filter(!is.na(content)) %>%
+    filter(!is_blank) %>%
     select(row, col, value = character) %>%
     split(.$row)
   datacells <-
@@ -241,10 +241,10 @@ tidy <- function(x) {
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
-             boundary = ~ is.na(content),
+             boundary = ~ is_blank,
              edge = TRUE) %>%
-    filter(!is.na(content)) %>%
-    mutate(value = as.double(content)) %>%
+    filter(!is_blank) %>%
+    mutate(value = as.double(numeric)) %>%
     select(row, col, value)
   datacells %>%
     NNW(col_headers[[1]]) %>%
@@ -283,12 +283,12 @@ row_headers <-
 row_headers <-
   map_df(row_headers,
     ~ .x %>%
-      extend_S(cells, boundary = ~ is.na(content)) %>%
-      extend_E(cells, boundary = ~ is.na(content), edge = TRUE) %>%
-      filter(!is.na(content)) %>%
+      extend_S(cells, boundary = ~ is_blank) %>%
+      extend_E(cells, boundary = ~ is_blank, edge = TRUE) %>%
+      filter(!is_blank) %>%
       mutate(character = ifelse(!is.na(character),
                                 character,
-                                format(as.POSIXct(as.integer(content) * (60*60*24),
+                                format(as.POSIXct(as.integer(numeric) * (60*60*24),
                                        origin="1899-12-30",
                                        tz="GMT"), "%b-%C"))) %>%
       select(row, col, character) %>%
@@ -302,7 +302,7 @@ tidy <- function(x) {
     offset_N(cells, n = 1) %>%
     extend_E(cells, 3) %>%
     extend_S(cells, 2) %>%
-    filter(!is.na(content)) %>%
+    filter(!is_blank) %>%
     select(row, col, value = character) %>%
     split(.$row)
   datacells <-
@@ -310,10 +310,10 @@ tidy <- function(x) {
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
-             boundary = ~ is.na(content),
+             boundary = ~ is_blank,
              edge = TRUE) %>%
-    filter(!is.na(content)) %>%
-    mutate(value = as.double(content)) %>%
+    filter(!is_blank) %>%
+    mutate(value = as.double(numeric)) %>%
     select(row, col, value)
   datacells %>%
     NNW(col_headers[[1]]) %>%

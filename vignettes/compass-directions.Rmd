@@ -372,14 +372,14 @@ cells <- tidy_xlsx(spreadsheet, "ABOVE LEFT border")$data[[1]]
 # Same as ABOVE LEFT without borders
 row_headers <-
   cells %>%
-  filter(col <= 3, !is.na(content)) %>%
+  filter(col <= 3, !is_blank) %>%
   select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <-
   cells %>%
-  filter(row <= 3, !is.na(content)) %>%
+  filter(row <= 3, !is_blank) %>%
   select(row, col, header = character) %>%
   split(.$row)
 col_headers
@@ -391,8 +391,8 @@ col_headers
 # Same as ABOVE LEFT without borders
 datacells <-
   cells %>%
-  filter(row >= 4, col >= 4, !is.na(content)) %>%
-  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  filter(row >= 4, col >= 4, !is_blank) %>%
+  mutate(content = ifelse(is.na(character), numeric, NA)) %>%
   mutate(value = as.integer(content)) %>%
   select(row, col, value)
 datacells
@@ -447,14 +447,14 @@ cells <- tidy_xlsx(spreadsheet, "BELOW RIGHT border")$data[[1]]
 # Same as BELOW RIGHT without borders
 row_headers <-
   cells %>%
-  filter(col >= 10, !is.na(content)) %>%
+  filter(col >= 10, !is_blank) %>%
   select(row, col, header = character) %>%
   split(.$col)
 row_headers
 
 col_headers <-
   cells %>%
-  filter(row >= 14, !is.na(content)) %>%
+  filter(row >= 14, !is_blank) %>%
   select(row, col, header = character) %>%
   split(.$row)
 col_headers
@@ -466,8 +466,8 @@ col_headers
 # Same as BELOW RIGHT without borders
 datacells <-
   cells %>%
-  filter(row <= 13, col <= 9, !is.na(content)) %>%
-  mutate(content = ifelse(is.na(character), content, NA)) %>%
+  filter(row <= 13, col <= 9, !is_blank) %>%
+  mutate(content = ifelse(is.na(character), numeric, NA)) %>%
   mutate(value = as.integer(content)) %>%
   select(row, col, value)
 datacells
