@@ -7,6 +7,9 @@ r:
   - release
   - devel
 
+r_github_packages:
+  nacnudus/tidyxl
+
 cache: packages
 
 # Set CXX1X for R-devel, as R-devel does not detect CXX1X support for gcc 4.6.3,
