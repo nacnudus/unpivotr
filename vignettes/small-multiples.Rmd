@@ -163,11 +163,10 @@ tidy <- function(x) {
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
-             boundary = ~ is_blank,
+             boundary = ~ is.na(numeric),
              edge = TRUE) %>%
-    filter(!is_blank) %>%
-    mutate(value = as.double(numeric)) %>%
-    select(row, col, value)
+    filter(!is.na(numeric)) %>%
+    select(row, col, value = numeric)
   datacells %>%
     NNW(col_headers[[1]]) %>%
     NNW(col_headers[[2]]) %>%
@@ -195,27 +194,17 @@ into the final dataset.
 ```{r}
 row_headers <-
   cells %>%
-  filter(character == "Cash") %>%
-  split(paste(.$row, .$col))
-
-row_headers <-
-  map_df(row_headers,
-    ~ .x %>%
-      extend_S(cells, boundary = ~ is_blank) %>%
-      extend_E(cells, boundary = ~ is_blank, edge = TRUE) %>%
-      filter(!is_blank) %>%
-      # This concatenates the "Dec-20 to Mar-20" cells into one column.
-      # First it converts Excel dates, via R dates, into text.
-      mutate(character = ifelse(!is.na(character),
-                                character,
-                                format(as.POSIXct(as.integer(numeric) * (60*60*24),
-                                       origin="1899-12-30",
-                                       tz="GMT"), "%b-%C"))) %>%
-      # Then it concatentates them by row.
-      select(row, col, character) %>%
-      spread(col, character, fill = "") %>%
-      mutate(col = 1, value = str_trim(paste(`2`, `3`, `4`))) %>%
-      select(row, col, value))
+  filter(between(row, 17, 56), between(col, 2, 4), !is_blank) %>%
+  # Concatenate rows like "Dec-01", "to", "Mar-02"
+  mutate(character = ifelse(!is.na(character),
+                            character,
+                            format(date, origin="1899-12-30", "%b-%y"))) %>%
+  select(row, col, character) %>%
+  nest(-row) %>%
+  mutate(data = map(data, ~ paste(.x$character, collapse = " "))) %>%
+  unnest() %>%
+  mutate(col = 2L) %>%
+  select(row, col, value = data)
 ```
 
 Since the single column of row headers applies to every row of every small
@@ -238,10 +227,10 @@ tidy <- function(x) {
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
-             boundary = ~ is_blank,
+             boundary = ~ is.na(numeric),
              edge = TRUE) %>%
     filter(!is_blank) %>%
-    mutate(value = as.double(numeric)) %>%
+    mutate(value = numeric) %>%
     select(row, col, value)
   datacells %>%
     NNW(col_headers[[1]]) %>%
@@ -254,7 +243,7 @@ map_df(fixed_price, tidy) %>%
   arrange(col, row) # See that, from row 39, the context loops, as it ought.
 ```
 
-## 57-line code listing
+## 50-line code listing
 
 ```{r, eval = FALSE}
 library(unpivotr)
@@ -265,7 +254,7 @@ library(stringr)
 
 path <- system.file("extdata/enron.xlsx",
                     package = "unpivotr")
-cells <- tidy_xlsx(path)$[[1]]
+cells <- xlsx_cells(path)
 
 fixed_price <-
   cells %>%
@@ -274,24 +263,16 @@ fixed_price <-
 
 row_headers <-
   cells %>%
-  filter(character == "Cash") %>%
-  split(paste(.$row, .$col))
-
-row_headers <-
-  map_df(row_headers,
-    ~ .x %>%
-      extend_S(cells, boundary = ~ is_blank) %>%
-      extend_E(cells, boundary = ~ is_blank, edge = TRUE) %>%
-      filter(!is_blank) %>%
-      mutate(character = ifelse(!is.na(character),
-                                character,
-                                format(as.POSIXct(as.integer(numeric) * (60*60*24),
-                                       origin="1899-12-30",
-                                       tz="GMT"), "%b-%C"))) %>%
-      select(row, col, character) %>%
-      spread(col, character, fill = "") %>%
-      mutate(col = 1, value = str_trim(paste(`2`, `3`, `4`))) %>%
-      select(row, col, value))
+  filter(between(row, 17, 56), between(col, 2, 4), !is_blank) %>%
+  # Concatenate rows like "Dec-01", "to", "Mar-02"
+  mutate(character = ifelse(!is.na(character),
+                            character,
+                            format(date, "%b-%y"))) %>%
+  select(row, col, character) %>%
+  nest(-row) %>%
+  mutate(value = map(data, ~ paste(.x$character, collapse = " ")),
+         col = 2L) %>%
+  select(row, col, value)
 
 tidy <- function(x) {
   col_headers <-
@@ -307,10 +288,10 @@ tidy <- function(x) {
     offset_S(cells, n = 2) %>%
     extend_E(cells, 4) %>%
     extend_S(cells,
-             boundary = ~ is_blank,
+             boundary = ~ is.na(numeric),
              edge = TRUE) %>%
     filter(!is_blank) %>%
-    mutate(value = as.double(numeric)) %>%
+    mutate(value = numeric) %>%
     select(row, col, value)
   datacells %>%
     NNW(col_headers[[1]]) %>%

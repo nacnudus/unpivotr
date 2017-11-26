@@ -330,28 +330,25 @@
 </div>
 <div class="sourceLine" id="cb21-14" data-line-number="14">
 <span class="st">    </span><span class="kw"><a href="../reference/extend.html">extend_S</a></span>(cells,</div>
-<div class="sourceLine" id="cb21-15" data-line-number="15">             <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span>is_blank,</div>
+<div class="sourceLine" id="cb21-15" data-line-number="15">             <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span><span class="kw">is.na</span>(numeric),</div>
 <div class="sourceLine" id="cb21-16" data-line-number="16">             <span class="dt">edge =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb21-17" data-line-number="17">
-<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw">is.na</span>(numeric)) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb21-18" data-line-number="18">
-<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.double</span>(numeric)) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">value =</span> numeric)</div>
+<div class="sourceLine" id="cb21-19" data-line-number="19">  datacells <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb21-19" data-line-number="19">
-<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</div>
-<div class="sourceLine" id="cb21-20" data-line-number="20">  datacells <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb21-21" data-line-number="21">
+<div class="sourceLine" id="cb21-20" data-line-number="20">
 <span class="st">    </span><span class="kw"><a href="../reference/join_header.html">NNW</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb21-22" data-line-number="22">
+<div class="sourceLine" id="cb21-21" data-line-number="21">
 <span class="st">    </span><span class="kw"><a href="../reference/join_header.html">NNW</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb21-23" data-line-number="23">
+<div class="sourceLine" id="cb21-22" data-line-number="22">
 <span class="st">    </span><span class="kw"><a href="../reference/join_header.html">N</a></span>(col_headers[[<span class="dv">3</span>]])</div>
-<div class="sourceLine" id="cb21-24" data-line-number="24">}</div></code></pre>
+<div class="sourceLine" id="cb21-23" data-line-number="23">}</div></code></pre>
 <p>Finally, map the ‘tidy’ function to each ‘Fixed Price’ header, and bind the results. into one data frame. The <a href="https://github.com/hadley/purrr"><code><a href="http://www.rdocumentation.org/packages/purrr/topics/purrr-package">purrr()</a></code></a> package is used here, but this could also be done with the <code>apply()</code> family of functions.</p>
 <pre class="sourceCode r" id="cb22"><code class="sourceCode r"><div class="sourceLine" id="cb22-1" data-line-number="1">
 <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(fixed_price, tidy) <span class="op">%&gt;%</span>
@@ -359,7 +356,7 @@
 <div class="sourceLine" id="cb22-2" data-line-number="2">
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(col, row) <span class="co"># See that, from row 39, the region changes, as it ought.</span>
 </div></code></pre>
-<pre><code>## # A tibble: 271 x 6
+<pre><code>## # A tibble: 240 x 6
 ##      row   col value.data  i.value                i.value.1 value.header
 ##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;       
 ##  1    28     7 Fixed Price IF CIG Rocky Mountains      1.94 BID         
@@ -369,10 +366,10 @@
 ##  5    32     7 Fixed Price IF CIG Rocky Mountains      2.47 BID         
 ##  6    33     7 Fixed Price IF CIG Rocky Mountains      3.31 BID         
 ##  7    34     7 Fixed Price IF CIG Rocky Mountains      2.55 BID         
-##  8    36     7 Fixed Price IF CIG Rocky Mountains     NA    BID         
-##  9    37     7 Fixed Price IF CIG Rocky Mountains     NA    BID         
-## 10    38     7 Fixed Price IF CIG Rocky Mountains     NA    BID         
-## # ... with 261 more rows</code></pre>
+##  8    39     7 Fixed Price AECO / NIT                  2.38 BID         
+##  9    40     7 Fixed Price AECO / NIT                  2.40 BID         
+## 10    41     7 Fixed Price AECO / NIT                  2.55 BID         
+## # ... with 230 more rows</code></pre>
 </div>
 <div id="joining-the-row-headers" class="section level3">
 <h3 class="hasAnchor">
@@ -383,52 +380,33 @@
 <span class="st">  </span>cells <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb24-3" data-line-number="3">
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(character <span class="op">==</span><span class="st"> "Cash"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(row, <span class="dv">17</span>, <span class="dv">56</span>), <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(col, <span class="dv">2</span>, <span class="dv">4</span>), <span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb24-4" data-line-number="4">
-<span class="st">  </span><span class="kw">split</span>(<span class="kw">paste</span>(.<span class="op">$</span>row, .<span class="op">$</span>col))</div>
-<div class="sourceLine" id="cb24-5" data-line-number="5"></div>
-<div class="sourceLine" id="cb24-6" data-line-number="6">row_headers &lt;-</div>
-<div class="sourceLine" id="cb24-7" data-line-number="7">
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(row_headers,</div>
-<div class="sourceLine" id="cb24-8" data-line-number="8">    <span class="op">~</span><span class="st"> </span>.x <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># Concatenate rows like "Dec-01", "to", "Mar-02"</span>
+</div>
+<div class="sourceLine" id="cb24-5" data-line-number="5">
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">character =</span> <span class="kw">ifelse</span>(<span class="op">!</span><span class="kw">is.na</span>(character),</div>
+<div class="sourceLine" id="cb24-6" data-line-number="6">                            character,</div>
+<div class="sourceLine" id="cb24-7" data-line-number="7">                            <span class="kw">format</span>(date, <span class="dt">origin=</span><span class="st">"1899-12-30"</span>, <span class="st">"%b-%y"</span>))) <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb24-8" data-line-number="8">
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, character) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb24-9" data-line-number="9">
-<span class="st">      </span><span class="kw"><a href="../reference/extend.html">extend_S</a></span>(cells, <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span>is_blank) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/nest">nest</a></span>(<span class="op">-</span>row) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb24-10" data-line-number="10">
-<span class="st">      </span><span class="kw"><a href="../reference/extend.html">extend_E</a></span>(cells, <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span>is_blank, <span class="dt">edge =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">data =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, <span class="op">~</span><span class="st"> </span><span class="kw">paste</span>(.x<span class="op">$</span>character, <span class="dt">collapse =</span> <span class="st">" "</span>))) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb24-11" data-line-number="11">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>() <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb24-12" data-line-number="12">
-<span class="st">      </span><span class="co"># This concatenates the "Dec-20 to Mar-20" cells into one column.</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">col =</span> 2L) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb24-13" data-line-number="13">
-<span class="st">      </span><span class="co"># First it converts Excel dates, via R dates, into text.</span>
-</div>
-<div class="sourceLine" id="cb24-14" data-line-number="14">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">character =</span> <span class="kw">ifelse</span>(<span class="op">!</span><span class="kw">is.na</span>(character),</div>
-<div class="sourceLine" id="cb24-15" data-line-number="15">                                character,</div>
-<div class="sourceLine" id="cb24-16" data-line-number="16">                                <span class="kw">format</span>(<span class="kw">as.POSIXct</span>(<span class="kw">as.integer</span>(numeric) <span class="op">*</span><span class="st"> </span>(<span class="dv">60</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="dv">24</span>),</div>
-<div class="sourceLine" id="cb24-17" data-line-number="17">                                       <span class="dt">origin=</span><span class="st">"1899-12-30"</span>,</div>
-<div class="sourceLine" id="cb24-18" data-line-number="18">                                       <span class="dt">tz=</span><span class="st">"GMT"</span>), <span class="st">"%b-%C"</span>))) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb24-19" data-line-number="19">
-<span class="st">      </span><span class="co"># Then it concatentates them by row.</span>
-</div>
-<div class="sourceLine" id="cb24-20" data-line-number="20">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, character) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb24-21" data-line-number="21">
-<span class="st">      </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">spread</a></span>(col, character, <span class="dt">fill =</span> <span class="st">""</span>) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb24-22" data-line-number="22">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">col =</span> <span class="dv">1</span>, <span class="dt">value =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_trim">str_trim</a></span>(<span class="kw">paste</span>(<span class="st">`</span><span class="dt">2</span><span class="st">`</span>, <span class="st">`</span><span class="dt">3</span><span class="st">`</span>, <span class="st">`</span><span class="dt">4</span><span class="st">`</span>))) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb24-23" data-line-number="23">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value))</div></code></pre>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">value =</span> data)</div></code></pre>
 <p>Since the single column of row headers applies to every row of every small multiple (unlike the column headers), a global <code>row_headers</code> variable can be joined to each small multiple by using a simple W() join. This is incorporated into the definition of <code>tidy()</code> below (see the bottom line).</p>
 <pre class="sourceCode r" id="cb25"><code class="sourceCode r"><div class="sourceLine" id="cb25-1" data-line-number="1">tidy &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</div>
 <div class="sourceLine" id="cb25-2" data-line-number="2">  col_headers &lt;-</div>
@@ -464,14 +442,14 @@
 </div>
 <div class="sourceLine" id="cb25-14" data-line-number="14">
 <span class="st">    </span><span class="kw"><a href="../reference/extend.html">extend_S</a></span>(cells,</div>
-<div class="sourceLine" id="cb25-15" data-line-number="15">             <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span>is_blank,</div>
+<div class="sourceLine" id="cb25-15" data-line-number="15">             <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span><span class="kw">is.na</span>(numeric),</div>
 <div class="sourceLine" id="cb25-16" data-line-number="16">             <span class="dt">edge =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb25-17" data-line-number="17">
 <span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb25-18" data-line-number="18">
-<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.double</span>(numeric)) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> numeric) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb25-19" data-line-number="19">
 <span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</div>
@@ -497,25 +475,25 @@
 <div class="sourceLine" id="cb25-28" data-line-number="28">
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(col, row) <span class="co"># See that, from row 39, the context loops, as it ought.</span>
 </div></code></pre>
-<pre><code>## # A tibble: 264 x 7
+<pre><code>## # A tibble: 240 x 7
 ##      row   col value.data  i.value                i.value.1 value.… value 
 ##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; 
 ##  1    28     7 Fixed Price IF CIG Rocky Mountains      1.94 BID     Cash  
 ##  2    29     7 Fixed Price IF CIG Rocky Mountains      1.96 BID     ROM   
-##  3    30     7 Fixed Price IF CIG Rocky Mountains      2.35 BID     ""    
-##  4    31     7 Fixed Price IF CIG Rocky Mountains      2.55 BID     to    
-##  5    32     7 Fixed Price IF CIG Rocky Mountains      2.47 BID     to    
-##  6    33     7 Fixed Price IF CIG Rocky Mountains      3.31 BID     to    
+##  3    30     7 Fixed Price IF CIG Rocky Mountains      2.35 BID     Dec-01
+##  4    31     7 Fixed Price IF CIG Rocky Mountains      2.55 BID     Dec-0…
+##  5    32     7 Fixed Price IF CIG Rocky Mountains      2.47 BID     Apr-0…
+##  6    33     7 Fixed Price IF CIG Rocky Mountains      3.31 BID     Nov-0…
 ##  7    34     7 Fixed Price IF CIG Rocky Mountains      2.55 BID     One Y…
-##  8    39     7 Fixed Price IF CIG Rocky Mountains      2.38 BID     Cash  
-##  9    39     7 Fixed Price AECO / NIT                  2.38 BID     Cash  
-## 10    40     7 Fixed Price IF CIG Rocky Mountains      2.40 BID     ROM   
-## # ... with 254 more rows</code></pre>
+##  8    39     7 Fixed Price AECO / NIT                  2.38 BID     Cash  
+##  9    40     7 Fixed Price AECO / NIT                  2.40 BID     ROM   
+## 10    41     7 Fixed Price AECO / NIT                  2.55 BID     Dec-01
+## # ... with 230 more rows</code></pre>
 </div>
 </div>
 <div id="line-code-listing" class="section level2">
 <h2 class="hasAnchor">
-<a href="#line-code-listing" class="anchor"></a>57-line code listing</h2>
+<a href="#line-code-listing" class="anchor"></a>50-line code listing</h2>
 <pre class="sourceCode r" id="cb27"><code class="sourceCode r"><div class="sourceLine" id="cb27-1" data-line-number="1">
 <span class="kw">library</span>(unpivotr)</div>
 <div class="sourceLine" id="cb27-2" data-line-number="2">
@@ -529,7 +507,7 @@
 <div class="sourceLine" id="cb27-6" data-line-number="6"></div>
 <div class="sourceLine" id="cb27-7" data-line-number="7">path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata/enron.xlsx"</span>,</div>
 <div class="sourceLine" id="cb27-8" data-line-number="8">                    <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</div>
-<div class="sourceLine" id="cb27-9" data-line-number="9">cells &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyxl/topics/tidy_xlsx">tidy_xlsx</a></span>(path)<span class="op">$</span>[[<span class="dv">1</span>]]</div>
+<div class="sourceLine" id="cb27-9" data-line-number="9">cells &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">xlsx_cells</a></span>(path)</div>
 <div class="sourceLine" id="cb27-10" data-line-number="10"></div>
 <div class="sourceLine" id="cb27-11" data-line-number="11">fixed_price &lt;-</div>
 <div class="sourceLine" id="cb27-12" data-line-number="12">
@@ -546,106 +524,91 @@
 <span class="st">  </span>cells <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-18" data-line-number="18">
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(character <span class="op">==</span><span class="st"> "Cash"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(row, <span class="dv">17</span>, <span class="dv">56</span>), <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(col, <span class="dv">2</span>, <span class="dv">4</span>), <span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-19" data-line-number="19">
-<span class="st">  </span><span class="kw">split</span>(<span class="kw">paste</span>(.<span class="op">$</span>row, .<span class="op">$</span>col))</div>
-<div class="sourceLine" id="cb27-20" data-line-number="20"></div>
-<div class="sourceLine" id="cb27-21" data-line-number="21">row_headers &lt;-</div>
-<div class="sourceLine" id="cb27-22" data-line-number="22">
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(row_headers,</div>
-<div class="sourceLine" id="cb27-23" data-line-number="23">    <span class="op">~</span><span class="st"> </span>.x <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># Concatenate rows like "Dec-01", "to", "Mar-02"</span>
+</div>
+<div class="sourceLine" id="cb27-20" data-line-number="20">
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">character =</span> <span class="kw">ifelse</span>(<span class="op">!</span><span class="kw">is.na</span>(character),</div>
+<div class="sourceLine" id="cb27-21" data-line-number="21">                            character,</div>
+<div class="sourceLine" id="cb27-22" data-line-number="22">                            <span class="kw">format</span>(date, <span class="st">"%b-%y"</span>))) <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb27-23" data-line-number="23">
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, character) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-24" data-line-number="24">
-<span class="st">      </span><span class="kw"><a href="../reference/extend.html">extend_S</a></span>(cells, <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span>is_blank) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/nest">nest</a></span>(<span class="op">-</span>row) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-25" data-line-number="25">
-<span class="st">      </span><span class="kw"><a href="../reference/extend.html">extend_E</a></span>(cells, <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span>is_blank, <span class="dt">edge =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb27-26" data-line-number="26">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, <span class="op">~</span><span class="st"> </span><span class="kw">paste</span>(.x<span class="op">$</span>character, <span class="dt">collapse =</span> <span class="st">" "</span>)),</div>
+<div class="sourceLine" id="cb27-26" data-line-number="26">         <span class="dt">col =</span> 2L) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-27" data-line-number="27">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">character =</span> <span class="kw">ifelse</span>(<span class="op">!</span><span class="kw">is.na</span>(character),</div>
-<div class="sourceLine" id="cb27-28" data-line-number="28">                                character,</div>
-<div class="sourceLine" id="cb27-29" data-line-number="29">                                <span class="kw">format</span>(<span class="kw">as.POSIXct</span>(<span class="kw">as.integer</span>(numeric) <span class="op">*</span><span class="st"> </span>(<span class="dv">60</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="dv">24</span>),</div>
-<div class="sourceLine" id="cb27-30" data-line-number="30">                                       <span class="dt">origin=</span><span class="st">"1899-12-30"</span>,</div>
-<div class="sourceLine" id="cb27-31" data-line-number="31">                                       <span class="dt">tz=</span><span class="st">"GMT"</span>), <span class="st">"%b-%C"</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</div>
+<div class="sourceLine" id="cb27-28" data-line-number="28"></div>
+<div class="sourceLine" id="cb27-29" data-line-number="29">tidy &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</div>
+<div class="sourceLine" id="cb27-30" data-line-number="30">  col_headers &lt;-</div>
+<div class="sourceLine" id="cb27-31" data-line-number="31">
+<span class="st">    </span>x <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-32" data-line-number="32">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, character) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/offset.html">offset_N</a></span>(cells, <span class="dt">n =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-33" data-line-number="33">
-<span class="st">      </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">spread</a></span>(col, character, <span class="dt">fill =</span> <span class="st">""</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/extend.html">extend_E</a></span>(cells, <span class="dv">3</span>) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-34" data-line-number="34">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">col =</span> <span class="dv">1</span>, <span class="dt">value =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_trim">str_trim</a></span>(<span class="kw">paste</span>(<span class="st">`</span><span class="dt">2</span><span class="st">`</span>, <span class="st">`</span><span class="dt">3</span><span class="st">`</span>, <span class="st">`</span><span class="dt">4</span><span class="st">`</span>))) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/extend.html">extend_S</a></span>(cells, <span class="dv">2</span>) <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-35" data-line-number="35">
-<span class="st">      </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value))</div>
-<div class="sourceLine" id="cb27-36" data-line-number="36"></div>
-<div class="sourceLine" id="cb27-37" data-line-number="37">tidy &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</div>
-<div class="sourceLine" id="cb27-38" data-line-number="38">  col_headers &lt;-</div>
+<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb27-36" data-line-number="36">
+<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">value =</span> character) <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb27-37" data-line-number="37">
+<span class="st">    </span><span class="kw">split</span>(.<span class="op">$</span>row)</div>
+<div class="sourceLine" id="cb27-38" data-line-number="38">  datacells &lt;-</div>
 <div class="sourceLine" id="cb27-39" data-line-number="39">
 <span class="st">    </span>x <span class="op">%&gt;%</span>
 </div>
 <div class="sourceLine" id="cb27-40" data-line-number="40">
-<span class="st">    </span><span class="kw"><a href="../reference/offset.html">offset_N</a></span>(cells, <span class="dt">n =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb27-41" data-line-number="41">
-<span class="st">    </span><span class="kw"><a href="../reference/extend.html">extend_E</a></span>(cells, <span class="dv">3</span>) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb27-42" data-line-number="42">
-<span class="st">    </span><span class="kw"><a href="../reference/extend.html">extend_S</a></span>(cells, <span class="dv">2</span>) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb27-43" data-line-number="43">
-<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb27-44" data-line-number="44">
-<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">value =</span> character) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb27-45" data-line-number="45">
-<span class="st">    </span><span class="kw">split</span>(.<span class="op">$</span>row)</div>
-<div class="sourceLine" id="cb27-46" data-line-number="46">  datacells &lt;-</div>
-<div class="sourceLine" id="cb27-47" data-line-number="47">
-<span class="st">    </span>x <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb27-48" data-line-number="48">
 <span class="st">    </span><span class="kw"><a href="../reference/offset.html">offset_S</a></span>(cells, <span class="dt">n =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-49" data-line-number="49">
+<div class="sourceLine" id="cb27-41" data-line-number="41">
 <span class="st">    </span><span class="kw"><a href="../reference/extend.html">extend_E</a></span>(cells, <span class="dv">4</span>) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-50" data-line-number="50">
+<div class="sourceLine" id="cb27-42" data-line-number="42">
 <span class="st">    </span><span class="kw"><a href="../reference/extend.html">extend_S</a></span>(cells,</div>
-<div class="sourceLine" id="cb27-51" data-line-number="51">             <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span>is_blank,</div>
-<div class="sourceLine" id="cb27-52" data-line-number="52">             <span class="dt">edge =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<div class="sourceLine" id="cb27-43" data-line-number="43">             <span class="dt">boundary =</span> <span class="op">~</span><span class="st"> </span><span class="kw">is.na</span>(numeric),</div>
+<div class="sourceLine" id="cb27-44" data-line-number="44">             <span class="dt">edge =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-53" data-line-number="53">
+<div class="sourceLine" id="cb27-45" data-line-number="45">
 <span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span>is_blank) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-54" data-line-number="54">
-<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.double</span>(numeric)) <span class="op">%&gt;%</span>
+<div class="sourceLine" id="cb27-46" data-line-number="46">
+<span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> numeric) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-55" data-line-number="55">
+<div class="sourceLine" id="cb27-47" data-line-number="47">
 <span class="st">    </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</div>
-<div class="sourceLine" id="cb27-56" data-line-number="56">  datacells <span class="op">%&gt;%</span>
+<div class="sourceLine" id="cb27-48" data-line-number="48">  datacells <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-57" data-line-number="57">
+<div class="sourceLine" id="cb27-49" data-line-number="49">
 <span class="st">    </span><span class="kw"><a href="../reference/join_header.html">NNW</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-58" data-line-number="58">
+<div class="sourceLine" id="cb27-50" data-line-number="50">
 <span class="st">    </span><span class="kw"><a href="../reference/join_header.html">NNW</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-59" data-line-number="59">
+<div class="sourceLine" id="cb27-51" data-line-number="51">
 <span class="st">    </span><span class="kw"><a href="../reference/join_header.html">N</a></span>(col_headers[[<span class="dv">3</span>]]) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb27-60" data-line-number="60">
+<div class="sourceLine" id="cb27-52" data-line-number="52">
 <span class="st">    </span><span class="kw"><a href="../reference/join_header.html">W</a></span>(row_headers) <span class="co"># This is the only new line</span>
 </div>
-<div class="sourceLine" id="cb27-61" data-line-number="61">}</div>
-<div class="sourceLine" id="cb27-62" data-line-number="62"></div>
-<div class="sourceLine" id="cb27-63" data-line-number="63">
+<div class="sourceLine" id="cb27-53" data-line-number="53">}</div>
+<div class="sourceLine" id="cb27-54" data-line-number="54"></div>
+<div class="sourceLine" id="cb27-55" data-line-number="55">
 <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(fixed_price, tidy)</div></code></pre>
 </div>
 </div>
@@ -659,7 +622,7 @@
 <li><a href="#introduction">Introduction</a></li>
       <li><a href="#preparation">Preparation</a></li>
       <li><a href="#main">Main</a></li>
-      <li><a href="#line-code-listing">57-line code listing</a></li>
+      <li><a href="#line-code-listing">50-line code listing</a></li>
       </ul>
 </div>
       </div>
