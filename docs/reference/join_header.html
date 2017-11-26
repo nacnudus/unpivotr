@@ -24,7 +24,8 @@ e.g. NNW searches up and up-left from a data cell to find a header cell. — joi
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -64,10 +65,31 @@ e.g. NNW searches up and up-left from a data cell to find a header cell. — joi
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/compass-directions.html">Compass Directions</a>
+    </li>
+    <li>
+      <a href="../articles/html.html">HTML Tables</a>
+    </li>
+    <li>
+      <a href="../articles/small-multiples.html">Small Multiples</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -212,12 +234,8 @@ directions are provided as their own functions, wrapping the concept of
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='co'># Load some pivoted data</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='co'># Load some pivoted data</span>
 (<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>purpose</span>$<span class='no'>`NNW WNW`</span>)</div><div class='output co'>#&gt;                            X2      X3     X4     X5    X6     X7
 #&gt; 1                        &lt;NA&gt;    &lt;NA&gt; Female   &lt;NA&gt;  Male   &lt;NA&gt;
 #&gt; 2                        &lt;NA&gt;    &lt;NA&gt;  0 - 6 7 - 10 0 - 6 7 - 10
@@ -244,21 +262,21 @@ directions are provided as their own functions, wrapping the concept of
 <span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>x</span>)
 <span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[!<span class='fu'>is.na</span>(<span class='no'>cells</span>$<span class='no'>chr</span>), ]
 <span class='fu'>head</span>(<span class='no'>cells</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
-#&gt;     row   col                        chr
-#&gt;   &lt;int&gt; &lt;int&gt;                      &lt;chr&gt;
-#&gt; 1     3     1          Bachelor's degree
-#&gt; 2     7     1                Certificate
-#&gt; 3    11     1                    Diploma
-#&gt; 4    15     1           No Qualification
+#&gt;     row   col chr                       
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                     
+#&gt; 1     3     1 Bachelor's degree         
+#&gt; 2     7     1 Certificate               
+#&gt; 3    11     1 Diploma                   
+#&gt; 4    15     1 No Qualification          
 #&gt; 5    19     1 Postgraduate qualification
-#&gt; 6     3     2                    15 - 24</div><div class='input'><span class='co'># Select the cells containing the values</span>
+#&gt; 6     3     2 15 - 24                   </div><div class='input'><span class='co'># Select the cells containing the values</span>
 <span class='no'>datacells</span> <span class='kw'>&lt;-</span>
   <span class='no'>cells</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>filter</span>(<span class='no'>row</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>, <span class='no'>col</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>)
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>row</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>, <span class='no'>col</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>)
 <span class='fu'>head</span>(<span class='no'>datacells</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
-#&gt;     row   col   chr
+#&gt;     row   col chr  
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
-#&gt; 1     3     3  7000
+#&gt; 1     3     3 7000 
 #&gt; 2     4     3 12000
 #&gt; 3     5     3 10000
 #&gt; 4     7     3 29000
@@ -266,63 +284,63 @@ directions are provided as their own functions, wrapping the concept of
 #&gt; 6     9     3 30000</div><div class='input'><span class='co'># Select the row headers</span>
 <span class='no'>row_headers</span> <span class='kw'>&lt;-</span>
   <span class='no'>cells</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>filter</span>(<span class='no'>col</span> <span class='kw'>&lt;=</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>select</span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='no'>chr</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>col</span> <span class='kw'>&lt;=</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='no'>chr</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>split</span>(<span class='no'>.</span>$<span class='no'>col</span>) <span class='co'># Separate each column of headers</span>
 <span class='no'>row_headers</span></div><div class='output co'>#&gt; $`1`
 #&gt; # A tibble: 5 x 3
-#&gt;     row   col                     header
-#&gt;   &lt;int&gt; &lt;int&gt;                      &lt;chr&gt;
-#&gt; 1     3     1          Bachelor's degree
-#&gt; 2     7     1                Certificate
-#&gt; 3    11     1                    Diploma
-#&gt; 4    15     1           No Qualification
+#&gt;     row   col header                    
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                     
+#&gt; 1     3     1 Bachelor's degree         
+#&gt; 2     7     1 Certificate               
+#&gt; 3    11     1 Diploma                   
+#&gt; 4    15     1 No Qualification          
 #&gt; 5    19     1 Postgraduate qualification
 #&gt; 
 #&gt; $`2`
 #&gt; # A tibble: 20 x 3
-#&gt;      row   col  header
-#&gt;    &lt;int&gt; &lt;int&gt;   &lt;chr&gt;
+#&gt;      row   col header 
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
 #&gt;  1     3     2 15 - 24
 #&gt;  2     4     2 25 - 44
 #&gt;  3     5     2 45 - 64
-#&gt;  4     6     2     65+
+#&gt;  4     6     2 65+    
 #&gt;  5     7     2 15 - 24
 #&gt;  6     8     2 25 - 44
 #&gt;  7     9     2 45 - 64
-#&gt;  8    10     2     65+
+#&gt;  8    10     2 65+    
 #&gt;  9    11     2 15 - 24
 #&gt; 10    12     2 25 - 44
 #&gt; 11    13     2 45 - 64
-#&gt; 12    14     2     65+
+#&gt; 12    14     2 65+    
 #&gt; 13    15     2 15 - 24
 #&gt; 14    16     2 25 - 44
 #&gt; 15    17     2 45 - 64
-#&gt; 16    18     2     65+
+#&gt; 16    18     2 65+    
 #&gt; 17    19     2 15 - 24
 #&gt; 18    20     2 25 - 44
 #&gt; 19    21     2 45 - 64
-#&gt; 20    22     2     65+
+#&gt; 20    22     2 65+    
 #&gt; </div><div class='input'><span class='co'># Select the column headers</span>
 <span class='no'>col_headers</span> <span class='kw'>&lt;-</span>
   <span class='no'>cells</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>filter</span>(<span class='no'>row</span> <span class='kw'>&lt;=</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>select</span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='no'>chr</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>row</span> <span class='kw'>&lt;=</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='no'>chr</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>split</span>(<span class='no'>.</span>$<span class='no'>row</span>) <span class='co'># Separate each row of headers</span>
 <span class='no'>col_headers</span></div><div class='output co'>#&gt; $`1`
 #&gt; # A tibble: 2 x 3
 #&gt;     row   col header
-#&gt;   &lt;int&gt; &lt;int&gt;  &lt;chr&gt;
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt; 
 #&gt; 1     1     3 Female
-#&gt; 2     1     5   Male
+#&gt; 2     1     5 Male  
 #&gt; 
 #&gt; $`2`
 #&gt; # A tibble: 4 x 3
 #&gt;     row   col header
-#&gt;   &lt;int&gt; &lt;int&gt;  &lt;chr&gt;
-#&gt; 1     2     3  0 - 6
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt; 
+#&gt; 1     2     3 0 - 6 
 #&gt; 2     2     4 7 - 10
-#&gt; 3     2     5  0 - 6
+#&gt; 3     2     5 0 - 6 
 #&gt; 4     2     6 7 - 10
 #&gt; </div><div class='input'><span class='co'># From each data cell, search for the nearest one of each of the headers</span>
 <span class='no'>datacells</span> <span class='kw'>%&gt;%</span>
@@ -330,19 +348,19 @@ directions are provided as their own functions, wrapping the concept of
   <span class='fu'>N</span>(<span class='no'>col_headers</span>$<span class='no'>`2`</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>WNW</span>(<span class='no'>row_headers</span>$<span class='no'>`1`</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>W</span>(<span class='no'>row_headers</span>$<span class='no'>`2`</span>)</div><div class='output co'>#&gt; # A tibble: 72 x 7
-#&gt;      row   col   chr header.data header.header  header.data.data
-#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;
-#&gt;  1     3     3  7000      Female         0 - 6 Bachelor's degree
-#&gt;  2     4     3 12000      Female         0 - 6 Bachelor's degree
-#&gt;  3     5     3 10000      Female         0 - 6 Bachelor's degree
-#&gt;  4     7     3 29000      Female         0 - 6       Certificate
-#&gt;  5     8     3 34000      Female         0 - 6       Certificate
-#&gt;  6     9     3 30000      Female         0 - 6       Certificate
-#&gt;  7    10     3 12000      Female         0 - 6       Certificate
-#&gt;  8    12     3 10000      Female         0 - 6           Diploma
-#&gt;  9    13     3  6000      Female         0 - 6           Diploma
-#&gt; 10    14     3  5000      Female         0 - 6           Diploma
-#&gt; # ... with 62 more rows, and 1 more variables: header.header.header &lt;chr&gt;</div></pre>
+#&gt;      row   col chr   header.data header.header header.data.data  header.header…
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;         
+#&gt;  1     3     3 7000  Female      0 - 6         Bachelor's degree 15 - 24       
+#&gt;  2     4     3 12000 Female      0 - 6         Bachelor's degree 25 - 44       
+#&gt;  3     5     3 10000 Female      0 - 6         Bachelor's degree 45 - 64       
+#&gt;  4     7     3 29000 Female      0 - 6         Certificate       15 - 24       
+#&gt;  5     8     3 34000 Female      0 - 6         Certificate       25 - 44       
+#&gt;  6     9     3 30000 Female      0 - 6         Certificate       45 - 64       
+#&gt;  7    10     3 12000 Female      0 - 6         Certificate       65+           
+#&gt;  8    12     3 10000 Female      0 - 6         Diploma           25 - 44       
+#&gt;  9    13     3 6000  Female      0 - 6         Diploma           45 - 64       
+#&gt; 10    14     3 5000  Female      0 - 6         Diploma           65+           
+#&gt; # ... with 62 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,10 +64,31 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/compass-directions.html">Compass Directions</a>
+    </li>
+    <li>
+      <a href="../articles/html.html">HTML Tables</a>
+    </li>
+    <li>
+      <a href="../articles/small-multiples.html">Small Multiples</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -205,36 +227,37 @@ even when n = 0.</p>
 <span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>x</span>)
 <span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[!<span class='fu'>is.na</span>(<span class='no'>cells</span>$<span class='no'>chr</span>), ] <span class='co'># Introduce 'holes' in the data</span>
 <span class='co'># Select an L-shape with gaps</span>
-<span class='no'>bag</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>filter</span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>%in%</span> <span class='fl'>3</span>:<span class='fl'>4</span>, <span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>)
+<span class='no'>bag</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>%in%</span> <span class='fl'>3</span>:<span class='fl'>4</span>, <span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>)
 <span class='co'># Offset, notice the L has been squared-off (padded)</span>
 <span class='fu'>offset_N</span>(<span class='no'>bag</span>, <span class='no'>cells</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
-#&gt;     row   col               chr
-#&gt;   &lt;int&gt; &lt;int&gt;             &lt;chr&gt;
-#&gt; 1     2     1              &lt;NA&gt;
-#&gt; 2     2     2              &lt;NA&gt;
+#&gt;     row   col chr              
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;            
+#&gt; 1     2     1 &lt;NA&gt;             
+#&gt; 2     2     2 &lt;NA&gt;             
 #&gt; 3     3     1 Bachelor's degree
-#&gt; 4     3     2           15 - 24</div><div class='input'><span class='co'># Select a particular cell</span>
+#&gt; 4     3     2 15 - 24          </div><div class='input'><span class='co'># Select a particular cell</span>
 <span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>3</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>3</span>), ]
 <span class='co'># Offset the selection downwards, stopping before the NA.</span>
 <span class='fu'>offset_S</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='fu'>is.na</span>(<span class='no'>chr</span>))</div><div class='output co'>#&gt; # A tibble: 1 x 3
-#&gt;     row   col   chr
+#&gt;     row   col chr  
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
 #&gt; 1     5     3 10000</div><div class='input'><span class='co'># Offset the selection right, up to and including the fifth column.</span>
 <span class='fu'>offset_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>5</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
-#&gt;     row   col   chr
+#&gt;     row   col chr  
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
-#&gt; 1     3     5  &lt;NA&gt;</div><div class='input'><span class='co'># Offset the selection beyond the existing cells</span>
+#&gt; 1     3     5 &lt;NA&gt; </div><div class='input'><span class='co'># Offset the selection beyond the existing cells</span>
 <span class='fu'>offset_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='fl'>15</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
-#&gt;     row   col   chr
+#&gt;     row   col chr  
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
-#&gt; 1     3    18  &lt;NA&gt;</div><div class='input'><span class='co'># This doesn't work inside formulas, because it would mean testing the</span>
-<span class='co'># boundary formula on every possible cell in the given direction</span>
-<span class='co'>## Not run: offset_E(cell, cells, boundary = ~ col == 15)</span>
-<span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>7</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>), ]
+#&gt; 1     3    18 &lt;NA&gt; </div><div class='input'># This doesn't work inside formulas, because it would mean testing the
+# boundary formula on every possible cell in the given direction
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>offset_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>15</span>)
+<span class='co'># }</span><div class='input'><span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>7</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>), ]
 <span class='fu'>offset_N</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ !<span class='fu'>is.na</span>(<span class='no'>chr</span>), <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 3
-#&gt;     row   col     chr
-#&gt;   &lt;int&gt; &lt;int&gt;   &lt;chr&gt;
-#&gt; 1     4     1    &lt;NA&gt;
+#&gt;     row   col chr    
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
+#&gt; 1     4     1 &lt;NA&gt;   
 #&gt; 2     4     2 25 - 44</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

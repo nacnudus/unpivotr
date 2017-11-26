@@ -1,5 +1,7 @@
 # unpivotr 0.2.1.9000
 
+* Made compatible with tidyxl version 1.0.0 (avoids `dplyr::distinct()`, which
+    doesn't handle list columns).
 * Updated to use the new `dplyr`/`rlang` combination instead of the old
     `dplyr`/`lazyeval` one.
 

@@ -38,10 +38,31 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/compass-directions.html">Compass Directions</a>
+    </li>
+    <li>
+      <a href="../articles/html.html">HTML Tables</a>
+    </li>
+    <li>
+      <a href="../articles/small-multiples.html">Small Multiples</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -69,7 +90,7 @@
       <h1>HTML Tables</h1>
                         <h4 class="author">Duncan Garmonsway</h4>
             
-            <h4 class="date">2017-08-05</h4>
+            <h4 class="date">2017-11-26</h4>
           </div>
 
     
@@ -77,7 +98,8 @@
 <div class="contents">
 <p>This vignette for the <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> package demonstrates unpivoting html tables of various kinds.</p>
 <p>The HTML files are in the package directory at <code>system.file("extdata", c("rowspan.html", "colspan.html", "nested.html"), package = "unpivotr")</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)</code></pre></div>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1">
+<span class="kw">library</span>(dplyr)</div></code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -86,10 +108,13 @@
 <pre><code>## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)</code></pre></div>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><div class="sourceLine" id="cb5-1" data-line-number="1">
+<span class="kw">library</span>(rvest)</div></code></pre>
 <pre><code>## Loading required package: xml2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(htmltools)
-<span class="kw">library</span>(unpivotr)</code></pre></div>
+<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><div class="sourceLine" id="cb7-1" data-line-number="1">
+<span class="kw">library</span>(htmltools)</div>
+<div class="sourceLine" id="cb7-2" data-line-number="2">
+<span class="kw">library</span>(unpivotr)</div></code></pre>
 <pre><code>## 
 ## Attaching package: 'unpivotr'</code></pre>
 <pre><code>## The following object is masked from 'package:stats':
@@ -102,8 +127,9 @@
 <div id="rowspan" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rowspan" class="anchor"></a>Rowspan</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rowspan &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"rowspan.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)
-<span class="kw">includeHTML</span>(rowspan)</code></pre></div>
+<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><div class="sourceLine" id="cb10-1" data-line-number="1">rowspan &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"rowspan.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</div>
+<div class="sourceLine" id="cb10-2" data-line-number="2">
+<span class="kw"><a href="http://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(rowspan)</div></code></pre>
 
 
   
@@ -126,31 +152,40 @@
 <td>cell (2, 2)</td>
       </tr>
 </table>
-<br><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># rvest</span>
-rowspan <span class="op">%&gt;%</span>
+<br><pre class="sourceCode r" id="cb11"><code class="sourceCode r"><div class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># rvest</span></div>
+<div class="sourceLine" id="cb11-2" data-line-number="2">rowspan <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb11-3" data-line-number="3">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_table</span>()</code></pre></div>
+</div>
+<div class="sourceLine" id="cb11-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rvest/topics/html_table">html_table</a></span>()</div></code></pre>
 <pre><code>## [[1]]
 ##   Header (1:2, 1) Header (1, 2)
 ## 1 Header (1:2, 1)   cell (2, 2)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># unpivotr</span>
-rowspan <span class="op">%&gt;%</span>
+<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><div class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># unpivotr</span></div>
+<div class="sourceLine" id="cb13-2" data-line-number="2">rowspan <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb13-3" data-line-number="3">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>()</code></pre></div>
+</div>
+<div class="sourceLine" id="cb13-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>()</div></code></pre>
 <pre><code>## [[1]]
 ## # A tibble: 4 x 3
-##     row   col                                     html
-##   &lt;int&gt; &lt;int&gt;                                    &lt;chr&gt;
+##     row   col html                                    
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                   
 ## 1     1     1 "&lt;th rowspan=\"2\"&gt;Header (1:2, 1)&lt;/th&gt;"
-## 2     2     1                                     &lt;NA&gt;
-## 3     1     2                   &lt;th&gt;Header (1, 2)&lt;/th&gt;
-## 4     2     2                     &lt;td&gt;cell (2, 2)&lt;/td&gt;</code></pre>
+## 2     2     1 &lt;NA&gt;                                    
+## 3     1     2 &lt;th&gt;Header (1, 2)&lt;/th&gt;                  
+## 4     2     2 &lt;td&gt;cell (2, 2)&lt;/td&gt;</code></pre>
 </div>
 <div id="colspan" class="section level3">
 <h3 class="hasAnchor">
 <a href="#colspan" class="anchor"></a>Colspan</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">colspan &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"colspan.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)
-<span class="kw">includeHTML</span>(colspan)</code></pre></div>
+<pre class="sourceCode r" id="cb15"><code class="sourceCode r"><div class="sourceLine" id="cb15-1" data-line-number="1">colspan &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"colspan.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</div>
+<div class="sourceLine" id="cb15-2" data-line-number="2">
+<span class="kw"><a href="http://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(colspan)</div></code></pre>
 
 
   
@@ -174,33 +209,42 @@ rowspan <span class="op">%&gt;%</span>
       </tr>
 </table>
 <div></div>
-  <br><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># rvest</span>
-colspan <span class="op">%&gt;%</span>
+  <br><pre class="sourceCode r" id="cb16"><code class="sourceCode r"><div class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># rvest</span></div>
+<div class="sourceLine" id="cb16-2" data-line-number="2">colspan <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb16-3" data-line-number="3">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_table</span>()</code></pre></div>
+</div>
+<div class="sourceLine" id="cb16-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rvest/topics/html_table">html_table</a></span>()</div></code></pre>
 <pre><code>## [[1]]
 ##   Header (1, 1:2) Header (1, 1:2)
 ## 1     cell (2, 1)     cell (2, 2)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># unpivotr</span>
-colspan <span class="op">%&gt;%</span>
+<pre class="sourceCode r" id="cb18"><code class="sourceCode r"><div class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># unpivotr</span></div>
+<div class="sourceLine" id="cb18-2" data-line-number="2">colspan <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb18-3" data-line-number="3">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>()</code></pre></div>
+</div>
+<div class="sourceLine" id="cb18-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>()</div></code></pre>
 <pre><code>## [[1]]
 ## # A tibble: 4 x 3
-##     row   col                                     html
-##   &lt;int&gt; &lt;int&gt;                                    &lt;chr&gt;
+##     row   col html                                    
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                   
 ## 1     1     1 "&lt;th colspan=\"2\"&gt;Header (1, 1:2)&lt;/th&gt;"
-## 2     2     1                     &lt;td&gt;cell (2, 1)&lt;/td&gt;
-## 3     1     2                                     &lt;NA&gt;
-## 4     2     2                     &lt;td&gt;cell (2, 2)&lt;/td&gt;</code></pre>
+## 2     2     1 &lt;td&gt;cell (2, 1)&lt;/td&gt;                    
+## 3     1     2 &lt;NA&gt;                                    
+## 4     2     2 &lt;td&gt;cell (2, 2)&lt;/td&gt;</code></pre>
 </div>
 <div id="both-rowspan-and-colspan-non-square" class="section level3">
 <h3 class="hasAnchor">
 <a href="#both-rowspan-and-colspan-non-square" class="anchor"></a>Both rowspan and colspan: non-square</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rowandcolspan &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>,
-                             <span class="st">"row-and-colspan.html"</span>,
-                             <span class="dt">package =</span> <span class="st">"unpivotr"</span>)
-<span class="kw">includeHTML</span>(rowandcolspan)</code></pre></div>
+<pre class="sourceCode r" id="cb20"><code class="sourceCode r"><div class="sourceLine" id="cb20-1" data-line-number="1">rowandcolspan &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>,</div>
+<div class="sourceLine" id="cb20-2" data-line-number="2">                             <span class="st">"row-and-colspan.html"</span>,</div>
+<div class="sourceLine" id="cb20-3" data-line-number="3">                             <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</div>
+<div class="sourceLine" id="cb20-4" data-line-number="4">
+<span class="kw"><a href="http://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(rowandcolspan)</div></code></pre>
 
 
   
@@ -225,39 +269,48 @@ colspan <span class="op">%&gt;%</span>
         <td>cell (3, 3)</td>
       </tr>
 </table>
-<br><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># rvest</span>
-rowandcolspan <span class="op">%&gt;%</span>
+<br><pre class="sourceCode r" id="cb21"><code class="sourceCode r"><div class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># rvest</span></div>
+<div class="sourceLine" id="cb21-2" data-line-number="2">rowandcolspan <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb21-3" data-line-number="3">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_table</span>()</code></pre></div>
+</div>
+<div class="sourceLine" id="cb21-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rvest/topics/html_table">html_table</a></span>()</div></code></pre>
 <pre><code>## [[1]]
 ##   Header (1:2, 1:2) Header (1:2, 1:2) Header (2, 3)
 ## 1 Header (1:2, 1:2) Header (1:2, 1:2)   cell (3, 1)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># unpivotr</span>
-rowandcolspan <span class="op">%&gt;%</span>
+<pre class="sourceCode r" id="cb23"><code class="sourceCode r"><div class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># unpivotr</span></div>
+<div class="sourceLine" id="cb23-2" data-line-number="2">rowandcolspan <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb23-3" data-line-number="3">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>()</code></pre></div>
+</div>
+<div class="sourceLine" id="cb23-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>()</div></code></pre>
 <pre><code>## [[1]]
 ## # A tibble: 10 x 3
-##      row   col                                                     html
-##    &lt;int&gt; &lt;int&gt;                                                    &lt;chr&gt;
+##      row   col html                                                    
+##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                                   
 ##  1     1     1 "&lt;th colspan=\"2\" rowspan=\"2\"&gt;Header (1:2, 1:2)&lt;/th&gt;"
-##  2     2     1                                                     &lt;NA&gt;
-##  3     1     2                                                     &lt;NA&gt;
-##  4     2     2                                                     &lt;NA&gt;
-##  5     1     3                                   &lt;th&gt;Header (2, 3)&lt;/th&gt;
-##  6     2     3                                     &lt;td&gt;cell (3, 1)&lt;/td&gt;
-##  7     1     4                                                     &lt;NA&gt;
-##  8     2     4                                     &lt;td&gt;cell (3, 2)&lt;/td&gt;
-##  9     1     5                                                     &lt;NA&gt;
-## 10     2     5                                     &lt;td&gt;cell (3, 3)&lt;/td&gt;</code></pre>
+##  2     2     1 &lt;NA&gt;                                                    
+##  3     1     2 &lt;NA&gt;                                                    
+##  4     2     2 &lt;NA&gt;                                                    
+##  5     1     3 &lt;th&gt;Header (2, 3)&lt;/th&gt;                                  
+##  6     2     3 &lt;td&gt;cell (3, 1)&lt;/td&gt;                                    
+##  7     1     4 &lt;NA&gt;                                                    
+##  8     2     4 &lt;td&gt;cell (3, 2)&lt;/td&gt;                                    
+##  9     1     5 &lt;NA&gt;                                                    
+## 10     2     5 &lt;td&gt;cell (3, 3)&lt;/td&gt;</code></pre>
 </div>
 </div>
 <div id="nested-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#nested-example" class="anchor"></a>Nested example</h2>
 <p><code>tidy_table</code> never descends into cells. If there is a table inside a cell, then to parse that table use <code>html_table</code> again on that cell.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nested &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"nested.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)
-<span class="kw">includeHTML</span>(nested)</code></pre></div>
+<pre class="sourceCode r" id="cb25"><code class="sourceCode r"><div class="sourceLine" id="cb25-1" data-line-number="1">nested &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"nested.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</div>
+<div class="sourceLine" id="cb25-2" data-line-number="2">
+<span class="kw"><a href="http://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(nested)</div></code></pre>
 
 
   
@@ -292,10 +345,14 @@ rowandcolspan <span class="op">%&gt;%</span>
 </td>
       </tr>
 </table>
-<br><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># rvest parses both tables</span>
-nested <span class="op">%&gt;%</span>
+<br><pre class="sourceCode r" id="cb26"><code class="sourceCode r"><div class="sourceLine" id="cb26-1" data-line-number="1"><span class="co"># rvest parses both tables</span></div>
+<div class="sourceLine" id="cb26-2" data-line-number="2">nested <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb26-3" data-line-number="3">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_table</span>(<span class="dt">fill =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
+<div class="sourceLine" id="cb26-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rvest/topics/html_table">html_table</a></span>(<span class="dt">fill =</span> <span class="ot">TRUE</span>)</div></code></pre>
 <pre><code>## [[1]]
 ##         Header (1, 1)
 ## 1         cell (2, 1)
@@ -317,48 +374,64 @@ nested <span class="op">%&gt;%</span>
 ## [[2]]
 ##   Header (2, 2)(1, 1) Header (2, 2)(1, 2)
 ## 1   cell (2, 2)(2, 1)   cell (2, 2)(2, 1)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># unpivotr</span>
-x &lt;-
+<pre class="sourceCode r" id="cb28"><code class="sourceCode r"><div class="sourceLine" id="cb28-1" data-line-number="1"><span class="co"># unpivotr</span></div>
+<div class="sourceLine" id="cb28-2" data-line-number="2">x &lt;-</div>
+<div class="sourceLine" id="cb28-3" data-line-number="3">
 <span class="st">  </span>nested <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb28-4" data-line-number="4">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb28-5" data-line-number="5">
 <span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>.[[<span class="dv">1</span>]]
-x</code></pre></div>
+</div>
+<div class="sourceLine" id="cb28-6" data-line-number="6">
+<span class="st">  </span>.[[<span class="dv">1</span>]]</div>
+<div class="sourceLine" id="cb28-7" data-line-number="7">x</div></code></pre>
 <pre><code>## # A tibble: 4 x 3
-##     row   col
-##   &lt;int&gt; &lt;int&gt;
-## 1     1     1
-## 2     2     1
-## 3     1     2
-## 4     2     2
-## # ... with 1 more variables: html &lt;chr&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The html of the table inside a cell</span>
-cell &lt;-
+##     row   col html                                                        
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                                       
+## 1     1     1 &lt;th&gt;Header (1, 1)&lt;/th&gt;                                      
+## 2     2     1 &lt;td&gt;cell (2, 1)&lt;/td&gt;                                        
+## 3     1     2 &lt;th&gt;Header (1, 2)&lt;/th&gt;                                      
+## 4     2     2 "&lt;td&gt;\n          &lt;table&gt;\n&lt;tr&gt;\n&lt;th&gt;Header (2, 2)(1, 1)&lt;/th…</code></pre>
+<pre class="sourceCode r" id="cb30"><code class="sourceCode r"><div class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># The html of the table inside a cell</span></div>
+<div class="sourceLine" id="cb30-2" data-line-number="2">cell &lt;-</div>
+<div class="sourceLine" id="cb30-3" data-line-number="3">
 <span class="st">  </span>x <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(row <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, col <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>.<span class="op">$</span>html
-cell</code></pre></div>
+</div>
+<div class="sourceLine" id="cb30-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, col <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb30-5" data-line-number="5">
+<span class="st">  </span>.<span class="op">$</span>html</div>
+<div class="sourceLine" id="cb30-6" data-line-number="6">cell</div></code></pre>
 <pre><code>## [1] "&lt;td&gt;\n          &lt;table&gt;\n&lt;tr&gt;\n&lt;th&gt;Header (2, 2)(1, 1)&lt;/th&gt;\n              &lt;th&gt;Header (2, 2)(1, 2)&lt;/th&gt;\n            &lt;/tr&gt;\n&lt;tr&gt;\n&lt;td&gt;cell (2, 2)(2, 1)&lt;/td&gt;\n              &lt;td&gt;cell (2, 2)(2, 1)&lt;/td&gt;\n            &lt;/tr&gt;\n&lt;/table&gt;\n&lt;/td&gt;"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Parsing the table inside the cell</span>
-cell <span class="op">%&gt;%</span>
+<pre class="sourceCode r" id="cb32"><code class="sourceCode r"><div class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># Parsing the table inside the cell</span></div>
+<div class="sourceLine" id="cb32-2" data-line-number="2">cell <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb32-3" data-line-number="3">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>()</code></pre></div>
+</div>
+<div class="sourceLine" id="cb32-4" data-line-number="4">
+<span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>()</div></code></pre>
 <pre><code>## [[1]]
 ## # A tibble: 4 x 3
-##     row   col                         html
-##   &lt;int&gt; &lt;int&gt;                        &lt;chr&gt;
+##     row   col html                        
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                       
 ## 1     1     1 &lt;th&gt;Header (2, 2)(1, 1)&lt;/th&gt;
-## 2     2     1   &lt;td&gt;cell (2, 2)(2, 1)&lt;/td&gt;
+## 2     2     1 &lt;td&gt;cell (2, 2)(2, 1)&lt;/td&gt;  
 ## 3     1     2 &lt;th&gt;Header (2, 2)(1, 2)&lt;/th&gt;
-## 4     2     2   &lt;td&gt;cell (2, 2)(2, 1)&lt;/td&gt;</code></pre>
+## 4     2     2 &lt;td&gt;cell (2, 2)(2, 1)&lt;/td&gt;</code></pre>
 </div>
 <div id="url-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#url-example" class="anchor"></a>URL example</h2>
-<p>A motivation for using <code>unpivotr::tidy_table()</code> is that it extracts more than just text – it can extract whatever part of the HTML you need.</p>
+<p>A motivation for using <code><a href="http://www.rdocumentation.org/packages/unpivotr/topics/tidy_table">unpivotr::tidy_table()</a></code> is that it extracts more than just text – it can extract whatever part of the HTML you need.</p>
 <p>Here, we extract URLs.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">urls &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"url.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)
-<span class="kw">includeHTML</span>(urls)</code></pre></div>
+<pre class="sourceCode r" id="cb34"><code class="sourceCode r"><div class="sourceLine" id="cb34-1" data-line-number="1">urls &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"url.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</div>
+<div class="sourceLine" id="cb34-2" data-line-number="2">
+<span class="kw"><a href="http://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(urls)</div></code></pre>
 
 
   
@@ -386,48 +459,70 @@ cell <span class="op">%&gt;%</span>
 </td>
       </tr>
 </table>
-<br><div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_url &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
-  <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)
-  x <span class="op">%&gt;%</span>
+<br><pre class="sourceCode r" id="cb35"><code class="sourceCode r"><div class="sourceLine" id="cb35-1" data-line-number="1">cell_url &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</div>
+<div class="sourceLine" id="cb35-2" data-line-number="2">  <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)</div>
+<div class="sourceLine" id="cb35-3" data-line-number="3">  x <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-4" data-line-number="4">
 <span class="st">    </span>read_html <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">html_attr</span>(<span class="st">"href"</span>)
-}
-
-cell_text &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
-  <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)
-  x <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-5" data-line-number="5">
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-6" data-line-number="6">
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rvest/topics/html_text">html_attr</a></span>(<span class="st">"href"</span>)</div>
+<div class="sourceLine" id="cb35-7" data-line-number="7">}</div>
+<div class="sourceLine" id="cb35-8" data-line-number="8"></div>
+<div class="sourceLine" id="cb35-9" data-line-number="9">cell_text &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</div>
+<div class="sourceLine" id="cb35-10" data-line-number="10">  <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)</div>
+<div class="sourceLine" id="cb35-11" data-line-number="11">  x <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-12" data-line-number="12">
 <span class="st">    </span>read_html <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">html_text</span>()
-}
-
-urls <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-13" data-line-number="13">
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="st">"a"</span>) <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-14" data-line-number="14">
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rvest/topics/html_text">html_text</a></span>()</div>
+<div class="sourceLine" id="cb35-15" data-line-number="15">}</div>
+<div class="sourceLine" id="cb35-16" data-line-number="16"></div>
+<div class="sourceLine" id="cb35-17" data-line-number="17">urls <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-18" data-line-number="18">
 <span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-19" data-line-number="19">
 <span class="st">  </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>() <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-20" data-line-number="20">
 <span class="st">  </span>.[[<span class="dv">1</span>]] <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">text =</span> purrr<span class="op">::</span><span class="kw">map</span>(html, cell_text),
-         <span class="dt">url =</span> purrr<span class="op">::</span><span class="kw">map</span>(html, cell_url)) <span class="op">%&gt;%</span>
-<span class="st">  </span>tidyr<span class="op">::</span><span class="kw">unnest</span>(text, url)</code></pre></div>
+</div>
+<div class="sourceLine" id="cb35-21" data-line-number="21">
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">text =</span> purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(html, cell_text),</div>
+<div class="sourceLine" id="cb35-22" data-line-number="22">         <span class="dt">url =</span> purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(html, cell_url)) <span class="op">%&gt;%</span>
+</div>
+<div class="sourceLine" id="cb35-23" data-line-number="23">
+<span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(text, url)</div></code></pre>
 <pre><code>## # A tibble: 8 x 5
-##     row   col
-##   &lt;int&gt; &lt;int&gt;
-## 1     1     1
-## 2     1     1
-## 3     2     1
-## 4     1     2
-## 5     2     2
-## 6     1     3
-## 7     2     3
-## 8     2     3
-## # ... with 3 more variables: html &lt;chr&gt;, text &lt;chr&gt;, url &lt;chr&gt;</code></pre>
+##     row   col html                                       text   url       
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                      &lt;chr&gt;  &lt;chr&gt;     
+## 1     1     1 "&lt;td colspan=\"2\"&gt;\n&lt;a href=\"example1.c… Scrap… example1.…
+## 2     1     1 "&lt;td colspan=\"2\"&gt;\n&lt;a href=\"example1.c… HTML.  example2.…
+## 3     2     1 "&lt;td&gt;&lt;a href=\"example3.co.nz\"&gt;Sweet&lt;/a&gt;… Sweet  example3.…
+## 4     1     2 &lt;NA&gt;                                       &lt;NA&gt;   &lt;NA&gt;      
+## 5     2     2 "&lt;td&gt;&lt;a href=\"example4.co.nz\"&gt;as?&lt;/a&gt;&lt;/… as?    example4.…
+## 6     1     3 &lt;NA&gt;                                       &lt;NA&gt;   &lt;NA&gt;      
+## 7     2     3 "&lt;td&gt;\n&lt;a href=\"example5.co.nz\"&gt;Yeah,&lt;/… Yeah,  example5.…
+## 8     2     3 "&lt;td&gt;\n&lt;a href=\"example5.co.nz\"&gt;Yeah,&lt;/… right. http://ww…</code></pre>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2>Contents</h2>
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#rowspan-and-colspan-examples">Rowspan and colspan examples</a></li>
       <li><a href="#nested-example">Nested example</a></li>

@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,10 +64,31 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/compass-directions.html">Compass Directions</a>
+    </li>
+    <li>
+      <a href="../articles/html.html">HTML Tables</a>
+    </li>
+    <li>
+      <a href="../articles/small-multiples.html">Small Multiples</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -96,59 +118,6 @@
     </div>
 
     <div class="contents">
-    <div id="unpivotr-0-2-1-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#unpivotr-0-2-1-9000" class="anchor"></a>unpivotr 0.2.1.9000</h1>
-<ul>
-<li>Updated to use the new <code>dplyr</code>/<code>rlang</code> combination instead of the old <code>dplyr</code>/<code>lazyeval</code> one.</li>
-</ul>
-</div>
-    <div id="unpivotr-0-2-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#unpivotr-0-2-1" class="anchor"></a>unpivotr 0.2.1</h1>
-<p><strong>Major breaking changes</strong></p>
-<p>This release overhauls the <code><a href="../reference/tidy_table.html">tidy_table()</a></code> function of unpivotr to preserve the original data types of table cells and to support HTML tables.</p>
-<ul>
-<li>
-<code>tidytable()</code> has been renamed <code><a href="../reference/tidy_table.html">tidy_table()</a></code>. <code>tidytable()</code> is an error, rather than a deprecation warning, because <code><a href="../reference/tidy_table.html">tidy_table()</a></code> is so different from before.</li>
-<li>There is a new <code><a href="../reference/tidy_table.html">tidy_table()</a></code> method and vignette for HTML.</li>
-<li>There is no <code><a href="../reference/tidy_table.html">tidy_table()</a></code> method for matrices. Convert matrices to data.frames first, choosing what to do with row and column names.</li>
-<li>
-<code><a href="../reference/tidy_table.html">tidy_table()</a></code> returns only relevant columns, according to the data types of the columns in the given data frame. It uses <code>tibble::type_sum()</code> to determine the column type and to name the columns, so whereas characters used to be returned in a column called <code>character</code>, they are now returned in a column called <code>chr</code>. The full list of column names is in <code><a href="../reference/tidy_table.html">?tidy_table</a></code> and is <code>chr</code>, <code>cplx</code>, <code>cplx</code>, <code>dbl</code>, <code>fctr</code>, <code>int</code>, <code>lgl</code>, <code>list</code>. The columns <code>fctr</code> and <code>list</code> are list-columns, where each element is itself a list. This means that factors with different levels are kept separate. For HTML tables, an <code>html</code> column is returned containing the standalone HTML of each cell.</li>
-<li>Both <code>rowname</code> and <code>colname</code> arguments to <code><a href="../reference/tidy_table.html">tidy_table()</a></code> now default to <code>FALSE</code>.</li>
-<li>All functions consistently return a <code>tibble</code>.</li>
-<li>Some error messages are more helpful.</li>
-</ul>
-</div>
-    <div id="unpivotr-0-1-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#unpivotr-0-1-1" class="anchor"></a>unpivotr 0.1.1</h1>
-<ul>
-<li>Fixed breakages introduced by dplyr 0.6.</li>
-</ul>
-</div>
-    <div id="unpivotr-0-1-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#unpivotr-0-1-0" class="anchor"></a>unpivotr 0.1.0</h1>
-<ul>
-<li>Moved images from <code>inst/extdata</code> to <code>vignettes</code>.</li>
-</ul>
-</div>
-    <div id="unpivotr-0-1-0-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#unpivotr-0-1-0-1" class="anchor"></a>unpivotr 0.1.0</h1>
-<ul>
-<li>Bumped version to match tidyxl, which is now more mature.</li>
-<li>Updated README and vignettes to use the new tidyxl api.</li>
-</ul>
-</div>
-    <div id="unpivotr-0-0-0-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#unpivotr-0-0-0-9000" class="anchor"></a>unpivotr 0.0.0.9000</h1>
-<ul>
-<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
-</ul>
-</div>
     </div>
   </div>
 
@@ -156,12 +125,6 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#unpivotr-0-2-1-9000">0.2.1.9000</a></li>
-        <li><a href="#unpivotr-0-2-1">0.2.1</a></li>
-        <li><a href="#unpivotr-0-1-1">0.1.1</a></li>
-        <li><a href="#unpivotr-0-1-0">0.1.0</a></li>
-        <li><a href="#unpivotr-0-1-0-1">0.1.0</a></li>
-        <li><a href="#unpivotr-0-0-0-9000">0.0.0.9000</a></li>
       </ul>
     </div>
   </div>

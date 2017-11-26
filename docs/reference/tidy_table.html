@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,10 +64,31 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/compass-directions.html">Compass Directions</a>
+    </li>
+    <li>
+      <a href="../articles/html.html">HTML Tables</a>
+    </li>
+    <li>
+      <a href="../articles/small-multiples.html">Small Multiples</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -146,105 +168,101 @@ were cells in the table, and they appear in the 'chr' column.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>tidy_table</span>(<span class='no'>Formaldehyde</span>)</div><div class='output co'>#&gt; # A tibble: 12 x 3
-#&gt;      row   col   dbl
-#&gt;    &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
-#&gt;  1     1     1 0.100
-#&gt;  2     2     1 0.300
-#&gt;  3     3     1 0.500
-#&gt;  4     4     1 0.600
-#&gt;  5     5     1 0.700
-#&gt;  6     6     1 0.900
-#&gt;  7     1     2 0.086
-#&gt;  8     2     2 0.269
-#&gt;  9     3     2 0.446
-#&gt; 10     4     2 0.538
-#&gt; 11     5     2 0.626
-#&gt; 12     6     2 0.782</div><div class='input'><span class='fu'>tidy_table</span>(<span class='kw'>tidyr</span><span class='kw'>::</span><span class='fu'>nest</span>(<span class='no'>chickwts</span>, -<span class='no'>feed</span>))</div><div class='output co'>#&gt; # A tibble: 12 x 4
-#&gt;      row   col       fctr              list
-#&gt;    &lt;int&gt; &lt;int&gt;     &lt;list&gt;            &lt;list&gt;
-#&gt;  1     1     1 &lt;fctr [1]&gt;            &lt;NULL&gt;
-#&gt;  2     2     1 &lt;fctr [1]&gt;            &lt;NULL&gt;
-#&gt;  3     3     1 &lt;fctr [1]&gt;            &lt;NULL&gt;
-#&gt;  4     4     1 &lt;fctr [1]&gt;            &lt;NULL&gt;
-#&gt;  5     5     1 &lt;fctr [1]&gt;            &lt;NULL&gt;
-#&gt;  6     6     1 &lt;fctr [1]&gt;            &lt;NULL&gt;
-#&gt;  7     1     2     &lt;NULL&gt; &lt;tibble [10 x 1]&gt;
-#&gt;  8     2     2     &lt;NULL&gt; &lt;tibble [12 x 1]&gt;
-#&gt;  9     3     2     &lt;NULL&gt; &lt;tibble [14 x 1]&gt;
-#&gt; 10     4     2     &lt;NULL&gt; &lt;tibble [12 x 1]&gt;
-#&gt; 11     5     2     &lt;NULL&gt; &lt;tibble [11 x 1]&gt;
-#&gt; 12     6     2     &lt;NULL&gt; &lt;tibble [12 x 1]&gt;</div><div class='input'><span class='fu'>tidy_table</span>(<span class='no'>Formaldehyde</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 14 x 4
-#&gt;      row   col    chr   dbl
-#&gt;    &lt;int&gt; &lt;int&gt;  &lt;chr&gt; &lt;dbl&gt;
-#&gt;  1     1     1   carb    NA
-#&gt;  2     2     1   &lt;NA&gt; 0.100
-#&gt;  3     3     1   &lt;NA&gt; 0.300
-#&gt;  4     4     1   &lt;NA&gt; 0.500
-#&gt;  5     5     1   &lt;NA&gt; 0.600
-#&gt;  6     6     1   &lt;NA&gt; 0.700
-#&gt;  7     7     1   &lt;NA&gt; 0.900
-#&gt;  8     1     2 optden    NA
-#&gt;  9     2     2   &lt;NA&gt; 0.086
-#&gt; 10     3     2   &lt;NA&gt; 0.269
-#&gt; 11     4     2   &lt;NA&gt; 0.446
-#&gt; 12     5     2   &lt;NA&gt; 0.538
-#&gt; 13     6     2   &lt;NA&gt; 0.626
-#&gt; 14     7     2   &lt;NA&gt; 0.782</div><div class='input'><span class='fu'>tidy_table</span>(<span class='no'>Formaldehyde</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 18 x 4
-#&gt;      row   col   chr   dbl
-#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
-#&gt;  1     1     1     1    NA
-#&gt;  2     2     1     2    NA
-#&gt;  3     3     1     3    NA
-#&gt;  4     4     1     4    NA
-#&gt;  5     5     1     5    NA
-#&gt;  6     6     1     6    NA
-#&gt;  7     1     2  &lt;NA&gt; 0.100
-#&gt;  8     2     2  &lt;NA&gt; 0.300
-#&gt;  9     3     2  &lt;NA&gt; 0.500
-#&gt; 10     4     2  &lt;NA&gt; 0.600
-#&gt; 11     5     2  &lt;NA&gt; 0.700
-#&gt; 12     6     2  &lt;NA&gt; 0.900
-#&gt; 13     1     3  &lt;NA&gt; 0.086
-#&gt; 14     2     3  &lt;NA&gt; 0.269
-#&gt; 15     3     3  &lt;NA&gt; 0.446
-#&gt; 16     4     3  &lt;NA&gt; 0.538
-#&gt; 17     5     3  &lt;NA&gt; 0.626
-#&gt; 18     6     3  &lt;NA&gt; 0.782</div><div class='input'>
+#&gt;      row   col    dbl
+#&gt;    &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+#&gt;  1     1     1 0.100 
+#&gt;  2     2     1 0.300 
+#&gt;  3     3     1 0.500 
+#&gt;  4     4     1 0.600 
+#&gt;  5     5     1 0.700 
+#&gt;  6     6     1 0.900 
+#&gt;  7     1     2 0.0860
+#&gt;  8     2     2 0.269 
+#&gt;  9     3     2 0.446 
+#&gt; 10     4     2 0.538 
+#&gt; 11     5     2 0.626 
+#&gt; 12     6     2 0.782 </div><div class='input'><span class='fu'>tidy_table</span>(<span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tidyr/topics/nest'>nest</a></span>(<span class='no'>chickwts</span>, -<span class='no'>feed</span>))</div><div class='output co'>#&gt; # A tibble: 12 x 4
+#&gt;      row   col fctr       list                 
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;list&gt;     &lt;list&gt;               
+#&gt;  1     1     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
+#&gt;  2     2     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
+#&gt;  3     3     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
+#&gt;  4     4     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
+#&gt;  5     5     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
+#&gt;  6     6     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
+#&gt;  7     1     2 &lt;NULL&gt;     &lt;data.frame [10 × 1]&gt;
+#&gt;  8     2     2 &lt;NULL&gt;     &lt;data.frame [12 × 1]&gt;
+#&gt;  9     3     2 &lt;NULL&gt;     &lt;data.frame [14 × 1]&gt;
+#&gt; 10     4     2 &lt;NULL&gt;     &lt;data.frame [12 × 1]&gt;
+#&gt; 11     5     2 &lt;NULL&gt;     &lt;data.frame [11 × 1]&gt;
+#&gt; 12     6     2 &lt;NULL&gt;     &lt;data.frame [12 × 1]&gt;</div><div class='input'><span class='fu'>tidy_table</span>(<span class='no'>Formaldehyde</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 14 x 4
+#&gt;      row   col chr        dbl
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;dbl&gt;
+#&gt;  1     1     1 carb   NA     
+#&gt;  2     2     1 &lt;NA&gt;    0.100 
+#&gt;  3     3     1 &lt;NA&gt;    0.300 
+#&gt;  4     4     1 &lt;NA&gt;    0.500 
+#&gt;  5     5     1 &lt;NA&gt;    0.600 
+#&gt;  6     6     1 &lt;NA&gt;    0.700 
+#&gt;  7     7     1 &lt;NA&gt;    0.900 
+#&gt;  8     1     2 optden NA     
+#&gt;  9     2     2 &lt;NA&gt;    0.0860
+#&gt; 10     3     2 &lt;NA&gt;    0.269 
+#&gt; 11     4     2 &lt;NA&gt;    0.446 
+#&gt; 12     5     2 &lt;NA&gt;    0.538 
+#&gt; 13     6     2 &lt;NA&gt;    0.626 
+#&gt; 14     7     2 &lt;NA&gt;    0.782 </div><div class='input'><span class='fu'>tidy_table</span>(<span class='no'>Formaldehyde</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 18 x 4
+#&gt;      row   col chr       dbl
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;
+#&gt;  1     1     1 1     NA     
+#&gt;  2     2     1 2     NA     
+#&gt;  3     3     1 3     NA     
+#&gt;  4     4     1 4     NA     
+#&gt;  5     5     1 5     NA     
+#&gt;  6     6     1 6     NA     
+#&gt;  7     1     2 &lt;NA&gt;   0.100 
+#&gt;  8     2     2 &lt;NA&gt;   0.300 
+#&gt;  9     3     2 &lt;NA&gt;   0.500 
+#&gt; 10     4     2 &lt;NA&gt;   0.600 
+#&gt; 11     5     2 &lt;NA&gt;   0.700 
+#&gt; 12     6     2 &lt;NA&gt;   0.900 
+#&gt; 13     1     3 &lt;NA&gt;   0.0860
+#&gt; 14     2     3 &lt;NA&gt;   0.269 
+#&gt; 15     3     3 &lt;NA&gt;   0.446 
+#&gt; 16     4     3 &lt;NA&gt;   0.538 
+#&gt; 17     5     3 &lt;NA&gt;   0.626 
+#&gt; 18     6     3 &lt;NA&gt;   0.782 </div><div class='input'>
 <span class='no'>colspan</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"colspan.html"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"unpivotr"</span>)
 <span class='no'>rowspan</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"rowspan.html"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"unpivotr"</span>)
-<span class='no'>nested</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"nested.html"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"unpivotr"</span>)
-
-<span class='fu'>not_run</span>({
-  <span class='fu'>browseURL</span>(<span class='no'>colspan</span>)
-  <span class='fu'>browseURL</span>(<span class='no'>rowspan</span>)
-  <span class='fu'>browseURL</span>(<span class='no'>nestedspan</span>)
-})
-
-<span class='fu'>tidy_table</span>(<span class='kw'>xml2</span><span class='kw'>::</span><span class='fu'>read_html</span>(<span class='no'>colspan</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='no'>nested</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"nested.html"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"unpivotr"</span>)</div><span class='co'># NOT RUN {</span>
+<span class='fu'>browseURL</span>(<span class='no'>colspan</span>)
+<span class='fu'>browseURL</span>(<span class='no'>rowspan</span>)
+<span class='fu'>browseURL</span>(<span class='no'>nestedspan</span>)
+<span class='co'># }</span><div class='input'>
+<span class='fu'>tidy_table</span>(<span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/xml2/topics/read_xml'>read_html</a></span>(<span class='no'>colspan</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; # A tibble: 4 x 3
-#&gt;     row   col                                     html
-#&gt;   &lt;int&gt; &lt;int&gt;                                    &lt;chr&gt;
+#&gt;     row   col html                                    
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                   
 #&gt; 1     1     1 "&lt;th colspan=\"2\"&gt;Header (1, 1:2)&lt;/th&gt;"
-#&gt; 2     2     1                     &lt;td&gt;cell (2, 1)&lt;/td&gt;
-#&gt; 3     1     2                                     &lt;NA&gt;
-#&gt; 4     2     2                     &lt;td&gt;cell (2, 2)&lt;/td&gt;
-#&gt; </div><div class='input'><span class='fu'>tidy_table</span>(<span class='kw'>xml2</span><span class='kw'>::</span><span class='fu'>read_html</span>(<span class='no'>rowspan</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; 2     2     1 &lt;td&gt;cell (2, 1)&lt;/td&gt;                    
+#&gt; 3     1     2 &lt;NA&gt;                                    
+#&gt; 4     2     2 &lt;td&gt;cell (2, 2)&lt;/td&gt;                    
+#&gt; </div><div class='input'><span class='fu'>tidy_table</span>(<span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/xml2/topics/read_xml'>read_html</a></span>(<span class='no'>rowspan</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; # A tibble: 4 x 3
-#&gt;     row   col                                     html
-#&gt;   &lt;int&gt; &lt;int&gt;                                    &lt;chr&gt;
+#&gt;     row   col html                                    
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                   
 #&gt; 1     1     1 "&lt;th rowspan=\"2\"&gt;Header (1:2, 1)&lt;/th&gt;"
-#&gt; 2     2     1                                     &lt;NA&gt;
-#&gt; 3     1     2                   &lt;th&gt;Header (1, 2)&lt;/th&gt;
-#&gt; 4     2     2                     &lt;td&gt;cell (2, 2)&lt;/td&gt;
-#&gt; </div><div class='input'><span class='fu'>tidy_table</span>(<span class='kw'>xml2</span><span class='kw'>::</span><span class='fu'>read_html</span>(<span class='no'>nested</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; 2     2     1 &lt;NA&gt;                                    
+#&gt; 3     1     2 &lt;th&gt;Header (1, 2)&lt;/th&gt;                  
+#&gt; 4     2     2 &lt;td&gt;cell (2, 2)&lt;/td&gt;                    
+#&gt; </div><div class='input'><span class='fu'>tidy_table</span>(<span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/xml2/topics/read_xml'>read_html</a></span>(<span class='no'>nested</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; # A tibble: 4 x 3
-#&gt;     row   col
-#&gt;   &lt;int&gt; &lt;int&gt;
-#&gt; 1     1     1
-#&gt; 2     2     1
-#&gt; 3     1     2
-#&gt; 4     2     2
-#&gt; # ... with 1 more variables: html &lt;chr&gt;
+#&gt;     row   col html                                                             
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                                                            
+#&gt; 1     1     1 &lt;th&gt;Header (1, 1)&lt;/th&gt;                                           
+#&gt; 2     2     1 &lt;td&gt;cell (2, 1)&lt;/td&gt;                                             
+#&gt; 3     1     2 &lt;th&gt;Header (1, 2)&lt;/th&gt;                                           
+#&gt; 4     2     2 "&lt;td&gt;\n          &lt;table&gt;\n&lt;tr&gt;\n&lt;th&gt;Header (2, 2)(1, 1)&lt;/th&gt;\n  …
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

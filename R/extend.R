@@ -150,8 +150,8 @@ extend_n <- function(bag, cells, direction, n) {
            col >= x1,
            col <= x2) %>%
     pad(c(y1, y2), c(x1, x2)) %>%
+    dplyr::anti_join(bag, by = c("row", "col")) %>%
     dplyr::bind_rows(bag) %>%
-    dplyr::distinct() %>%
     tibble::as_tibble()
 }
 

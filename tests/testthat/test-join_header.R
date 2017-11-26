@@ -267,8 +267,8 @@ test_that("Compass directions BELOW and RIGHT work", {
 
 test_that("Compass directions ABOVE and LEFT work with boundaries", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-  cells <- tidy_xlsx(spreadsheet, "ABOVE LEFT border")$data[[1]]
-  formatting <- tidy_xlsx(spreadsheet)$formats
+  cells <- xlsx_cells(spreadsheet, "ABOVE LEFT border")
+  formatting <- xlsx_formats(spreadsheet)
   left_borders <- which(!is.na(formatting$local$border$left$style))
   top_borders <- which(!is.na(formatting$local$border$top$style))
   left_border_cells <-
@@ -314,8 +314,8 @@ test_that("Compass directions ABOVE and LEFT work with boundaries", {
 
 test_that("Compass directions BELOW and RIGHT work with boundaries", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-  cells <- tidy_xlsx(spreadsheet, "BELOW RIGHT border")$data[[1]]
-  formatting <- tidy_xlsx(spreadsheet)$formats
+  cells <- xlsx_cells(spreadsheet, "BELOW RIGHT border")
+  formatting <- xlsx_formats(spreadsheet)
   left_borders <- which(!is.na(formatting$local$border$left$style))
   top_borders <- which(!is.na(formatting$local$border$top$style))
   left_border_cells <-

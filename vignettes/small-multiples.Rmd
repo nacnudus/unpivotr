@@ -48,30 +48,27 @@ The spreadsheet is distributed with the unpivotr package, so can be loaded as a
 system file.
 
 ```{r}
-path <- system.file("extdata/enron.xlsx",
-                    package = "unpivotr")
+path <- system.file("extdata/enron.xlsx", package = "unpivotr")
 ```
 
 ## Main
 
 ### Importing the data
 
-Spreadsheet cells are imported with the `tidy_xlsx()` function.  By default, this
-returns all the sheets in the spreadsheet, as elements in a list, wrapped in
-another list of two elements: data and formats.  Since there is only one sheet
-in this file, the data list has length 1, but it is still a list for the sake of
-consistency.  Hence the sheet is accessed with the list
-subsetter `[[1]]`.
+Spreadsheet cells are imported with the `xlsx_cells()` function, which returns a
+data frame of all the cells in all the requested sheets.  By default, every
+sheet is imported, but we don't have to worry about that in this case because
+there is only one sheet in the file.
 
 ```{r}
-cells <- tidy_xlsx(path)$data[[1]]
+cells <- xlsx_cells(path)
 ```
 
 Cell formatting isn't required for this vignette, but if it were, it would be
-imported via `tidy_xlsx(path)$formats`.
+imported via `xlsx_formats(path)`.
 
 ```{r, eval = FALSE}
-formatting <- tidy_xlsx(path)$formats
+formatting <- xlsx_formats(path)
 ```
 
 ### Importing one of the multiples

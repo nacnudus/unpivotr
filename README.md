@@ -1,21 +1,38 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-unpivotr
-========
 
-[![Travis-CI Build Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr) [![Cran Status](http://www.r-pkg.org/badges/version/unpivotr)](https://cran.r-project.org/web/packages/unpivotr/index.html) [![Cran Downloads](https://cranlogs.r-pkg.org/badges/unpivotr)](https://www.r-pkg.org/pkg/unpivotr) [![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://codecov.io/gh/nacnudus/unpivotr)
+# unpivotr
 
-[unpivotr](https://github.com/nacnudus/unpivotr) provides tools for converting data from complex or irregular layouts to a columnar structure. For example, tables with multi-level column or row headers, or spreadsheets, or nested HTML tables. Header and data cells can selected by their contents, position and formatting, and can be associated with one other by their relative positions.
+[![Travis-CI Build
+Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr)
+[![AppVeyor Build
+Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr)
+[![Cran
+Status](http://www.r-pkg.org/badges/version/unpivotr)](https://cran.r-project.org/web/packages/unpivotr/index.html)
+[![Cran
+Downloads](https://cranlogs.r-pkg.org/badges/unpivotr)](https://www.r-pkg.org/pkg/unpivotr)
+[![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://codecov.io/gh/nacnudus/unpivotr)
 
-Excel (.xlsx) files can be prepared for [unpivotr](https://github.com/nacnudus/unpivotr) via the [tidyxl](https://github.com/nacnudus/tidyxl) package.
+[unpivotr](https://github.com/nacnudus/unpivotr) provides tools for
+converting data from complex or irregular layouts to a columnar
+structure. For example, tables with multi-level column or row headers,
+or spreadsheets, or nested HTML tables. Header and data cells can
+selected by their contents, position and formatting, and can be
+associated with one other by their relative positions.
 
-Mailing list
-------------
+Excel (.xlsx) files can be prepared for
+[unpivotr](https://github.com/nacnudus/unpivotr) via the
+[tidyxl](https://github.com/nacnudus/tidyxl) package.
 
-For bugs and/or issues, create a new issue on [GitHub](https://github.com/nacnudus/tidyxl/issues) For other questions or comments, please subscribe to the [tidyxl-devel mailing list](https://groups.google.com/forum/#!forum/tidyxl-devel). You must be a member to post messages, but anyone can read the archived discussions.
+## Mailing list
 
-Installation
-------------
+For bugs and/or issues, create a new issue on
+[GitHub](https://github.com/nacnudus/tidyxl/issues) For other questions
+or comments, please subscribe to the [tidyxl-devel mailing
+list](https://groups.google.com/forum/#!forum/tidyxl-devel). You must be
+a member to post messages, but anyone can read the archived discussions.
+
+## Installation
 
 ``` r
 devtools::install_github("nacnudus/unpivotr", build_vignettes = TRUE)
@@ -23,17 +40,18 @@ devtools::install_github("nacnudus/unpivotr", build_vignettes = TRUE)
 
 There are several dependencies:
 
--   data.table (&gt;= 1.9.7)
--   dplyr
--   dtplyr
--   purrr
--   tidyr
--   xml2
+  - data.table (\>= 1.9.7)
+  - dplyr
+  - dtplyr
+  - purrr
+  - tidyr
+  - xml2
 
-Example
--------
+## Example
 
-The package includes a dataset, `purpose`, which is a list of pivot tables, derived from a survey by Statistics New Zealand of people's sense-of-purpose. A 'tidy' version of the data is also included.
+The package includes a dataset, `purpose`, which is a list of pivot
+tables, derived from a survey by Statistics New Zealand of people’s
+sense-of-purpose. A ‘tidy’ version of the data is also included.
 
 ``` r
 library(unpivotr)
@@ -83,21 +101,22 @@ head(purpose$Tidy) # 'Tidy' version of the data
 #> 22                       <NA>     65+   <NA>  13000  <NA>  18000
 ```
 
-To unpivot this table, first get a tabular representation of each cell, its value and its position in the original pivot table.
+To unpivot this table, first get a tabular representation of each cell,
+its value and its position in the original pivot table.
 
 ``` r
 cells <- tidy_table(pivoted, colnames = FALSE)
 cells <- cells[!is.na(cells$chr), ]
 head(cells)
 #> # A tibble: 6 x 3
-#>     row   col                        chr
-#>   <int> <int>                      <chr>
-#> 1     3     1          Bachelor's degree
-#> 2     7     1                Certificate
-#> 3    11     1                    Diploma
-#> 4    15     1           No Qualification
+#>     row   col chr                       
+#>   <int> <int> <chr>                     
+#> 1     3     1 Bachelor's degree         
+#> 2     7     1 Certificate               
+#> 3    11     1 Diploma                   
+#> 4    15     1 No Qualification          
 #> 5    19     1 Postgraduate qualification
-#> 6     3     2                    15 - 24
+#> 6     3     2 15 - 24
 ```
 
 This can easily be subset for header and data cells.
@@ -118,9 +137,9 @@ datacells <-
   filter(row >= 3, col >= 3)
 head(datacells)
 #> # A tibble: 6 x 3
-#>     row   col   chr
+#>     row   col chr  
 #>   <int> <int> <chr>
-#> 1     3     3  7000
+#> 1     3     3 7000 
 #> 2     4     3 12000
 #> 3     5     3 10000
 #> 4     7     3 29000
@@ -136,22 +155,22 @@ row_headers <-
 lapply(row_headers, head)
 #> $`1`
 #> # A tibble: 5 x 3
-#>     row   col                     header
-#>   <int> <int>                      <chr>
-#> 1     3     1          Bachelor's degree
-#> 2     7     1                Certificate
-#> 3    11     1                    Diploma
-#> 4    15     1           No Qualification
+#>     row   col header                    
+#>   <int> <int> <chr>                     
+#> 1     3     1 Bachelor's degree         
+#> 2     7     1 Certificate               
+#> 3    11     1 Diploma                   
+#> 4    15     1 No Qualification          
 #> 5    19     1 Postgraduate qualification
 #> 
 #> $`2`
 #> # A tibble: 6 x 3
-#>     row   col  header
-#>   <int> <int>   <chr>
+#>     row   col header 
+#>   <int> <int> <chr>  
 #> 1     3     2 15 - 24
 #> 2     4     2 25 - 44
 #> 3     5     2 45 - 64
-#> 4     6     2     65+
+#> 4     6     2 65+    
 #> 5     7     2 15 - 24
 #> 6     8     2 25 - 44
 
@@ -165,21 +184,23 @@ col_headers
 #> $`1`
 #> # A tibble: 2 x 3
 #>     row   col header
-#>   <int> <int>  <chr>
+#>   <int> <int> <chr> 
 #> 1     1     3 Female
-#> 2     1     5   Male
+#> 2     1     5 Male  
 #> 
 #> $`2`
 #> # A tibble: 4 x 3
 #>     row   col header
-#>   <int> <int>  <chr>
-#> 1     2     3  0 - 6
+#>   <int> <int> <chr> 
+#> 1     2     3 0 - 6 
 #> 2     2     4 7 - 10
-#> 3     2     5  0 - 6
+#> 3     2     5 0 - 6 
 #> 4     2     6 7 - 10
 ```
 
-Using [unpivotr](https://github.com/nacnudus/unpivotr) functions, we associate the data cells with the headers, by proximity in given compass directions.
+Using [unpivotr](https://github.com/nacnudus/unpivotr) functions, we
+associate the data cells with the headers, by proximity in given compass
+directions.
 
 ``` r
 # From each data cell, search for the nearest one of each of the headers
@@ -191,22 +212,23 @@ unpivoted <-
   W(row_headers$`2`) # Search directly left (west)
 unpivoted
 #> # A tibble: 72 x 7
-#>      row   col   chr header.data header.header  header.data.data
-#>    <int> <int> <chr>       <chr>         <chr>             <chr>
-#>  1     3     3  7000      Female         0 - 6 Bachelor's degree
-#>  2     4     3 12000      Female         0 - 6 Bachelor's degree
-#>  3     5     3 10000      Female         0 - 6 Bachelor's degree
-#>  4     7     3 29000      Female         0 - 6       Certificate
-#>  5     8     3 34000      Female         0 - 6       Certificate
-#>  6     9     3 30000      Female         0 - 6       Certificate
-#>  7    10     3 12000      Female         0 - 6       Certificate
-#>  8    12     3 10000      Female         0 - 6           Diploma
-#>  9    13     3  6000      Female         0 - 6           Diploma
-#> 10    14     3  5000      Female         0 - 6           Diploma
-#> # ... with 62 more rows, and 1 more variables: header.header.header <chr>
+#>      row   col chr   header.data header.header header.data.data  header.h…
+#>    <int> <int> <chr> <chr>       <chr>         <chr>             <chr>    
+#>  1     3     3 7000  Female      0 - 6         Bachelor's degree 15 - 24  
+#>  2     4     3 12000 Female      0 - 6         Bachelor's degree 25 - 44  
+#>  3     5     3 10000 Female      0 - 6         Bachelor's degree 45 - 64  
+#>  4     7     3 29000 Female      0 - 6         Certificate       15 - 24  
+#>  5     8     3 34000 Female      0 - 6         Certificate       25 - 44  
+#>  6     9     3 30000 Female      0 - 6         Certificate       45 - 64  
+#>  7    10     3 12000 Female      0 - 6         Certificate       65+      
+#>  8    12     3 10000 Female      0 - 6         Diploma           25 - 44  
+#>  9    13     3 6000  Female      0 - 6         Diploma           45 - 64  
+#> 10    14     3 5000  Female      0 - 6         Diploma           65+      
+#> # ... with 62 more rows
 ```
 
-We can re-pivot the final data in R using `ftable()` to check that it has been imported correctly.
+We can re-pivot the final data in R using `ftable()` to check that it
+has been imported correctly.
 
 ``` r
 ftable(unpivoted[3:7],
@@ -237,8 +259,7 @@ ftable(unpivoted[3:7],
 #>                            65+                                     0      1     0      1
 ```
 
-HTML tables
------------
+## HTML tables
 
 HTML tables can be imported in a similar way.
 
@@ -248,11 +269,20 @@ htmltools::includeHTML(urls)
 ```
 
 <!--html_preserve-->
-<!DOCTYPE html>
+
+\<\!DOCTYPE html\>
+
 <html>
+
 <head>
-    <title>HTML table with rowspan</title>
-    <style>
+
+<title>
+
+HTML table with rowspan
+
+</title>
+
+<style>
       table {
         border-collapse: collapse;
       }
@@ -263,21 +293,52 @@ htmltools::includeHTML(urls)
     </style>
 
 </head>
+
 <body>
-    <br/>
-    <table>
-      <tr>
-        <td colspan="2"><a href="example1.co.nz">Scraping</a> <a href="example2.co.nz">HTML.</a></td>
-      </tr>
-      <tr>
-        <td><a href="example3.co.nz">Sweet</a></td>
-        <td><a href="example4.co.nz">as?</a></td>
-          <td><a href="example5.co.nz">Yeah,</a><br/><a href="http://www.tui.co.nz/">right.</a></td>
-      </tr>
-    </table>
+
+<br/>
+
+<table>
+
+<tr>
+
+<td colspan="2">
+
+<a href="example1.co.nz">Scraping</a>
+<a href="example2.co.nz">HTML.</a>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<a href="example3.co.nz">Sweet</a>
+
+</td>
+
+<td>
+
+<a href="example4.co.nz">as?</a>
+
+</td>
+
+<td>
+
+<a href="example5.co.nz">Yeah,</a><br/><a href="http://www.tui.co.nz/">right.</a>
+
+</td>
+
+</tr>
+
+</table>
 
 </body>
+
 </html>
+
 <br/><!--/html_preserve-->
 
 ``` r
@@ -307,22 +368,22 @@ urls %>%
   tidyr::unnest(text, url) %>%
   select(-html)
 #> # A tibble: 8 x 4
-#>     row   col     text                   url
-#>   <int> <int>    <chr>                 <chr>
-#> 1     1     1 Scraping        example1.co.nz
-#> 2     1     1    HTML.        example2.co.nz
-#> 3     2     1    Sweet        example3.co.nz
-#> 4     1     2     <NA>                  <NA>
-#> 5     2     2      as?        example4.co.nz
-#> 6     1     3     <NA>                  <NA>
-#> 7     2     3    Yeah,        example5.co.nz
-#> 8     2     3   right. http://www.tui.co.nz/
+#>     row   col text     url                  
+#>   <int> <int> <chr>    <chr>                
+#> 1     1     1 Scraping example1.co.nz       
+#> 2     1     1 HTML.    example2.co.nz       
+#> 3     2     1 Sweet    example3.co.nz       
+#> 4     1     2 <NA>     <NA>                 
+#> 5     2     2 as?      example4.co.nz       
+#> 6     1     3 <NA>     <NA>                 
+#> 7     2     3 Yeah,    example5.co.nz       
+#> 8     2     3 right.   http://www.tui.co.nz/
 ```
 
-Compass directions
-------------------
+## Compass directions
 
-The concept of compass directions is compactly expressed by this triptych.
+The concept of compass directions is compactly expressed by this
+triptych.
 
 ![](./vignettes/compass-compact.png)
 
@@ -330,42 +391,68 @@ The most useful ones are more fully explained here.
 
 ![](./vignettes/compass-common.png)
 
-A complete explanation is in 'poster' form [here](https://github.com/nacnudus/unpivotr/blob/master/inst/extdata/compass-complete.svg).
+A complete explanation is in ‘poster’ form
+[here](https://github.com/nacnudus/unpivotr/blob/master/inst/extdata/compass-complete.svg).
 
-Philosophy
-----------
+## Philosophy
 
-Information in in many spreadsheets cannot be easily imported into R. Why?
+Information in in many spreadsheets cannot be easily imported into R.
+Why?
 
-Most R packages that import spreadsheets have difficulty unless the layout of the spreadsheet conforms to a strict definition of a 'table', e.g.:
+Most R packages that import spreadsheets have difficulty unless the
+layout of the spreadsheet conforms to a strict definition of a ‘table’,
+e.g.:
 
--   observations in rows
--   variables in columns
--   a single header row
--   all information represented by characters, whether textual, logical, or numeric
+  - observations in rows
+  - variables in columns
+  - a single header row
+  - all information represented by characters, whether textual, logical,
+    or numeric
 
-These rules are designed to eliminate ambiguity in the interpretation of the information. But most spreadsheeting software relaxes these rules in a trade of ambiguity for expression via other media:
+These rules are designed to eliminate ambiguity in the interpretation of
+the information. But most spreadsheeting software relaxes these rules in
+a trade of ambiguity for expression via other media:
 
--   proximity (other than headers, i.e. other than being the first value at the top of a column)
--   formatting (colours and borders)
+  - proximity (other than headers, i.e. other than being the first value
+    at the top of a column)
+  - formatting (colours and borders)
 
-Humans can usually resolve the ambiguities with contextual knowledge, but computers are limited by their ignorance. Programmers are hampered by:
+Humans can usually resolve the ambiguities with contextual knowledge,
+but computers are limited by their ignorance. Programmers are hampered
+by:
 
--   their language's expressiveness
--   loss of information in transfer from spreadsheet to programming library
+  - their language’s expressiveness
+  - loss of information in transfer from spreadsheet to programming
+    library
 
-Information is lost when software discards it in order to force the data into tabular form. Sometimes date formatting is retained, but mostly formatting and comments are lost, and position has to be inferred.
+Information is lost when software discards it in order to force the data
+into tabular form. Sometimes date formatting is retained, but mostly
+formatting and comments are lost, and position has to be inferred.
 
-Similar projects
-----------------
+## Similar projects
 
-[unpivotr](https://github.com/nacnudus/unpivotr) is inspired by the United Kingdom Office of National Statistics [ONSdatabaker](https://github.com/ONS-OpenData/ONSdatabaker), which is implemented in Python. [unpivotr](https://github.com/nacnudus/unpivotr) differs already by using compass directions and searching for headers between boundaries.
+[unpivotr](https://github.com/nacnudus/unpivotr) is inspired by the
+United Kingdom Office of National Statistics
+[ONSdatabaker](https://github.com/ONS-OpenData/ONSdatabaker), which is
+implemented in Python. [unpivotr](https://github.com/nacnudus/unpivotr)
+differs already by using compass directions and searching for headers
+between boundaries.
 
-The [rsheets](https://github.com/rsheets) project of several R packages is in the early stages of importing spreadsheet information from Excel and Google Sheets into R, manipulating it, and potentially parsing and processing formulas and writing out to spreadsheet files. In particular, [jailbreaker](https://github.com/rsheets/jailbreakr) attempts to extract non-tabular data from spreadsheets into tabular structures automatically via some clever algorithms.
+The [rsheets](https://github.com/rsheets) project of several R packages
+is in the early stages of importing spreadsheet information from Excel
+and Google Sheets into R, manipulating it, and potentially parsing and
+processing formulas and writing out to spreadsheet files. In particular,
+[jailbreaker](https://github.com/rsheets/jailbreakr) attempts to extract
+non-tabular data from spreadsheets into tabular structures automatically
+via some clever algorithms.
 
-[unpivotr](https://github.com/nacnudus/unpivotr) differs from [jailbreaker](https://github.com/rsheets/jailbreakr) in that it provides tools for unpivoting complex and non-tabular data layouts using I not AI (intelligence, not artificial intelligence).
+[unpivotr](https://github.com/nacnudus/unpivotr) differs from
+[jailbreaker](https://github.com/rsheets/jailbreakr) in that it provides
+tools for unpivoting complex and non-tabular data layouts using I not AI
+(intelligence, not artificial intelligence).
 
-Roadmap
--------
+## Roadmap
 
-As common unpivoting idioms emerge, they will be generalised and added to the package. E.g. combining long header titles that are spelled out across cells, rather than being in one cell merged across others.
+As common unpivoting idioms emerge, they will be generalised and added
+to the package. E.g. combining long header titles that are spelled out
+across cells, rather than being in one cell merged across others.

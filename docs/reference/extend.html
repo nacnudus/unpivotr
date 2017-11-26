@@ -24,7 +24,8 @@ condition. — extend • unpivotr</title>
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -64,10 +65,31 @@ condition. — extend • unpivotr</title>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/compass-directions.html">Compass Directions</a>
+    </li>
+    <li>
+      <a href="../articles/html.html">HTML Tables</a>
+    </li>
+    <li>
+      <a href="../articles/small-multiples.html">Small Multiples</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -212,50 +234,51 @@ even when n = 0.</p>
 <span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>3</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>3</span>), ]
 <span class='co'># Extend the selection downwards, stopping before the NA.</span>
 <span class='fu'>extend_S</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='fu'>is.na</span>(<span class='no'>chr</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 3
-#&gt;     row   col   chr
+#&gt;     row   col chr  
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
 #&gt; 1     4     3 12000
 #&gt; 2     5     3 10000
-#&gt; 3     3     3  7000</div><div class='input'><span class='co'># Extend the selection right, up to and including the fifth column.</span>
+#&gt; 3     3     3 7000 </div><div class='input'><span class='co'># Extend the selection right, up to and including the fifth column.</span>
 <span class='fu'>extend_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>5</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
-#&gt;     row   col   chr
+#&gt;     row   col chr  
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
 #&gt; 1     3     4 27000
-#&gt; 2     3     5  &lt;NA&gt;
-#&gt; 3     3     3  7000</div><div class='input'><span class='co'># Extend the selection beyond the existing cells</span>
+#&gt; 2     3     5 &lt;NA&gt; 
+#&gt; 3     3     3 7000 </div><div class='input'><span class='co'># Extend the selection beyond the existing cells</span>
 <span class='fu'>extend_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='fl'>15</span>)</div><div class='output co'>#&gt; # A tibble: 16 x 3
-#&gt;      row   col   chr
+#&gt;      row   col chr  
 #&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;
 #&gt;  1     3     4 27000
-#&gt;  2     3     5  &lt;NA&gt;
+#&gt;  2     3     5 &lt;NA&gt; 
 #&gt;  3     3     6 13000
-#&gt;  4     3     7  &lt;NA&gt;
-#&gt;  5     3     8  &lt;NA&gt;
-#&gt;  6     3     9  &lt;NA&gt;
-#&gt;  7     3    10  &lt;NA&gt;
-#&gt;  8     3    11  &lt;NA&gt;
-#&gt;  9     3    12  &lt;NA&gt;
-#&gt; 10     3    13  &lt;NA&gt;
-#&gt; 11     3    14  &lt;NA&gt;
-#&gt; 12     3    15  &lt;NA&gt;
-#&gt; 13     3    16  &lt;NA&gt;
-#&gt; 14     3    17  &lt;NA&gt;
-#&gt; 15     3    18  &lt;NA&gt;
-#&gt; 16     3     3  7000</div><div class='input'><span class='co'># This doesn't work inside formulas, because it would mean testing the</span>
-<span class='co'># boundary formula on every possible cell in the given direction</span>
-<span class='co'>## Not run: extend_E(cell, cells, boundary = ~ col == 15)</span>
-<span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>7</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>), ]
+#&gt;  4     3     7 &lt;NA&gt; 
+#&gt;  5     3     8 &lt;NA&gt; 
+#&gt;  6     3     9 &lt;NA&gt; 
+#&gt;  7     3    10 &lt;NA&gt; 
+#&gt;  8     3    11 &lt;NA&gt; 
+#&gt;  9     3    12 &lt;NA&gt; 
+#&gt; 10     3    13 &lt;NA&gt; 
+#&gt; 11     3    14 &lt;NA&gt; 
+#&gt; 12     3    15 &lt;NA&gt; 
+#&gt; 13     3    16 &lt;NA&gt; 
+#&gt; 14     3    17 &lt;NA&gt; 
+#&gt; 15     3    18 &lt;NA&gt; 
+#&gt; 16     3     3 7000 </div><div class='input'># This doesn't work inside formulas, because it would mean testing the
+# boundary formula on every possible cell in the given direction
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>extend_E</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>15</span>)
+<span class='co'># }</span><div class='input'><span class='no'>cell</span> <span class='kw'>&lt;-</span> <span class='no'>cells</span>[<span class='fu'>which</span>(<span class='no'>cells</span>$<span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>7</span> <span class='kw'>&amp;</span> <span class='no'>cells</span>$<span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>), ]
 <span class='fu'>extend_N</span>(<span class='no'>cell</span>, <span class='no'>cells</span>, <span class='kw'>boundary</span> <span class='kw'>=</span> ~ !<span class='fu'>is.na</span>(<span class='no'>chr</span>), <span class='kw'>edge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 3
-#&gt;     row   col         chr
-#&gt;   &lt;int&gt; &lt;int&gt;       &lt;chr&gt;
-#&gt; 1     4     1        &lt;NA&gt;
-#&gt; 2     4     2     25 - 44
-#&gt; 3     5     1        &lt;NA&gt;
-#&gt; 4     5     2     45 - 64
-#&gt; 5     6     1        &lt;NA&gt;
-#&gt; 6     6     2         65+
+#&gt;     row   col chr        
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;      
+#&gt; 1     4     1 &lt;NA&gt;       
+#&gt; 2     4     2 25 - 44    
+#&gt; 3     5     1 &lt;NA&gt;       
+#&gt; 4     5     2 45 - 64    
+#&gt; 5     6     1 &lt;NA&gt;       
+#&gt; 6     6     2 65+        
 #&gt; 7     7     1 Certificate
-#&gt; 8     7     2     15 - 24</div></pre>
+#&gt; 8     7     2 15 - 24    </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
