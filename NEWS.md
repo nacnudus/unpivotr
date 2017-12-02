@@ -1,4 +1,4 @@
-# unpivotr 0.2.1.9000
+# unpivotr 0.3.0
 
 * Made compatible with tidyxl version 1.0.0 (avoids `dplyr::distinct()`, which
     doesn't handle list columns).
@@ -6,8 +6,6 @@
     `dplyr`/`lazyeval` one.
 
 # unpivotr 0.2.1
-
-**Major breaking changes**
 
 This release overhauls the `tidy_table()` function of unpivotr to preserve the
 original data types of table cells and to support HTML tables.
