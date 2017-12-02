@@ -1,14 +1,29 @@
 ## Test environments
 
 ### Local
-* Arch Linux 4.13.11-1-ARCH  R-release 3.4.2
+* Arch Linux 4.13.12-1-ARCH  R-release 3.4.2
 
 ### Docker
-* x86_64-pc-linux-gnu        R-devel   2017-11-06 r73673
+* x86_64-pc-linux-gnu                R-devel   2017-12-01 r73816
+* x86_64-pc-linux-gnu                R-release 3.4.3
+
+### Win-builder
+* Windows Server 2008 (64-bit)       R-devel   2017-09-12 r73242
+
+### Travis
+* Ubuntu Linux 12.04 LTS x64         R-devel   2017-11-25 r73780
+* Ubuntu Linux 12.04 LTS x64         R-release 3.4.2
+* Ubuntu Linux 12.04 LTS x64         R-oldrel  3.3.3
+
+### AppVeyor
+* Windows Server 2012 R2 (x64) x64   R-release 3.4.2
+* Windows Server 2012 R2 (x64) i386  R-stable  3.4.2
+* Windows Server 2012 R2 (x64) i386  R-patched 2017-11-17 r73751
+* Windows Server 2012 R2 (x64) i386  R-oldrel  3.3.3
+
+### Rhub
+* Ubuntu Linux 16.04 LTS GCC         R-release 3.4.2
+* Fedora Linux clang gfortran        R-devel
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
-
-## Upstream dependencies
-This version of unpivotr will support v1.0.0 of tidyxl, which is being submitted
-at the same time.
