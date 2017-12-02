@@ -35,5 +35,6 @@ Suggests: knitr,
     stringr,
     htmltools,
     rvest,
+    selectr,
     testthat
 VignetteBuilder: knitr
