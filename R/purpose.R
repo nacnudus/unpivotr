@@ -13,11 +13,11 @@
 #'   \item{Value: }{Numeric, number of respondents (weighted? rounded?), has NAs}
 #'   \item{Flags: }{Character, metadata flags, two levels and NA}
 #' }
-#' 
+#'
 #' The remaining six data frames are pivot tables of the first data frame.  The
 #' data frames are named by the compass directions that are suggested for
 #' unpivoting them.
-#' 
+#'
 #' @source
 #' The data is 'Sense of purpose by highest qualification, age group, and sex,
 #' 2014' from the Statistics New Zealand portal NZ.Stat
@@ -29,23 +29,23 @@
 #'
 #' @details
 #' The description provided by Statistics New Zealand is below.
-#' 
+#'
 #' "The 2014 New Zealand General Social Survey (NZGSS) is the fourth of the
 #' survey series. We run the NZGSS every two years and interview around 8,500
 #' people about a range of social and economic outcomes.
-#' 
+#'
 #' It provides new and redeveloped data about different aspects of people's
 #' lives and their well-being. In particular, the survey provides a view of how
 #' well-being outcomes are distributed across different groups within the New
 #' Zealand population.
-#' 
+#'
 #' Symbols used in this table:
 #' S - Data has been suppressed.
 #' * - Relative sampling error of 50 percent or more. Numbers may not add to the
 #' total because 'Don't know' and 'Refused' have been excluded.
-#' 
+#'
 #' For more tables using the NZGSS 2014 first release see
-#' \url{http://www.stats.govt.nz/browse_for_stats/people_and_communities/Well-being/nzgss-info-releases.aspx}.
+#' \url{http://archive.stats.govt.nz/browse_for_stats/people_and_communities/Well-being/nzgss-info-releases.aspx}.
 #'
 #' Data quality:
 #' These statistics have been produced in accordance with the Official
