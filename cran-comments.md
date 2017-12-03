@@ -1,5 +1,7 @@
 ## Resubmission
-This is a resubmission. In this version I have replaced an invald URL.
+
+This is a resubmission. In this version I have replaced an invald URL _and_ run
+`document()`.  Apologies for missing this last time.
 
 ## Test environments
 

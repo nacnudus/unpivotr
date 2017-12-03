@@ -52,7 +52,7 @@ S - Data has been suppressed.
 total because 'Don't know' and 'Refused' have been excluded.
 
 For more tables using the NZGSS 2014 first release see
-\url{http://www.stats.govt.nz/browse_for_stats/people_and_communities/Well-being/nzgss-info-releases.aspx}.
+\url{http://archive.stats.govt.nz/browse_for_stats/people_and_communities/Well-being/nzgss-info-releases.aspx}.
 
 Data quality:
 These statistics have been produced in accordance with the Official
