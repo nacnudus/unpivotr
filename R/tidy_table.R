@@ -58,18 +58,6 @@ tidy_table <- function(x, rownames = FALSE, colnames = FALSE) {
   UseMethod("tidy_table")
 }
 
-# if_else is fussy about types, so return the correct type of NA
-NA_type_ <- function(x) {
-  switch(tibble::type_sum(x),
-         NULL = NA,
-         lgl = NA,
-         int = NA_integer_,
-         dbl = NA_real_,
-         fctr = NA_integer_,
-         chr = NA_character_,
-         cplx = NA_complex_)
-}
-
 #' @export
 tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
   if (!rownames) {
@@ -95,9 +83,7 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                                                          "col",
                                                          "fctr",
                                                          "list")),
-                          ~ unlist(purrr::map(.x, ~ dplyr::if_else(is.null(.x),
-                                                                   NA_type_(.x),
-                                                                   .x))))
+                       ~ unlist(purrr::map(.x, ~ ifelse(is.null(.x), NA, .x))))
   # Append row and column names
   if (rownames) {
     row_names <- row.names(x)
