@@ -181,21 +181,7 @@ were cells in the table, and they appear in the 'chr' column.</p>
 #&gt;  9     3     2 0.446 
 #&gt; 10     4     2 0.538 
 #&gt; 11     5     2 0.626 
-#&gt; 12     6     2 0.782 </div><div class='input'><span class='fu'>tidy_table</span>(<span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tidyr/topics/nest'>nest</a></span>(<span class='no'>chickwts</span>, -<span class='no'>feed</span>))</div><div class='output co'>#&gt; # A tibble: 12 x 4
-#&gt;      row   col fctr       list                 
-#&gt;    &lt;int&gt; &lt;int&gt; &lt;list&gt;     &lt;list&gt;               
-#&gt;  1     1     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
-#&gt;  2     2     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
-#&gt;  3     3     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
-#&gt;  4     4     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
-#&gt;  5     5     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
-#&gt;  6     6     1 &lt;fctr [1]&gt; &lt;NULL&gt;               
-#&gt;  7     1     2 &lt;NULL&gt;     &lt;data.frame [10 × 1]&gt;
-#&gt;  8     2     2 &lt;NULL&gt;     &lt;data.frame [12 × 1]&gt;
-#&gt;  9     3     2 &lt;NULL&gt;     &lt;data.frame [14 × 1]&gt;
-#&gt; 10     4     2 &lt;NULL&gt;     &lt;data.frame [12 × 1]&gt;
-#&gt; 11     5     2 &lt;NULL&gt;     &lt;data.frame [11 × 1]&gt;
-#&gt; 12     6     2 &lt;NULL&gt;     &lt;data.frame [12 × 1]&gt;</div><div class='input'><span class='fu'>tidy_table</span>(<span class='no'>Formaldehyde</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 14 x 4
+#&gt; 12     6     2 0.782 </div><div class='input'><span class='fu'>tidy_table</span>(<span class='no'>Formaldehyde</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 14 x 4
 #&gt;      row   col chr        dbl
 #&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;dbl&gt;
 #&gt;  1     1     1 carb   NA     
@@ -232,6 +218,18 @@ were cells in the table, and they appear in the 'chr' column.</p>
 #&gt; 16     4     3 &lt;NA&gt;   0.538 
 #&gt; 17     5     3 &lt;NA&gt;   0.626 
 #&gt; 18     6     3 &lt;NA&gt;   0.782 </div><div class='input'>
+<span class='co'># 'list' columns are undisturbed</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>), <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>x</span>$<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>3</span>:<span class='fl'>4</span>)
+<span class='no'>x</span></div><div class='output co'>#&gt;   a    b
+#&gt; 1 a 1, 2
+#&gt; 2 b 3, 4</div><div class='input'><span class='kw pkg'>unpivotr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/unpivotr/topics/tidy_table'>tidy_table</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 4
+#&gt;     row   col chr   list     
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;list&gt;   
+#&gt; 1     1     1 a     &lt;NULL&gt;   
+#&gt; 2     2     1 b     &lt;NULL&gt;   
+#&gt; 3     1     2 &lt;NA&gt;  &lt;int [2]&gt;
+#&gt; 4     2     2 &lt;NA&gt;  &lt;int [2]&gt;</div><div class='input'>
 <span class='no'>colspan</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"colspan.html"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"unpivotr"</span>)
 <span class='no'>rowspan</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"rowspan.html"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"unpivotr"</span>)
 <span class='no'>nested</span> <span class='kw'>&lt;-</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"nested.html"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"unpivotr"</span>)</div><span class='co'># NOT RUN {</span>

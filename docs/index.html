@@ -92,21 +92,14 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="unpivotr" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#unpivotr" class="anchor"></a>unpivotr</h1></div>
+<section id="unpivotr" class="level1"><div class="page-header"><h1>unpivotr</h1></div>
 
 <p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> provides tools for converting data from complex or irregular layouts to a columnar structure. For example, tables with multi-level column or row headers, or spreadsheets, or nested HTML tables. Header and data cells can selected by their contents, position and formatting, and can be associated with one other by their relative positions.</p>
 <p>Excel (.xlsx) files can be prepared for <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> via the <a href="https://github.com/nacnudus/tidyxl">tidyxl</a> package.</p>
-<div id="mailing-list" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mailing-list" class="anchor"></a>Mailing list</h2>
+<figure><img src="./vignettes/before-after.png" alt="unpivotr before and after"><figcaption>unpivotr before and after</figcaption></figure><section id="mailing-list" class="level2"><h2>Mailing list</h2>
 <p>For bugs and/or issues, create a new issue on <a href="https://github.com/nacnudus/tidyxl/issues">GitHub</a> For other questions or comments, please subscribe to the <a href="https://groups.google.com/forum/#!forum/tidyxl-devel">tidyxl-devel mailing list</a>. You must be a member to post messages, but anyone can read the archived discussions.</p>
-</div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"nacnudus/unpivotr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre>
+</section><section id="installation" class="level2"><h2>Installation</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"nacnudus/unpivotr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>There are several dependencies:</p>
 <ul>
 <li>data.table (&gt;= 1.9.7)</li>
@@ -115,13 +108,9 @@
 <li>purrr</li>
 <li>tidyr</li>
 <li>xml2</li>
-</ul>
-</div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+</ul></section><section id="example" class="level2"><h2>Example</h2>
 <p>The package includes a dataset, <code>purpose</code>, which is a list of pivot tables, derived from a survey by Statistics New Zealand of people’s sense-of-purpose. A ‘tidy’ version of the data is also included.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(unpivotr)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(unpivotr)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; Attaching package: 'unpivotr'</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; The following object is masked from 'package:stats':</span></a>
@@ -165,9 +154,9 @@
 <a class="sourceLine" id="cb2-42" data-line-number="42"><span class="co">#&gt; 19 Postgraduate qualification 15 - 24   &lt;NA&gt;   6000  &lt;NA&gt;   &lt;NA&gt;</span></a>
 <a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co">#&gt; 20                       &lt;NA&gt; 25 - 44   5000  86000  7000  60000</span></a>
 <a class="sourceLine" id="cb2-44" data-line-number="44"><span class="co">#&gt; 21                       &lt;NA&gt; 45 - 64   6000  55000  6000  68000</span></a>
-<a class="sourceLine" id="cb2-45" data-line-number="45"><span class="co">#&gt; 22                       &lt;NA&gt;     65+   &lt;NA&gt;  13000  &lt;NA&gt;  18000</span></a></code></pre>
+<a class="sourceLine" id="cb2-45" data-line-number="45"><span class="co">#&gt; 22                       &lt;NA&gt;     65+   &lt;NA&gt;  13000  &lt;NA&gt;  18000</span></a></code></pre></div>
 <p>To unpivot this table, first get a tabular representation of each cell, its value and its position in the original pivot table.</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="reference/tidy_table.html">tidy_table</a></span>(pivoted, <span class="dt">colnames =</span> <span class="ot">FALSE</span>)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="reference/tidy_table.html">tidy_table</a></span>(pivoted, <span class="dt">colnames =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">cells &lt;-<span class="st"> </span>cells[<span class="op">!</span><span class="kw">is.na</span>(cells<span class="op">$</span>chr), ]</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">head</span>(cells)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
@@ -178,9 +167,9 @@
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 3    11     1 Diploma                   </span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 4    15     1 No Qualification          </span></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 5    19     1 Postgraduate qualification</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 6     3     2 15 - 24</span></a></code></pre>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 6     3     2 15 - 24</span></a></code></pre></div>
 <p>This can easily be subset for header and data cells.</p>
-<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
@@ -253,9 +242,9 @@
 <a class="sourceLine" id="cb4-71" data-line-number="71"><span class="co">#&gt; 1     2     3 0 - 6 </span></a>
 <a class="sourceLine" id="cb4-72" data-line-number="72"><span class="co">#&gt; 2     2     4 7 - 10</span></a>
 <a class="sourceLine" id="cb4-73" data-line-number="73"><span class="co">#&gt; 3     2     5 0 - 6 </span></a>
-<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="co">#&gt; 4     2     6 7 - 10</span></a></code></pre>
+<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="co">#&gt; 4     2     6 7 - 10</span></a></code></pre></div>
 <p>Using <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> functions, we associate the data cells with the headers, by proximity in given compass directions.</p>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># From each data cell, search for the nearest one of each of the headers</span></a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># From each data cell, search for the nearest one of each of the headers</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">unpivoted &lt;-</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="reference/join_header.html">NNW</a></span>(col_headers<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Search north (up) and north-west (up-left)</span></a>
@@ -264,21 +253,21 @@
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="reference/join_header.html">W</a></span>(row_headers<span class="op">$</span><span class="st">`</span><span class="dt">2</span><span class="st">`</span>) <span class="co"># Search directly left (west)</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8">unpivoted</a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; # A tibble: 72 x 7</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;      row   col chr   header.data header.header header.data.data  header.h…</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;    </span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  1     3     3 7000  Female      0 - 6         Bachelor's degree 15 - 24  </span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  2     4     3 12000 Female      0 - 6         Bachelor's degree 25 - 44  </span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;  3     5     3 10000 Female      0 - 6         Bachelor's degree 45 - 64  </span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;  4     7     3 29000 Female      0 - 6         Certificate       15 - 24  </span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;  5     8     3 34000 Female      0 - 6         Certificate       25 - 44  </span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;  6     9     3 30000 Female      0 - 6         Certificate       45 - 64  </span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;  7    10     3 12000 Female      0 - 6         Certificate       65+      </span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;  8    12     3 10000 Female      0 - 6         Diploma           25 - 44  </span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;  9    13     3 6000  Female      0 - 6         Diploma           45 - 64  </span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; 10    14     3 5000  Female      0 - 6         Diploma           65+      </span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; # ... with 62 more rows</span></a></code></pre>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;      row   col chr   header.data header.header header.data.data </span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;            </span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  1     3     3 7000  Female      0 - 6         Bachelor's degree</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  2     4     3 12000 Female      0 - 6         Bachelor's degree</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;  3     5     3 10000 Female      0 - 6         Bachelor's degree</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;  4     7     3 29000 Female      0 - 6         Certificate      </span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;  5     8     3 34000 Female      0 - 6         Certificate      </span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;  6     9     3 30000 Female      0 - 6         Certificate      </span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;  7    10     3 12000 Female      0 - 6         Certificate      </span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;  8    12     3 10000 Female      0 - 6         Diploma          </span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;  9    13     3 6000  Female      0 - 6         Diploma          </span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; 10    14     3 5000  Female      0 - 6         Diploma          </span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; # ... with 62 more rows, and 1 more variable: header.header.header &lt;chr&gt;</span></a></code></pre></div>
 <p>We can re-pivot the final data in R using <code>ftable()</code> to check that it has been imported correctly.</p>
-<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">ftable</span>(unpivoted[<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>],</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">ftable</span>(unpivoted[<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>],</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">       <span class="dt">row.vars =</span> <span class="dv">4</span><span class="op">:</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">       <span class="dt">col.vars =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;                                                 header.data   Female         Male       </span></a>
@@ -303,14 +292,11 @@
 <a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; Postgraduate qualification 15 - 24                                 0      1     0      0</span></a>
 <a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt;                            25 - 44                                 1      1     1      1</span></a>
 <a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt;                            45 - 64                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt;                            65+                                     0      1     0      1</span></a></code></pre>
-</div>
-<div id="html-tables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#html-tables" class="anchor"></a>HTML tables</h2>
+<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt;                            65+                                     0      1     0      1</span></a></code></pre></div>
+</section><section id="html-tables" class="level2"><h2>HTML tables</h2>
 <p>HTML tables can be imported in a similar way.</p>
-<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">urls &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"url.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">htmltools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(urls)</a></code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">urls &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"url.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">htmltools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(urls)</a></code></pre></div>
 
 
   
@@ -338,7 +324,7 @@
 </td>
       </tr>
 </table>
-<br><pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"></a>
+<br><div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">cell_url &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="cf">if</span> (<span class="kw">is.na</span>(x)) <span class="kw">return</span>(<span class="ot">NA</span>)</a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">  x <span class="op">%&gt;%</span></a>
@@ -373,20 +359,14 @@
 <a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; 5     2     2 as?      example4.co.nz       </span></a>
 <a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; 6     1     3 &lt;NA&gt;     &lt;NA&gt;                 </span></a>
 <a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; 7     2     3 Yeah,    example5.co.nz       </span></a>
-<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; 8     2     3 right.   http://www.tui.co.nz/</span></a></code></pre>
-</div>
-<div id="compass-directions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#compass-directions" class="anchor"></a>Compass directions</h2>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; 8     2     3 right.   http://www.tui.co.nz/</span></a></code></pre></div>
+</section><section id="compass-directions" class="level2"><h2>Compass directions</h2>
 <p>The concept of compass directions is compactly expressed by this triptych.</p>
 <p><img src="articles/compass-compact.png"></p>
 <p>The most useful ones are more fully explained here.</p>
 <p><img src="articles/compass-common.png"></p>
-<p>A complete explanation is in ‘poster’ form <a href="https://github.com/nacnudus/unpivotr/blob/master/inst/extdata/compass-complete.svg">here</a>.</p>
-</div>
-<div id="philosophy" class="section level2">
-<h2 class="hasAnchor">
-<a href="#philosophy" class="anchor"></a>Philosophy</h2>
+<p>A complete explanation is in ‘poster’ form <a href="./inst/extdata/compass-complete.svg">here</a>.</p>
+</section><section id="philosophy" class="level2"><h2>Philosophy</h2>
 <p>Information in in many spreadsheets cannot be easily imported into R. Why?</p>
 <p>Most R packages that import spreadsheets have difficulty unless the layout of the spreadsheet conforms to a strict definition of a ‘table’, e.g.:</p>
 <ul>
@@ -406,20 +386,13 @@
 <li>loss of information in transfer from spreadsheet to programming library</li>
 </ul>
 <p>Information is lost when software discards it in order to force the data into tabular form. Sometimes date formatting is retained, but mostly formatting and comments are lost, and position has to be inferred.</p>
-</div>
-<div id="similar-projects" class="section level2">
-<h2 class="hasAnchor">
-<a href="#similar-projects" class="anchor"></a>Similar projects</h2>
+</section><section id="similar-projects" class="level2"><h2>Similar projects</h2>
 <p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> is inspired by the United Kingdom Office of National Statistics <a href="https://github.com/ONS-OpenData/ONSdatabaker">ONSdatabaker</a>, which is implemented in Python. <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> differs already by using compass directions and searching for headers between boundaries.</p>
 <p>The <a href="https://github.com/rsheets">rsheets</a> project of several R packages is in the early stages of importing spreadsheet information from Excel and Google Sheets into R, manipulating it, and potentially parsing and processing formulas and writing out to spreadsheet files. In particular, <a href="https://github.com/rsheets/jailbreakr">jailbreaker</a> attempts to extract non-tabular data from spreadsheets into tabular structures automatically via some clever algorithms.</p>
 <p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> differs from <a href="https://github.com/rsheets/jailbreakr">jailbreaker</a> in that it provides tools for unpivoting complex and non-tabular data layouts using I not AI (intelligence, not artificial intelligence).</p>
-</div>
-<div id="roadmap" class="section level2">
-<h2 class="hasAnchor">
-<a href="#roadmap" class="anchor"></a>Roadmap</h2>
+</section><section id="roadmap" class="level2"><h2>Roadmap</h2>
 <p>As common unpivoting idioms emerge, they will be generalised and added to the package. E.g. combining long header titles that are spelled out across cells, rather than being in one cell merged across others.</p>
-</div>
-</div>
+</section></section>
 </div>
   </div>
 

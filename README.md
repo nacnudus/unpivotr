@@ -24,6 +24,8 @@ Excel (.xlsx) files can be prepared for
 [unpivotr](https://github.com/nacnudus/unpivotr) via the
 [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
+![unpivotr before and after](./vignettes/before-after.png)
+
 ## Mailing list
 
 For bugs and/or issues, create a new issue on
@@ -212,19 +214,19 @@ unpivoted <-
   W(row_headers$`2`) # Search directly left (west)
 unpivoted
 #> # A tibble: 72 x 7
-#>      row   col chr   header.data header.header header.data.data  header.h…
-#>    <int> <int> <chr> <chr>       <chr>         <chr>             <chr>    
-#>  1     3     3 7000  Female      0 - 6         Bachelor's degree 15 - 24  
-#>  2     4     3 12000 Female      0 - 6         Bachelor's degree 25 - 44  
-#>  3     5     3 10000 Female      0 - 6         Bachelor's degree 45 - 64  
-#>  4     7     3 29000 Female      0 - 6         Certificate       15 - 24  
-#>  5     8     3 34000 Female      0 - 6         Certificate       25 - 44  
-#>  6     9     3 30000 Female      0 - 6         Certificate       45 - 64  
-#>  7    10     3 12000 Female      0 - 6         Certificate       65+      
-#>  8    12     3 10000 Female      0 - 6         Diploma           25 - 44  
-#>  9    13     3 6000  Female      0 - 6         Diploma           45 - 64  
-#> 10    14     3 5000  Female      0 - 6         Diploma           65+      
-#> # ... with 62 more rows
+#>      row   col chr   header.data header.header header.data.data 
+#>    <int> <int> <chr> <chr>       <chr>         <chr>            
+#>  1     3     3 7000  Female      0 - 6         Bachelor's degree
+#>  2     4     3 12000 Female      0 - 6         Bachelor's degree
+#>  3     5     3 10000 Female      0 - 6         Bachelor's degree
+#>  4     7     3 29000 Female      0 - 6         Certificate      
+#>  5     8     3 34000 Female      0 - 6         Certificate      
+#>  6     9     3 30000 Female      0 - 6         Certificate      
+#>  7    10     3 12000 Female      0 - 6         Certificate      
+#>  8    12     3 10000 Female      0 - 6         Diploma          
+#>  9    13     3 6000  Female      0 - 6         Diploma          
+#> 10    14     3 5000  Female      0 - 6         Diploma          
+#> # ... with 62 more rows, and 1 more variable: header.header.header <chr>
 ```
 
 We can re-pivot the final data in R using `ftable()` to check that it
@@ -392,7 +394,7 @@ The most useful ones are more fully explained here.
 ![](./vignettes/compass-common.png)
 
 A complete explanation is in ‘poster’ form
-[here](https://github.com/nacnudus/unpivotr/blob/master/inst/extdata/compass-complete.svg).
+[here](./inst/extdata/compass-complete.svg).
 
 ## Philosophy
 

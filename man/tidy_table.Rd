@@ -47,9 +47,14 @@ This is an S3 generic.
 }
 \examples{
 tidy_table(Formaldehyde)
-tidy_table(tidyr::nest(chickwts, -feed))
 tidy_table(Formaldehyde, colnames = TRUE)
 tidy_table(Formaldehyde, rownames = TRUE)
+
+# 'list' columns are undisturbed
+x <- data.frame(a = c("a", "b"), stringsAsFactors = FALSE)
+x$b <- list(1:2, 3:4)
+x
+unpivotr::tidy_table(x)
 
 colspan <- system.file("extdata", "colspan.html", package = "unpivotr")
 rowspan <- system.file("extdata", "rowspan.html", package = "unpivotr")

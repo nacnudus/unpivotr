@@ -31,6 +31,8 @@ Excel (.xlsx) files can be prepared for
 [unpivotr](https://github.com/nacnudus/unpivotr) via the
 [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
+![unpivotr before and after](./vignettes/before-after.png)
+
 ## Mailing list
 
 For bugs and/or issues, create a new issue on
@@ -170,7 +172,7 @@ The most useful ones are more fully explained here.
 ![](./vignettes/compass-common.png)
 
 A complete explanation is in 'poster' form
-[here](https://github.com/nacnudus/unpivotr/blob/master/inst/extdata/compass-complete.svg).
+[here](./inst/extdata/compass-complete.svg).
 
 ## Philosophy
 
