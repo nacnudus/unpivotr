@@ -114,7 +114,9 @@
 <pre><code>## The following object is masked from 'package:stats':
 ## 
 ##     offset</code></pre>
-<section id="nnw-wnw-example" class="level2"><h2>NNW WNW example</h2>
+<div id="nnw-wnw-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#nnw-wnw-example" class="anchor"></a>NNW WNW example</h2>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">(original &lt;-<span class="st"> </span>purpose<span class="op">$</span><span class="st">`</span><span class="dt">NNW WNW</span><span class="st">`</span>)</a></code></pre></div>
 <pre><code>##                            X2      X3     X4     X5    X6     X7
 ## 1                        &lt;NA&gt;    &lt;NA&gt; Female   &lt;NA&gt;  Male   &lt;NA&gt;
@@ -149,7 +151,9 @@
 ## 4    20     6 60000
 ## 5    21     6 68000
 ## 6    22     6 18000</code></pre>
-<section id="headers" class="level3"><h3>Headers</h3>
+<div id="headers" class="section level3">
+<h3 class="hasAnchor">
+<a href="#headers" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Select all rows of headers at once</span></a>
@@ -211,7 +215,10 @@
 ## 2     2     4 7 - 10
 ## 3     2     5 0 - 6 
 ## 4     2     6 7 - 10</code></pre>
-</section><section id="data" class="level3"><h3>Data</h3>
+</div>
+<div id="data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -227,14 +234,20 @@
 ## 4     7     3 29000
 ## 5     8     3 34000
 ## 6     9     3 30000</code></pre>
-</section><section id="join-headers-to-data" class="level3"><h3>Join headers to data</h3>
+</div>
+<div id="join-headers-to-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#join-headers-to-data" class="anchor"></a>Join headers to data</h3>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">NNW</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">N</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">WNW</a></span>(row_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb18-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">W</a></span>(row_headers[[<span class="dv">2</span>]])</a></code></pre></div>
-</section><section id="result" class="level3"><h3>Result</h3>
+</div>
+<div id="result" class="section level3">
+<h3 class="hasAnchor">
+<a href="#result" class="anchor"></a>Result</h3>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">datacells <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <pre><code>##    row col  value header.data header.header           header.data.data
 ## 1    3   3   7000      Female         0 - 6          Bachelor's degree
@@ -383,9 +396,15 @@
 ## 71              45 - 64
 ## 72                  65+</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">NNW_WNW &lt;-<span class="st"> </span>datacells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
-</section></section><section id="nne-wsw-example" class="level2"><h2>NNE WSW example</h2>
+</div>
+</div>
+<div id="nne-wsw-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#nne-wsw-example" class="anchor"></a>NNE WSW example</h2>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>(purpose<span class="op">$</span><span class="st">`</span><span class="dt">NNE WSW</span><span class="st">`</span>)</a></code></pre></div>
-<section id="headers-same-as-nnw-wnw" class="level3"><h3>Headers (same as NNW WNW)</h3>
+<div id="headers-same-as-nnw-wnw" class="section level3">
+<h3 class="hasAnchor">
+<a href="#headers-same-as-nnw-wnw" class="anchor"></a>Headers (same as NNW WNW)</h3>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb23-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -447,7 +466,10 @@
 ## 2     2     4 7 - 10
 ## 3     2     5 0 - 6 
 ## 4     2     6 7 - 10</code></pre>
-</section><section id="data-same-as-nnw-wnw" class="level3"><h3>Data (same as NNW WNW)</h3>
+</div>
+<div id="data-same-as-nnw-wnw" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-same-as-nnw-wnw" class="anchor"></a>Data (same as NNW WNW)</h3>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb27-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -468,14 +490,20 @@
 ##  9    13     3  6000
 ## 10    14     3  5000
 ## # ... with 62 more rows</code></pre>
-</section><section id="join-headers-to-data-different-from-nnw-wnw" class="level3"><h3>Join headers to data (different from NNW WNW)</h3>
+</div>
+<div id="join-headers-to-data-different-from-nnw-wnw" class="section level3">
+<h3 class="hasAnchor">
+<a href="#join-headers-to-data-different-from-nnw-wnw" class="anchor"></a>Join headers to data (different from NNW WNW)</h3>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb29-2" data-line-number="2"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb29-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">NNE</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from NNW WNW</span></a>
 <a class="sourceLine" id="cb29-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">N</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Same as NNW WNW</span></a>
 <a class="sourceLine" id="cb29-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">WSW</a></span>(row_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from NNW WNW</span></a>
 <a class="sourceLine" id="cb29-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">W</a></span>(row_headers[[<span class="dv">2</span>]]) <span class="co"># Same as NNW WNW</span></a></code></pre></div>
-</section><section id="result-1" class="level3"><h3>Result</h3>
+</div>
+<div id="result-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#result-1" class="anchor"></a>Result</h3>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">datacells <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <pre><code>##    row col  value header.data header.header           header.data.data
 ## 1    3   3   7000      Female         0 - 6          Bachelor's degree
@@ -624,9 +652,15 @@
 ## 71              45 - 64
 ## 72                  65+</code></pre>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">NNE_WSW &lt;-<span class="st"> </span>datacells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
-</section></section><section id="sse-ese-example" class="level2"><h2>SSE ESE example</h2>
+</div>
+</div>
+<div id="sse-ese-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sse-ese-example" class="anchor"></a>SSE ESE example</h2>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>(purpose<span class="op">$</span><span class="st">`</span><span class="dt">SSE ESE</span><span class="st">`</span>)</a></code></pre></div>
-<section id="headers-1" class="level3"><h3>Headers</h3>
+<div id="headers-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#headers-1" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -688,7 +722,10 @@
 ##   &lt;int&gt; &lt;int&gt; &lt;chr&gt; 
 ## 1    22     2 Female
 ## 2    22     4 Male</code></pre>
-</section><section id="data-1" class="level3"><h3>Data</h3>
+</div>
+<div id="data-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-1" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb38-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb38-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -709,14 +746,20 @@
 ##  9    11     1  6000
 ## 10    12     1  5000
 ## # ... with 62 more rows</code></pre>
-</section><section id="join-headers-to-data-1" class="level3"><h3>Join headers to data</h3>
+</div>
+<div id="join-headers-to-data-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#join-headers-to-data-1" class="anchor"></a>Join headers to data</h3>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb40-2" data-line-number="2"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb40-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">SSE</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb40-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">S</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb40-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">ESE</a></span>(row_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb40-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">E</a></span>(row_headers[[<span class="dv">1</span>]])</a></code></pre></div>
-</section><section id="result-2" class="level3"><h3>Result</h3>
+</div>
+<div id="result-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#result-2" class="anchor"></a>Result</h3>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">datacells <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <pre><code>##    row col  value header.data header.header           header.data.data
 ## 1    1   1   7000      Female         0 - 6          Bachelor's degree
@@ -865,9 +908,15 @@
 ## 71              45 - 64
 ## 72                  65+</code></pre>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">SSE_ESE &lt;-<span class="st"> </span>datacells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
-</section></section><section id="ssw-ene-example" class="level2"><h2>SSW ENE example</h2>
+</div>
+</div>
+<div id="ssw-ene-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#ssw-ene-example" class="anchor"></a>SSW ENE example</h2>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>(purpose<span class="op">$</span><span class="st">`</span><span class="dt">SSW ENE</span><span class="st">`</span>)</a></code></pre></div>
-<section id="headers-same-as-sse-ese" class="level3"><h3>Headers (same as SSE ESE)</h3>
+<div id="headers-same-as-sse-ese" class="section level3">
+<h3 class="hasAnchor">
+<a href="#headers-same-as-sse-ese" class="anchor"></a>Headers (same as SSE ESE)</h3>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb45-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb45-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -929,7 +978,10 @@
 ##   &lt;int&gt; &lt;int&gt; &lt;chr&gt; 
 ## 1    22     1 Female
 ## 2    22     3 Male</code></pre>
-</section><section id="data-same-as-sse-ese" class="level3"><h3>Data (same as SSE ESE)</h3>
+</div>
+<div id="data-same-as-sse-ese" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-same-as-sse-ese" class="anchor"></a>Data (same as SSE ESE)</h3>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb49-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb49-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -950,14 +1002,20 @@
 ##  9    11     1  6000
 ## 10    12     1  5000
 ## # ... with 62 more rows</code></pre>
-</section><section id="join-headers-to-data-2" class="level3"><h3>Join headers to data</h3>
+</div>
+<div id="join-headers-to-data-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#join-headers-to-data-2" class="anchor"></a>Join headers to data</h3>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb51-2" data-line-number="2"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb51-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">SSW</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from SSE ESE</span></a>
 <a class="sourceLine" id="cb51-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">S</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Same as SSE ESE</span></a>
 <a class="sourceLine" id="cb51-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">ENE</a></span>(row_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from SSE ESE</span></a>
 <a class="sourceLine" id="cb51-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">E</a></span>(row_headers[[<span class="dv">1</span>]]) <span class="co"># Same as SSE ESE</span></a></code></pre></div>
-</section><section id="result-3" class="level3"><h3>Result</h3>
+</div>
+<div id="result-3" class="section level3">
+<h3 class="hasAnchor">
+<a href="#result-3" class="anchor"></a>Result</h3>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">datacells <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <pre><code>##    row col  value header.data header.header           header.data.data
 ## 1    1   1   7000      Female         0 - 6          Bachelor's degree
@@ -1106,16 +1164,25 @@
 ## 71              45 - 64
 ## 72                  65+</code></pre>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">SSW_ENE &lt;-<span class="st"> </span>datacells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
-</section></section><section id="check-that-all-sheets-are-parsed-correctly" class="level2"><h2>Check that all sheets are parsed correctly</h2>
+</div>
+</div>
+<div id="check-that-all-sheets-are-parsed-correctly" class="section level2">
+<h2 class="hasAnchor">
+<a href="#check-that-all-sheets-are-parsed-correctly" class="anchor"></a>Check that all sheets are parsed correctly</h2>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">identical</span>(NNW_WNW, NNE_WSW)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">identical</span>(SSW_ENE, SSE_ESE)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">identical</span>(NNW_WNW[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>], SSW_ENE[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>])</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-</section><section id="above-left-example" class="level2"><h2>ABOVE LEFT example</h2>
+</div>
+<div id="above-left-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#above-left-example" class="anchor"></a>ABOVE LEFT example</h2>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>(purpose<span class="op">$</span><span class="st">`</span><span class="dt">ABOVE LEFT</span><span class="st">`</span>)</a></code></pre></div>
-<section id="headers-2" class="level3"><h3>Headers</h3>
+<div id="headers-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#headers-2" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb62-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb62-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -1166,7 +1233,10 @@
 ## 4     2     6 15 - 24
 ## 5     2     7 25 - 44
 ## 6     2     8 45 - 64</code></pre>
-</section><section id="data-2" class="level3"><h3>Data</h3>
+</div>
+<div id="data-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-2" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb66-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb66-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -1187,14 +1257,20 @@
 ##  9     5     4 10000
 ## 10     6     4 11000
 ## # ... with 45 more rows</code></pre>
-</section><section id="join-headers-to-data-3" class="level3"><h3>Join headers to data</h3>
+</div>
+<div id="join-headers-to-data-3" class="section level3">
+<h3 class="hasAnchor">
+<a href="#join-headers-to-data-3" class="anchor"></a>Join headers to data</h3>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb68-2" data-line-number="2"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb68-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">ABOVE</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from SSE ESE</span></a>
 <a class="sourceLine" id="cb68-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">N</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Same as SSE ESE</span></a>
 <a class="sourceLine" id="cb68-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">LEFT</a></span>(row_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from SSE ESE</span></a>
 <a class="sourceLine" id="cb68-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">W</a></span>(row_headers[[<span class="dv">2</span>]]) <span class="co"># Same as SSE ESE</span></a></code></pre></div>
-</section><section id="result-4" class="level3"><h3>Result</h3>
+</div>
+<div id="result-4" class="section level3">
+<h3 class="hasAnchor">
+<a href="#result-4" class="anchor"></a>Result</h3>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">datacells <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <pre><code>##    row col  value header.data header.header header.data.data
 ## 1    3   3   7000       0 - 6       15 - 24           Female
@@ -1309,9 +1385,15 @@
 ## 54           No Qualification
 ## 55 Postgraduate qualification</code></pre>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">ABOVE_LEFT &lt;-<span class="st"> </span>datacells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
-</section></section><section id="below-right-example" class="level2"><h2>BELOW RIGHT example</h2>
+</div>
+</div>
+<div id="below-right-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#below-right-example" class="anchor"></a>BELOW RIGHT example</h2>
 <div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tidy_table.html">tidy_table</a></span>(purpose<span class="op">$</span><span class="st">`</span><span class="dt">BELOW RIGHT</span><span class="st">`</span>)</a></code></pre></div>
-<section id="headers-3" class="level3"><h3>Headers</h3>
+<div id="headers-3" class="section level3">
+<h3 class="hasAnchor">
+<a href="#headers-3" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb73-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb73-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">7</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -1362,7 +1444,10 @@
 ##   &lt;int&gt; &lt;int&gt; &lt;chr&gt; 
 ## 1    12     2 0 - 6 
 ## 2    12     5 7 - 10</code></pre>
-</section><section id="data-3" class="level3"><h3>Data</h3>
+</div>
+<div id="data-3" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-3" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb77-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb77-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
@@ -1383,14 +1468,20 @@
 ##  9     3     2 10000
 ## 10     4     2 11000
 ## # ... with 45 more rows</code></pre>
-</section><section id="join-headers-to-data-4" class="level3"><h3>Join headers to data</h3>
+</div>
+<div id="join-headers-to-data-4" class="section level3">
+<h3 class="hasAnchor">
+<a href="#join-headers-to-data-4" class="anchor"></a>Join headers to data</h3>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb79-2" data-line-number="2"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb79-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">BELOW</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb79-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">S</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb79-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">RIGHT</a></span>(row_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb79-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">E</a></span>(row_headers[[<span class="dv">1</span>]])</a></code></pre></div>
-</section><section id="result-5" class="level3"><h3>Result</h3>
+</div>
+<div id="result-5" class="section level3">
+<h3 class="hasAnchor">
+<a href="#result-5" class="anchor"></a>Result</h3>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">datacells <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <pre><code>##    row col  value header.data header.header header.data.data
 ## 1    1   1   7000       0 - 6       15 - 24           Female
@@ -1505,15 +1596,24 @@
 ## 54           No Qualification
 ## 55 Postgraduate qualification</code></pre>
 <div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">BELOW_RIGHT &lt;-<span class="st"> </span>datacells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
-</section></section><section id="check-that-all-sheets-are-parsed-correctly-1" class="level2"><h2>Check that all sheets are parsed correctly</h2>
+</div>
+</div>
+<div id="check-that-all-sheets-are-parsed-correctly-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#check-that-all-sheets-are-parsed-correctly-1" class="anchor"></a>Check that all sheets are parsed correctly</h2>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1"><span class="kw">identical</span>(ABOVE_LEFT[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>], BELOW_RIGHT[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>])</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-</section><section id="above-left-border-example" class="level2"><h2>ABOVE LEFT border example</h2>
+</div>
+<div id="above-left-border-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#above-left-border-example" class="anchor"></a>ABOVE LEFT border example</h2>
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1">spreadsheet &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata/purpose.xlsx"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</a>
 <a class="sourceLine" id="cb85-2" data-line-number="2">cells &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyxl/topics/tidy_xlsx">tidy_xlsx</a></span>(spreadsheet, <span class="st">"ABOVE LEFT border"</span>)<span class="op">$</span>data[[<span class="dv">1</span>]]</a></code></pre></div>
 <pre><code>## Warning: 'tidy_xlsx()' is deprecated.
 ## Use 'xlsx_cells()' or 'xlsx_formats()' instead.</code></pre>
-<section id="headers-4" class="level3"><h3>Headers</h3>
+<div id="headers-4" class="section level3">
+<h3 class="hasAnchor">
+<a href="#headers-4" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="co"># Same as ABOVE LEFT without borders</span></a>
 <a class="sourceLine" id="cb87-2" data-line-number="2">row_headers &lt;-</a>
 <a class="sourceLine" id="cb87-3" data-line-number="3"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
@@ -1565,7 +1665,10 @@
 ## 4     3     7 15 - 24
 ## 5     3     8 25 - 44
 ## 6     3     9 45 - 64</code></pre>
-</section><section id="data-4" class="level3"><h3>Data</h3>
+</div>
+<div id="data-4" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-4" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co"># Same as ABOVE LEFT without borders</span></a>
 <a class="sourceLine" id="cb91-2" data-line-number="2">datacells &lt;-</a>
 <a class="sourceLine" id="cb91-3" data-line-number="3"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
@@ -1588,7 +1691,10 @@
 ##  9     5     6  30000
 ## 10     5     7 161000
 ## # ... with 45 more rows</code></pre>
-</section><section id="borders" class="level3"><h3>Borders</h3>
+</div>
+<div id="borders" class="section level3">
+<h3 class="hasAnchor">
+<a href="#borders" class="anchor"></a>Borders</h3>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="co"># Different from ABOVE LEFT without borders</span></a>
 <a class="sourceLine" id="cb93-2" data-line-number="2"><span class="co"># Find cells with borders on the bottom, and ones with borders on the left</span></a>
 <a class="sourceLine" id="cb93-3" data-line-number="3">formatting &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyxl/topics/tidy_xlsx">tidy_xlsx</a></span>(spreadsheet)<span class="op">$</span>formats</a></code></pre></div>
@@ -1605,14 +1711,20 @@
 <a class="sourceLine" id="cb95-9" data-line-number="9"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb95-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>top_borders) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb95-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a></code></pre></div>
-</section><section id="join-headers-to-data-5" class="level3"><h3>Join headers to data</h3>
+</div>
+<div id="join-headers-to-data-5" class="section level3">
+<h3 class="hasAnchor">
+<a href="#join-headers-to-data-5" class="anchor"></a>Join headers to data</h3>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb96-2" data-line-number="2"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb96-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">ABOVE</a></span>(col_headers[[<span class="dv">1</span>]], left_border_cells) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from ABOVE LEFT</span></a>
 <a class="sourceLine" id="cb96-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">N</a></span>(col_headers[[<span class="dv">2</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Same as ABOVE LEFT</span></a>
 <a class="sourceLine" id="cb96-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">LEFT</a></span>(row_headers[[<span class="dv">1</span>]], top_border_cells) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from ABOVE LEFT</span></a>
 <a class="sourceLine" id="cb96-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">W</a></span>(row_headers[[<span class="dv">2</span>]]) <span class="co"># Same as ABOVE LEFT</span></a></code></pre></div>
-</section><section id="result-6" class="level3"><h3>Result</h3>
+</div>
+<div id="result-6" class="section level3">
+<h3 class="hasAnchor">
+<a href="#result-6" class="anchor"></a>Result</h3>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1">datacells <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <pre><code>##    row col  value header.data header.header header.data.data
 ## 1    4   4   7000       0 - 6       15 - 24           Female
@@ -1727,11 +1839,17 @@
 ## 54 Postgraduate qualification
 ## 55 Postgraduate qualification</code></pre>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1">ABOVE_LEFT_borders &lt;-<span class="st"> </span>datacells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
-</section></section><section id="below-right-border-example" class="level2"><h2>BELOW RIGHT border example</h2>
+</div>
+</div>
+<div id="below-right-border-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#below-right-border-example" class="anchor"></a>BELOW RIGHT border example</h2>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyxl/topics/tidy_xlsx">tidy_xlsx</a></span>(spreadsheet, <span class="st">"BELOW RIGHT border"</span>)<span class="op">$</span>data[[<span class="dv">1</span>]]</a></code></pre></div>
 <pre><code>## Warning: 'tidy_xlsx()' is deprecated.
 ## Use 'xlsx_cells()' or 'xlsx_formats()' instead.</code></pre>
-<section id="headers-5" class="level3"><h3>Headers</h3>
+<div id="headers-5" class="section level3">
+<h3 class="hasAnchor">
+<a href="#headers-5" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1"><span class="co"># Same as BELOW RIGHT without borders</span></a>
 <a class="sourceLine" id="cb102-2" data-line-number="2">row_headers &lt;-</a>
 <a class="sourceLine" id="cb102-3" data-line-number="3"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
@@ -1783,7 +1901,10 @@
 ##   &lt;int&gt; &lt;int&gt; &lt;chr&gt; 
 ## 1    15     6 0 - 6 
 ## 2    15     7 7 - 10</code></pre>
-</section><section id="data-5" class="level3"><h3>Data</h3>
+</div>
+<div id="data-5" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-5" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="co"># Same as BELOW RIGHT without borders</span></a>
 <a class="sourceLine" id="cb106-2" data-line-number="2">datacells &lt;-</a>
 <a class="sourceLine" id="cb106-3" data-line-number="3"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
@@ -1806,7 +1927,10 @@
 ##  9     5     6  30000
 ## 10     5     7 161000
 ## # ... with 45 more rows</code></pre>
-</section><section id="borders-1" class="level3"><h3>Borders</h3>
+</div>
+<div id="borders-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#borders-1" class="anchor"></a>Borders</h3>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1"><span class="co"># Different from BELOW RIGHT without borders</span></a>
 <a class="sourceLine" id="cb108-2" data-line-number="2"><span class="co"># Find cells with borders on the bottom, and ones with borders on the left</span></a>
 <a class="sourceLine" id="cb108-3" data-line-number="3">formatting &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyxl/topics/tidy_xlsx">tidy_xlsx</a></span>(spreadsheet)<span class="op">$</span>formats</a></code></pre></div>
@@ -1823,14 +1947,20 @@
 <a class="sourceLine" id="cb110-9" data-line-number="9"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb110-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">==</span><span class="st"> </span><span class="dv">11</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>top_borders) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb110-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a></code></pre></div>
-</section><section id="join-headers-to-data-6" class="level3"><h3>Join headers to data</h3>
+</div>
+<div id="join-headers-to-data-6" class="section level3">
+<h3 class="hasAnchor">
+<a href="#join-headers-to-data-6" class="anchor"></a>Join headers to data</h3>
 <div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1">datacells &lt;-</a>
 <a class="sourceLine" id="cb111-2" data-line-number="2"><span class="st">  </span>datacells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb111-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">BELOW</a></span>(col_headers[[<span class="dv">2</span>]], left_border_cells) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from BELOW RIGHT</span></a>
 <a class="sourceLine" id="cb111-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">S</a></span>(col_headers[[<span class="dv">1</span>]]) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Same as BELOW RIGHT</span></a>
 <a class="sourceLine" id="cb111-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">RIGHT</a></span>(row_headers[[<span class="dv">2</span>]], top_border_cells) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Different from BELOW RIGHT</span></a>
 <a class="sourceLine" id="cb111-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/join_header.html">E</a></span>(row_headers[[<span class="dv">1</span>]]) <span class="co"># Same as BELOW RIGHT</span></a></code></pre></div>
-</section><section id="result-7" class="level3"><h3>Result</h3>
+</div>
+<div id="result-7" class="section level3">
+<h3 class="hasAnchor">
+<a href="#result-7" class="anchor"></a>Result</h3>
 <div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">datacells <span class="op">%&gt;%</span><span class="st"> </span>as.data.frame</a></code></pre></div>
 <pre><code>##    row col  value header.data header.header header.data.data
 ## 1    4   4   7000       0 - 6       15 - 24           Female
@@ -1945,14 +2075,18 @@
 ## 54 Postgraduate qualification
 ## 55 Postgraduate qualification</code></pre>
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1">BELOW_RIGHT_borders &lt;-<span class="st"> </span>datacells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
-</section></section><section id="check-that-all-sheets-are-parsed-correctly-2" class="level2"><h2>Check that all sheets are parsed correctly</h2>
+</div>
+</div>
+<div id="check-that-all-sheets-are-parsed-correctly-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#check-that-all-sheets-are-parsed-correctly-2" class="anchor"></a>Check that all sheets are parsed correctly</h2>
 <div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="kw">identical</span>(ABOVE_LEFT[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>], BELOW_RIGHT[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>])</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="kw">identical</span>(ABOVE_LEFT[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>], ABOVE_LEFT_borders[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>])</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="kw">identical</span>(ABOVE_LEFT[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>], BELOW_RIGHT_borders[, <span class="dv">-1</span><span class="op">:-</span><span class="dv">2</span>])</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-</section>
+</div>
 </div>
   </div>
 

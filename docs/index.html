@@ -92,13 +92,23 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<section id="unpivotr" class="level1"><div class="page-header"><h1>unpivotr</h1></div>
+<div id="unpivotr" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#unpivotr" class="anchor"></a>unpivotr</h1></div>
 
 <p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> provides tools for converting data from complex or irregular layouts to a columnar structure. For example, tables with multi-level column or row headers, or spreadsheets, or nested HTML tables. Header and data cells can selected by their contents, position and formatting, and can be associated with one other by their relative positions.</p>
 <p>Excel (.xlsx) files can be prepared for <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> via the <a href="https://github.com/nacnudus/tidyxl">tidyxl</a> package.</p>
-<figure><img src="./vignettes/before-after.png" alt="unpivotr before and after"><figcaption>unpivotr before and after</figcaption></figure><section id="mailing-list" class="level2"><h2>Mailing list</h2>
+<div class="figure">
+<img src="./vignettes/before-after.png" alt="unpivotr before and after"><p class="caption">unpivotr before and after</p>
+</div>
+<div id="mailing-list" class="section level2">
+<h2 class="hasAnchor">
+<a href="#mailing-list" class="anchor"></a>Mailing list</h2>
 <p>For bugs and/or issues, create a new issue on <a href="https://github.com/nacnudus/tidyxl/issues">GitHub</a> For other questions or comments, please subscribe to the <a href="https://groups.google.com/forum/#!forum/tidyxl-devel">tidyxl-devel mailing list</a>. You must be a member to post messages, but anyone can read the archived discussions.</p>
-</section><section id="installation" class="level2"><h2>Installation</h2>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"nacnudus/unpivotr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>There are several dependencies:</p>
 <ul>
@@ -108,7 +118,11 @@
 <li>purrr</li>
 <li>tidyr</li>
 <li>xml2</li>
-</ul></section><section id="example" class="level2"><h2>Example</h2>
+</ul>
+</div>
+<div id="example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h2>
 <p>The package includes a dataset, <code>purpose</code>, which is a list of pivot tables, derived from a survey by Statistics New Zealand of people’s sense-of-purpose. A ‘tidy’ version of the data is also included.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(unpivotr)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; </span></a>
@@ -293,7 +307,10 @@
 <a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt;                            25 - 44                                 1      1     1      1</span></a>
 <a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt;                            45 - 64                                 1      1     1      1</span></a>
 <a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt;                            65+                                     0      1     0      1</span></a></code></pre></div>
-</section><section id="html-tables" class="level2"><h2>HTML tables</h2>
+</div>
+<div id="html-tables" class="section level2">
+<h2 class="hasAnchor">
+<a href="#html-tables" class="anchor"></a>HTML tables</h2>
 <p>HTML tables can be imported in a similar way.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">urls &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"url.html"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">htmltools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/htmltools/topics/include">includeHTML</a></span>(urls)</a></code></pre></div>
@@ -360,13 +377,19 @@
 <a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; 6     1     3 &lt;NA&gt;     &lt;NA&gt;                 </span></a>
 <a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; 7     2     3 Yeah,    example5.co.nz       </span></a>
 <a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; 8     2     3 right.   http://www.tui.co.nz/</span></a></code></pre></div>
-</section><section id="compass-directions" class="level2"><h2>Compass directions</h2>
+</div>
+<div id="compass-directions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#compass-directions" class="anchor"></a>Compass directions</h2>
 <p>The concept of compass directions is compactly expressed by this triptych.</p>
 <p><img src="articles/compass-compact.png"></p>
 <p>The most useful ones are more fully explained here.</p>
 <p><img src="articles/compass-common.png"></p>
 <p>A complete explanation is in ‘poster’ form <a href="./inst/extdata/compass-complete.svg">here</a>.</p>
-</section><section id="philosophy" class="level2"><h2>Philosophy</h2>
+</div>
+<div id="philosophy" class="section level2">
+<h2 class="hasAnchor">
+<a href="#philosophy" class="anchor"></a>Philosophy</h2>
 <p>Information in in many spreadsheets cannot be easily imported into R. Why?</p>
 <p>Most R packages that import spreadsheets have difficulty unless the layout of the spreadsheet conforms to a strict definition of a ‘table’, e.g.:</p>
 <ul>
@@ -386,13 +409,20 @@
 <li>loss of information in transfer from spreadsheet to programming library</li>
 </ul>
 <p>Information is lost when software discards it in order to force the data into tabular form. Sometimes date formatting is retained, but mostly formatting and comments are lost, and position has to be inferred.</p>
-</section><section id="similar-projects" class="level2"><h2>Similar projects</h2>
+</div>
+<div id="similar-projects" class="section level2">
+<h2 class="hasAnchor">
+<a href="#similar-projects" class="anchor"></a>Similar projects</h2>
 <p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> is inspired by the United Kingdom Office of National Statistics <a href="https://github.com/ONS-OpenData/ONSdatabaker">ONSdatabaker</a>, which is implemented in Python. <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> differs already by using compass directions and searching for headers between boundaries.</p>
 <p>The <a href="https://github.com/rsheets">rsheets</a> project of several R packages is in the early stages of importing spreadsheet information from Excel and Google Sheets into R, manipulating it, and potentially parsing and processing formulas and writing out to spreadsheet files. In particular, <a href="https://github.com/rsheets/jailbreakr">jailbreaker</a> attempts to extract non-tabular data from spreadsheets into tabular structures automatically via some clever algorithms.</p>
 <p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> differs from <a href="https://github.com/rsheets/jailbreakr">jailbreaker</a> in that it provides tools for unpivoting complex and non-tabular data layouts using I not AI (intelligence, not artificial intelligence).</p>
-</section><section id="roadmap" class="level2"><h2>Roadmap</h2>
+</div>
+<div id="roadmap" class="section level2">
+<h2 class="hasAnchor">
+<a href="#roadmap" class="anchor"></a>Roadmap</h2>
 <p>As common unpivoting idioms emerge, they will be generalised and added to the package. E.g. combining long header titles that are spelled out across cells, rather than being in one cell merged across others.</p>
-</section></section>
+</div>
+</div>
 </div>
   </div>
 

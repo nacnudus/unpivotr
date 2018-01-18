@@ -97,12 +97,17 @@
     
 <div class="contents">
 <p>This vignette for the <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> package demonstrates unpivoting multiple similar tables from a spreadsheet via the <a href="https://github.com/nacnudus/tidyxl">tidyxl</a> package. It is best read with the spreadsheet open in a spreadsheet program, e.g. Excel, LibreOffice Calc or Gnumeric.</p>
-<section id="introduction" class="level2"><h2>Introduction</h2>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>The spreadsheet is from the famous Enron subpoena, made available by <a href="http://www.felienne.com/archives/3634">Felienne Hermans</a>, and has has previously been publicised by Jenny Bryan and David Robinson, in particular in Robinson’s article <a href="https://rpubs.com/dgrtwo/tidying-enron">‘Tidying an untidyable dataset’</a>.</p>
 <p>Here’s a screenshot:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(<span class="st">"enron-screenshot.png"</span>)</a></code></pre></div>
 <p><img src="enron-screenshot.png" width="850px"></p>
-</section><section id="preparation" class="level2"><h2>Preparation</h2>
+</div>
+<div id="preparation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#preparation" class="anchor"></a>Preparation</h2>
 <p>This vignette uses several common packages.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(unpivotr)</a></code></pre></div>
 <pre><code>## 
@@ -125,13 +130,21 @@
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">library</span>(stringr)</a></code></pre></div>
 <p>The spreadsheet is distributed with the unpivotr package, so can be loaded as a system file.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata/enron.xlsx"</span>, <span class="dt">package =</span> <span class="st">"unpivotr"</span>)</a></code></pre></div>
-</section><section id="main" class="level2"><h2>Main</h2>
-<section id="importing-the-data" class="level3"><h3>Importing the data</h3>
+</div>
+<div id="main" class="section level2">
+<h2 class="hasAnchor">
+<a href="#main" class="anchor"></a>Main</h2>
+<div id="importing-the-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#importing-the-data" class="anchor"></a>Importing the data</h3>
 <p>Spreadsheet cells are imported with the <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">xlsx_cells()</a></code> function, which returns a data frame of all the cells in all the requested sheets. By default, every sheet is imported, but we don’t have to worry about that in this case because there is only one sheet in the file.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">xlsx_cells</a></span>(path)</a></code></pre></div>
 <p>Cell formatting isn’t required for this vignette, but if it were, it would be imported via <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_formats">xlsx_formats(path)</a></code>.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">formatting &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_formats">xlsx_formats</a></span>(path)</a></code></pre></div>
-</section><section id="importing-one-of-the-multiples" class="level3"><h3>Importing one of the multiples</h3>
+</div>
+<div id="importing-one-of-the-multiples" class="section level3">
+<h3 class="hasAnchor">
+<a href="#importing-one-of-the-multiples" class="anchor"></a>Importing one of the multiples</h3>
 <p>The small multiples each have exactly one ‘Fixed Price’ header, so begin by selecting one of those.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">fixed_price &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(cells, character <span class="op">==</span><span class="st"> "Fixed Price"</span>)[<span class="dv">1</span>, ]</a></code></pre></div>
 <p>From that single cell, selct the three rows of the column headers of the first small multiple. The <code>split()</code> function below separates each row from one another, wrapping them together in a list. They are separated so that they can individually be joined to the data cells later. Another way to do this is to select each row one by one, assigning them to different variables.</p>
@@ -223,7 +236,10 @@
 ##  9    20    19 Basis       IF NWPL Rocky Mountains    -0.494 BID         
 ## 10    20    20 Basis       IF NWPL Rocky Mountains    -0.474 OFFER       
 ## # ... with 14 more rows</code></pre>
-</section><section id="importing-every-small-multiple-at-once" class="level3"><h3>Importing every small multiple at once</h3>
+</div>
+<div id="importing-every-small-multiple-at-once" class="section level3">
+<h3 class="hasAnchor">
+<a href="#importing-every-small-multiple-at-once" class="anchor"></a>Importing every small multiple at once</h3>
 <p>The code above, for a single multiple, can easily be adapted to import every one of the small multiples. Here this is done using the <a href="https://github.com/hadley/purrr"><code><a href="http://www.rdocumentation.org/packages/purrr/topics/purrr-package">purrr()</a></code></a> package to apply the code to each element of a list of ‘Fixed Price’ header cells.</p>
 <p>Get all ten ‘Fixed Price’ headers, and separate each into its own list element. Since each cell has a unique combination of <code>row</code> and <code>col</code>, that combination can be used to separate the cells into list elements.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">fixed_price &lt;-</a>
@@ -271,7 +287,10 @@
 ##  9    40     7 Fixed Price AECO / NIT                  2.40 BID         
 ## 10    41     7 Fixed Price AECO / NIT                  2.55 BID         
 ## # ... with 230 more rows</code></pre>
-</section><section id="joining-the-row-headers" class="level3"><h3>Joining the row headers</h3>
+</div>
+<div id="joining-the-row-headers" class="section level3">
+<h3 class="hasAnchor">
+<a href="#joining-the-row-headers" class="anchor"></a>Joining the row headers</h3>
 <p>So far, only the column headers have been joined, but there are also row headers on the left-hand side of the spreadsheet. The following code incorporates these into the final dataset.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
@@ -329,7 +348,11 @@
 ##  9    40     7 Fixed Price AECO / NIT          2.40 BID          ROM      
 ## 10    41     7 Fixed Price AECO / NIT          2.55 BID          Dec-01   
 ## # ... with 230 more rows</code></pre>
-</section></section><section id="line-code-listing" class="level2"><h2>50-line code listing</h2>
+</div>
+</div>
+<div id="line-code-listing" class="section level2">
+<h2 class="hasAnchor">
+<a href="#line-code-listing" class="anchor"></a>50-line code listing</h2>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">library</span>(unpivotr)</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">library</span>(dplyr)</a>
 <a class="sourceLine" id="cb27-3" data-line-number="3"><span class="kw">library</span>(tidyr)</a>
@@ -385,7 +408,7 @@
 <a class="sourceLine" id="cb27-53" data-line-number="53">}</a>
 <a class="sourceLine" id="cb27-54" data-line-number="54"></a>
 <a class="sourceLine" id="cb27-55" data-line-number="55"><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(fixed_price, tidy)</a></code></pre></div>
-</section>
+</div>
 </div>
   </div>
 
