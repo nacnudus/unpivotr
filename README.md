@@ -24,7 +24,9 @@ Excel (.xlsx) files can be prepared for
 [unpivotr](https://github.com/nacnudus/unpivotr) via the
 [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
-![unpivotr before and after](./vignettes/before-after.png)
+![Left: a table with two levels of row and column headers. Right: a tidy
+version of the same table with one row of column
+headers.](/home/nacnudus/R/unpivotr/vignettes/before-after.png)
 
 ## Mailing list
 
