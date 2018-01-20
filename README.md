@@ -24,9 +24,7 @@ Excel (.xlsx) files can be prepared for
 [unpivotr](https://github.com/nacnudus/unpivotr) via the
 [tidyxl](https://github.com/nacnudus/tidyxl) package.
 
-![Left: a table with two levels of row and column headers. Right: a tidy
-version of the same table with one row of column
-headers.](/home/nacnudus/R/unpivotr/vignettes/before-after.png)
+![](man/figures/before-after.png)
 
 ## Mailing list
 
@@ -389,14 +387,14 @@ urls %>%
 The concept of compass directions is compactly expressed by this
 triptych.
 
-![](./vignettes/compass-compact.png)
+![](vignettes/compass-compact.png)
 
 The most useful ones are more fully explained here.
 
-![](./vignettes/compass-common.png)
+![](vignettes/compass-common.png)
 
 A complete explanation is in ‘poster’ form
-[here](./inst/extdata/compass-complete.svg).
+[here](inst/extdata/compass-complete.svg).
 
 ## Philosophy
 
