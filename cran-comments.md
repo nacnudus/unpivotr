@@ -1,3 +1,16 @@
+## Resubmission
+This is a resubmission. In this version I explain an apparently spurious invalid
+URL seen by CRAN
+
+> Found the following (possibly) invalid URLs:
+>   URL: http://archive.stats.govt.nz/browse_for_stats/people_and_communities/Well-being/nzgss-info-releases.aspx
+>     From: man/purpose.Rd
+>     Status: 503
+>     Message: Service Unavailable
+
+The page is available both in browsers and via tools like wget.  Presumably the
+503 status was a temporary glitch.
+
 ## Test environments
 
 ### Local
@@ -8,7 +21,7 @@
 * x86_64-pc-linux-gnu                R-release 3.4.3
 
 ### Win-builder
-* Windows Server 2008 (64-bit)       R-devel   2017-09-12 r73242
+* Windows Server 2008 (64-bit)       R-devel   2018-01-17 r74130
 
 ### Travis
 * Ubuntu Linux 12.04 LTS x64         R-devel   2018-01-18 r74132
