@@ -1,5 +1,8 @@
 # unpivotr 0.3.1.9000
 
+* `tidy_table()` now returns a `data_type` column that names the column that
+    contains the value of a cell, similar to `tidyxl::xlsx_cells()`.
+
 # unpivotr 0.3.1
 
 * Performance improvements to `tidy_table()`.

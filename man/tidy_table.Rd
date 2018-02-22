@@ -17,11 +17,12 @@ FALSE}
 }
 \value{
 A data.frame with columns 'row' and 'col' (integer) giving the
-original position of the 'cells', and any relevant columns for cell values in
+original position of the 'cells', any relevant columns for cell values in
 their original types: 'chr', 'cplx', 'cplx', 'dbl', 'fctr', 'int', 'lgl', and
-'list'.  The columns 'fctr' is, like 'list', a list-column (each element is
-itself a list) to avoid factor levels clashing.  For HTML tables, the column
-'html' gives the HTML of the original cell.
+'list', and a column \code{data_type} to specify for each cell which column the
+value is in.  The column 'fctr' is, like 'list', a list-column (each element
+is itself a list) to avoid factor levels clashing.  For HTML tables, the
+column 'html' gives the HTML of the original cell.
 
 Row and column names, when present and required, are treated as though they
 were cells in the table, and they appear in the 'chr' column.

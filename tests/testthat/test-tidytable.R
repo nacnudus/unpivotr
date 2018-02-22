@@ -16,35 +16,35 @@ test_that("tidy_table works with html tables", {
   rowandcolspan <- system.file("extdata", "row-and-colspan.html", package = "unpivotr")
   nested <- system.file("extdata", "nested.html", package = "unpivotr")
   rowspan_correct <-
-    list(tibble::tribble(~row, ~col,                                    ~html,
-                           1L,   1L, "<th rowspan=\"2\">Header (1:2, 1)</th>",
-                           2L,   1L,                                       NA,
-                           1L,   2L,                 "<th>Header (1, 2)</th>",
-                           2L,   2L,                   "<td>cell (2, 2)</td>"))
+    list(tibble::tribble(~row, ~col, ~data_type,                                    ~html,
+                           1L,   1L,     "html", "<th rowspan=\"2\">Header (1:2, 1)</th>",
+                           2L,   1L,     "html",                                       NA,
+                           1L,   2L,     "html",                 "<th>Header (1, 2)</th>",
+                           2L,   2L,     "html",                   "<td>cell (2, 2)</td>"))
   colspan_correct <-
-    list(tibble::tribble(~row, ~col,                                    ~html,
-                           1L,   1L, "<th colspan=\"2\">Header (1, 1:2)</th>",
-                           2L,   1L,                   "<td>cell (2, 1)</td>",
-                           1L,   2L,                                       NA,
-                           2L,   2L,                   "<td>cell (2, 2)</td>"))
+    list(tibble::tribble(~row, ~col, ~data_type,                                    ~html,
+                           1L,   1L,     "html", "<th colspan=\"2\">Header (1, 1:2)</th>",
+                           2L,   1L,     "html",                   "<td>cell (2, 1)</td>",
+                           1L,   2L,     "html",                                       NA,
+                           2L,   2L,     "html",                   "<td>cell (2, 2)</td>"))
   rowandcolspan_correct <-
-    list(tibble::tribble(~row, ~col,                                                    ~html,
-                           1L,   1L, "<th colspan=\"2\" rowspan=\"2\">Header (1:2, 1:2)</th>",
-                           2L,   1L,                                                       NA,
-                           1L,   2L,                                                       NA,
-                           2L,   2L,                                                       NA,
-                           1L,   3L,                                 "<th>Header (2, 3)</th>",
-                           2L,   3L,                                   "<td>cell (3, 1)</td>",
-                           1L,   4L,                                                       NA,
-                           2L,   4L,                                   "<td>cell (3, 2)</td>",
-                           1L,   5L,                                                       NA,
-                           2L,   5L,                                   "<td>cell (3, 3)</td>"))
+    list(tibble::tribble(~row, ~col, ~data_type,                                                     ~html,
+                           1L,   1L,     "html", "<th colspan=\"2\" rowspan=\"2\">Header (1:2, 1:2)</th>",
+                           2L,   1L,     "html",                                                       NA,
+                           1L,   2L,     "html",                                                       NA,
+                           2L,   2L,     "html",                                                       NA,
+                           1L,   3L,     "html",                                 "<th>Header (2, 3)</th>",
+                           2L,   3L,     "html",                                   "<td>cell (3, 1)</td>",
+                           1L,   4L,     "html",                                                       NA,
+                           2L,   4L,     "html",                                   "<td>cell (3, 2)</td>",
+                           1L,   5L,     "html",                                                       NA,
+                           2L,   5L,     "html",                                   "<td>cell (3, 3)</td>"))
   nested_correct <-
-    list(tibble::tribble(~row,  ~col,                          ~html,
-                           1L,    1L, "<th>Header (2, 2)(1, 1)</th>",
-                           2L,    1L,   "<td>cell (2, 2)(2, 1)</td>",
-                           1L,    2L, "<th>Header (2, 2)(1, 2)</th>",
-                           2L,    2L,   "<td>cell (2, 2)(2, 1)</td>"))
+    list(tibble::tribble(~row,  ~col, ~data_type,                          ~html,
+                           1L,    1L,     "html", "<th>Header (2, 2)(1, 1)</th>",
+                           2L,    1L,     "html",   "<td>cell (2, 2)(2, 1)</td>",
+                           1L,    2L,     "html", "<th>Header (2, 2)(1, 2)</th>",
+                           2L,    2L,     "html",   "<td>cell (2, 2)(2, 1)</td>"))
   rowspan_parsed <-
     rowspan %>%
     read_html() %>%

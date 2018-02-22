@@ -25,11 +25,12 @@
 #' FALSE
 #'
 #' @return A data.frame with columns 'row' and 'col' (integer) giving the
-#' original position of the 'cells', and any relevant columns for cell values in
+#' original position of the 'cells', any relevant columns for cell values in
 #' their original types: 'chr', 'cplx', 'cplx', 'dbl', 'fctr', 'int', 'lgl', and
-#' 'list'.  The columns 'fctr' is, like 'list', a list-column (each element is
-#' itself a list) to avoid factor levels clashing.  For HTML tables, the column
-#' 'html' gives the HTML of the original cell.
+#' 'list', and a column `data_type` to specify for each cell which column the
+#' value is in.  The column 'fctr' is, like 'list', a list-column (each element
+#' is itself a list) to avoid factor levels clashing.  For HTML tables, the
+#' column 'html' gives the HTML of the original cell.
 #'
 #' Row and column names, when present and required, are treated as though they
 #' were cells in the table, and they appear in the 'chr' column.
@@ -80,7 +81,8 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
   out <- tibble::data_frame(row = rep.int(seq_len(nrow(x)), ncols),
                             col = rep(seq_len(ncol(x)), each = nrows),
                             value = values,
-                            type = rep(types, each = nrows))
+                            type = rep(types, each = nrows),
+                            data_type = type)
   out <- tidyr::spread(out, type, value)
   # Convert non-list-columns to vectors
   out <- dplyr::mutate_at(out,
@@ -97,7 +99,8 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
     out <- dplyr::bind_rows(out,
                             tibble::data_frame(col = 1L,
                                                row = seq_along(row_names),
-                                               chr = row_names))
+                                               chr = row_names,
+                                               data_type = "chr"))
   }
   if (colnames) {
     col_names <- colnames(x)
@@ -105,9 +108,10 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
     out <- dplyr::bind_rows(out,
                             tibble::data_frame(row = 1L,
                                                col = seq_along(col_names) + rownames,
-                                               chr = col_names))
+                                               chr = col_names,
+                                               data_type = "chr"))
   }
-  out <- dplyr::select(out, row, col, sort(colnames(out)))
+  out <- dplyr::select(out, row, col, data_type, sort(colnames(out)))
   dplyr::arrange(out, col, row)
 }
 
@@ -179,7 +183,8 @@ tidy_table.xml_node <- function(x, rownames = FALSE, colnames = FALSE) {
   out <- tibble::as_data_frame(out)
   out <- tidy_table(out, rownames = FALSE, colnames = FALSE)
   out[, c("double", "integer", "logical")] <- NULL
-  colnames(out) <- c("row", "col", "html")
+  colnames(out) <- c("row", "col", "data_type", "html")
+  out$data_type <- "html"
   dplyr::arrange(out, col, row)
 }
 
@@ -188,4 +193,3 @@ tidy_table.xml_document <- function (x, rownames = FALSE, colnames = FALSE) {
   tables <- xml2::xml_find_all(x, xpath = "//table[not(ancestor::table)]")
   lapply(tables, tidy_table)
 }
-
