@@ -35,6 +35,7 @@
 #' were cells in the table, and they appear in the 'chr' column.
 #'
 #' @examples
+#' Formaldehyde
 #' tidy_table(Formaldehyde)
 #' tidy_table(Formaldehyde, colnames = TRUE)
 #' tidy_table(Formaldehyde, rownames = TRUE)

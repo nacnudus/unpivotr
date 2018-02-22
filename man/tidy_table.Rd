@@ -46,6 +46,7 @@ first.
 This is an S3 generic.
 }
 \examples{
+Formaldehyde
 tidy_table(Formaldehyde)
 tidy_table(Formaldehyde, colnames = TRUE)
 tidy_table(Formaldehyde, rownames = TRUE)
