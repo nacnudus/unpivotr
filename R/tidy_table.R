@@ -19,9 +19,9 @@
 #' This is an S3 generic.
 #'
 #' @param x A data.frame or an HTML document
-#' @param colnames Whether to include the row names in the output, Default:
+#' @param colnames Whether to include the column names in the output, Default:
 #' FALSE
-#' @param rownames Whether to include the column names in the output, Default:
+#' @param rownames Whether to include the row names in the output, Default:
 #' FALSE
 #'
 #' @return A data.frame with columns 'row' and 'col' (integer) giving the

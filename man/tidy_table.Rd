@@ -9,10 +9,10 @@ tidy_table(x, rownames = FALSE, colnames = FALSE)
 \arguments{
 \item{x}{A data.frame or an HTML document}
 
-\item{rownames}{Whether to include the column names in the output, Default:
+\item{rownames}{Whether to include the row names in the output, Default:
 FALSE}
 
-\item{colnames}{Whether to include the row names in the output, Default:
+\item{colnames}{Whether to include the column names in the output, Default:
 FALSE}
 }
 \value{
