@@ -74,7 +74,7 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
   values <- purrr::flatten(lapply(x, as.list))
   nrows <- nrow(x)
   ncols <- ncol(x)
-  types <- purrr::map_chr(x, tibble::type_sum)
+  types <- purrr::map_chr(x, pillar::type_sum)
   # Spread cells into different columns by data type
   out <- tibble::data_frame(row = rep.int(seq_len(nrow(x)), ncols),
                             col = rep(seq_len(ncol(x)), each = nrows),
