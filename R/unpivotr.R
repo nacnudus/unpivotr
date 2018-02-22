@@ -13,15 +13,14 @@
 #' they are not actually required for any of the given functions.
 #'
 #' Data frames and HTML tables can be converted into a format meeting these
-#' requirements by using the \code{\link{tidy_table}} function.  Excel (.xlsx)
+#' requirements by using the [tidy_table()] function.  Excel (.xlsx)
 #' files can be imported directly into the required format with the 'tidyxl'
-#' package, available at \url{https://github.com/nacnudus/tidyxl}, which has the
+#' package, available at <https://github.com/nacnudus/tidyxl>, which has the
 #' advantage that it retains cell formatting and comments.
 #'
-#' The functions are documented in \code{\link{join_header}},
-#' \code{\link{extend}} and \code{\link{offset}}.  All functions are designed to
+#' The functions are documented in [join_header()],
+#' [extend()] and [offset()].  All functions are designed to
 #' work well with the pipe \code{\%>\%} from the magrittr package.
 #'
 "_PACKAGE"
 #> [1] "_PACKAGE"
-

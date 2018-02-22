@@ -38,3 +38,4 @@ Suggests: knitr,
     selectr,
     testthat
 VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)

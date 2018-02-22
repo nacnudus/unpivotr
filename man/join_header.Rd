@@ -84,7 +84,7 @@ header to each cell, in a given direction.
 \details{
 Headers are associated with data by proximity in a given direction.
 The directions are mapped to the points of the compass, where 'N' is north
-(up), 'E' is east (right), and so on.  `join_header()` finds the nearest
+(up), 'E' is east (right), and so on.  \code{join_header()} finds the nearest
 header to a given data cell in a given direction, and joins its value to the
 data cell.  The most common directions to search are 'NNW' (for left-aligned
 headers at the top of the table) and 'WNW' for top-aligned headers at the

@@ -1,9 +1,9 @@
 #' Pad a bag of cells with blanks
 #'
 #' @description When source data is sparse (e.g. spreadsheets from the 'tidyxl'
-#' package), the output of \code{\link{tidy_table}} may also be sparse.  To fill
-#' the gaps with blank cells, use \code{pad}.  Internally, \code{pad} is used to
-#' ensure that functions like \code{\link{offset}} and \code{\link{extend}}
+#' package), the output of [tidy_table()] may also be sparse.  To fill
+#' the gaps with blank cells, use `pad`.  Internally, `pad` is used to
+#' ensure that functions like [offset()] and [extend()]
 #' behave intuitively, as though blank cells do actually exist.
 #'
 #' @param cells Data frame, the cells to pad

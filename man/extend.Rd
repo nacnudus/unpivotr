@@ -39,7 +39,7 @@ among the compass directions "N", "E", "S", "W", where "N" is north (up).}
 \item{n}{Integer vector length 1, >= 0. The number of rows/cols to extend by
 in the given direction.}
 
-\item{boundary}{Formula to express a boundary condition.  `~ col <= 50` would
+\item{boundary}{Formula to express a boundary condition.  \code{~ col <= 50} would
 go up to the 50th column.  NAs are treated the same as FALSE, but with a
 warning.}
 

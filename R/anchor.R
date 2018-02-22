@@ -1,15 +1,15 @@
 #' Filter for a cell from which to select others
 #'
-#' @description \code{anchor} protects you from selecting initial cells that do
+#' @description `anchor` protects you from selecting initial cells that do
 #' not exist.  This is useful when choosing inital cells from which to search
-#' for others, using \code{\link{offset}} and \code{\link{extend}}.  If the
+#' for others, using [offset()] and [extend()].  If the
 #' chosen cells do not exist, then cells are generated at the given rows and
 #' columns, with NAs in every column other than 'row' and 'col'.
 #' @param cells Data frame, the cells among which the anchor will be sought
 #' @param rows Numeric, the rows of the intended cells
 #' @param cols Numeric, the columns of the intended cell
 #' @param cross Logical, whether to 'cross' the given rows and columns to
-#' generate all combinations. Unless this is TRUE, \code{rows} and \code{cols}
+#' generate all combinations. Unless this is TRUE, `rows` and `cols`
 #' must be the same length.  TRUE by default.
 #' @export
 #' @examples

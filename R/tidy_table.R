@@ -1,13 +1,13 @@
 #' Convert data frames into a tidy structure
 #'
 #' @description Data frames represent data in a
-#' tabular structure.  \code{tidy_table} takes the row and column position of
+#' tabular structure.  `tidy_table` takes the row and column position of
 #' each 'cell', and returns that information in a new data frame, alongside the
 #' content of each cell.
 #'
 #' This makes certain tasks easier.  For example, a pivot table with multi-row
 #' headers that has been imported into R as a data frame may be easier to
-#' un-pivot by converting it with \code{tidy_table} first.
+#' un-pivot by converting it with `tidy_table` first.
 #'
 #' For HTML tables, the content of each cell is returned as standalone HTML that
 #' can be further parsed with tools such as the rvest package.  This is

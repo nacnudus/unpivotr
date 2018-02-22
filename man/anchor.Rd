@@ -20,7 +20,7 @@ must be the same length.  TRUE by default.}
 \description{
 \code{anchor} protects you from selecting initial cells that do
 not exist.  This is useful when choosing inital cells from which to search
-for others, using \code{\link{offset}} and \code{\link{extend}}.  If the
+for others, using \code{\link[=offset]{offset()}} and \code{\link[=extend]{extend()}}.  If the
 chosen cells do not exist, then cells are generated at the given rows and
 columns, with NAs in every column other than 'row' and 'col'.
 }
