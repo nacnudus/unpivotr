@@ -1,5 +1,11 @@
 # unpivotr 0.3.1.9000
 
+* `rectify()` is a new function to display cells as though in a spreadsheet,
+    rather than in the 'melted' form of `tidy_table()` and
+    `tidyxl::xlsx_cells()`.  This is useful for understanding the structure of
+    a pivot table as a human, when planning how to unpivot it.  A print method
+    is available to render large datasets in the broswer or the RStudio viewer
+    pane.
 * `tidy_table()` now returns a `data_type` column that names the column that
     contains the value of a cell, similar to `tidyxl::xlsx_cells()`.
 
