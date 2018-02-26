@@ -67,8 +67,8 @@
 #' y <- partition(multiples, bl_corners, position = "bottom_left")
 #' split(y, y$partition)
 #'
-#' If `partition_name` is already the name of a column in `cells`, then it will
-#' be silently overwritten
+#' # If `partition_name` is already the name of a column in `cells`, then it
+#' # will be silently overwritten
 #' multiples$important_column <- "Will be overwritten"
 #' partition(multiples, corners, partition_name = "important_column")
 partition <- function(cells, corners, position = "top_left",

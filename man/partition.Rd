@@ -93,8 +93,8 @@ bl_corners <- dplyr::filter(multiples, chr == "Yes")
 y <- partition(multiples, bl_corners, position = "bottom_left")
 split(y, y$partition)
 
-If `partition_name` is already the name of a column in `cells`, then it will
-be silently overwritten
+# If `partition_name` is already the name of a column in `cells`, then it
+# will be silently overwritten
 multiples$important_column <- "Will be overwritten"
 partition(multiples, corners, partition_name = "important_column")
 # Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and 7th
