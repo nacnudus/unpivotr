@@ -24,7 +24,9 @@ Imports:
     dtplyr,
     purrr,
     tidyr,
+    pillar,
     tibble,
+    cellranger,
     xml2
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
@@ -36,6 +38,7 @@ Suggests: knitr,
     htmltools,
     rvest,
     selectr,
+    DT,
     testthat
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
