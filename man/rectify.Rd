@@ -23,6 +23,8 @@ choose a column for each cell.}
 column to use for the value of the cell.  If this argument is given, then
 \code{...} will be ignored.}
 
+\item{x}{The output of \code{\link[=rectify]{rectify()}}}
+
 \item{display}{One of \code{"terminal"} (default), \code{"browser"}, \code{"rstudio"}.  To
 display in the browser you must have the \code{DT} package installed.}
 }

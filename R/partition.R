@@ -17,6 +17,10 @@
 #' @param corners a subset of `cells`, being the corners of individual tables.
 #' @param partition_name Character vector length 1, what to call the new column
 #' that will be created to identify the partitions.  Default: `"partition"`.
+#' @param position Character, the position of the corner cells relative to their
+#' tables, one of `"top-left"` (default), `"top-right"`, `"bottom-left"`,
+#' `"bottom-right"`.
+#' position or the column position), which are to be grouped between cutpoints.
 #' @param positions Integer vector, the positions of cells (either the row
 #' position or the column position), which are to be grouped between cutpoints.
 #' @param cutpoints Integer vector. The `positions` will be separated into

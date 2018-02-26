@@ -16,6 +16,11 @@ partition_dim(positions, cutpoints, bound = "upper")
 
 \item{corners}{a subset of \code{cells}, being the corners of individual tables.}
 
+\item{position}{Character, the position of the corner cells relative to their
+tables, one of \code{"top-left"} (default), \code{"top-right"}, \code{"bottom-left"},
+\code{"bottom-right"}.
+position or the column position), which are to be grouped between cutpoints.}
+
 \item{partition_name}{Character vector length 1, what to call the new column
 that will be created to identify the partitions.  Default: \code{"partition"}.}
 

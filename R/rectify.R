@@ -125,6 +125,7 @@ rectify <- function(cells, ..., values = NULL) {
 }
 
 #' @describeIn rectify S3 method for class `cell_grid`
+#' @param x The output of [rectify()]
 #' @param display One of `"terminal"` (default), `"browser"`, `"rstudio"`.  To
 #' display in the browser you must have the `DT` package installed.
 #' @export
