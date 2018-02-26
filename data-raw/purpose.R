@@ -1,6 +1,9 @@
+library(tidyverse)
 library(xlsx)
+library(tidyxl)
+library(unpivotr)
 path <- "./inst/extdata/purpose.xlsx"
-sheets <- 
+sheets <-
   path %>%
   loadWorkbook %>%
   getSheets %>%
@@ -12,5 +15,11 @@ purpose <- lapply(sheets,
             })
 names(purpose) <- sheets
 tidy <- read.xlsx(path, "Tidy", stringsAsFactors = FALSE, check.names = FALSE)
-purpose <- c(list(Tidy = tidy), purpose)
+small_multiples <-
+  xlsx_cells(path, "Small multiples") %>%
+  select(row, col, chr = character, num = numeric) %>%
+  as.data.frame()
+purpose <- c(list(Tidy = tidy),
+             purpose,
+             list(small_multiples = small_multiples))
 use_data(purpose, overwrite = TRUE)

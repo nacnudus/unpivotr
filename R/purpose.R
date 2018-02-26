@@ -3,7 +3,7 @@
 #' A dataset containing the self-rated sense-of-purpose of respondents to the
 #' 2014 New Zealand General Social Survey.
 #'
-#' @format A list of seven data frames.  The first data frame, `Tidy`, contains
+#' @format A list of eight data frames.  The first data frame, `Tidy`, contains
 #' the raw data in a standard tabular format:
 #'
 #' * `Sex` Character, two levels
@@ -13,9 +13,12 @@
 #' * `Value` Numeric, number of respondents (weighted? rounded?), has NAs
 #' * `Flags` Character, metadata flags, two levels and NA
 #'
-#' The remaining six data frames are pivot tables of the first data frame.  The
+#' The next six data frames are pivot tables of the first data frame.  The
 #' data frames are named by the compass directions that are suggested for
 #' unpivoting them.
+#'
+#' The final data frame is a 'tidy' representation of small-multiple pivot
+#' tables.
 #'
 #' @source
 #' The data is 'Sense of purpose by highest qualification, age group, and sex,

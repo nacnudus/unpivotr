@@ -6,6 +6,10 @@
     a pivot table as a human, when planning how to unpivot it.  A print method
     is available to render large datasets in the broswer or the RStudio viewer
     pane.
+* `partition()` is a new function to divide a grid of cells into partitions
+    containing individual tables.  Give it the corner cells of each table on a
+    spreadsheet, and it returns all the cells of the spreadsheet with a
+    `partition` column that identifies which cells belong to which table.
 * `tidy_table()` now returns a `data_type` column that names the column that
     contains the value of a cell, similar to `tidyxl::xlsx_cells()`.
 
