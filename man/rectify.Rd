@@ -7,7 +7,7 @@
 \usage{
 rectify(cells, ..., values = NULL)
 
-\method{print}{cell_grid}(x, display = "terminal")
+\method{print}{cell_grid}(x, display = "terminal", ...)
 }
 \arguments{
 \item{cells}{Data frame or tbl, the cells to be displayed.}

@@ -136,7 +136,7 @@ rectify <- function(cells, ..., values = NULL) {
 #'   print(y, "browser")
 #'   print(y, "rstudio")
 #' }
-print.cell_grid <- function(x, display = "terminal") { # nocov start
+print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
   if (display == "terminal") {
     # Print with maximum terminal width
     width <- options()$width
