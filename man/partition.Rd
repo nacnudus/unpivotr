@@ -82,7 +82,6 @@ corners <-
 partition(multiples, corners)
 
 # It's more obvious if you also split() by the new 'partition' column
-multiples <- multiples \%>\% arrange(col, row) \%>\% print(n = Inf)
 x <- partition(multiples, corners)
 split(x, x$partition)
 
