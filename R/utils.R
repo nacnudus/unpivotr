@@ -6,6 +6,7 @@ magrittr::`%>%`
 #' @import tidyr
 
 #' @importFrom methods is
+#' @importFrom utils View installed.packages
 
 # Spurious imports to satisfy R CMD check
 #' @importFrom dtplyr tbl_dt
@@ -28,4 +29,5 @@ globalVariables(c(".",
                   "type",
                   "value",
                   "everything",
+                  "data_type",
                   ".boundary"))
