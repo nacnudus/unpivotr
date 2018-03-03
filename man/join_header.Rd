@@ -21,39 +21,39 @@
 \title{Join a bag of data cells to some header, by proximity in a given direction,
 e.g. NNW searches up and up-left from a data cell to find a header cell.}
 \usage{
-join_header(bag, header, direction, boundaries = NULL)
+join_header(bag, header, direction, boundaries = NULL, drop = TRUE)
 
-N(bag, header)
+N(bag, header, drop = TRUE)
 
-E(bag, header)
+E(bag, header, drop = TRUE)
 
-S(bag, header)
+S(bag, header, drop = TRUE)
 
-W(bag, header)
+W(bag, header, drop = TRUE)
 
-NNW(bag, header)
+NNW(bag, header, drop = TRUE)
 
-NNE(bag, header)
+NNE(bag, header, drop = TRUE)
 
-ENE(bag, header)
+ENE(bag, header, drop = TRUE)
 
-ESE(bag, header)
+ESE(bag, header, drop = TRUE)
 
-SSE(bag, header)
+SSE(bag, header, drop = TRUE)
 
-SSW(bag, header)
+SSW(bag, header, drop = TRUE)
 
-WSW(bag, header)
+WSW(bag, header, drop = TRUE)
 
-WNW(bag, header)
+WNW(bag, header, drop = TRUE)
 
-ABOVE(bag, header, boundaries = NULL)
+ABOVE(bag, header, boundaries = NULL, drop = TRUE)
 
-LEFT(bag, header, boundaries = NULL)
+LEFT(bag, header, boundaries = NULL, drop = TRUE)
 
-BELOW(bag, header, boundaries = NULL)
+BELOW(bag, header, boundaries = NULL, drop = TRUE)
 
-RIGHT(bag, header, boundaries = NULL)
+RIGHT(bag, header, boundaries = NULL, drop = TRUE)
 }
 \arguments{
 \item{bag}{Data frame. A bag of data cells including at least the columns
@@ -71,6 +71,9 @@ demarking boundaries within which to match headers with cells.  For example,
 a boundary could be a bag of cells with borders on one side.  This is useful
 when the nearest header might be the wrong header because it lies on the
 other side of a border.}
+
+\item{drop}{Logical vector length 1. Whether data cells that can't be
+associated with a header should be dropped.  Default: TRUE.}
 }
 \description{
 A bag of data cells is a data frame with at least the columns
@@ -168,4 +171,10 @@ datacells \%>\%
   WNW(qualification) \%>\%
   W(age) \%>\%
   select(-row, -col)
+
+# The `drop` argument controls what happens when for some cells there is no
+# header in the given direction. When `drop = TRUE` (the default), cells that
+# can't be joined to a header are dropped.  Otherwise they are kept.
+N(datacells, gender)
+N(datacells, gender, drop = FALSE)
 }

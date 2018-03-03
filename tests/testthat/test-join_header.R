@@ -386,4 +386,46 @@ test_that("join_header() works", {
                N(datacells, col_headers[[1]]))
 })
 
-
+test_that("the `drop` argument works", {
+  spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
+  cells <- xlsx_cells(spreadsheet, "ABOVE LEFT border")
+  formatting <- xlsx_formats(spreadsheet)
+  left_borders <- which(!is.na(formatting$local$border$left$style))
+  top_borders <- which(!is.na(formatting$local$border$top$style))
+  left_border_cells <-
+    filter(cells, row == 2, local_format_id %in% left_borders) %>%
+    select(row, col)
+  top_border_cells <-
+    filter(cells, col == 2, local_format_id %in% top_borders) %>%
+    select(row, col)
+  sex <-
+    filter(cells, col == 2, !is_blank) %>%
+    select(row, col, sex = character)
+  qualification <-
+    filter(cells, col == 3, !is_blank) %>%
+    select(row, col, qualification = character)
+  satisfaction <-
+    filter(cells, row == 2, !is_blank) %>%
+    select(row, col, satisfaction = character)
+  age <-
+    filter(cells, row == 3, !is_blank) %>%
+    select(row, col, age = character)
+  datacells <-
+    filter(cells, row >= 4, col >= 4, !is_blank) %>%
+    transmute(row, col, value = as.integer(numeric))
+  expect_equal(nrow(N(datacells, satisfaction)), 20)
+  expect_equal(nrow(N(datacells, satisfaction, drop = FALSE)), 55)
+  expect_equal(nrow(W(datacells, gender)), 12)
+  expect_equal(nrow(W(datacells, gender, drop = FALSE)), 55)
+  expect_equal(nrow(NNW(datacells, satisfaction)), 39)
+  expect_equal(nrow(NNW(datacells, satisfaction, drop = FALSE)), 55)
+  expect_equal(nrow(WNW(datacells, gender)), 49)
+  expect_equal(nrow(WNW(datacells, gender, drop = FALSE)), 55)
+  # Introduce an extra border where there is no header
+  left_border_cells <- rbind(left_border_cells, list(2L, 5L))
+  top_border_cells <- rbind(top_border_cells, list(5L, 2L))
+  expect_equal(nrow(ABOVE(datacells, satisfaction, left_border_cells)), 49)
+  expect_equal(nrow(ABOVE(datacells, satisfaction, left_border_cells, drop = FALSE)), 55)
+  expect_equal(nrow(LEFT(datacells, sex, top_border_cells)), 49)
+  expect_equal(nrow(LEFT(datacells, sex, top_border_cells, drop = FALSE)), 55)
+})

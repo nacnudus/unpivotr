@@ -20,6 +20,8 @@
 #' other side of a border.
 #' @param direction Character vector length 1. A compass direction to search for
 #' the nearest header.  See 'details'.
+#' @param drop Logical vector length 1. Whether data cells that can't be
+#' associated with a header should be dropped.  Default: TRUE.
 #' @details Headers are associated with data by proximity in a given direction.
 #' The directions are mapped to the points of the compass, where 'N' is north
 #' (up), 'E' is east (right), and so on.  `join_header()` finds the nearest
@@ -72,6 +74,13 @@
 #'   WNW(qualification) %>%
 #'   W(age) %>%
 #'   select(-row, -col)
+#'
+#' # The `drop` argument controls what happens when for some cells there is no
+#' # header in the given direction. When `drop = TRUE` (the default), cells that
+#' # can't be joined to a header are dropped.  Otherwise they are kept.
+#' N(datacells, gender)
+#' N(datacells, gender, drop = FALSE)
+join_header <- function(bag, header, direction, boundaries = NULL, drop = TRUE) {
   check_header(header)
   if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
     do.call(direction, list(bag, header, boundaries))
@@ -84,7 +93,7 @@
       stop("'boundaries' is only supported for the directions 'ABOVE', 'RIGHT'",
            ", 'BELOW' and 'LEFT'.")
     }
-    do.call(direction, list(bag, header))
+    do.call(direction, list(bag, header, drop))
   } else {
     stop("The direction ", direction,
          ", is either not recognised or not yet supported.")
@@ -93,9 +102,10 @@
 
 #' @describeIn join_header Join nearest header in the 'N' direction.
 #' @export
-N <- function(bag, header) {
+N <- function(bag, header, drop = TRUE) {
   check_header(header)
-  out <- inner_join(bag, select(header, -row),
+  join <- ifelse(drop, dplyr::inner_join, dplyr::left_join)
+  out <- join(bag, dplyr::select(header, -row),
                     by = "col",
                     suffix = c(".data", ".header"))
   tibble::as_tibble(out)
@@ -103,9 +113,10 @@ N <- function(bag, header) {
 
 #' @describeIn join_header Join nearest header in the 'E' direction.
 #' @export
-E <- function(bag, header) {
+E <- function(bag, header, drop = TRUE) {
   check_header(header)
-  out <- inner_join(bag, select(header, -col), by = "row",
+  join <- ifelse(drop, dplyr::inner_join, dplyr::left_join)
+  out <- join(bag, dplyr::select(header, -col), by = "row",
                     suffix = c(".data", ".header"))
   tibble::as_tibble(out)
 }
@@ -120,8 +131,9 @@ W <- E
 
 #' @describeIn join_header Join nearest header in the 'NNW' direction.
 #' @export
-NNW <- function(bag, header) {
+NNW <- function(bag, header, drop = TRUE) {
   check_header(header)
+  nomatch <- ifelse(drop, 0, NA)
   header <-
     header %>%
     dplyr::select(-row) %>%
@@ -132,18 +144,19 @@ NNW <- function(bag, header) {
   bag$row <- as.double(bag$row) # Required for data.table join on Inf
   bag$col <- as.double(bag$col)
   bag <- data.table::data.table(bag)       # Must be done without %>%
-  header[bag, on = .(col <= col, to_col >= col)] %>% # Left-join (bag is left)
+  header[bag, on = .(col <= col, to_col >= col), nomatch = nomatch] %>% # Left-join (bag is left)
     dplyr::tbl_df() %>%
-    select(-to_col) %>%
-    mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select(colnames(bag), everything(.)) %>%
+    dplyr::select(-to_col) %>%
+    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
+    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
     tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'NNE' direction.
 #' @export
-NNE <- function(bag, header) {
+NNE <- function(bag, header, drop = TRUE) {
   check_header(header)
+  nomatch <- ifelse(drop, 0, NA)
   header <-
     header %>%
     dplyr::select(-row) %>%
@@ -154,18 +167,19 @@ NNE <- function(bag, header) {
   bag$row <- as.double(bag$row) # Required for data.table join on Inf
   bag$col <- as.double(bag$col)
   bag <- data.table::data.table(bag)       # Must be done without %>%
-  header[bag, on = .(from_col <= col, col >= col)] %>% # Left-join (bag is left)
+  header[bag, on = .(from_col <= col, col >= col), nomatch = nomatch] %>% # Left-join (bag is left)
     dplyr::tbl_df() %>%
-    select(-from_col) %>%
-    mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select(colnames(bag), everything(.)) %>%
+    dplyr::select(-from_col) %>%
+    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
+    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
     tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'ENE' direction.
 #' @export
-ENE <- function(bag, header) {
+ENE <- function(bag, header, drop = TRUE) {
   check_header(header)
+  nomatch <- ifelse(drop, 0, NA)
   header <-
     header %>%
     dplyr::select(-col) %>%
@@ -176,18 +190,19 @@ ENE <- function(bag, header) {
   bag$row <- as.double(bag$row) # Required for data.table join on Inf
   bag$col <- as.double(bag$col)
   bag <- data.table::data.table(bag)       # Must be done without %>%
-  header[bag, on = .(row <= row, to_row >= row)] %>% # Left-join (bag is left)
+  header[bag, on = .(row <= row, to_row >= row), nomatch = nomatch] %>% # Left-join (bag is left)
     dplyr::tbl_df() %>%
-    select(-to_row) %>%
-    mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select(colnames(bag), everything(.)) %>%
+    dplyr::select(-to_row) %>%
+    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
+    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
     tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'ESE' direction.
 #' @export
-ESE <- function(bag, header) {
+ESE <- function(bag, header, drop = TRUE) {
   check_header(header)
+  nomatch <- ifelse(drop, 0, NA)
   header <-
     header %>%
     dplyr::select(-col) %>%
@@ -198,11 +213,11 @@ ESE <- function(bag, header) {
   bag$row <- as.double(bag$row) # Required for data.table join on Inf
   bag$col <- as.double(bag$col)
   bag <- data.table::data.table(bag)       # Must be done without %>%
-  header[bag, on = .(from_row <= row, row >= row)] %>% # Left-join (bag is left)
+  header[bag, on = .(from_row <= row, row >= row), nomatch = nomatch] %>% # Left-join (bag is left)
     dplyr::tbl_df() %>%
-    select(-from_row) %>%
-    mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select(colnames(bag), everything(.)) %>%
+    dplyr::select(-from_row) %>%
+    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
+    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
     tibble::as_tibble()
 }
 
@@ -224,8 +239,9 @@ WNW <- ENE
 
 #' @describeIn join_header Join nearest header in the 'ABOVE' direction.
 #' @export
-ABOVE <- function(bag, header, boundaries = NULL) {
+ABOVE <- function(bag, header, boundaries = NULL, drop = TRUE) {
   check_header(header)
+  nomatch <- ifelse(drop, 0, NA)
   header <-
     header %>%
     dplyr::select(-row) %>%
@@ -246,7 +262,7 @@ ABOVE <- function(bag, header, boundaries = NULL) {
       rename(from_col = col) %>%
       mutate(from_col = as.double(from_col), to_col = from_col) # For data.table join on Inf
     header <- data.table::data.table(header) # Must be done without %>%
-    header <- header[boundaries, on = .(from_col >= from_col, to_col <= to_col)] # Left-join (boundaries is left)
+    header <- header[boundaries, on = .(from_col >= from_col, to_col <= to_col), nomatch = nomatch] # Left-join (boundaries is left)
     # Boundaries without headers still exist but are NA
     if (any(diff(header$from_col) == 0)) {
       stop("Multiple headers were detected within the same pair of boundaries.",
@@ -262,25 +278,26 @@ ABOVE <- function(bag, header, boundaries = NULL) {
         from_col = floor((col + dplyr::lag(as.numeric(col), default = -Inf) + 2)/2),
         to_col = ceiling((col + dplyr::lead(as.numeric(col), default = Inf) - 2)/2)
       ) %>%
-      select(-col)
+      dplyr::select(-col)
     header <- data.table::data.table(header) # Must be done without %>%
   }
   bag$row <- as.double(bag$row) # For data.table join on Inf
   bag$col <- as.double(bag$col)
   bag <- data.table::data.table(bag) # Must be done without %>%
-  header[bag, on = .(from_col <= col, to_col >= col)] %>%
+  header[bag, on = .(from_col <= col, to_col >= col), nomatch = nomatch] %>%
     dplyr::tbl_df() %>%
-    rename(col = from_col) %>%
-    select(-to_col) %>%
-    mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select(colnames(bag), everything(.)) %>%
+    dplyr::rename(col = from_col) %>%
+    dplyr::select(-to_col) %>%
+    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
+    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
     tibble::as_tibble()
 }
 
 #' @describeIn join_header Join nearest header in the 'LEFT' direction.
 #' @export
-LEFT <- function(bag, header, boundaries = NULL) {
+LEFT <- function(bag, header, boundaries = NULL, drop = TRUE) {
   check_header(header)
+  nomatch <- ifelse(drop, 0, NA)
   header <-
     header %>%
     dplyr::select(-col) %>%
@@ -298,11 +315,11 @@ LEFT <- function(bag, header, boundaries = NULL) {
     boundaries <- data.table::data.table(boundaries) # Must be done without %>%
     header <- # Rename rowumns to avoid misleading data.table renaming
       header %>%
-      rename(from_row = row) %>%
-      mutate(to_row = from_row) %>%
-      mutate(from_row = as.double(from_row), to_row = from_row) # For data.table join on Inf
+      dplyr::rename(from_row = row) %>%
+      dplyr::mutate(to_row = from_row) %>%
+      dplyr::mutate(from_row = as.double(from_row), to_row = from_row) # For data.table join on Inf
     header <- data.table::data.table(header) # Must be done without %>%
-    header <- header[boundaries, on = .(from_row >= from_row, to_row <= to_row)] # Left-join (boundaries is left)
+    header <- header[boundaries, on = .(from_row >= from_row, to_row <= to_row), nomatch = nomatch] # Left-join (boundaries is left)
     # Boundaries without headers still exist but are NA
     if (any(diff(header$from_row) == 0)) {
       stop("Multiple headers were detected within the same pair of boundaries.",
@@ -318,18 +335,18 @@ LEFT <- function(bag, header, boundaries = NULL) {
         from_row = floor((row + dplyr::lag(as.numeric(row), default = -Inf) + 2)/2),
         to_row = ceiling((row + dplyr::lead(as.numeric(row), default = Inf) - 2)/2)
       ) %>%
-      select(-row)
+      dplyr::select(-row)
     header <- data.table::data.table(header) # Must be done without %>%
   }
   bag$row <- as.double(bag$row) # For data.table join on Inf
   bag$col <- as.double(bag$col)
   bag <- data.table::data.table(bag) # Must be done without %>%
-  header[bag, on = .(from_row <= row, to_row >= row)] %>%
+  header[bag, on = .(from_row <= row, to_row >= row), nomatch = nomatch] %>%
     dplyr::tbl_df() %>%
-    rename(row = from_row) %>%
-    select(-to_row) %>%
-    mutate(row = as.integer(row), col = as.integer(col)) %>%
-    select(colnames(bag), everything(.)) %>%
+    dplyr::rename(row = from_row) %>%
+    dplyr::select(-to_row) %>%
+    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
+    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
     tibble::as_tibble()
 }
 
