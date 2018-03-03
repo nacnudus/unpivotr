@@ -49,30 +49,29 @@
 #' head(cells)
 #' # Select the cells containing the values
 #' datacells <-
-#'   cells %>%
-#'   filter(row >= 3, col >= 3)
+#'   filter(cells, row >= 3, col >= 3) %>%
+#'   transmute(row, col, count = as.integer(chr))
 #' head(datacells)
-#' # Select the row headers
-#' row_headers <-
-#'   cells %>%
-#'   filter(col <= 2) %>%
-#'   select(row, col, header = chr) %>%
-#'   split(.$col) # Separate each column of headers
-#' row_headers
-#' # Select the column headers
-#' col_headers <-
-#'   cells %>%
-#'   filter(row <= 2) %>%
-#'   select(row, col, header = chr) %>%
-#'   split(.$row) # Separate each row of headers
-#' col_headers
+#' # Select the headers
+#' qualification <-
+#'   filter(cells, col == 1) %>%
+#'   select(row, col, qualification = chr)
+#' age <-
+#'   filter(cells, col == 2) %>%
+#'   select(row, col, age = chr)
+#' gender <-
+#'   filter(cells, row == 1) %>%
+#'   select(row, col, gender = chr)
+#' satisfaction <-
+#'   filter(cells, row == 2) %>%
+#'   select(row, col, satisfaction = chr)
 #' # From each data cell, search for the nearest one of each of the headers
 #' datacells %>%
-#'   NNW(col_headers$`1`) %>%
-#'   N(col_headers$`2`) %>%
-#'   WNW(row_headers$`1`) %>%
-#'   W(row_headers$`2`)
-join_header <- function(bag, header, direction, boundaries = NULL) {
+#'   NNW(gender) %>%
+#'   N(satisfaction) %>%
+#'   WNW(qualification) %>%
+#'   W(age) %>%
+#'   select(-row, -col)
   check_header(header)
   if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
     do.call(direction, list(bag, header, boundaries))
