@@ -1,0 +1,1682 @@
+---
+title: "Unpivoting Worked Examples"
+author: "Duncan Garmonsway"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Small Multiples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+* Can't unpivotr just work it out by magic?
+  - adversarial example
+* Tidy tables but with gotchas
+  - other stuff on the same sheet
+  - meaningful formatting of whole rows
+  - meaningful formatting of single cells
+  - More than one kind of formatting at the same time
+  - Text sentinel values in non-text columns
+  - Transposed (headers in the first row, data extends to the right)
+* Pivot tables (multi-level headers)
+  - Two clear rows of text column headers, left-aligned
+  - Two clear columns of text row headers, top-aligned
+  - Two clear rows and columns of text headers, top-aligned and left-aligned
+  - Multiple rows or columns of headers, with meaningful formatting
+  - Mixed headers and notes in the same row/column, distinguished by formatting
+  - Mixed levels of headers in the same row/column, distinguished by formatting
+  - Repeated rows/columns of headers within the table
+  - Headers amongst the data
+* Small multiples
+  - Small multiples with all headers present for each multiple
+  - Small multiples sharing column headers or row headers (babynames)
+  - Same table in several worksheets/files (using the sheet/file name)
+  - Same table in several worksheets/files but in different positions
+* Formatting:
+  - Bold
+  - Italic
+  - Underline
+  - Strikethrough
+  - Fill colour
+  - Font colour
+  - Font size
+  - Border
+    * Border colour
+    * Border weight
+    * Border line type
+  - Row height
+  - Column width
+  - Conditional formatting (not implemented because derived from the data)
+* In-cell formatting
+* Other gotchas
+  - Guessing datatypes
+  - Non-text headers, e.g. dates.
+  - Superscript numbers in numeric columns to reference notes
+  - Data embedded in formulas
+  - Referring to named ranges
+
+## Load packages
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(tidyxl)
+library(unpivotr)
+library(here)
+```
+
+## Data
+
+A spreadsheet of toy data.
+
+```{r}
+path <- system.file("extdata", "worked-examples.xlsx", package = "unpivotr")
+```
+
+## Clean, tidy tables
+
+If the tables in the spreadsheet are clean and tidy, then you should use a
+package like [readxl](https://github.com/tidyverse/readxl).
+
+Clean and tidy means:
+* One table per sheet
+* A single row of column headers, or no headers
+* A single data type in each column
+* Only one kind of sentinel value (to be interpreted as `NA`)
+* No meaningful formatting
+* No data buried in formulas
+* No need to refer to named ranges
+
+But it's worth knowing how to emulate readxl with tidyxl and unpivotr, because
+some *almost* clean tables can be handled using this technique.
+
+Here's the full process.
+
+```{r}
+xlsx_cells(path, sheet = "clean") %>%
+  select(row, col, data_type, character, numeric) %>%
+  behead(N, header, character) %>%
+  select(-col) %>%
+  spatter(header) %>%
+  select(-row)
+```
+
+`tidyxl::xlsx_cells()` imports the spreadsheet into a data frame, where each row
+of the data frame describes one cell of the spreadsheet.  The columns `row` and
+`col` (and `address`) describe the position of the cell, and the value of the
+cell is in one of the columns `error`, `logical`, `numeric`, `date`,
+`character`, depending on the type of data in the cell.  The column `data_type`
+says which column the value is in.  Other columns describe formatting and
+formulas.
+
+```{r}
+xlsx_cells(path, sheet = "clean") %>%
+  select(row, col, data_type, character, numeric)
+```
+
+`unpivotr::behead()` takes one level of headers from a pivot table and makes it
+part of the data.  Think of it like `tidyr::gather()`, except that it works when
+there is more than one row of headers (or more than one column of row-headers),
+and it only works on tables that have first come through
+`unpivotr::tidy_table()` or `tidyxl::xlsx_cells()`.
+
+```{r}
+xlsx_cells(path, sheet = "clean") %>%
+  select(row, col, data_type, character, numeric) %>%
+  behead(N, header, character)
+```
+
+`unpivotr::spatter()` spreads key-value pairs across multiple columns, like
+`tidyxl::spread()`, except that it handles mixed data types.  It knows which
+column contains the cell value (i.e. the `character` column or the `numeric`
+column), by checking the `data_type` column.  Just like `tidyr::spread()`, it
+can be confused by extraneous data, so it's usually a good idea to drop the
+`col` column first, and to keep the `row` column.
+
+```{r}
+xlsx_cells(path, sheet = "clean") %>%
+  select(row, col, data_type, character, numeric) %>%
+  behead(N, header, character) %>%
+  select(-col) %>%
+  spatter(header) %>%
+  select(-row)
+```
+
+In case the table has no column headers, you can spatter the `col` column
+instead of a nonexistent `header` column.
+
+```{r}
+xlsx_cells(path, sheet = "clean") %>%
+  filter(row >= 2) %>%
+  select(row, col, data_type, character, numeric) %>%
+  spatter(col) %>%
+  select(-row)
+```
+
+Tidyxl and unpivotr are much more complicated than readxl, and that's the point:
+tidyxl and unpivotr give you more power and complexity when you need it.
+
+```{r}
+read_excel(path, sheet = "clean")
+read_excel(path, sheet = "clean", col_names = FALSE, skip = 1)
+```
+
+## Tidy tables but with gotchas
+
+For tables that are already 'tidy' (a single row of column headers), use
+packages like [readxl](http://readxl.tidyverse.org) that specialise in importing
+tidy data.
+
+But even with tidy tables, there can be gotchas.
+
+### Other stuff on the same sheet
+
+TODO: Demonstrate offset() and extend() better.  Maybe in a separate section on
+'finding the data'
+
+It will be more complicated when the table doesn't begin in cell A1, or if there
+are non-blank cells above, below or either side of the table.
+
+If you know at coding time which rows and columns the table occupies, then you
+can do the following.
+
+* Blank or non-blank cells above the table: use the `skip` argument of
+    `readxl::read_excel()`.
+* Blank or non-blank cells either side of the table: use the `col_types`
+  argument of `readxl::read_excel()` to ignore those columns.
+* Blank or non-blank cells below the table: use `n_max`
+  argument of `readxl::read_excel()` to ignore those rows.
+
+```{r}
+readxl::read_excel(path,
+                   sheet = "notes",
+                   skip = 2,
+                   n_max = 33,
+                   col_types = c("guess", "guess", "skip")) %>%
+  drop_na()
+```
+
+If you don't know at coding time which rows and columns the table occupies (e.g.
+when the latest version of the spreadsheet is published and the table has
+moved), then one strategy is to read the spreadsheet with `tidyxl::xlsx_cells()`
+first, and inspect the results to determine the boundaries of the table.  Then
+use those boundaries as the `skip`, `n_max` and `col_types` arguments to
+`readxl::read_excel()`
+
+1. Read the spreadsheet with `tidyxl::xlsx_cells()`.  Filter the result for
+   sentinel values, e.g. the cells containing the first and final column
+   headers, and a cell in the final row of data.
+2. Construct the arguments `skip`, `n_max` and `col_types` so that
+   `readxl::read_excel()` gets the exact dimensions of the table.
+
+```{r}
+# Step 1: read the spreadsheet and filter for sentinel values to detect the
+# top-left and bottom-right cells
+cells <- xlsx_cells(path, sheet = "notes")
+rectify(cells, character, numeric)
+
+top_left <-
+  filter(cells, character == "Name") %>%
+  select(row, col)
+top_left
+
+# It can be tricky to find the bottom-right cell because you have to make some
+# assumptions.  Here we assume that only cells within the table are numeric.
+bottom_right <-
+  filter(cells, data_type == "numeric") %>%
+  summarise(row = max(row), col = max(col))
+bottom_right
+
+# Alternatively we could assume that every cell in the table has a value, so
+# begin from the top left and move right and down until we meet a blank row or
+# column.
+bottom_right <-
+  anchor(cells, top_left$row, top_left$col) %>%
+  offset_S(cells, boundary = ~ is.na(data_type)) %>%
+  offset_E(cells, boundary = ~ is.na(data_type)) %>%
+  select(row, col)
+bottom_right
+
+# Step 2: construct the arguments `skip` and `n_max` for read_excel()
+skip <- top_left$row - 1L
+n_rows <- bottom_right$row - skip
+
+read_excel(path, sheet = "notes", skip = skip, n_max = n_rows)
+```
+
+Here's another way using only tidyxl and unpivotr.
+
+```{r}
+# Step 2: filter for cells between the top-left and bottom-right, and spatter
+# into a table
+cells %>%
+  filter(between(row, top_left$row, bottom_right$row),
+         between(col, top_left$col, bottom_right$col)) %>%
+  select(row, col, data_type, character, numeric) %>%
+  behead(N, header, character) %>%
+  select(-col) %>%
+  spatter(header) %>%
+  select(-row)
+```
+
+## Already a tidy table but with meaningful formatting of whole rows
+
+As with 'Already a tidy table', but with a second step to interpret the
+formatting.
+
+Sometimes whole rows in a table are highlighted by formatting them with, say, a
+bright yellow fill.  The highlighting could mean "this observation should be
+ignored", or "this product is no longer available".  Different colours could
+mean different levels of a hierarchy, e.g. green for "pass" and red for "fail".
+
+There are three steps to interpreting this.
+
+1. Import the table, taking only the cell values and ignoring the formatting.
+1. Import one column of the table, taking only the formatting and not the cell
+   values.
+1. Use `dplyr::bind_cols()` to append the column of formatting to the table of
+   cell values.  You can then interpret the formatting however you like.
+
+Step 1 is the same as "Already a tidy table".
+
+Step 2 uses `tidyxl::xlsx_cells()` to load the data, `tidyxl::xlsx_formats()`,
+and several tidyverse functions to link the two and filter for only one column.
+Why only one column?  Because if a whole row is highlighted, then you only need
+to know the highlighting of one column to know the highlighting of all the
+others.
+
+This is a special case of the following section, "Meaningful formatting of
+single cells". Here `dplyr::bind_cols()` can be used as a shortcut, because we
+are joining exactly `n` rows of formatting to `n` rows of data.  The following
+sections is a more general case that can be used instead of this procedure.
+
+```{r}
+# Step 1: import the table taking only cell values and ignoring the formatting
+x <- read_excel(path, sheet = "highlights")
+
+# Step 2: import one column of the table, taking only the formatting and not the
+# cell values
+
+# `formats` is a pallette of fill colours that can be indexed by the
+# `local_format_id` of a given cell to get the fill colour of that cell
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+
+# Import all the cells, filter out the header row, filter for the first column,
+# and create a new column `fill_colour` of the fill colours, by looking up the
+# local_format_id of each cell in the `fill_colours` pallette.
+fills <-
+  xlsx_cells(path, sheet = "highlights") %>%
+  filter(row >= 2, col == 1) %>% # Omit the header row
+  mutate(fill_colour = fill_colours[local_format_id]) %>%
+  select(fill_colour)
+
+# Step 3: append the `fill` column to the rest of the data
+bind_cols(x, fills) %>%
+  select(Age, Height, fill_colour)
+```
+
+Note that the fill colour is expressed as an RGB value with transparency in the
+first two letters, e.g. `FFFFFF00` is `FF` (opaque), with `FFFF00` (yellow).
+
+Here's another way using only tidyxl and unpivotr.
+
+```{r}
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+
+xlsx_cells(path, sheet = "highlights") %>%
+  mutate(fill_colour = fill_colours[local_format_id]) %>%
+  select(row, col, data_type, character, numeric, fill_colour) %>%
+  behead(N, header, character) %>%
+  select(-col, -character) %>%
+  spatter(header) %>%
+  select(-row)
+```
+
+## Already a tidy table but with meaningful formatting of single cells
+
+If single cells are highlighted, rather than whole rows, then the highlights
+probably indicate something about the column rather than the row.  For example,
+a highlighted cell in a column called "age" of a table of medical patients,
+might mean "the age of this patient is uncertain".
+
+One way to deal with this is to create a new column in the final table for each
+column in the original that has any highlighted cells.  For example, if
+highlighted cells mean "this value is uncertain", and some cells in the `age`
+and `height` columns are highlighted, then you could create two new columns:
+`uncertain_age`, and `uncertain_height`, by following the procedure of "Already
+a tidy table but with meaningful formatting of whole rows" for each column `age`
+and `height`.
+
+```{r}
+# Step 1: import the table taking only cell values and ignoring the formatting
+x <- read_excel(path, sheet = "annotations")
+
+# Step 2: import one column of the table, taking only the formatting and not the
+# cell values
+
+# `formats` is a pallette of fill colours that can be indexed by the
+# `local_format_id` of a given cell to get the fill colour of that cell
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+
+# Import all the cells, filter out the header row, filter for the first column,
+# and create new columns `something_fill` of the fill colours, by looking up the
+# local_format_id of each cell in the `formats` pallette.
+fills <-
+  xlsx_cells(path, sheet = "annotations") %>%
+  filter(row >= 2, col >= 2) %>% # Omit the header row and name column
+  mutate(fill_colour = fill_colours[local_format_id]) %>%
+  select(row, col, fill_colour) %>%
+  spread(col, fill_colour) %>%
+  select(-row) %>%
+  set_names(paste0(colnames(x)[-1], "_fill"))
+fills
+
+# Step 3: append the `fill` column to the rest of the data
+bind_cols(x, fills)
+```
+
+Here's the same thing, but using only tidyxl and unpivotr
+
+```{r}
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+
+cells <-
+  xlsx_cells(path, sheet = "annotations") %>%
+  mutate(fill_colour = fill_colours[local_format_id]) %>%
+  select(row, col, data_type, character, numeric, fill_colour)
+cells
+
+values <-
+  cells %>%
+  select(-fill_colour) %>%
+  behead(N, header, character) %>%
+  select(-col) %>%
+  spatter(header)
+values
+
+fills <-
+  cells %>%
+  behead(N, header, character) %>%
+  mutate(header = paste0(header, "_fill")) %>%
+  select(row, header, fill_colour) %>%
+  spread(header, fill_colour)
+fills
+
+left_join(values, fills, by = "row") %>%
+  select(-row)
+```
+
+Another way would be to make the table what I call "extra-tidy".  If it is tidy,
+then each row is an observation, and each column is a variable.  To make it
+"extra-tidy", you `gather()` the variables so that each row is *one observation
+of one variable*.  This works best when every variable has the same data type,
+otherwise the values will be coerced, probably to a character.
+
+```{r}
+# Tidy
+(x <- read_excel(path, sheet = "annotations"))
+
+# Extra-tidy
+extra_tidy <-
+  x %>%
+  gather(variable, value, -Name) %>%
+  arrange(Name, variable)
+extra_tidy
+```
+
+With an extra-tidy dataset, the formatting can now be appended to the values of
+individual variables, rather than to whole observations.
+
+```{r}
+# Extra-tidy, with row and column numbers of the original variables
+extra_tidy <-
+  read_excel(path, sheet = "annotations") %>%
+  mutate(row = row_number() + 1L) %>%
+  gather(variable, value, -row, -Name) %>%
+  group_by(row) %>%
+  mutate(col = row_number() + 1L) %>%
+  ungroup() %>%
+  select(row, col, Name, variable, value) %>%
+  arrange(row, col)
+extra_tidy
+
+# `formats` is a pallette of fill colours that can be indexed by the
+# `local_format_id` of a given cell to get the fill colour of that cell
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+
+# Import all the cells, filter out the header row, filter for the first column,
+# and create a new column `uncertain` based on the fill colours, by looking up
+# the local_format_id of each cell in the `formats` pallette.
+fills <-
+  xlsx_cells(path, sheet = "annotations") %>%
+  filter(row >= 2, col >= 2) %>% # Omit the header row and name column
+  mutate(fill_colour = fill_colours[local_format_id]) %>%
+  select(row, col, fill_colour)
+fills
+
+# Step 3: append the `fill` column to the rest of the data
+left_join(extra_tidy, fills, by = c("row", "col"))
+```
+
+Here's the same extra-tidy version, but using only tidyxl and unpivotr.
+
+```{r}
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+
+xlsx_cells(path, sheet = "annotations") %>%
+  mutate(fill_colour = fill_colours[local_format_id]) %>%
+  select(row, col, data_type, character, numeric, fill_colour) %>%
+  behead(W, Name, character) %>%
+  behead(N, variable, character) %>%
+  select(-data_type, -character, value = numeric)
+```
+
+## More than one kind of formatting at the same time
+
+This could arise in a couple of ways, but the way to deal with it is always the
+same: read each kind of formatting into a separate column, e.g. fill colour into
+one column, font colour into another, bold/not-bold into a another, etc.
+
+Sometimes different kinds of formatting relate to clearly different aspects of
+an observation, e.g. yellow highlight for "uncertain data" and red text for
+"product no longer available".  Both yellow highlighting and red text in the
+same row would indicate uncertain data and unavailability of the product at the
+same time.
+
+When each kind of formatting relates to a different aspect of an observation,
+import them into different columns as previously.
+
+```{r}
+# Step 1: import the table taking only cell values and ignoring the formatting
+x <- read_excel(path, sheet = "combined-highlights")
+
+# Step 2: import one kind of formatting of one column of the table
+
+# `formats` is a pallette of fill colours that can be indexed by the
+# `local_format_id` of a given cell to get the fill colour of that cell
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+font_colours <- xlsx_formats(path)$local$font$color$rgb
+
+# Import all the cells, filter out the header row, filter for the first column,
+# and create a new column `fill` of the fill colours, by looking up the
+# local_format_id of each cell in the `formats` pallette.
+formats <-
+  xlsx_cells(path, sheet = "combined-highlights") %>%
+  filter(row >= 2, col == 1) %>% # Omit the header row
+  mutate(fill_colour = fill_colours[local_format_id],
+         font_colour = font_colours[local_format_id]) %>%
+  select(fill_colour, font_colour)
+
+# Step 3: append the `fill` column to the rest of the data
+bind_cols(x, formats)
+```
+
+Here's the same thing, but using only tidyxl and unpivotr.
+
+```{r}
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+font_colours <- xlsx_formats(path)$local$font$color$rgb
+
+cells <-
+  xlsx_cells(path, sheet = "combined-highlights") %>%
+  mutate(fill_colour = fill_colours[local_format_id],
+         font_colour = font_colours[local_format_id]) %>%
+  select(row, col, character, numeric, fill_colour, font_colour) %>%
+  behead(N, header, character) %>%
+  behead(W, Name, character) %>%
+  select(-col, -character)
+
+values <-
+  cells %>%
+  select(-fill_colour, -font_colour) %>%
+  spread(header, numeric)
+
+formats <- distinct(cells, row, fill_colour, font_colour)
+
+left_join(values, formats, by = "row") %>%
+  select(-row)
+```
+
+Different kinds of formatting might also represent different levels of a
+hierarchy, e.g.
+
+| formatting    | interpretation |
+|:--------------|:---------------|
+| none          | good           |
+| italic        | satisfactory   |
+| bold          | poor           |
+| bold & italic | fail           |
+
+When each kind of formatting relates to a different level of one hierarchy,
+import the different kinds of formatting into different columns, and then
+combine them into a third column, perhaps using `paste()`, or `case_when()`.
+
+```{r}
+# Step 1: import the table taking only cell values and ignoring the formatting
+x <- read_excel(path, sheet = "highlight-hierarchy")
+x
+
+# Step 2: import one kind of formatting of one column of the table
+
+# `formats` is a pallette of fill colours that can be indexed by the
+# `local_format_id` of a given cell to get the fill colour of that cell
+bold <- xlsx_formats(path)$local$font$bold
+italic <- xlsx_formats(path)$local$font$italic
+
+# Import all the cells, filter out the header row, filter for the first column,
+# and create a new column `fill` of the fill colours, by looking up the
+# local_format_id of each cell in the `formats` pallette.
+formats <-
+  xlsx_cells(path, sheet = "highlight-hierarchy") %>%
+  filter(row >= 2, col == 1) %>% # Omit the header row
+  mutate(bold = bold[local_format_id],
+         italic = italic[local_format_id]) %>%
+  mutate(grade = case_when(bold & italic ~ "fail",
+                           bold ~ "poor",
+                           italic ~ "satisfactory",
+                           TRUE ~ "good")) %>%
+  select(bold, italic, grade)
+
+# Step 3: append the `fill` column to the rest of the data
+bind_cols(x, formats)
+```
+
+Here it is again, using only tidyxl and unpivotr.
+
+```{r}
+bold <- xlsx_formats(path)$local$font$bold
+italic <- xlsx_formats(path)$local$font$italic
+
+xlsx_cells(path, sheet = "highlight-hierarchy") %>%
+  mutate(bold = bold[local_format_id],
+         italic = italic[local_format_id]) %>%
+  mutate(grade = case_when(bold & italic ~ "fail",
+                           bold ~ "poor",
+                           italic ~ "satisfactory",
+                           TRUE ~ "good")) %>%
+  select(row, col, data_type, character, numeric, bold, italic, grade) %>%
+  behead(N, header, character) %>%
+  select(-col) %>%
+  spatter(header)
+```
+
+## Already a tidy table but with text sentinel values in non-text columns
+
+R packages like [readr](http://readr.tidyverse.org/) recognise `NA` as a
+sentinel value that means "Not Applicable", or "Not Available", or anything you
+want.  It doesn't affect the data type of a column when `NA` is one of the
+values.  Some datasets use other symbols as a sentinel value, e.g. `N/A` or `.`,
+or a combination, in which case you can instruct `readr` to interpret those
+values as sentinels, and it will import them all as `NA`.
+
+But what if the data uses more than one *kind* of sentinel value.  For example,
+Statistics New Zealand uses `…` to mean "Not applicable", and `..C` to mean
+"Confidentialised".  Most tools will either regard both values as `NA`, or
+coerce the whole column to characters.
+
+```{r}
+read_csv("a, b,   c
+          1, 2,   3
+          4, …, ..C",
+         na = c("…", "..C")) # Regard both values as NA
+
+read_csv("a, b,   c
+          1, 2,   3
+          4, …, ..C",
+         na = "")              # Coerce the whole column to characters
+```
+
+A better procedure is to import the sentinel values into their own column, or
+even into separate `TRUE`/`FALSE` columns for each kind of sentinel.
+
+Note that sentinel values relate the the value in the cell, rather than to the
+whole row, so the first step is to make the dataset *extra-tidy* as in the
+section "Already a tidy table but with meaningful formatting of single cells".
+
+```{r}
+# Tidy
+x <- read_excel(path, sheet = "sentinels")
+x
+
+# Extra-tidy
+extra_tidy <-
+  gather(x, variable, value, -Name) %>%
+  arrange(Name, variable)
+extra_tidy
+```
+
+With an extra-tidy dataset, the sentinels can now be appended to the values of
+individual variables, rather than to whole observations.
+
+```{r}
+# Extra-tidy, with row and column numbers of the original variables, and the
+# sentinels omitted
+extra_tidy <-
+  read_excel(path, sheet = "sentinels", na = c("NA", "…", "..C")) %>%
+  mutate(row = row_number() + 1L) %>%
+  gather(variable, value, -row, -Name) %>%
+  group_by(row) %>%
+  mutate(col = row_number() + 1L) %>%
+  ungroup() %>%
+  select(row, col, Name, variable, value) %>%
+  arrange(row, col)
+extra_tidy
+
+# Import all the cells, and filter for sentinel values
+sentinels <-
+  xlsx_cells(path, sheet = "sentinels") %>%
+  filter(character %in% c("NA", "…", "..C")) %>%
+  mutate(sentinel = character) %>%
+  select(row, col, sentinel)
+sentinels
+
+# Join the `sentinel` column to the rest of the data
+left_join(extra_tidy, sentinels, by = c("row", "col"))
+```
+
+Here's another version using only tidyxl and unpivotr, which provides
+`isolate_sentinels()` to make this much more straightforward.
+
+```{r}
+xlsx_cells(path, sheet = "sentinels") %>%
+  select(row, col, data_type, character, numeric) %>%
+  isolate_sentinels(c("NA", "…", "..C"), character) %>%
+  behead(W, Name, character) %>%
+  behead(N, variable, character) %>%
+  select(Name, variable, character, numeric, sentinel)
+```
+
+## Pivot tables
+
+Pivot tables are ones with more than one row of column headers, or more than one
+column of row headers, or both (and there can be more complex arrangements).
+Tables in that form take up less space on a page or a screen than 'tidy' tables,
+and are easier for humans to read. But most software can't interpret or traverse
+data in that form; it must first be reshaped into a long, 'tidy' form, with a
+single row of column headers.
+
+It takes a lot of code to reshape a pivot table into a 'tidy' one, and the code
+has to be bespoke for each table. There's no general solution, because it is
+ambiguous whether a given cell is part of a header or part of the data.
+
+There are some ambiguities in 'tidy' tables, too, which is why most functions
+for reading csv files allow you to specify whether the first row of the data is
+a header, and how many rows to skip before the data begins.  Functions often
+guess, but they can never be certain.
+
+Pivot tables, being more complex, are so much more ambiguous that it isn't
+reasonable to import them with a single function.  A better way is to break the
+problem down into steps:
+
+1. Identify which cells are headers, and which are data.
+1. State how the data cells relate to the header cells.
+
+The first step is a matter of traversing the cells, which is *much easier* if
+you load them with the [tidyxl](https://nacnudus.github.io/tidyxl) package, or
+pass the table through `tidy_table()` in the
+[unpivotr](https://nacnudus.github.io/unpivotr) package.  This gives you a table
+of cells and their properties; one row of the table describes one cell of the
+source table or spreadsheet.  The first two properties are the row and column
+position of the cell, which makes it easy to filter for cells in a particular
+region of the spreadsheet.  If the first row of cells is a header row, then you
+can filter for `row == 1`.
+
+Here is an example of a pivot table where the first two rows, and the first two
+columns, are headers.  The other cells contain the data.  First, see how the
+cells are laid out in the source file by importing it with readxl.
+
+```{r}
+original <- read_excel(path, sheet = "pivot-annotations", col_names = FALSE)
+print(original, n = Inf)
+```
+
+Compare that with the long set of cells, one per row, that tidyxl gives.  (Only
+a few properties of each cell are shown, to make it easier to read).
+
+```{r}
+cells <- xlsx_cells(path, sheets = "pivot-annotations")
+select(cells, row, col, data_type, character, numeric) %>%
+  print(cells, n = 20)
+```
+
+A similar result is obtained via `unpivotr::tidy_table()`.
+
+```{r}
+original <- read_excel(path, sheet = "pivot-annotations", col_names = FALSE)
+tidy_table(original) %>%
+  arrange(row, col) %>%
+  print(n = 20)
+```
+
+(One difference is that `read_excel()` has filled in some missing cells with
+blanks, which `tidy_table()` retains.  Another is that `read_excel()` has
+coerced all data types to `character`, whereas `xlsx_cells()` preserved the
+original data types.)
+
+The tidyxl version is easier to traverse, because it describes the position of
+each cell as well as the value.  To filter for the first row of headers:
+
+```{r}
+filter(cells, row == 2, !is_blank) %>%
+  select(row, col, character, numeric)
+```
+
+Or to filter for cells containing data (in this case, we know that only data
+cells are numeric)
+
+```{r}
+filter(cells, data_type == "numeric") %>%
+  select(row, col, numeric)
+```
+
+By identifying the header cells separately from the data cells, and knowing
+exactly where they are on the sheet, we can associated the data cells with the
+relevant headers.
+
+To a human it is intuitive that the cells below and to the right of the header
+`Male` represent males, and that ones to the right of and below the header
+`Postgraduate qualification` represent people with postgraduate qualifications,
+but it isn't so obvious to the computer.  How would the computer know that the
+header `Male` doesn't also relate to the column of cells below and to the left,
+beginning with `27,000`?
+
+This section shows how you can express the relationships between headers and
+data cells, using the [unpivotr](https://nacnudus.github.io/unpivotr) package.
+
+## Simple unpivoting
+
+The `behead()` function takes one level of headers from a pivot table and makes
+it part of the data.  Think of it like `tidyr::gather()`, except that it works
+when there is more than one row of headers (or more than one column of
+row-headers), and it only works on tables that have first come through
+`tidy_table()` or `tidyxl::xlsx_cells()`.
+
+### Two clear rows of text column headers, left-aligned
+
+Here we have a pivot table with two rows of column headers.  The first row of
+headers is left-aligned, so `"Female"` applies to the first two columns of data,
+and `"Male"` applies to the next two.  The second row of headers has a header in
+every column.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(col >= 4, !is_blank) %>% # Ignore the row headers in this example
+  select(row, col, character, numeric)
+
+all_cells
+```
+
+The `behead()` function takes the 'melted' output of `tidy_table()`,
+`tidyxl::xlsx_cells()`, or a previous `behead()`, and three more arguments to
+specify how the header cells relate to the data cells.
+
+The outermost header is the top row, `"Female" NA "Male" NA`.  The `"Female"`
+and `"Male"` headers are above and to-the-left-of the data cells.  We express
+this as a compass direction, north-north-west, or `NNW`.  We also give the
+headers a name, `sex`, and say which column of `all_cells` contains the value
+of the header cells -- it's usually the `character` column.
+
+```{r}
+all_cells %>%
+  behead(NNW, sex, character)
+```
+
+That did half the job.  The value 2 in row 4 column 5 is indeed a score
+of a female. But the value `"matilda"` in row 3 column 4 isn't a
+population -- it's another header.  The next step is to strip that second level
+of column headers.  This time, the compass direction is `N`, because the headers
+are directly above the associated data cells, and we call it `name`, because it
+represents names of people.
+
+```{r}
+all_cells %>%
+  behead(NNW, sex, character) %>%
+  behead(N, `name`, character)
+```
+
+A final step is a normal clean-up.  We drop the `row`, `col` and `character`
+columns, and we rename the `numeric` column to `score`, which is what it
+represents.
+
+```{r}
+all_cells %>%
+  behead(NNW, sex, character) %>%
+  behead(N, `name`, character) %>%
+  select(score = numeric, sex, `name`)
+```
+
+### Two clear rows and columns of text headers, top-aligned and left-aligned
+
+There are no new techniques are used, just more compass directions: `W` for
+headers directly to the left of the data cells, and `WNW` for headers
+left-and-above the data cells.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(!is_blank) %>%
+  select(row, col, character, numeric) %>%
+  print()
+
+all_cells %>%
+  behead(NNW, sex, character) %>%   # As before
+  behead(N, `name`, character) %>%  # As before
+  behead(WNW, field, character) %>% # Left-and-above
+  behead(W, subject, character) %>% # Directly left
+  rename(score = numeric) %>%
+  select(-row, -col, -character)
+```
+
+### Multiple rows or columns of headers, with meaningful formatting
+
+This is a combination of the previous section with "meaningful formatting
+of single cells".  The section "meaningful formatting of whole rows" doesn't
+work here, because the unpivoting of multiple rows/columns of headers
+complicates the relationship between the data and the formatting.
+
+1. Unpivot the multiple rows/columns of headers, as above, but keep the `row`
+   and `col` of each data cell.
+1. Collect the `row`, `col` and formatting of each data cell.
+1. Join the data to the formatting by the `row` and `col`.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(!is_blank) %>%
+  select(row, col, character, numeric) %>%
+  print()
+
+unpivoted <-
+  all_cells %>%
+  behead(NNW, sex, character) %>%   # As before
+  behead(N, `name`, character) %>%  # As before
+  behead(WNW, field, character) %>% # Left-and-above
+  behead(W, subject, character) %>% # Directly left
+  rename(score = numeric) %>%
+  select(-character)                # Retain the row and col for now
+unpivoted
+
+# `formats` is a pallette of fill colours that can be indexed by the
+# `local_format_id` of a given cell to get the fill colour of that cell
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+fill_colours
+
+# Import all the cells, filter out the header row, filter for the first column,
+# and create a new column `approximate` based on the fill colours, by looking up
+# the local_format_id of each cell in the `formats` pallette.
+annotations <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(row >= 4, col >= 4) %>% # Omit the headers
+  mutate(fill_colour = fill_colours[local_format_id]) %>%
+  select(row, col, fill_colour)
+annotations
+
+left_join(unpivoted, annotations, by = c("row", "col")) %>%
+  select(-row, -col)
+```
+
+## Complex unpivoting
+
+When `behead()` isn't powerful enough (it makes certain assumptions, and it
+doesn't understand formatting), then you
+can get much more control by using the compass-direction functions `N()`,
+`NNW()` etc. directly.
+
+This kind of unpivoting is always done in two stages.
+
+1. Identify which cells are headers, and which are data
+1. State how the data cells relate to the header cells.
+
+### Two clear rows of text column headers, left-aligned
+
+The first stage, identifying header vs data cells, is simply filtering.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(col >= 4, !is_blank) %>% # Ignore the row headers in this example
+  select(row, col, data_type, character, numeric) %>%
+  print()
+
+# View the cells in their original positions on the spreadsheet
+rectify(all_cells, character, numeric)
+
+first_header_row <-
+  filter(all_cells, row == 2) %>%
+  select(row, col, sex = character)
+  # the title of this header is 'sex'
+  # the cells are text cells (`"Female"` and `"Male"`) so take the value in the
+  # '`character` column.
+first_header_row
+
+second_header_row <-
+  filter(all_cells, row == 3) %>%
+  select(row, col, name = character)
+  # The title of this header is 'name'.
+  # The cells are text cells, so take the value in the '`character` column.
+second_header_row
+
+data_cells <-
+  filter(all_cells, data_type == "numeric") %>%
+  select(row, col, score = numeric)
+  # The data is examp scores in certain subjects, so give the data that title.
+  # The data is numeric, so select only that 'value'.  If some of the data was
+  # also text or true/false, then you would select the `character` and `logical`
+  # columns as well as `numeric`
+```
+
+The second stage is to declare how the data cells relate to each row of column
+headers.  Unpivotr provides a set of functions for this, derived from the points
+of the compass.
+
+Starting from the point of view of a data cell, the relevant column header from
+the second row of headers is the one directly north (up), which is described by
+the function `N()`.
+
+```{r}
+N(data_cells, second_header_row)
+```
+
+The first row of headers, from the point of view of a data cell, is either
+directly north (up), or north and west (up and left), which is described by the
+function `NNW()`.
+
+```{r}
+NNW(data_cells, first_header_row)
+```
+
+Piping everything together, we get a complete, tidy dataset, and can finally
+drop the `row` and `col` columns.
+
+```{r}
+data_cells %>%
+  NNW(first_header_row) %>%
+  N(second_header_row) %>%
+  select(-row, -col)
+```
+
+### Two clear columns of text row headers, top-aligned
+
+This is almost the same as "Two clear rows of text column headers,
+left-aligned", but with different compass directions: `W()` for directly west
+(left), and `WNW()` for west and north (left and up).
+
+(`NNW()` and `WNW()` look like synonyms, but behave differently in some special
+cases.  See "Headers amongst the data")
+
+In this example, the table has no column headers, only row headers.  This is
+artificial here, but sometimes table are deliberately laid out in transpose
+form: the first column contains the headers, and the data extends in columns
+from left to right instead of from top to bottom.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(row >= 3, !is_blank) %>% # Ignore the column headers in this example
+  select(row, col, data_type, character, numeric) %>%
+  print()
+
+# View the cells in their original positions on the spreadsheet
+rectify(all_cells, character, numeric)
+
+first_header_col <-
+  filter(all_cells, col == 2) %>%
+  select(row, col, field = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+first_header_col
+
+second_header_col <-
+  filter(all_cells, col == 3) %>%
+  select(row, col, subject = character)
+  # The title of this header is 'subject'
+  # The cells are text cells (`"history"`, etc.) so take the value in the
+  # '`character` column.
+second_header_col
+
+data_cells <-
+  filter(all_cells, data_type == "numeric") %>%
+  select(row, col, score = numeric)
+  # The data is examp scores in certain subjects, so give the data that title.
+  # The data is numeric, so select only that 'value'.  If some of the data was
+  # also text or true/false, then you would select the `character` and `logical`
+  # columns as well as `numeric`
+
+data_cells %>%
+  WNW(first_header_col) %>%
+  W(second_header_col) %>%
+  select(-row, -col)
+```
+
+### Two clear rows and columns of text headers, top-aligned and left-aligned
+
+This is a combination of the previous two sections.  No new techniques are used.
+
+1. Identify which cells are headers, and which are data
+1. State how the data cells relate to the header cells.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(!is_blank) %>%
+  select(row, col, data_type, character, numeric) %>%
+  print()
+
+# View the cells in their original positions on the spreadsheet
+rectify(all_cells, character, numeric)
+
+first_header_row <-
+  filter(all_cells, row == 2) %>%
+  select(row, col, sex = character)
+  # the title of this header is 'sex'
+  # the cells are text cells (`"Female"` and `"Male"`) so take the value in the
+  # '`character` column.
+first_header_row
+
+second_header_row <-
+  filter(all_cells, row == 3) %>%
+  select(row, col, name = character)
+  # The title of this header is 'name'.
+  # The cells are text cells, so take the value in the '`character` column.
+second_header_row
+
+first_header_col <-
+  filter(all_cells, col == 2) %>%
+  select(row, col, field = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+first_header_col
+
+second_header_col <-
+  filter(all_cells, col == 3) %>%
+  select(row, col, subject = character)
+  # The title of this header is 'subject'
+  # The cells are text cells (`"history"`, etc.) so take the value in the
+  # '`character` column.
+second_header_col
+
+data_cells <-
+  filter(all_cells, data_type == "numeric") %>%
+  select(row, col, score = numeric)
+  # The data is examp scores in certain subjects, so give the data that title.
+  # The data is numeric, so select only that 'value'.  If some of the data was
+  # also text or true/false, then you would select the `character` and `logical`
+  # columns as well as `numeric`
+
+data_cells %>%
+  NNW(first_header_row) %>%
+  N(second_header_row) %>%
+  WNW(first_header_col) %>%
+  W(second_header_col) %>%
+  select(-row, -col)
+```
+
+### Multiple rows or columns of headers, with meaningful formatting
+
+This is a combination of the previous section with "meaningful formatting
+of single cells".  The section "meaningful formatting of whole rows" doesn't
+work here, because the unpivoting of multiple rows/columns of headers
+complicates the relationship between the data and the formatting.
+
+1. Unpivot the multiple rows/columns of headers, as above, but keep the `row`
+   and `col` of each data cell.
+1. Collect the `row`, `col` and formatting of each data cell.
+1. Join the data to the formatting by the `row` and `col`.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(!is_blank) %>%
+  select(row, col, data_type, character, numeric) %>%
+  print()
+
+# View the cells in their original positions on the spreadsheet
+rectify(all_cells, character, numeric)
+
+first_header_row <-
+  filter(all_cells, row == 2) %>%
+  select(row, col, sex = character)
+  # the title of this header is 'sex'
+  # the cells are text cells (`"Female"` and `"Male"`) so take the value in the
+  # '`character` column.
+first_header_row
+
+second_header_row <-
+  filter(all_cells, row == 3) %>%
+  select(row, col, name = character)
+  # The title of this header is 'name'.
+  # The cells are text cells, so take the value in the '`character` column.
+second_header_row
+
+first_header_col <-
+  filter(all_cells, col == 2) %>%
+  select(row, col, field = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+first_header_col
+
+second_header_col <-
+  filter(all_cells, col == 3) %>%
+  select(row, col, subject = character)
+  # The title of this header is 'subject'
+  # The cells are text cells (`"history"`, etc.) so take the value in the
+  # '`character` column.
+second_header_col
+
+data_cells <-
+  filter(all_cells, data_type == "numeric") %>%
+  select(row, col, score = numeric)
+  # The data is exam scores in certain subjects, so give the data that title.
+  # The data is numeric, so select only that 'value'.  If some of the data was
+  # also text or true/false, then you would select the `character` and `logical`
+  # columns as well as `numeric`
+
+unpivoted <-
+  data_cells %>%
+  NNW(first_header_row) %>%
+  N(second_header_row) %>%
+  WNW(first_header_col) %>%
+  W(second_header_col)
+  # Don't delet the `row` and `col` columns yet, because we need them to join on
+  # the formatting
+
+# `formats` is a pallette of fill colours that can be indexed by the
+# `local_format_id` of a given cell to get the fill colour of that cell
+fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
+
+# Import all the cells, filter out the header row, filter for the first column,
+# and create a new column `approximate` based on the fill colours, by looking up
+# the local_format_id of each cell in the `formats` pallette.
+annotations <-
+  xlsx_cells(path, sheets = "pivot-annotations") %>%
+  filter(row >= 4, col >= 4) %>% # Omit the headers
+  mutate(fill_colour = fill_colours[local_format_id]) %>%
+  select(row, col, fill_colour)
+annotations
+
+left_join(unpivoted, annotations, by = c("row", "col")) %>%
+  select(-row, -col)
+```
+
+### Mixed headers and notes in the same row/column, distinguished by formatting
+
+This doesn't use any new techniques.  The trick is, when selecting a row or
+column of header cells, to filter out ones that have the 'wrong' formatting
+(formatting that shows they aren't really headers).  In this example, cells with
+italic or red text aren't headers, even if they are in amongst header cells.
+
+First, identify the IDs of formats that have italic or red text.
+
+```{r}
+formats <- xlsx_formats(path)
+
+italic <- which(formats$local$font$italic)
+
+# For 'red' we can either look for the RGB code for red "FFFF0000"
+red <- which(formats$local$font$color$rgb == "FFFF0000")
+red
+
+# Or we can find out what that code is by starting from a cell that we know is
+# red.
+red_cell_format_id <-
+  xlsx_cells(path, sheets = "pivot-notes") %>%
+  filter(row == 5, col == 2) %>%
+  pull(local_format_id)
+red_cell_format_id
+red_rgb <- formats$local$font$color$rgb[red_cell_format_id]
+red <- which(formats$local$font$color$rgb == red_rgb)
+red
+```
+
+Now we select the headers, filtering out cells with the format IDs of red or
+italic cells.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-notes") %>%
+  filter(!is_blank) %>%
+  select(row, col, character, numeric, local_format_id) %>%
+  print()
+
+first_header_row <-
+  filter(all_cells, row == 2, !(local_format_id %in% c(red, italic))) %>%
+  select(row, col, sex = character)
+  # the title of this header is 'sex'
+  # the cells are text cells (`"Female"` and `"Male"`) so take the value in the
+  # '`character` column.
+first_header_row
+
+first_header_col <-
+  filter(all_cells, col == 2, !(local_format_id %in% c(red, italic))) %>%
+  select(row, col, qualification = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+first_header_col
+
+second_header_col <-
+  filter(all_cells, col == 3) %>%
+  select(row, col, subject = character)
+  # The title of this header is 'subject'
+  # The cells are text cells (`"history"`, etc.) so take the value in the
+  # '`character` column.
+
+data_cells %>%
+  NNW(first_header_row) %>%
+  WNW(first_header_col) %>%
+  select(-row, -col)
+```
+
+### Mixed levels of headers in the same row/column, distinguished by formatting
+
+Normally different levels of headers are in different rows, or different
+columns, like "Two clear rows of text column headers, left-aligned".  But
+sometimes they coexist in the same row or column, and are distinguishable by
+formatting, e.g. bold for the top level, italic for the mid level, and plain for
+the lowest level.
+
+In this example, there is a single column of row headers, where the levels are
+shown by different amounts of indentation.  The indentation is done by
+formatting, rather than by leading spaces or tabs.
+
+The first step is to find the format IDs of all the different levels of
+indentation.
+
+```{r}
+formats <- xlsx_formats(path)
+
+indent0 <- which(formats$local$alignment$indent == 0)
+indent1 <- which(formats$local$alignment$indent == 1)
+
+indent0
+indent1
+```
+
+Now we use these format IDs to indentify the different levels of headers in the
+first column.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-hierarchy") %>%
+  filter(!is_blank) %>%
+  select(row, col, data_type, character, numeric, local_format_id) %>%
+  print()
+
+field <-
+  filter(all_cells, col == 2, local_format_id %in% indent0) %>%
+  select(row, col, field = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+field
+
+subject <-
+  filter(all_cells, col == 2, local_format_id %in% indent1) %>%
+  select(row, col, subject = character)
+  # The title of this header is 'subject'
+  # The cells are text cells (`"history"`, etc.) so take the value in the
+  # '`character` column.
+subject
+
+name <-
+  filter(all_cells, row == 2) %>%
+  select(row, col, name = character)
+  # The title of this header is 'name'.
+  # The cells are text cells, so take the value in the '`character` column.
+name
+
+data_cells <-
+  filter(all_cells, data_type == "numeric") %>%
+  select(row, col, score = numeric)
+  # The data is exam scores in certain subjects, so give the data that title.
+  # The data is numeric, so select only that 'value'.  If some of the data was
+  # also text or true/false, then you would select the `character` and `logical`
+  # columns as well as `numeric`
+
+data_cells %>%
+  WNW(field) %>%
+  W(subject) %>%
+  N(name) %>%
+  select(-row, -col)
+```
+
+### Repeated rows/columns of headers within the table
+
+TODO: Image
+
+Repetitions can simply be ignored.  Select one of the sets of headers, and use
+it for all the data.  In this example, the data cells are easy to distinguish
+from the headers mixed in among them, because only the data cells have the
+`numeric` data type.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-repeated-headers") %>%
+  filter(!is_blank) %>%
+  select(row, col, data_type, character, numeric) %>%
+  print()
+
+# View the cells in their original positions on the spreadsheet
+rectify(all_cells, character, numeric)
+
+# The 'term' headers appear four times, but only the first one is needed.
+term <-
+  filter(all_cells, row == 2) %>%
+  select(row, col, term = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+term
+
+subject <-
+  filter(all_cells, col == 2) %>%
+  select(row, col, subject = character)
+  # The title of this header is 'subject'
+  # The cells are text cells (`"history"`, etc.) so take the value in the
+  # '`character` column.
+subject
+
+name <-
+  filter(all_cells, col == 3) %>%
+  select(row, col, name = character)
+  # The title of this header is 'name'.
+  # The cells are text cells, so take the value in the '`character` column.
+name
+
+# The data cells are distinguished from the 'term' headers by their data type --
+# the data cells are numeric, whereas the term headers are character.
+data_cells <-
+  filter(all_cells, data_type == "numeric") %>%
+  select(row, col, score = numeric)
+  # The data is exam scores in certain subjects, so give the data that title.
+  # The data is numeric, so select only that 'value'.  If some of the data was
+  # also text or true/false, then you would select the `character` and `logical`
+  # columns as well as `numeric`
+data_cells
+
+data_cells %>%
+  N(term) %>%
+  NNW(subject) %>%
+  W(name) %>%
+  select(-row, -col)
+```
+
+### Headers amongst the data
+
+![Header within the data](./header-within-data.png)
+
+This happens when what is actually a row-header, instead of being presented to
+the left of the data, is presented above the data.  (Alternatively, what is
+actually a column header, instead of being presented above the data, is
+presented to the side.)
+
+The way to handle it is to *pretend* that it is a row header, and use the `WNW()`
+direction as normal.  Note that `NNW()` is not a synonym in this case -- try it
+and see what happens.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-header-within-data") %>%
+  filter(!is_blank) %>%
+  select(row, col, data_type, character, numeric, local_format_id) %>%
+  print()
+
+# View the cells in their original positions on the spreadsheet
+rectify(all_cells, character, numeric)
+
+bold <- which(xlsx_formats(path)$local$font$bold)
+
+# The subject headers, though mixed with the data and the 'term' headers, are
+# distinguishable by the data type "character" and by being bold.
+subject <-
+  filter(all_cells,
+         col == 3,
+         data_type == "character",
+         local_format_id %in% bold) %>%
+  select(row, col, subject = character)
+  # The title of this header is 'subject'
+  # The cells are text cells (`"history"`, etc.) so take the value in the
+  # '`character` column.
+subject
+
+# We only need one set of the 'term' headers
+term <-
+  filter(all_cells, row == 3, data_type == "character") %>%
+  select(row, col, term = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+term
+
+name <-
+  filter(all_cells, col == 2) %>%
+  select(row, col, name = character)
+  # The title of this header is 'name'.
+  # The cells are text cells, so take the value in the '`character` column.
+name
+
+# The data cells are distinguished from the 'subject' headers by their data
+# type -- the data cells are numeric, whereas the term headers are character.
+data_cells <-
+  filter(all_cells, data_type == "numeric") %>%
+  select(row, col, score = numeric)
+  # The data is exam scores in certain subjects, so give the data that title.
+  # The data is numeric, so select only that 'value'.  If some of the data was
+  # also text or true/false, then you would select the `character` and `logical`
+  # columns as well as `numeric`
+data_cells
+
+data_cells %>%
+  WNW(subject) %>%
+  N(term) %>%
+  W(name) %>%
+  select(-row, -col)
+```
+
+## Small multiples
+
+You might have heard the term 'small multiples' in the context of graphs, but it
+also occurs in spreadsheets, when an array of small tables could be combined
+into a single table.
+
+TODO: Image
+
+To import an array of small tables, start by writing the code to import one, and
+then apply that to each in turn.
+
+1. Write the code to import one table.
+1. Wrap that code in a function.
+1. Partition the whole spreadsheet so that each table is in one partition.
+1. Map the function over the partitions.
+
+### Small multiples with all headers present for each multiple
+
+TODO: Image
+
+The code to import one of these multiples will be simple.
+
+```{r, eval = FALSE}
+cells %>%
+  behead(NNW, subject, character) %>%
+  behead(N, header, character) %>%
+  select(-col, - local_format_id) %>%
+  spatter(header) %>%
+  select(-row)
+```
+
+The first table is in rows 1 to 4, columns 1 to 3, so we start by writing the
+code to import only that table.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "small-multiples") %>%
+  filter(!is_blank) %>%
+  select(row, col, data_type, character, numeric, local_format_id)
+
+table1 <- filter(all_cells, row %in% 1:4, col %in% 1:3)
+
+table1 %>%
+  behead(NNW, subject, character) %>%
+  behead(N, header, character) %>%
+  select(-col, - local_format_id) %>%
+  spatter(header) %>%
+  select(-row)
+```
+
+We wrap that code in a function, to be applied to each separate table.
+
+```{r}
+unpivot <- function(cells) {
+  cells %>%
+    behead(NNW, subject, character) %>%
+    behead(N, header, character) %>%
+    select(-col, - local_format_id) %>%
+    spatter(header) %>%
+    select(-row)
+}
+```
+
+Now we partition the spreadsheet into the separate tables.  This is done by
+identifying a corner cell in each table.
+
+```{r}
+formats <- xlsx_formats(path)
+italic <- which(formats$local$font$italic)
+
+corners <- filter(all_cells, local_format_id %in% italic)
+partitions <- partition(all_cells, corners)
+partitions
+```
+
+Finally, map the unpivoting function over the partitions, and combine the
+results.
+
+```{r}
+partitions %>%
+  nest(-partition) %>%
+  pull(data) %>%
+  map(unpivot) %>%
+  bind_rows()
+```
+
+### Same table in several worksheets/files (using the sheet/file name)
+
+Because `tidyxl()` imports cells from multiple sheets into the same data frame,
+tables on separate sheets can be imported by mapping over the different sheets.
+Just name each sheet in the `xlsx_cell()` call, or don't name any to import them
+all.
+
+As far as `tidyxl()` is concerned, the particular sheet (aka 'tab') that a cell
+is on is another coordinate like `row` and `col`, so the full location of a cell
+is its `row`, its `col`, and its `sheet`.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = c("humanities", "performance")) %>%
+  filter(!is_blank) %>%
+  select(sheet, row, col, data_type, character, numeric)
+all_cells
+```
+
+To prepare the sheets to be mapped over, use `tidyr::nest()`.  The `data` column
+contains the cells of each sheet.
+
+```{r}
+all_cells %>%
+  nest(-sheet)
+```
+
+The function to unpivot each table in this case will be a couple of `behead()`
+statements.  Further clean-up can be saved until the end.
+
+```{r}
+unpivot <- function(cells) {
+  cells %>%
+    behead(N, name, character) %>%
+    behead(W, subject, character)
+}
+```
+
+After mapping the unpivot function over each sheet of cells, use
+`tidyr::unnest()` to show every row of data again.
+
+```{r}
+all_cells %>%
+  nest(-sheet) %>%
+  mutate(data = map(data, unpivot)) %>%
+  unnest()
+```
+
+Finally, do the clean-up operations that were saved until now.
+
+```{r}
+all_cells %>%
+  nest(-sheet) %>%
+  mutate(data = map(data, unpivot)) %>%
+  unnest() %>%
+  transmute(field = sheet,
+            name,
+            subject,
+            score = numeric)
+```
+
+### Same table in several worksheets/files but in different positions
+
+This is almost the same as the section "Same table in several worksheets/files
+(using the sheet/file name)".  The only difference is that the function you
+write to unpivot the table must also *find* the table in the first place, and be
+robust to differences in the placement and context of the table on each sheet.
+
+In this example, both tables begin in the same column, but there is an extra row
+of notes above one of the tables.  There are a few ways to tackle this problem.
+Here, we will begin at an anchor cell, `A1`, move down until we reach the
+`Subject` cell, which is either `A3` or `A4`, and then extend the selection to
+include the whole table.
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = c("female", "male")) %>%
+  filter(!is_blank) %>%
+  select(sheet, row, col, data_type, character, numeric)
+all_cells
+
+unpivot <- function(cells) {
+  cells %>%
+    anchor(1L, 1L) %>% # Cell A1 is in row 1, column 1
+    offset_S(cells, boundary = ~ character == "Subject", include = TRUE) %>%
+    extend_S(cells, 2) %>% # The table is three cells wide, and three high
+    extend_E(cells, 2) %>%
+    behead(N, name, character) %>%
+    behead(W, subject, character)
+}
+
+all_cells %>%
+  nest(-sheet) %>%
+  mutate(data = map(data, unpivot)) %>%
+  unnest() %>%
+  select(sex = sheet, name, subject, score = numeric)
+```
+
+```{r}
+# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-notes.xlsx")
+# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-annotations.xlsx")
+# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-highlighted.xlsx")
+# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-combined-highlights.xlsx")
+# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-highlight-hierarchy.xlsx")
+# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-sentinels.xlsx")
+```
+
+
+```{r}
+# View the cells in their original positions on the spreadsheet
+rectify(all_cells, character, numeric)
+```
+(`rectify()` takes the 'melted' output of `tidy_table()` or
+`tidyxl::xlsx_cells()` and projects it as a normal table, or 'rectangle', so you
+can see its layout).
