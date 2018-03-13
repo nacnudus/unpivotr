@@ -89,7 +89,8 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                           dplyr::select_vars(names(out), dplyr::everything(),
                                              exclude = c("row",
                                                          "col",
-                                                         "fctr",
+                                                         "ord",
+                                                         "fct",
                                                          "list")),
                        ~ unlist(purrr::map(.x, ~ ifelse(is.null(.x), NA, .x))))
   # Append row and column names
