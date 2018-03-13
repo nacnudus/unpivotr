@@ -31,3 +31,32 @@ globalVariables(c(".",
                   "everything",
                   "data_type",
                   ".boundary"))
+
+# Wrapper of c() and fct_c() to dispatch the correct concatenation function
+concatenate <- function(x) {
+  if(length(x) == 0) return(x)
+  if(!is.list(x)) return(c(x))
+  # Replace any NAs with NULLs, then all NULLs with a value from above or below
+  # (for the sake of concatentation), then put the NULLs/NAs back
+  missings <- union(which(purrr::map_lgl(x, is.null)),
+                    which(purrr::map_lgl(x, anyNA, recursive = FALSE)))
+  x[missings] <- list(NULL)
+  x <-
+    tibble::tibble(x) %>%
+    tidyr::fill(x, .direction = "down") %>%
+    tidyr::fill(x, .direction = "up") %>%
+    dplyr::pull(1)
+  # Dispatch the appropriate concatenation function
+  if(is.factor(x[[1]])) {
+    x <- fct_c(x)
+  } else {
+    x <- do.call(c, x)
+  }
+  # Put back the NULLs/NAs
+  if(is.list(x)) {
+    x[missings] <- list(NULL)
+  } else {
+    x[missings] <- NA
+  }
+  return(x)
+}
