@@ -1,4 +1,4 @@
-#' Isolate sentinel values into a separate column
+#' Move sentinel values into a separate column leaving NA behind
 #'
 #' @export
 #' @examples
