@@ -780,7 +780,7 @@ To a human it is intuitive that the cells below and to the right of the header
 `Postgraduate qualification` represent people with postgraduate qualifications,
 but it isn't so obvious to the computer.  How would the computer know that the
 header `Male` doesn't also relate to the column of cells below and to the left,
-beginning with `27,000`?
+beginning with `2`?
 
 This section shows how you can express the relationships between headers and
 data cells, using the [unpivotr](https://nacnudus.github.io/unpivotr) package.
