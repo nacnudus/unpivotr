@@ -57,6 +57,7 @@ vignette: >
   - Guessing datatypes
   - Non-text headers, e.g. dates.
   - Superscript numbers in numeric columns to reference notes
+  - Data embedded in comments
   - Data embedded in formulas
   - Referring to named ranges
 
@@ -1817,7 +1818,7 @@ provided as a data frame with the following columns.
 * scheme
 
 There is one of these data frames for each cell, and they are kept in a
-list-column called `character_formatted`
+list-column called `character_formatted`.
 
 ```{r}
 xlsx_cells(path, sheet = "in-cell formatting") %>%
@@ -1830,9 +1831,59 @@ differently.
 
 ```{r}
 xlsx_cells(path, sheet = "in-cell formatting") %>%
+  filter(address == "A1") %>%
   select(address, character_formatted) %>%
-  unnest() %>%
-  glimpse()
+  unnest()
+```
+
+It's hard to think of a plausible example, so here's an implausible one that
+nevertheless occurred in real life.  The following table of products and their
+production readiness combines three pieces of information in a single cell.
+
+```{r}
+xlsx_cells(path, sheet = "in-cell formatting") %>%
+  filter(address != "A1") %>%
+  rectify(character, numeric)
+```
+
+In the `ID` column, the first section `"A1"`, `"A2"`, `"A3"` is the product ID.
+The second section `"TEST"`, `"PRODUCTION"` is the production readiness, and the
+formatting of `"TEST"` and `"PRODUCTION"` shows whether or not manufacturing
+failed.  In the file, one of those strings is formatted red with a
+strikethrough, indicating failure.
+
+One way to extract the formatting is by unnesting, as above, but in this case we
+can get away with mapping over the nested data frames and pulling out a single
+value.
+
+```{r}
+strikethrough <-
+  xlsx_cells(path, sheet = "in-cell formatting") %>%
+  filter(address != "A1", col == 1) %>%
+  mutate(strikethrough = map_lgl(character_formatted, ~ any(.x$strike))) %>%
+  select(row, col, character, strikethrough)
+```
+
+This can then be joined onto the rest of the table, in the same way as the
+section "Already a tidy table but with meaningful formatting of single cells".
+
+```{r}
+cells <-
+  xlsx_cells(path, sheet = "in-cell formatting") %>%
+  filter(address != "A1") %>%
+  select(row, col, data_type, character, numeric)
+
+strikethrough <-
+  xlsx_cells(path, sheet = "in-cell formatting") %>%
+  filter(address != "A1", col == 1) %>%
+  mutate(strikethrough = map_lgl(character_formatted, ~ any(.x$strike))) %>%
+  select(row, strikethrough)
+
+left_join(cells, strikethrough, by = "row") %>%
+  behead(N, header, character) %>%
+  select(-col) %>%
+  spatter(header) %>%
+  select(ID, strikethrough, Count)
 ```
 
 ```{r}
@@ -1843,7 +1894,6 @@ xlsx_cells(path, sheet = "in-cell formatting") %>%
 # writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-highlight-hierarchy.xlsx")
 # writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-sentinels.xlsx")
 ```
-
 
 ```{r}
 # View the cells in their original positions on the spreadsheet
