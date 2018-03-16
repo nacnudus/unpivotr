@@ -52,9 +52,8 @@ vignette: >
   - Styles
   - Conditional formatting (not implemented because derived from the data)
 * In-cell formatting
-* Data validation
+* Data validation (tidyxl vignette?)
 * Other gotchas
-  - Guessing datatypes
   - Non-text headers, e.g. dates.
   - Superscript numbers in numeric columns to reference notes
   - Data embedded in comments
@@ -100,7 +99,7 @@ Here's the full process.
 
 ```{r}
 xlsx_cells(path, sheet = "clean") %>%
-  behead(N, header, character) %>%
+  behead(N, header) %>%
   select(row, data_type, header, character, numeric) %>%
   spatter(header) %>%
   select(-row)
@@ -128,7 +127,7 @@ and it only works on tables that have first come through
 ```{r}
 xlsx_cells(path, sheet = "clean") %>%
   select(row, col, data_type, character, numeric) %>%
-  behead(N, header, character)
+  behead(N, header)
 ```
 
 `unpivotr::spatter()` spreads key-value pairs across multiple columns, like
@@ -141,7 +140,7 @@ can be confused by extraneous data, so it's usually a good idea to drop the
 ```{r}
 xlsx_cells(path, sheet = "clean") %>%
   select(row, col, data_type, character, numeric) %>%
-  behead(N, header, character) %>%
+  behead(N, header) %>%
   select(-col) %>%
   spatter(header) %>%
   select(-row)
@@ -200,7 +199,7 @@ direction instead of `N` (north) when beheading the headers.
 
 ```{r}
 xlsx_cells(path, sheet = "transposed") %>%
-  behead(W, header, character) %>%
+  behead(W, header) %>%
   select(col, data_type, header, character, numeric) %>%
   spatter(header) %>%
   select(Name, Age)
@@ -290,7 +289,7 @@ cells %>%
   filter(between(row, top_left$row, bottom_right$row),
          between(col, top_left$col, bottom_right$col)) %>%
   select(row, col, data_type, character, numeric) %>%
-  behead(N, header, character) %>%
+  behead(N, header) %>%
   select(-col) %>%
   spatter(header) %>%
   select(-row)
@@ -363,7 +362,7 @@ fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
 xlsx_cells(path, sheet = "highlights") %>%
   mutate(fill_colour = fill_colours[local_format_id]) %>%
   select(row, col, data_type, character, numeric, fill_colour) %>%
-  behead(N, header, character) %>%
+  behead(N, header) %>%
   select(-col, -character) %>%
   spatter(header) %>%
   select(-row)
@@ -426,14 +425,14 @@ cells
 values <-
   cells %>%
   select(-fill_colour) %>%
-  behead(N, header, character) %>%
+  behead(N, header) %>%
   select(-col) %>%
   spatter(header)
 values
 
 fills <-
   cells %>%
-  behead(N, header, character) %>%
+  behead(N, header) %>%
   mutate(header = paste0(header, "_fill")) %>%
   select(row, header, fill_colour) %>%
   spread(header, fill_colour)
@@ -503,8 +502,8 @@ fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
 xlsx_cells(path, sheet = "annotations") %>%
   mutate(fill_colour = fill_colours[local_format_id]) %>%
   select(row, col, data_type, character, numeric, fill_colour) %>%
-  behead(W, Name, character) %>%
-  behead(N, variable, character) %>%
+  behead(W, Name) %>%
+  behead(N, variable) %>%
   select(-data_type, -character, value = numeric)
 ```
 
@@ -558,9 +557,9 @@ cells <-
   xlsx_cells(path, sheet = "combined-highlights") %>%
   mutate(fill_colour = fill_colours[local_format_id],
          font_colour = font_colours[local_format_id]) %>%
-  select(row, col, character, numeric, fill_colour, font_colour) %>%
-  behead(N, header, character) %>%
-  behead(W, Name, character) %>%
+  select(row, col, data_type, character, numeric, fill_colour, font_colour) %>%
+  behead(N, header) %>%
+  behead(W, Name) %>%
   select(-col, -character)
 
 values <-
@@ -632,7 +631,7 @@ xlsx_cells(path, sheet = "highlight-hierarchy") %>%
                            italic ~ "satisfactory",
                            TRUE ~ "good")) %>%
   select(row, col, data_type, character, numeric, bold, italic, grade) %>%
-  behead(N, header, character) %>%
+  behead(N, header) %>%
   select(-col) %>%
   spatter(header)
 ```
@@ -718,8 +717,8 @@ Here's another version using only tidyxl and unpivotr, which provides
 xlsx_cells(path, sheet = "sentinels") %>%
   select(row, col, data_type, character, numeric) %>%
   isolate_sentinels(c("NA", "…", "..C"), character) %>%
-  behead(W, Name, character) %>%
-  behead(N, variable, character) %>%
+  behead(W, Name) %>%
+  behead(N, variable) %>%
   select(Name, variable, character, numeric, sentinel)
 ```
 
@@ -839,7 +838,7 @@ every column.
 all_cells <-
   xlsx_cells(path, sheets = "pivot-annotations") %>%
   filter(col >= 4, !is_blank) %>% # Ignore the row headers in this example
-  select(row, col, character, numeric)
+  select(row, col, data_type, character, numeric)
 
 all_cells
 ```
@@ -856,7 +855,7 @@ of the header cells -- it's usually the `character` column.
 
 ```{r}
 all_cells %>%
-  behead(NNW, sex, character)
+  behead(NNW, sex)
 ```
 
 That did half the job.  The value 2 in row 4 column 5 is indeed a score
@@ -868,8 +867,8 @@ represents names of people.
 
 ```{r}
 all_cells %>%
-  behead(NNW, sex, character) %>%
-  behead(N, `name`, character)
+  behead(NNW, sex) %>%
+  behead(N, `name`)
 ```
 
 A final step is a normal clean-up.  We drop the `row`, `col` and `character`
@@ -878,8 +877,8 @@ represents.
 
 ```{r}
 all_cells %>%
-  behead(NNW, sex, character) %>%
-  behead(N, `name`, character) %>%
+  behead(NNW, sex) %>%
+  behead(N, `name`) %>%
   select(score = numeric, sex, `name`)
 ```
 
@@ -893,14 +892,14 @@ left-and-above the data cells.
 all_cells <-
   xlsx_cells(path, sheets = "pivot-annotations") %>%
   filter(!is_blank) %>%
-  select(row, col, character, numeric) %>%
+  select(row, col, data_type, character, numeric) %>%
   print()
 
 all_cells %>%
-  behead(NNW, sex, character) %>%   # As before
-  behead(N, `name`, character) %>%  # As before
-  behead(WNW, field, character) %>% # Left-and-above
-  behead(W, subject, character) %>% # Directly left
+  behead(NNW, sex) %>%   # As before
+  behead(N, `name`) %>%  # As before
+  behead(WNW, field) %>% # Left-and-above
+  behead(W, subject) %>% # Directly left
   rename(score = numeric) %>%
   select(-row, -col, -character)
 ```
@@ -921,15 +920,15 @@ complicates the relationship between the data and the formatting.
 all_cells <-
   xlsx_cells(path, sheets = "pivot-annotations") %>%
   filter(!is_blank) %>%
-  select(row, col, character, numeric) %>%
+  select(row, col, data_type, character, numeric) %>%
   print()
 
 unpivoted <-
   all_cells %>%
-  behead(NNW, sex, character) %>%   # As before
-  behead(N, `name`, character) %>%  # As before
-  behead(WNW, field, character) %>% # Left-and-above
-  behead(W, subject, character) %>% # Directly left
+  behead(NNW, sex) %>%   # As before
+  behead(N, `name`) %>%  # As before
+  behead(WNW, field) %>% # Left-and-above
+  behead(W, subject) %>% # Directly left
   rename(score = numeric) %>%
   select(-character)                # Retain the row and col for now
 unpivoted
@@ -1538,8 +1537,8 @@ The code to import one of these multiples will be simple.
 
 ```{r, eval = FALSE}
 cells %>%
-  behead(NNW, subject, character) %>%
-  behead(N, header, character) %>%
+  behead(NNW, subject) %>%
+  behead(N, header) %>%
   select(-col, - local_format_id) %>%
   spatter(header) %>%
   select(-row)
@@ -1557,8 +1556,8 @@ all_cells <-
 table1 <- filter(all_cells, row %in% 1:4, col %in% 1:3)
 
 table1 %>%
-  behead(NNW, subject, character) %>%
-  behead(N, header, character) %>%
+  behead(NNW, subject) %>%
+  behead(N, header) %>%
   select(-col, - local_format_id) %>%
   spatter(header) %>%
   select(-row)
@@ -1569,8 +1568,8 @@ We wrap that code in a function, to be applied to each separate table.
 ```{r}
 unpivot <- function(cells) {
   cells %>%
-    behead(NNW, subject, character) %>%
-    behead(N, header, character) %>%
+    behead(NNW, subject) %>%
+    behead(N, header) %>%
     select(-col, - local_format_id) %>%
     spatter(header) %>%
     select(-row)
@@ -1633,8 +1632,8 @@ statements.  Further clean-up can be saved until the end.
 ```{r}
 unpivot <- function(cells) {
   cells %>%
-    behead(N, name, character) %>%
-    behead(W, subject, character)
+    behead(N, name) %>%
+    behead(W, subject)
 }
 ```
 
@@ -1687,8 +1686,8 @@ unpivot <- function(cells) {
     offset_S(cells, boundary = ~ character == "Subject", include = TRUE) %>%
     extend_S(cells, 2) %>% # The table is three cells wide, and three high
     extend_E(cells, 2) %>%
-    behead(N, name, character) %>%
-    behead(W, subject, character)
+    behead(N, name) %>%
+    behead(W, subject)
 }
 
 all_cells %>%
@@ -1911,7 +1910,7 @@ strikethrough <-
   select(row, strikethrough)
 
 left_join(cells, strikethrough, by = "row") %>%
-  behead(N, header, character) %>%
+  behead(N, header) %>%
   select(-col) %>%
   spatter(header) %>%
   select(ID, strikethrough, Count)
@@ -1930,24 +1929,22 @@ the header of a data frame.
 
 ```{r}
 xlsx_cells(path, sheet = "non-text headers") %>%
-  behead(W, name, character) %>%
-  behead(N, `academic-year`, date) %>%
+  behead(W, name) %>%
+  behead(N, `academic-year`) %>%
   mutate(`academic-year` = strftime(`academic-year`, "%Y")) %>%
   select(row, data_type, `academic-year`, name, numeric) %>%
   spatter(`academic-year`) %>%
   select(-row)
 ```
 
-This is trickier when a single set of headers is of mixed data types, e.g. some
-character and some date.  You can deal with this by converting the date values
-to text *before* using `behead()`.
+When a single set of headers is of mixed data types, e.g. some character and
+some date, `behead()` chooses the correct ones using the `data_type` column,
+before converting them all to text via `format()`.
 
 ```{r}
 xlsx_cells(path, sheet = "non-text headers") %>%
   select(row, col, data_type, character, numeric, date) %>%
-  mutate(character = if_else())
-  behead(N, `academic-year`, date) %>%
-  behead(N, name, character)
+  behead(N, header)
 ```
 
 ```{r}
