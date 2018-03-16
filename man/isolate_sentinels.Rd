@@ -2,12 +2,12 @@
 % Please edit documentation in R/sentinel.R
 \name{isolate_sentinels}
 \alias{isolate_sentinels}
-\title{Isolate sentinel values into a separate column}
+\title{Move sentinel values into a separate column leaving NA behind}
 \usage{
 isolate_sentinels(.data, sentinels, col, into = sentinel)
 }
 \description{
-Isolate sentinel values into a separate column
+Move sentinel values into a separate column leaving NA behind
 }
 \examples{
 isolate_sentinels(Formaldehyde, 0.3, carb)
