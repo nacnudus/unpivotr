@@ -7,16 +7,16 @@ spatter <- function(.data, key, values = data_type) {
 }
 
 #' @export
-spatter.data.frame <- function(.data, key, types = data_type) {
+spatter.data.frame <- function(cells, key, types = data_type) {
   key <- rlang::ensym(key)
   types <- rlang::ensym(types)
-  type_names <- unique(dplyr::pull(.data, !! types))
+  type_names <- unique(dplyr::pull(cells, !! types))
   factors <-
-    .data %>%
+    cells %>%
     dplyr::distinct(!! key, !! types) %>%
     dplyr::filter(!! types %in% c("fct", "ord")) %>%
     dplyr::pull(!! key)
-  .data %>%
+  cells %>%
     pack(types = !! types, name = .value) %>%
     tidyr::spread(!! key, .value) %>%
     dplyr::mutate_if(is.list, concatenate) %>%
