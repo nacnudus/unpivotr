@@ -1917,6 +1917,39 @@ left_join(cells, strikethrough, by = "row") %>%
   select(ID, strikethrough, Count)
 ```
 
+##  Other gotchas
+
+### Non-text headers e.g. dates
+
+At the time of writing, readxl doesn't convert Excel dates to R dates when they
+are in the header row.
+
+Using tidyxl and unpivotr, you can choose to make a cell of any data type into a
+tidy 'header', and you can reformat it as text before `spatter()` turns it into
+the header of a data frame.
+
+```{r}
+xlsx_cells(path, sheet = "non-text headers") %>%
+  behead(W, name, character) %>%
+  behead(N, `academic-year`, date) %>%
+  mutate(`academic-year` = strftime(`academic-year`, "%Y")) %>%
+  select(row, data_type, `academic-year`, name, numeric) %>%
+  spatter(`academic-year`) %>%
+  select(-row)
+```
+
+This is trickier when a single set of headers is of mixed data types, e.g. some
+character and some date.  You can deal with this by converting the date values
+to text *before* using `behead()`.
+
+```{r}
+xlsx_cells(path, sheet = "non-text headers") %>%
+  select(row, col, data_type, character, numeric, date) %>%
+  mutate(character = if_else())
+  behead(N, `academic-year`, date) %>%
+  behead(N, name, character)
+```
+
 ```{r}
 # writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-notes.xlsx")
 # writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-annotations.xlsx")
