@@ -100,9 +100,8 @@ Here's the full process.
 
 ```{r}
 xlsx_cells(path, sheet = "clean") %>%
-  select(row, col, data_type, character, numeric) %>%
   behead(N, header, character) %>%
-  select(-col) %>%
+  select(row, data_type, header, character, numeric) %>%
   spatter(header) %>%
   select(-row)
 ```
