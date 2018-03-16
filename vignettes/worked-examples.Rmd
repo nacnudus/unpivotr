@@ -174,6 +174,38 @@ tidy data.
 
 But even with tidy tables, there can be gotchas.
 
+### Transposed (headers in the first row, data extends to the right)
+
+Most packages for importing data assume that the headers are in the first row,
+and each row of data is an observation.  They usually don't support the
+alternative: headers in the first column, and each column of data is an
+observation.
+
+You can hack a way around this by importing without recognising any headers,
+converting to a matrix, transposing the matrix, and converting back to a data
+frame, but this almost always results in all the data types being converted.
+
+```{r}
+read_excel(path, sheet = "transposed", col_names = FALSE) %>%
+  as.matrix() %>%
+  t() %>%
+  `colnames<-`(.[1, ]) %>%
+  .[-1, ] %>%
+  as_tibble()
+```
+
+Tidyxl and unpivotr are agnostic to the layout of tables.  Importing the
+transpose is the same is importing the usual layout, merely using the `W` (west)
+direction instead of `N` (north) when beheading the headers.
+
+```{r}
+xlsx_cells(path, sheet = "transposed") %>%
+  behead(W, header, character) %>%
+  select(col, data_type, header, character, numeric) %>%
+  spatter(header) %>%
+  select(Name, Age)
+```
+
 ### Other stuff on the same sheet
 
 TODO: Demonstrate offset() and extend() better.  Maybe in a separate section on
