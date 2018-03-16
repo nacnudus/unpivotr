@@ -4,7 +4,7 @@
 \alias{behead}
 \title{Strip a level of headers from a pivot table}
 \usage{
-behead(cells, direction, name, values, drop_na = TRUE)
+behead(cells, direction, name, types = data_type, drop_na = TRUE)
 }
 \arguments{
 \item{cells}{Data frame. The cells of a pivot table, usually the output of
@@ -20,9 +20,10 @@ directly rather than via \code{\link[=behead]{behead()}}.  See the help file for
 \item{name}{A name to give the new column that will be created, e.g.
 \code{location} if the headers are locations.  Not quoted (not \code{"location"}).}
 
-\item{values}{The name of the column of \code{cells} that contains the value of
-the header cells.  E.g. \code{"chr"} if the headers are strings and the table came
-via \code{\link[=tidy_table]{tidy_table()}}.}
+\item{types}{The name of the column that names the data type of each cell.
+Usually called \code{data_types} (the default), this is a character column that
+names the other columns in \code{cells} that contain the values of each cell.
+E.g.  a cell with a character value will have \code{"character"} in this column.}
 
 \item{drop_na}{logical Whether to filter out headers that have \code{NA} in the
 \code{value} column.  Default: \code{TRUE}.  This can happen with the output of
@@ -51,10 +52,10 @@ tail(cells)
 # Strip the headers and make them into data
 tidy <-
   cells \%>\%
-  behead(NNW, Sex, chr) \%>\%
-  behead(N, `Sense of purpose`, chr) \%>\%
-  behead(WNW, `Highest qualification`, chr) \%>\%
-  behead(W, `Age group (Life-stages)`, chr) \%>\%
+  behead(NNW, Sex) \%>\%
+  behead(N, `Sense of purpose`) \%>\%
+  behead(WNW, `Highest qualification`) \%>\%
+  behead(W, `Age group (Life-stages)`) \%>\%
   dplyr::select(-row, -col, -data_type, -chr)
 head(tidy)
 

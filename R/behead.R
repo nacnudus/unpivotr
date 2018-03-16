@@ -16,9 +16,10 @@
 #' directly rather than via [behead()].  See the help file for [join_header()].
 #' @param name A name to give the new column that will be created, e.g.
 #' `location` if the headers are locations.  Not quoted (not `"location"`).
-#' @param values The name of the column of `cells` that contains the value of
-#' the header cells.  E.g. `"chr"` if the headers are strings and the table came
-#' via [tidy_table()].
+#' @param types The name of the column that names the data type of each cell.
+#' Usually called `data_types` (the default), this is a character column that
+#' names the other columns in `cells` that contain the values of each cell.
+#' E.g.  a cell with a character value will have `"character"` in this column.
 #' @param drop_na logical Whether to filter out headers that have `NA` in the
 #' `value` column.  Default: `TRUE`.  This can happen with the output of
 #' `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
@@ -39,10 +40,10 @@
 #' # Strip the headers and make them into data
 #' tidy <-
 #'   cells %>%
-#'   behead(NNW, Sex, chr) %>%
-#'   behead(N, `Sense of purpose`, chr) %>%
-#'   behead(WNW, `Highest qualification`, chr) %>%
-#'   behead(W, `Age group (Life-stages)`, chr) %>%
+#'   behead(NNW, Sex) %>%
+#'   behead(N, `Sense of purpose`) %>%
+#'   behead(WNW, `Highest qualification`) %>%
+#'   behead(W, `Age group (Life-stages)`) %>%
 #'   dplyr::select(-row, -col, -data_type, -chr)
 #' head(tidy)
 #'
@@ -52,18 +53,30 @@
 #' # The provided 'tidy' data is missing a roww for Male 15-24-year-olds with a
 #' # postgraduate qualification and a sense of purpose between 0 and 6.  That
 #' # seems to have been an oversight by Statistics New Zealand.
-behead <- function(cells, direction, name, values, drop_na = TRUE) {
+behead <- function(cells, direction, name, types = data_type, drop_na = TRUE) {
   name <- rlang::ensym(name)
-  values <- rlang::ensym(values)
+  types <- rlang::ensym(types)
+  type_names <- unique(dplyr::pull(cells, !! types))
   filter_expr <- direction_filter(!!rlang::ensym(direction))
   is_header <- rlang::eval_tidy(filter_expr, cells)
   headers <-
     cells %>%
     dplyr::filter(is_header) %>%
-    dplyr::select(row, col, !!name := !!values)
-  if (drop_na) headers <- dplyr::filter(headers, !is.na(!!name))
+    pack(types = !! types) %>%
+    dplyr::mutate(is_na = is.na(value),
+                  !! name := purrr::map_chr(value, format_list_element),
+                  !! name := if_else(is_na, NA_character_, !! name)) %>%
+    dplyr::filter(!(drop_na & is_na)) %>%
+    dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
   direction(datacells, headers, drop = FALSE)
+}
+
+# Apply format() to list-elements of a list-column created by pack(), descending
+# into factors (which are doubly wrapped in lists)
+format_list_element <- function(x) {
+  if(is.list(x)) return(format(x[[1]]))
+  format(x)
 }
 
 # Construct a filter expression for stripping a header from a pivot table
