@@ -7,10 +7,10 @@ test_that("behead() works", {
   # Strip the headers and make them into data
   tidy <-
     cells %>%
-    behead(NNW, Sex, chr) %>%
-    behead(N, `Sense of purpose`, chr) %>%
-    behead(WNW, `Highest qualification`, chr) %>%
-    behead(W, `Age group (Life-stages)`, chr) %>%
+    behead(NNW, Sex) %>%
+    behead(N, `Sense of purpose`) %>%
+    behead(WNW, `Highest qualification`) %>%
+    behead(W, `Age group (Life-stages)`) %>%
     dplyr::select(-row, -col, -data_type, -chr)
   # Check against the provided 'tidy' version of the data.
   expect_equal(nrow(dplyr::anti_join(tidy, purpose$Tidy)), 1)
@@ -23,10 +23,10 @@ test_that("the `drop_na` argument of behead() works", {
   # Strip the headers and make them into data
   tidy <-
     cells %>%
-    behead(N, Sex, chr, drop_na = FALSE) %>%
-    behead(N, `Sense of purpose`, chr) %>%
-    behead(WNW, `Highest qualification`, chr) %>%
-    behead(W, `Age group (Life-stages)`, chr) %>%
+    behead(N, Sex, drop_na = FALSE) %>%
+    behead(N, `Sense of purpose`) %>%
+    behead(WNW, `Highest qualification`) %>%
+    behead(W, `Age group (Life-stages)`) %>%
     dplyr::select(-row, -col, -data_type, -chr)
   # Check against the provided 'tidy' version of the data.
   expect_equal(nrow(tidy), 80)
