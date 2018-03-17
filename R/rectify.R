@@ -101,13 +101,17 @@ rectify <- function(cells, ..., values = NULL) {
   # are the same type and are not character.
   types <- purrr::map_chr(dplyr::select(cells, !!!columns), typeof)
   same_types <- length(unique(types)) == 1
-  blank <- (if(same_types) rlang::eval_tidy(columns[[1]], cells)[0] else character())
+  if(same_types) {
+    blank <- dplyr::pull(cells, !! columns[[1]])[0]
+  } else {
+    blank <- character()
+  }
   out <- matrix(blank, nrow = nrows, ncol = ncols)
   # Assign the columns of `cells` to the matrix, converting to character if
   # necessary
   for (column in columns) {
     value_cells <- dplyr::filter(cells, !is.na(!!column))
-    values <- rlang::eval_tidy(column, value_cells)
+    values <- dplyr::pull(value_cells, !! column)
     if(!same_types) {
       values <- format(values, justify = "none")
     }
