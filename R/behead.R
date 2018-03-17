@@ -89,10 +89,10 @@ direction_filter <- function(direction) {
   direction <- rlang::expr_text(rlang::ensym(direction))
   check_direction(direction)
   direction <- substr(direction, 1L, 1L)
-  dplyr::case_when(direction == "N" ~ rlang::expr(row == min(row)),
-                   direction == "E" ~ rlang::expr(col == max(col)),
-                   direction == "S" ~ rlang::expr(row == max(row)),
-                   direction == "W" ~ rlang::expr(col == min(col)))
+  dplyr::case_when(direction == "N" ~ rlang::expr(.data$row == min(.data$row)),
+                   direction == "E" ~ rlang::expr(.data$col == max(.data$col)),
+                   direction == "S" ~ rlang::expr(.data$row == max(.data$row)),
+                   direction == "W" ~ rlang::expr(.data$col == min(.data$col)))
 }
 
 # Check that a given direction is a supported compass direction
