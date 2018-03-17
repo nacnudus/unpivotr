@@ -2,6 +2,7 @@ context("rectify")
 
 x <- data.frame(row = c(1L, 1L, 2L, 2L),
                 col = c(1L, 2L, 1L, 2L),
+                data_type = rep("integer", 4),
                 value = c("a", "b", "c", "d"),
                 stringsAsFactors = FALSE)
 
