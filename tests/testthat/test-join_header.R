@@ -375,14 +375,14 @@ test_that("join_header() works", {
                "The direction NORTH, is either not recognised or not yet supported.")
   expect_error(join_header(datacells,
                            col_headers[[1]] %>% extend_S(cells, 1),
-                           "W"),
+                           W),
                "Multiple lines of headers are not supported in this way*")
-  expect_error(join_header(datacells, col_headers[[1]], "N",
+  expect_error(join_header(datacells, col_headers[[1]], N,
                            boundaries = col_headers[[2]]),
                "'boundaries' is only supported for the directions 'ABOVE', 'RIGHT', 'BELOW' and 'LEFT'.")
-  expect_equal(join_header(datacells, col_headers[[1]], "ABOVE"),
+  expect_equal(join_header(datacells, col_headers[[1]], ABOVE),
                ABOVE(datacells, col_headers[[1]]))
-  expect_equal(join_header(datacells, col_headers[[1]], "N"),
+  expect_equal(join_header(datacells, col_headers[[1]], N),
                N(datacells, col_headers[[1]]))
 })
 
@@ -428,4 +428,20 @@ test_that("the `drop` argument works", {
   expect_equal(nrow(ABOVE(datacells, satisfaction, left_border_cells, drop = FALSE)), 55)
   expect_equal(nrow(LEFT(datacells, sex, top_border_cells)), 49)
   expect_equal(nrow(LEFT(datacells, sex, top_border_cells, drop = FALSE)), 55)
+})
+
+test_that("Quoted directions still work for backwards compatibility", {
+  cells <- tidy_table(purpose$`NNW WNW`)
+  col_headers <-
+    cells %>%
+    filter(row <= 2, !is.na(chr)) %>%
+    select(row, col, header = chr) %>%
+    split(.$row)
+  datacells <-
+    cells %>%
+    filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    mutate(value = as.integer(chr)) %>%
+    select(row, col, value)
+  expect_equal(join_header(datacells, col_headers[[1]], "N"),
+               N(datacells, col_headers[[1]]))
 })

@@ -18,8 +18,9 @@
 #' a boundary could be a bag of cells with borders on one side.  This is useful
 #' when the nearest header might be the wrong header because it lies on the
 #' other side of a border.
-#' @param direction Character vector length 1. A compass direction to search for
-#' the nearest header.  See 'details'.
+#' @param direction The name of a function that joins headers to data cells, one
+#' of `N`, `E`, `S`, `W`, `NNW`, `NNE`, `ENE`, `ESE`, `SSE`, `SSW`. `WSW`,
+#' `WNW`, `ABOVE`, `BELOW`, `LEFT` and `RIGHT`.  See 'details'.
 #' @param drop Logical vector length 1. Whether data cells that can't be
 #' associated with a header should be dropped.  Default: TRUE.
 #' @details Headers are associated with data by proximity in a given direction.
@@ -81,6 +82,7 @@
 #' N(datacells, gender)
 #' N(datacells, gender, drop = FALSE)
 join_header <- function(bag, header, direction, boundaries = NULL, drop = TRUE) {
+  direction <- quo_name(enexpr(direction))
   check_header(header)
   if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
     do.call(direction, list(bag, header, boundaries))

@@ -62,8 +62,9 @@ RIGHT(bag, header, boundaries = NULL, drop = TRUE)
 \item{header}{Data frame. A bag of data cells including at least the columns
 'row' and 'column', which are numeric/integer vectors.}
 
-\item{direction}{Character vector length 1. A compass direction to search for
-the nearest header.  See 'details'.}
+\item{direction}{The name of a function that joins headers to data cells, one
+of \code{N}, \code{E}, \code{S}, \code{W}, \code{NNW}, \code{NNE}, \code{ENE}, \code{ESE}, \code{SSE}, \code{SSW}. \code{WSW},
+\code{WNW}, \code{ABOVE}, \code{BELOW}, \code{LEFT} and \code{RIGHT}.  See 'details'.}
 
 \item{boundaries}{Data frame. Only applies to the directions "ABOVE",
 "RIGHT", "BELOW" and "LEFT".  A bag of cells in one row or one column,
