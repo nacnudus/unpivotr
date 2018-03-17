@@ -86,7 +86,7 @@ rectify <- function(cells, ..., values = NULL) {
   # Silently omit columns not in `cells`
   columns <- intersect(columns, rlang::syms(colnames(cells)))
   if(length(columns) == 0) {
-    return(matrix(numeric(), 0, 0))
+    return(matrix(logical(), 0, 0))
   }
   # Only use used rows/cols, and allow an extra row and col for headers
   minrow <- min(cells$row)

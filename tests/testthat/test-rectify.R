@@ -6,7 +6,7 @@ x <- data.frame(row = c(1L, 1L, 2L, 2L),
                 stringsAsFactors = FALSE)
 
 test_that("rectify() with only the `cells` argument returns zero-dim matrix", {
-  expect_equal(rectify(x), matrix(numeric(), 0L, 0L)) # type still matters
+  expect_equal(rectify(x), matrix(logical(), 0L, 0L)) # type still matters
 })
 
 test_that("rectify() puts the cells in the correct places", {
