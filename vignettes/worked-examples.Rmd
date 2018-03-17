@@ -249,7 +249,7 @@ use those boundaries as the `skip`, `n_max` and `col_types` arguments to
 # Step 1: read the spreadsheet and filter for sentinel values to detect the
 # top-left and bottom-right cells
 cells <- xlsx_cells(path, sheet = "notes")
-rectify(cells, character, numeric)
+rectify(cells)
 
 top_left <-
   filter(cells, character == "Name") %>%
@@ -976,7 +976,7 @@ all_cells <-
   print()
 
 # View the cells in their original positions on the spreadsheet
-rectify(all_cells, character, numeric)
+rectify(all_cells)
 
 first_header_row <-
   filter(all_cells, row == 2) %>%
@@ -1054,7 +1054,7 @@ all_cells <-
   print()
 
 # View the cells in their original positions on the spreadsheet
-rectify(all_cells, character, numeric)
+rectify(all_cells)
 
 first_header_col <-
   filter(all_cells, col == 2) %>%
@@ -1101,7 +1101,7 @@ all_cells <-
   print()
 
 # View the cells in their original positions on the spreadsheet
-rectify(all_cells, character, numeric)
+rectify(all_cells)
 
 first_header_row <-
   filter(all_cells, row == 2) %>%
@@ -1170,7 +1170,7 @@ all_cells <-
   print()
 
 # View the cells in their original positions on the spreadsheet
-rectify(all_cells, character, numeric)
+rectify(all_cells)
 
 first_header_row <-
   filter(all_cells, row == 2) %>%
@@ -1397,7 +1397,7 @@ all_cells <-
   print()
 
 # View the cells in their original positions on the spreadsheet
-rectify(all_cells, character, numeric)
+rectify(all_cells)
 
 # The 'term' headers appear four times, but only the first one is needed.
 term <-
@@ -1462,7 +1462,7 @@ all_cells <-
   print()
 
 # View the cells in their original positions on the spreadsheet
-rectify(all_cells, character, numeric)
+rectify(all_cells)
 
 bold <- which(xlsx_formats(path)$local$font$bold)
 
@@ -1536,12 +1536,12 @@ TODO: Image
 The code to import one of these multiples will be simple.
 
 ```{r, eval = FALSE}
-cells %>%
-  behead(NNW, subject) %>%
-  behead(N, header) %>%
-  select(-col, - local_format_id) %>%
-  spatter(header) %>%
-  select(-row)
+# cells %>%
+#   behead(NNW, subject) %>%
+#   behead(N, header) %>%
+#   select(-col, - local_format_id) %>%
+#   spatter(header) %>%
+#   select(-row)
 ```
 
 The first table is in rows 1 to 4, columns 1 to 3, so we start by writing the
@@ -1873,7 +1873,7 @@ production readiness combines three pieces of information in a single cell.
 ```{r}
 xlsx_cells(path, sheet = "in-cell formatting") %>%
   filter(address != "A1") %>%
-  rectify(character, numeric)
+  rectify()
 ```
 
 In the `ID` column, the first section `"A1"`, `"A2"`, `"A3"` is the product ID.
@@ -1958,7 +1958,7 @@ xlsx_cells(path, sheet = "non-text headers") %>%
 
 ```{r}
 # View the cells in their original positions on the spreadsheet
-rectify(all_cells, character, numeric)
+rectify(all_cells)
 ```
 (`rectify()` takes the 'melted' output of `tidy_table()` or
 `tidyxl::xlsx_cells()` and projects it as a normal table, or 'rectangle', so you
