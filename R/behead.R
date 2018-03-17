@@ -70,7 +70,7 @@ behead <- function(cells, direction, name, types = data_type, drop_na = TRUE) {
                   !! name := purrr::map_chr(value, format_list_element),
                   !! name := dplyr::if_else(is_na,
                                             NA_character_,
-                                            !! rlang::sym(name))) %>%
+                                            !! name)) %>%
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
