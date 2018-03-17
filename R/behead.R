@@ -65,7 +65,7 @@ behead <- function(cells, direction, name, types = data_type, drop_na = TRUE) {
     pack(types = !! types) %>%
     dplyr::mutate(is_na = is.na(value),
                   !! name := purrr::map_chr(value, format_list_element),
-                  !! name := if_else(is_na, NA_character_, !! name)) %>%
+                  !! name := dplyr::if_else(is_na, NA_character_, !! name)) %>%
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
