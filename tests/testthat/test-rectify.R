@@ -1,24 +1,18 @@
 context("rectify")
 
-x <- data.frame(row = c(1L, 1L, 2L, 2L),
-                col = c(1L, 2L, 1L, 2L),
-                data_type = rep("integer", 4),
-                value = c("a", "b", "c", "d"),
-                stringsAsFactors = FALSE)
-
-test_that("rectify() with only the `cells` argument returns zero-dim matrix", {
-  expect_equal(rectify(x), matrix(logical(), 0L, 0L)) # type still matters
-})
-
 test_that("rectify() puts the cells in the correct places", {
-  rectify_correct <- matrix(c(1L, 2L, 1L, 2L),
+  x <- data.frame(row = c(1L, 1L, 2L, 2L),
+                  col = c(1L, 2L, 1L, 2L),
+                  data_type = rep("character", 4),
+                  character = c("a", "b", "c", "d"),
+                  stringsAsFactors = FALSE)
+  rectify_correct <- matrix(as.character(c(1L, 2L, 1L, 2L)),
                             2L, 2L,
                             dimnames = list(c(1, 2),
                                             c("1(A)", "2(B)")))
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, row), rectify_correct)
-
-  rectify_correct <- matrix(c(1L, 1L, 2L, 2L),
+  rectify_correct <- matrix(as.character(c(1L, 1L, 2L, 2L)),
                             2L, 2L,
                             dimnames = list(c(1, 2),
                                             c("1(A)", "2(B)")))
@@ -27,82 +21,48 @@ test_that("rectify() puts the cells in the correct places", {
 })
 
 test_that("rectify() isn't confused by same-named variables in context", {
-  value <- "Oops!"
-  rectify_correct <- matrix(c("a", "b", "c", "d"),
-                            2L, 2L,
-                            byrow = TRUE,
-                            dimnames = list(c(1, 2),
-                                            c("1(A)", "2(B)")))
-  class(rectify_correct) <- c("cell_grid", class(rectify_correct))
-  expect_equal(rectify(x, value), rectify_correct)
-})
-
-test_that("rectify() isn't confused by same-named variables in context", {
-  value <- "Oops!"
-  rectify_correct <- matrix(c("a", "b", "c", "d"),
-                            2L, 2L,
-                            byrow = TRUE,
-                            dimnames = list(c(1, 2),
-                                            c("1(A)", "2(B)")))
-  class(rectify_correct) <- c("cell_grid", class(rectify_correct))
-  expect_equal(rectify(x, value), rectify_correct)
-})
-
-test_that("rectify() handles multiple value columns", {
   x <- data.frame(row = c(1L, 1L, 2L, 2L),
                   col = c(1L, 2L, 1L, 2L),
-                  chr = c("a", "b", "c", NA),
-                  int = c(NA_integer_, NA_integer_, NA_integer_, 4L),
+                  data_type = rep("character", 4),
+                  character = c("a", "b", "c", "d"),
                   stringsAsFactors = FALSE)
-  rectify_correct <- matrix(c("a", "b", "c", NA),
+  data_type <- "Oops!"
+  rectify_correct <- matrix(c("a", "b", "c", "d"),
                             2L, 2L,
                             byrow = TRUE,
                             dimnames = list(c(1, 2),
                                             c("1(A)", "2(B)")))
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
-  expect_equal(rectify(x, chr), rectify_correct)
-  rectify_correct <- matrix(c(NA_integer_, NA_integer_, NA_integer_, 4L),
-                            2L, 2L,
-                            byrow = TRUE,
-                            dimnames = list(c(1, 2),
-                                            c("1(A)", "2(B)")))
-  class(rectify_correct) <- c("cell_grid", class(rectify_correct))
-  expect_equal(rectify(x, int), rectify_correct)
-  rectify_correct <- matrix(c("a", "b", "c", "4"),
-                            2L, 2L,
-                            byrow = TRUE,
-                            dimnames = list(c(1, 2),
-                                            c("1(A)", "2(B)")))
-  class(rectify_correct) <- c("cell_grid", class(rectify_correct))
-  expect_equal(rectify(x, chr, int), rectify_correct)
-  expect_equal(rectify(x, chr, int), rectify(x, int, chr)) # vice versa
+  expect_equal(rectify(x, types = data_type), rectify_correct)
 })
 
-
-test_that("rectify() only resorts to the character type when necessary", {
+test_that("rectify() handles multiple data types", {
   x <- data.frame(row = c(1L, 1L, 2L, 2L),
                   col = c(1L, 2L, 1L, 2L),
-                  value1 = c(1, 2, 3, NA),
-                  value2 = c(NA, NA, NA, 4))
-  rectify_correct <- matrix(c(1, 2, 3, 4),
+                  data_type = c("character", "character", "integer", "integer"),
+                  character = c("a", "b", NA, NA),
+                  integer = c(NA, NA, 3L, 4L),
+                  stringsAsFactors = FALSE)
+  rectify_correct <- matrix(c("a", "b", "3", "4"),
                             2L, 2L,
                             byrow = TRUE,
                             dimnames = list(c(1, 2),
                                             c("1(A)", "2(B)")))
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
-  expect_equal(rectify(x, value1, value2), rectify_correct)
+  expect_equal(rectify(x), rectify_correct)
 })
 
 test_that("Blank initial rows and columns are dropped", {
   x <- data.frame(row = c(2L, 2L, 3L, 3L),
                   col = c(2L, 3L, 2L, 3L),
-                  value1 = c(1, 2, 3, NA),
-                  value2 = c(NA, NA, NA, 4))
-  rectify_correct <- matrix(c(1, 2, 3, 4),
+                  data_type = rep("integer", 4),
+                  integer = c(1L, 2L, 3L, NA),
+                  stringsAsFactors = FALSE)
+  rectify_correct <- matrix(as.character(c(1, 2, 3, NA)),
                             2L, 2L,
                             byrow = TRUE,
                             dimnames = list(c(2, 3),
                                             c("2(B)", "3(C)")))
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
-  expect_equal(rectify(x, value1, value2), rectify_correct)
+  expect_equal(rectify(x), rectify_correct)
 })

@@ -31,93 +31,69 @@
 #' spreadsheet application.
 #'
 #' @param cells Data frame or tbl, the cells to be displayed.
-#' @param ... The columns of `cells` to use as the values of each cell.  Given
-#' as bare variable names.  If you list more than one column, then the value
-#' that is chosen for each cell will be the column that isn't `NA`.  You should
-#' ensure that only one column isn't `NA` for each cell, otherwise the result
-#' will be unpredictable.  Alternatively, use the `values` argument to
-#' choose a column for each cell.
-#' @param values The column of `cells` that names, for each cell, which
-#' column to use for the value of the cell.  If this argument is given, then
-#' `...` will be ignored.
+#' @param col Optional. The column of `cells` to use as the values of each
+#' cell.  Given as a bare variable name.  If omitted (the default), the `types`
+#' argument will be used instead.
+#' @param types The column of `cells` that names, for each cell, which column to
+#' use for the value of the cell.  E.g.  a cell with a character value will have
+#' `"character"` in this column.  If this argument is given, then `...` will be
+#' ignored.
 #'
 #' @export
 #' @examples
-#' x <- data.frame(row = c(1L, 1L, 2L, 2L),
-#'                 col = c(1L, 2L, 1L, 2L),
-#'                 value = letters[1:4])
+#' BOD
+#' x <- tidy_table(BOD, TRUE, TRUE)
 #' x
+#' rectify(x)
 #'
-#' # Typical usage is to choose a 'value' of the cell to represent in the grid
-#' rectify(x, value)
+#' # You can choose to use a particular column of the data
+#' rectify(x, chr)
+#' rectify(x, dbl)
 #'
 #' # You can also show which row or which column each cell came from, which
 #' # helps with understanding what this function does.
 #' rectify(x, row)
 #' rectify(x, col)
 #'
-#' # If some cells have a character value, and others contain a numeric
-#' # value, you can use both at once.  As long as no cell has a non-NA value in
-#' # more than one of the columns you choose to represent in the grid, you'll be
-#' # okay.
-#' mtcars_tidy <- tidy_table(mtcars, TRUE, TRUE)
-#' print(dplyr::arrange(mtcars_tidy, row, col), n = 20)
-#' rectify(mtcars_tidy, dbl) # use only numeric values
-#' rectify(mtcars_tidy, chr) # use only character values
-#' rectify(mtcars_tidy, chr, dbl) # use both numeric and character values
-#' rectify(mtcars_tidy, dbl, chr) # same as above
-#'
-#' # This is what happens if cells have non-NA values in more than one of the
-#' # colums you choose to represent in the grid.  Here, the row numbers are
-#' # treated as cell values.  Every cell has a row number, which is what you see
-#' # in the grid.  But the 'chr' column is also used, so non-NA values in the
-#' # 'chr' column override the value from the 'row' column.  Currently the last
-#' # column to be specified wins, but that behaviour is not guaranteed for
-#' # future releases.
-#' rectify(mtcars_tidy, row, chr)
-#' rectify(mtcars_tidy, chr, row)
-#'
-#' # Empty rows and columns up to the first occupied cell are dropped.
+#' # Empty rows and columns up to the first occupied cell are dropped, but the
+#' # row and column names reflect the original row and column numbers.
 #' x$row <- x$row + 5
 #' x$col <- x$col + 5
-#' rectify(x, value)
-rectify <- function(cells, ..., values = NULL) {
-  columns <- rlang::ensyms(...)
-  # Silently omit columns not in `cells`
-  columns <- intersect(columns, rlang::syms(colnames(cells)))
-  if(length(columns) == 0) {
-    return(matrix(logical(), 0, 0))
+#' rectify(x)
+rectify <- function(cells, col, types = data_type) {
+  col <- rlang::ensym(col)
+  if(rlang::is_missing(col)) {
+    types <- rlang::ensym(types)
+    unique_types <- unique(dplyr::pull(cells, !! types))
+    cells <- dplyr::select(cells,
+                           row,
+                           col,
+                           !! types,
+                           !!! rlang::syms(unique_types))
+  } else {
+    colname <- rlang::expr_text(col)
+    types <- rlang::sym("data_type")
+    cells <-
+      cells %>%
+      dplyr::select(row, col, !! col) %>%
+      dplyr::mutate(row, col, value = !! col) %>%
+      dplyr::mutate(!! types := "value")
   }
-  # Only use used rows/cols, and allow an extra row and col for headers
+  cells <- pack(cells, !! types)
+  cells
+  cells <- dplyr::mutate(cells, value = purrr::map_chr(value, format_list))
+  # Only use used rows/cols
   minrow <- min(cells$row)
   mincol <- min(cells$col)
   nrows <- max(cells$row) - minrow + 1L
   ncols <- max(cells$col) - mincol + 1L
   cells$row = cells$row - minrow + 1L
   cells$col = cells$col - mincol + 1L
-  # Convert factors to character
-  cells <- dplyr::mutate_if(cells, is.factor, as.character)
-  # Create a blank matrix.  Type is character unless all the columns of `cells`
-  # are the same type and are not character.
-  types <- purrr::map_chr(dplyr::select(cells, !!!columns), typeof)
-  same_types <- length(unique(types)) == 1
-  if(same_types) {
-    blank <- dplyr::pull(cells, !! columns[[1]])[0]
-  } else {
-    blank <- character()
-  }
-  out <- matrix(blank, nrow = nrows, ncol = ncols)
-  # Assign the columns of `cells` to the matrix, converting to character if
-  # necessary
-  for (column in columns) {
-    value_cells <- dplyr::filter(cells, !is.na(!!column))
-    values <- dplyr::pull(value_cells, !! column)
-    if(!same_types) {
-      values <- format(values, justify = "none")
-    }
-    # Assign to several cells of a matrix cells at once
-    out[(value_cells$col - 1) * nrow(out) + value_cells$row] <- values
-  }
+  # Create a blank matrix.
+  out <- matrix(character(), nrow = nrows, ncol = ncols)
+  # Assign to several cells of a matrix cells at once
+  out[(cells$col - 1) * nrow(out) + cells$row] <- cells$value
+  out
   # Put in the headers
   colnums <- seq_len(ncols) + mincol - 1L
   colnums <- paste0(colnums, "(", cellranger::num_to_letter(colnums), ")")
@@ -167,3 +143,9 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
     NextMethod(x)
   }
 } # nocov end
+
+# Like format() but handles factors wrapped in lists, and leaves NA as-is
+format_list <- function(x) {
+  if(is.na(x)) return(NA_character_)
+  format(x[[1]])
+}
