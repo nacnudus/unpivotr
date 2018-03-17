@@ -1,11 +1,10 @@
 #' Pack cell values from separate columns per data type into one list-column
 #'
 #' @export
-pack <- function(.data, types = data_type, name = value, drop_types = TRUE,
+pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
                  drop_type_cols = TRUE) {
   types <- rlang::ensym(types)
   type_colnames <- unique(dplyr::pull(.data, !! types))
-  name <- rlang::ensym(name)
   out <-
     .data %>%
     dplyr::mutate(!! name := purrr::map2(seq_len(n()),
@@ -19,10 +18,9 @@ pack <- function(.data, types = data_type, name = value, drop_types = TRUE,
 #' Unpack cell values from one list-column into separate columns per data type
 #'
 #' @export
-unpack <- function(.data, values = value, name = data_type,
+unpack <- function(.data, values = value, name = "data_type",
                    drop_packed = TRUE) {
   values <- rlang::ensym(values)
-  name <- rlang::ensym(name)
   types <- map_chr(dplyr::pull(.data, !! values), cell_type)
   type_names <- unique(types)
   missings <- map(type_names,
