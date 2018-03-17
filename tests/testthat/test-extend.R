@@ -151,3 +151,9 @@ test_that("Bags cannot be extended into zero or negative space", {
   expect_equal(extend_N(bag, cells, 1) %>% nrow, 1)
   expect_equal(extend_W(bag, cells, 1) %>% nrow, 1)
 })
+
+test_that("extend() works with unquoted directions", {
+  bag <- anchor(cells, 2, 2)
+  expect_equal(extend(bag, cells, N, 1)$row, 1:2)
+})
+

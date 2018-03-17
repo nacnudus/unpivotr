@@ -52,6 +52,7 @@
 #' extend_N(cell, cells, boundary = ~ !is.na(chr), edge = TRUE)
 extend <- function(bag, cells, direction, n = NULL, boundary = NULL,
                    edge = FALSE, include = FALSE) {
+  direction <- rlang::quo_name(rlang::enexpr(direction)) # Accept quoted or unqoted
   test_extend_args(bag, direction, n, boundary, edge, include)
   if (!is.null(n)) {
     if (n == 0) {return(bag)}
