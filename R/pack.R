@@ -4,6 +4,7 @@
 pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
                  drop_type_cols = TRUE) {
   types <- rlang::ensym(types)
+  name <- rlang::ensym(name)
   type_colnames <- unique(dplyr::pull(.data, !! types))
   out <-
     .data %>%
@@ -21,6 +22,7 @@ pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
 unpack <- function(.data, values = value, name = "data_type",
                    drop_packed = TRUE) {
   values <- rlang::ensym(values)
+  name <- rlang::ensym(name)
   types <- map_chr(dplyr::pull(.data, !! values), cell_type)
   type_names <- unique(types)
   missings <- map(type_names,
