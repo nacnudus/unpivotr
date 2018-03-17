@@ -15,11 +15,14 @@
 #' require certain ambiguities that are better handled by using the functions
 #' directly rather than via [behead()].  See the help file for [join_header()].
 #' @param name A name to give the new column that will be created, e.g.
-#' `location` if the headers are locations.  Not quoted (not `"location"`).
+#' `"location"` if the headers are locations.  Quoted (`"location"`, not
+#' `location`) because it doesn't refer to an actual object.
 #' @param types The name of the column that names the data type of each cell.
 #' Usually called `data_types` (the default), this is a character column that
 #' names the other columns in `cells` that contain the values of each cell.
 #' E.g.  a cell with a character value will have `"character"` in this column.
+#' Unquoted(`data_types`, not `"data_types"`) because it refers to an actual
+#' object.
 #' @param drop_na logical Whether to filter out headers that have `NA` in the
 #' `value` column.  Default: `TRUE`.  This can happen with the output of
 #' `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
@@ -65,7 +68,9 @@ behead <- function(cells, direction, name, types = data_type, drop_na = TRUE) {
     pack(types = !! types) %>%
     dplyr::mutate(is_na = is.na(value),
                   !! name := purrr::map_chr(value, format_list_element),
-                  !! name := dplyr::if_else(is_na, NA_character_, !! name)) %>%
+                  !! name := dplyr::if_else(is_na,
+                                            NA_character_,
+                                            !! rlang::sym(name))) %>%
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
