@@ -11,8 +11,13 @@ pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
     dplyr::mutate(!! name := purrr::map2(seq_len(n()),
                                          !! types,
                                          ~ (!! .data)[.x, .y, drop = TRUE]))
-  if(drop_types) out <- dplyr::select(out, - !! types)
-  if(drop_type_cols) out <- dplyr::select(out, - !! type_colnames)
+  if(drop_types && rlang::expr_text(types) != rlang::expr_text(name)) {
+    out <- dplyr::select(out, - !! types)
+  }
+  if(drop_type_cols) {
+    type_colnames <- setdiff(type_colnames, rlang::expr_text(name))
+    out <- dplyr::select(out, - !! type_colnames)
+  }
   out
 }
 
