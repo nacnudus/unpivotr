@@ -32,3 +32,10 @@ test_that("the `drop_na` argument of behead() works", {
   expect_equal(nrow(tidy), 80)
   expect_equal(tidy$Sex, rep(c("Female", NA, "Male", NA), each = 20))
 })
+
+test_that("``\"ABOVE\"`` etc. don't work", {
+  error_message <- "`direction` must be one of \"NNW\", \"N\", \"NNE\", \"ENE\", \"E\", \"ESE\", \"SSE\", \"S\", \"SSW\", \"WSW\", \"W\", \"WNW\""
+  # Strip the headers and make them into data
+  expect_error(behead(cells, ABOVE, "Sex"), error_message)
+  expect_error(behead(cells, FOO, "Sex"), error_message)
+})
