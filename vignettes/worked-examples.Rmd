@@ -1866,8 +1866,12 @@ xlsx_cells(path, sheet = "in-cell formatting") %>%
   unnest()
 ```
 
-It's hard to think of a plausible example, so here's an implausible one that
-nevertheless occurred in real life.  The following table of products and their
+It's hard to think of a plausible example, so what follows is an implausible one
+that nevertheless occurred in real life.
+
+### Multiple pieces of information in a single cell, with meaningful formatting
+
+The following table of products and their
 production readiness combines three pieces of information in a single cell.
 
 ```{r}
@@ -1914,6 +1918,49 @@ left_join(cells, strikethrough, by = "row") %>%
   select(-col) %>%
   spatter(header) %>%
   select(ID, strikethrough, Count)
+```
+
+### Superscript symbols in data cells to reference notes
+
+This is pernicious.  What was Paula's score, in the table below?
+
+```{r}
+read_excel(path, sheet = "superscript symbols")
+```
+
+The answer is, it's not Paula, it's Paul (superscript 'a'), who scored 9
+(superscript '1').
+
+This sort of thing is difficult to spot.  There's a clue in the 'Score' column,
+which has been coerced to character so that the author could enter the
+superscript '1' (Excel doesn't allow superscripts in numeric cells), But it
+would be easy to interpret that as an accident of translation, and simply coerce
+back to numeric with `as.integer()`.
+
+With tidyxl, you can count the rows of each element of the `character_formatted`
+column to identify cells that have in-cell formatting.
+
+```{r}
+xlsx_cells(path, sheet = "superscript symbols") %>%
+  filter(data_type == "character") %>%
+  filter(map_int(character_formatted, nrow) != 1) %>%
+  select(row, col, character)
+```
+
+The values and symbols can then be separated by assuming the value is the first
+string, and the symbol is the second.
+
+```{r}
+xlsx_cells(path, sheet = "superscript symbols") %>%
+  mutate(character = map_chr(character_formatted,
+                             ~ ifelse(is.null(.x), character, .x$character[1])),
+         symbol = map_chr(character_formatted,
+                          ~ ifelse(is.null(.x), NA, .x$character[2])),
+         numeric = if_else(row > 1 & col == 2 & data_type == "character",
+                           as.numeric(character),
+                           numeric),
+         character = if_else(is.na(numeric), character, NA_character_)) %>%
+  select(row, col, numeric, character, symbol)
 ```
 
 ##  Other gotchas
