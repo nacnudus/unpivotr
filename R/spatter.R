@@ -39,8 +39,8 @@
 #'   spatter(header, col)
 #'
 #' # The column used for the values is dropped, so if it's necessary for
-#' demarking the rows, you'll need to create a copy of it first.  Otherwise
-#' you'll get an error like "Duplicate identifiers for rows ..."
+#' # demarking the rows, you'll need to create a copy of it first.  Otherwise
+#' # you'll get an error like "Duplicate identifiers for rows ..."
 #' cells %>%
 #'   behead(N, header) %>%
 #'   mutate(row2 = row) %>%
