@@ -29,30 +29,19 @@ unpack <- function(.data, values = value, name = "data_type",
                    drop_packed = TRUE) {
   values <- rlang::ensym(values)
   name <- rlang::ensym(name)
-  types <- map_chr(dplyr::pull(.data, !! values), cell_type)
+  types <- names(dplyr::pull(.data, !! values))
   type_names <- unique(types)
   missings <- map(type_names,
                   ~ ifelse(.x %in% c("list", "fct", "ord"), list(NULL), NA))
-  assignments <- map2(type_names,
-                      missings,
-                      ~ expr(ifelse(types == !! .x, !! values, !! .y)))
+  assignments <- purrr::map2(type_names,
+                             missings,
+                             ~ rlang::expr(ifelse(types == !! .x,
+                                                  !! values,
+                                                  !! .y)))
   names(assignments) <- type_names
   out <-
     dplyr::mutate(.data, !! name := types, !!! assignments) %>%
     dplyr::mutate_at(type_names, concatenate)
   if(drop_packed) out <- dplyr::select(out, - !! values)
   out
-}
-
-# Check the type of a list element, descending to the next level to check for
-# lists of factors.
-cell_type <- function(x) {
-  out <- pillar::type_sum(x)
-  if(out == "list") {
-    list_type <- pillar::type_sum(x[[1]])
-    if(list_type %in% c("fct", "ord", "list")) {
-      return(list_type)
-    }
-  }
-  return(out)
 }
