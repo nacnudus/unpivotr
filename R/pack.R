@@ -11,6 +11,7 @@ pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
     dplyr::mutate(!! name := purrr::map2(seq_len(n()),
                                          !! types,
                                          ~ (!! .data)[.x, .y, drop = TRUE]))
+  names(out[[rlang::expr_text(name)]]) <- dplyr::pull(.data, !! types)
   if(drop_types && rlang::expr_text(types) != rlang::expr_text(name)) {
     out <- dplyr::select(out, - !! types)
   }

@@ -17,6 +17,10 @@
 #' @param name A name to give the new column that will be created, e.g.
 #' `"location"` if the headers are locations.  Quoted (`"location"`, not
 #' `location`) because it doesn't refer to an actual object.
+#' @param ... named functions for formatting each data type in a set of headers
+#' of mixed data types, e.g. when some headers are dates and others are
+#' characters.  These can be given as `character = toupper` or `character = ~
+#' toupper(.x)`, similar to [purrr::map].
 #' @param types The name of the column that names the data type of each cell.
 #' Usually called `data_types` (the default), this is a character column that
 #' names the other columns in `cells` that contain the values of each cell.
@@ -56,8 +60,11 @@
 #' # The provided 'tidy' data is missing a row for Male 15-24-year-olds with a
 #' # postgraduate qualification and a sense of purpose between 0 and 6.  That
 #' # seems to have been an oversight by Statistics New Zealand.
-behead <- function(cells, direction, name, types = data_type, drop_na = TRUE) {
+behead <- function(cells, direction, name, ..., types = data_type,
+                   drop_na = TRUE) {
   name <- rlang::ensym(name)
+  dots <- list(...)
+  functions <- purrr::map(dots, purrr::as_mapper)
   types <- rlang::ensym(types)
   type_names <- unique(dplyr::pull(cells, !! types))
   filter_expr <- direction_filter(!!rlang::ensym(direction))
@@ -67,10 +74,12 @@ behead <- function(cells, direction, name, types = data_type, drop_na = TRUE) {
     dplyr::filter(is_header) %>%
     pack(types = !! types) %>%
     dplyr::mutate(is_na = is.na(value),
-                  !! name := purrr::map_chr(value, format_list_element),
+                  !! name := purrr::imap_chr(value,
+                                             format_list_element,
+                                             functions),
                   !! name := dplyr::if_else(is_na,
                                             NA_character_,
-                                            !! name)) %>%
+                                            !! rlang::sym(name))) %>%
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
@@ -78,10 +87,17 @@ behead <- function(cells, direction, name, types = data_type, drop_na = TRUE) {
 }
 
 # Apply format() to list-elements of a list-column created by pack(), descending
-# into factors (which are doubly wrapped in lists)
-format_list_element <- function(x) {
-  if(is.list(x)) return(format(x[[1]]))
-  format(x)
+# into factors (which are doubly wrapped in lists). If the list-element is
+# named, and the name is shared with a function in a named list of functions,
+# then use that function instead of format().
+format_list_element <- function(x, name, functions) {
+  if(name %in% names(functions)) {
+    func <- functions[[name]]
+  } else {
+    func <- format
+  }
+  if(is.list(x)) return(func(x[[1]]))
+  func(x)
 }
 
 # Construct a filter expression for stripping a header from a pivot table

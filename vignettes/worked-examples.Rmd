@@ -1925,7 +1925,8 @@ are in the header row.
 
 Using tidyxl and unpivotr, you can choose to make a cell of any data type into a
 tidy 'header', and you can reformat it as text before `spatter()` turns it into
-the header of a data frame.
+the header of a data frame.  Another way to format headers as part of the
+`behead()` will be shown later.
 
 ```{r}
 xlsx_cells(path, sheet = "non-text headers") %>%
@@ -1945,6 +1946,15 @@ before converting them all to text via `format()`.
 xlsx_cells(path, sheet = "non-text headers") %>%
   select(row, col, data_type, character, numeric, date) %>%
   behead(N, header)
+```
+
+To format a header when a single set of headers are of mixed data types, you
+can specify a function for each data type in the call to `behead()`.
+
+```{r}
+xlsx_cells(path, sheet = "non-text headers") %>%
+  select(row, col, data_type, character, numeric, date) %>%
+  behead(N, header, date = ~ strftime(.x, "%Y"), character = toupper)
 ```
 
 ```{r}

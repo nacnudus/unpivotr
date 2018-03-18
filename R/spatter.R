@@ -17,7 +17,7 @@ spatter.data.frame <- function(cells, key, types = data_type) {
     dplyr::filter(!! types %in% c("fct", "ord")) %>%
     dplyr::pull(!! key)
   cells %>%
-    pack(types = !! types, name = ".value", drop_types = FALSE) %>%
+    pack(types = !! types, name = ".value") %>%
     tidyr::spread(!! key, .value) %>%
     dplyr::mutate_if(is.list, concatenate) %>%
     # 2nd pass because factors are doubly listed
