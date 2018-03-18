@@ -2002,6 +2002,49 @@ xlsx_cells(path, sheet = "non-text headers") %>%
   behead(N, header, date = ~ strftime(.x, "%Y"), character = toupper)
 ```
 
+### Data embedded in comments
+
+Comment strings are availabe in the `comment` column, just like `character`.
+Comments can have formatting, but tidyxl doesn't yet import the formatting.  If
+you need this, please open an
+[issue](https://github.com/nacnudus/tidyxl/issues).  It would probably be
+imported into a `comment_formatted` column, similarly to `character_formatted`.
+
+```{r}
+xlsx_cells(path, sheet = "comments") %>%
+  select(row, col, data_type, character, numeric, comment) %>%
+  behead(N, "header")
+```
+
+Comments apply to single cells, so follow the same procedure as "Already a tidy
+table but with meaningful formatting of single cells".
+
+```{r}
+cells <-
+  xlsx_cells(path, sheet = "comments") %>%
+  select(row, col, data_type, character, numeric, comment)
+cells
+
+values <-
+  cells %>%
+  select(-comment) %>%
+  behead(N, header) %>%
+  select(-col) %>%
+  spatter(header)
+values
+
+comments <-
+  cells %>%
+  behead(N, header) %>%
+  mutate(header = paste0(header, "_comment")) %>%
+  select(row, header, comment) %>%
+  spread(header, comment)
+comments
+
+left_join(values, comments, by = "row") %>%
+  select(-row)
+```
+
 ```{r}
 # writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-notes.xlsx")
 # writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-annotations.xlsx")
