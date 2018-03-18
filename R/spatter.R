@@ -8,12 +8,12 @@
 #' rectify(cells)
 #'
 #' # This is what you start with: rows describing each data cell and its header
-#' xlsx_cells(path, sheet = "clean") %>%
+#' cells %>%
 #'   behead(N, header) %>%
 #'   select(row, data_type, header, character, numeric)
 #'
 #' # You want the header column to become an actual header, so you spatter() it
-#' xlsx_cells(path, sheet = "clean") %>%
+#' cells %>%
 #'   behead(N, header) %>%
 #'   select(row, data_type, header, character, numeric) %>%
 #'   spatter(header)
