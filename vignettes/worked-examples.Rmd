@@ -1443,8 +1443,6 @@ data_cells %>%
 
 ### Headers amongst the data
 
-![Header within the data](./header-within-data.png)
-
 This happens when what is actually a row-header, instead of being presented to
 the left of the data, is presented above the data.  (Alternatively, what is
 actually a column header, instead of being presented above the data, is
