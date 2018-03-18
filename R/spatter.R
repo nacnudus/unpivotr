@@ -63,7 +63,6 @@ spatter.data.frame <- function(.data, key, values = NULL, types = data_type) {
       dplyr::pull(!! key)
   } else {
     values <- rlang::ensym(values)
-    colname <- rlang::expr_text(values)
     types <- rlang::sym("data_type")
     .data <-
       .data %>%
@@ -72,8 +71,13 @@ spatter.data.frame <- function(.data, key, values = NULL, types = data_type) {
     factors <- character()
     if(is.list(.data$value)) factors <- "value"
   }
+  if(is.null(values)) {
+    drop_types <- rlang::expr_text(key) != rlang::expr_text(types)
+  } else {
+    drop_types <- rlang::expr_text(key) != "data_type"
+  }
   .data %>%
-    pack(types = !! types, name = ".value") %>%
+    pack(types = !! types, name = ".value", drop_types = drop_types) %>%
     tidyr::spread(!! key, .value) %>%
     dplyr::mutate_if(is.list, concatenate) %>%
     # 2nd pass because factors are doubly listed
