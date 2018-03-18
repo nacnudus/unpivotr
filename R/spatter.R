@@ -7,27 +7,32 @@
 #' cells <- tidyxl::xlsx_cells(path, sheet = "clean")
 #' rectify(cells)
 #'
-#' # This is what you start with: rows describing each data cell and its header
+#' # This is what you start with: rows describing each data cell alongside its
+#' # headers
 #' cells %>%
 #'   behead(N, header) %>%
 #'   dplyr::select(row, data_type, header, character, numeric)
 #'
-#' # You want the header column to become an actual header, so you spatter() it
+#' # spatter() turns a column of headers into an actual header, a bit like
+#' # tidyr::spread()
 #' cells %>%
 #'   behead(N, header) %>%
 #'   dplyr::select(row, data_type, header, character, numeric) %>%
 #'   spatter(header)
 #'
-#' # spatter() chooses the cell values by looking at the data_type column by
-#' # default, but you can choose a different column of types to look at.
+#' # The difference between spatter() and tidyr::spread() is that spatter() has
+#' # to know which data-type to use for each cell beneath the headers.  By
+#' # default, it looks at the data_type column to decide, but you can choose a
+#' # different column.
 #' cells %>%
 #'   behead(N, header) %>%
 #'   dplyr::mutate(data_type_2 = "character") %>%
 #'   dplyr::select(row, data_type_2, header, character) %>%
 #'   spatter(header, types = data_type_2)
 #'
-#' # You can also name one specific column to use for the cell values. In this
-#' # case we use the `address` column, which helps show what spatter() does.
+#' # You can instead name one specific column to use for the cell values. In
+#' # this case we use the `address` column, which also help to show what
+#' # spatter() does.
 #' cells %>%
 #'   behead(N, header) %>%
 #'   dplyr::select(row, header, address) %>%
