@@ -20,32 +20,32 @@ rectify(cells)
 # This is what you start with: rows describing each data cell and its header
 cells \%>\%
   behead(N, header) \%>\%
-  select(row, data_type, header, character, numeric)
+  dplyr::select(row, data_type, header, character, numeric)
 
 # You want the header column to become an actual header, so you spatter() it
 cells \%>\%
   behead(N, header) \%>\%
-  select(row, data_type, header, character, numeric) \%>\%
+  dplyr::select(row, data_type, header, character, numeric) \%>\%
   spatter(header)
 
 # spatter() chooses the cell values by looking at the data_type column by
 # default, but you can choose a different column of types to look at.
 cells \%>\%
   behead(N, header) \%>\%
-  mutate(data_type_2 = "character") \%>\%
-  select(row, data_type_2, header, character) \%>\%
+  dplyr::mutate(data_type_2 = "character") \%>\%
+  dplyr::select(row, data_type_2, header, character) \%>\%
   spatter(header, types = data_type_2)
 
 # You can also name one specific column to use for the cell values. In this
 # case we use the `address` column, which helps show what spatter() does.
 cells \%>\%
   behead(N, header) \%>\%
-  select(row, header, address) \%>\%
+  dplyr::select(row, header, address) \%>\%
   spatter(header, address)
 
 cells \%>\%
   behead(N, header) \%>\%
-  select(row, col, header) \%>\%
+  dplyr::select(row, col, header) \%>\%
   spatter(header, col)
 
 # The column used for the values is dropped, so if it's necessary for
@@ -53,7 +53,7 @@ cells \%>\%
 # you'll get an error like "Duplicate identifiers for rows ..."
 cells \%>\%
   behead(N, header) \%>\%
-  mutate(row2 = row) \%>\%
-  select(row, header, row2) \%>\%
+  dplyr::mutate(row2 = row) \%>\%
+  dplyr::select(row, header, row2) \%>\%
   spatter(header, row2)
 }
