@@ -60,9 +60,9 @@
 #' x$row <- x$row + 5
 #' x$col <- x$col + 5
 #' rectify(x)
-rectify <- function(cells, col, types = data_type) {
-  col <- rlang::ensym(col)
-  if(rlang::is_missing(col)) {
+rectify <- function(cells, col = NULL, types = data_type) {
+  col <- rlang::enexpr(col)
+  if(is.null(col)) {
     types <- rlang::ensym(types)
     unique_types <- unique(dplyr::pull(cells, !! types))
     cells <- dplyr::select(cells,
@@ -71,6 +71,7 @@ rectify <- function(cells, col, types = data_type) {
                            !! types,
                            !!! rlang::syms(unique_types))
   } else {
+    col <- rlang::ensym(col)
     colname <- rlang::expr_text(col)
     types <- rlang::sym("data_type")
     cells <-

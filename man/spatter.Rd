@@ -4,7 +4,7 @@
 \alias{spatter}
 \title{Spatter a key-values set across multiple columns.}
 \usage{
-spatter(.data, key, values = data_type)
+spatter(.data, key, values, types = data_type)
 }
 \arguments{
 \item{data}{A data frame.}

@@ -51,10 +51,10 @@ spatter <- function(.data, key, values, types = data_type) {
 }
 
 #' @export
-spatter.data.frame <- function(.data, key, values, types = data_type) {
+spatter.data.frame <- function(.data, key, values = NULL, types = data_type) {
   key <- rlang::ensym(key)
-  values <- rlang::ensym(values)
-  if(rlang::is_missing(values)) {
+  values <- rlang::enexpr(values)
+  if(is.null(values)) {
     types <- rlang::ensym(types)
     factors <-
       .data %>%
@@ -62,6 +62,7 @@ spatter.data.frame <- function(.data, key, values, types = data_type) {
       dplyr::filter(!! types %in% c("fct", "ord")) %>%
       dplyr::pull(!! key)
   } else {
+    values <- rlang::ensym(values)
     colname <- rlang::expr_text(values)
     types <- rlang::sym("data_type")
     .data <-

@@ -5,7 +5,7 @@
 \alias{print.cell_grid}
 \title{Display cells as though in a spreadsheet}
 \usage{
-rectify(cells, col, types = data_type)
+rectify(cells, col = NULL, types = data_type)
 
 \method{print}{cell_grid}(x, display = "terminal", ...)
 }
