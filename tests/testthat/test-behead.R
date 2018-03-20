@@ -14,7 +14,7 @@ test_that("behead() works", {
     dplyr::select(-row, -col, -data_type, -chr)
   # Check against the provided 'tidy' version of the data.
   expect_equal(nrow(dplyr::anti_join(tidy, purpose$Tidy)), 1)
-  # The provided 'tidy' data is missing a roww for Male 15-24-year-olds with a
+  # The provided 'tidy' data is missing a row for Male 15-24-year-olds with a
   # postgraduate qualification and a sense of purpose between 0 and 6.  That
   # seems to have been an oversight by Statistics New Zealand.
 })
