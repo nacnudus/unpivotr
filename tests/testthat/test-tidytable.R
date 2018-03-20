@@ -71,3 +71,25 @@ test_that("tidy_table works with html tables", {
   expect_identical(rowandcolspan_parsed, rowandcolspan_correct)
   expect_identical(nested_parsed, nested_correct)
 })
+
+test_that("tidy_table works with all common datatypes", {
+  x <- data.frame(lgl = c(TRUE, FALSE),
+                  int = c(1L, 2L),
+                  dbl = c(1, 2),
+                  cpl = c(1i, 2i),
+                  raw = as.raw(c(11, 12)),
+                  date = c(Sys.Date(), Sys.Date() + 1),
+                  dttm = c(Sys.time(), Sys.time() + 1),
+                  chr = c("a", "b"),
+                  fct = factor(c("c", "d")),
+                  stringsAsFactors = FALSE)
+  rownames <- FALSE
+  colnames <- FALSE
+  y <- tidy_table(x)
+  expect_equal(colnames(y),
+               c("row", "col", "data_type", "chr", "cpl", "date", "dbl", "dttm",
+                 "fct", "int", "lgl", "raw"))
+  x_class <- purrr::map(x, class)
+  y_class <- purrr::map(y, class)
+  expect_equal(y_class[names(x_class)], x_class)
+})

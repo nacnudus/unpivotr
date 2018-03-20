@@ -73,7 +73,7 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
   if (!colnames) {
     colnames(x) <- NULL
   }
-  values <- purrr::flatten(lapply(x, as.list))
+  values <- do.call(c, purrr::map(x, as.list))
   nrows <- nrow(x)
   ncols <- ncol(x)
   types <- purrr::map_chr(x, pillar::type_sum)
@@ -89,10 +89,8 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                           dplyr::select_vars(names(out), dplyr::everything(),
                                              exclude = c("row",
                                                          "col",
-                                                         "ord",
-                                                         "fct",
-                                                         "list")),
-                       ~ unlist(purrr::map(.x, ~ ifelse(is.null(.x), NA, .x))))
+                                                         "data_type")),
+                          concatenate)
   # Append row and column names
   if (rownames) {
     row_names <- row.names(x)
