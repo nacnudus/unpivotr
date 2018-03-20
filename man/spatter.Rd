@@ -4,7 +4,7 @@
 \alias{spatter}
 \title{Spatter a key-values set across multiple columns.}
 \usage{
-spatter(.data, key, values, types = data_type)
+spatter(.data, key, ..., values, types = data_type)
 }
 \arguments{
 \item{data}{A data frame.}
@@ -46,19 +46,20 @@ cells \%>\%
 cells \%>\%
   behead(N, header) \%>\%
   dplyr::select(row, header, address) \%>\%
-  spatter(header, address)
+  spatter(header, values = address)
 
 cells \%>\%
   behead(N, header) \%>\%
   dplyr::select(row, col, header) \%>\%
-  spatter(header, col)
+  spatter(header, values = col)
 
-# The column used for the values is dropped, so if it's necessary for
-# demarking the rows, you'll need to create a copy of it first.  Otherwise
-# you'll get an error like "Duplicate identifiers for rows ..."
+# The column used for the values is consumed before the spread occurs, so if
+# it's necessary for demarking the rows, you'll need to create a copy of it
+# first.  Otherwise you'll get an error like
+# "Duplicate identifiers for rows ..."
 cells \%>\%
   behead(N, header) \%>\%
   dplyr::mutate(row2 = row) \%>\%
   dplyr::select(row, header, row2) \%>\%
-  spatter(header, row2)
+  spatter(header, values = row2)
 }

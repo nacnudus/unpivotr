@@ -36,55 +36,92 @@
 #' cells %>%
 #'   behead(N, header) %>%
 #'   dplyr::select(row, header, address) %>%
-#'   spatter(header, address)
+#'   spatter(header, values = address)
 #'
 #' cells %>%
 #'   behead(N, header) %>%
 #'   dplyr::select(row, col, header) %>%
-#'   spatter(header, col)
+#'   spatter(header, values = col)
 #'
-#' # The column used for the values is dropped, so if it's necessary for
-#' # demarking the rows, you'll need to create a copy of it first.  Otherwise
-#' # you'll get an error like "Duplicate identifiers for rows ..."
+#' # The column used for the values is consumed before the spread occurs, so if
+#' # it's necessary for demarking the rows, you'll need to create a copy of it
+#' # first.  Otherwise you'll get an error like
+#' # "Duplicate identifiers for rows ..."
 #' cells %>%
 #'   behead(N, header) %>%
 #'   dplyr::mutate(row2 = row) %>%
 #'   dplyr::select(row, header, row2) %>%
-#'   spatter(header, row2)
-spatter <- function(.data, key, values, types = data_type) {
+#'   spatter(header, values = row2)
+spatter <- function(.data, key, ..., values, types = data_type) {
   UseMethod("spatter")
 }
 
 #' @export
-spatter.data.frame <- function(.data, key, values = NULL, types = data_type) {
+spatter.data.frame <- function(.data, key, ..., values = NULL,
+                               types = data_type) {
   key <- rlang::ensym(key)
+  dots <- list(...)
+  functions <- purrr::map(dots, purrr::as_mapper)
   values <- rlang::enexpr(values)
   if(is.null(values)) {
     types <- rlang::ensym(types)
-    factors <-
-      .data %>%
-      dplyr::distinct(!! key, !! types) %>%
-      dplyr::filter(!! types %in% c("fct", "ord")) %>%
-      dplyr::pull(!! key)
+    original_types <- NULL
   } else {
     values <- rlang::ensym(values)
-    types <- rlang::sym("data_type")
+    original_types <- rlang::ensym(types)
+    types <- rlang::sym(".data_type")
     .data <-
       .data %>%
-      dplyr::rename(value = !! values) %>%
-      dplyr::mutate(!! types := "value")
-    factors <- character()
-    if(is.list(.data$value)) factors <- "value"
+      dplyr::mutate(.value = !! values) %>%
+      dplyr::mutate(!! types := ".value")
+    if(!(rlang::expr_text(values) %in% c(rlang::expr_text(key)))) {
+        .data <- dplyr::select(.data, - !! values)
+    }
   }
   if(is.null(values)) {
-    drop_types <- rlang::expr_text(key) != rlang::expr_text(types)
+    drop_types <- rlang::expr_text(types) != rlang::expr_text(key)
   } else {
-    drop_types <- rlang::expr_text(key) != "data_type"
+    drop_types <- !(c(".data_type") %in% c(rlang::expr_text(key),
+                                           rlang::expr_text(values)))
   }
-  .data %>%
-    pack(types = !! types, name = ".value", drop_types = drop_types) %>%
+  out <- pack(.data, types = !! types, name = ".value", drop_types = drop_types)
+  is_na <- purrr::map_lgl(out$.value, is.na)
+  # Calculate the positions of cols to be created by spread()
+  n_keys <- length(unique(dplyr::pull(.data, !! key)))
+  n_cols <- ncol(out) - 2 + n_keys
+  new_col_positions <- seq_len(n_keys) + (n_cols - n_keys)
+  out <-
+    out %>%
+    dplyr::mutate(.value = purrr::imap(.value,
+                                       maybe_format_list_element,
+                                       functions),
+                  .value = dplyr::if_else(is_na, list(NA), .value)) %>%
     tidyr::spread(!! key, .value) %>%
-    dplyr::mutate_if(is.list, concatenate) %>%
-    # 2nd pass because factors are doubly listed
-    dplyr::mutate_at(factors, concatenate)
+    dplyr::mutate_at(new_col_positions, concatenate) %>%
+    dplyr::mutate_if(is.list, concatenate)
+  if(!is.null(original_types) &&
+     rlang::expr_text(original_types) %in% colnames(out)) {
+    out <- dplyr::select(out, - !! original_types)
+  }
+  out
+}
+
+# Apply format() to certain list-elements of a list-column created by pack(),
+# descending into factors (which are doubly wrapped in lists). If the
+# list-element is named, and the name is shared with a function in a named list
+# of functions, then use that function, otherwise if it's a date or datetime,
+# use format(), otherwise use identity().
+maybe_format_list_element <- function(x, name, functions) {
+  if(is.list(x)) {
+    x <- x[[1]] # raise factors up a level, after pack() buries them
+  }
+  if(name %in% names(functions)) {
+    func <- functions[[name]]
+  } else if(class(x)[1] %in% c("logical", "integer", "numeric", "complex",
+                               "factor")) {
+    func <- identity
+  } else {
+    func <- format
+  }
+  func(x)
 }
