@@ -72,15 +72,22 @@ concatenate <- function(...) {
   if(all(is_null_or_na)) return(rep(NA, length(dots)))
   classes <- purrr::map(dots, class)
   if(length(unique(classes[!is_null_or_na])) == 1L) {
-    if(classes[!is_null_or_na][[1]][1] == "factor") {
+    all_classes <- classes[!is_null_or_na][[1]]
+    first_class <- classes[!is_null_or_na][[1]][1]
+    if(first_class %in% c("factor", "ordered")) {
       dots[is_null_or_na] <- list(factor(NA_character_))
       return(forcats::fct_c(dots))
+    } else if(first_class == "raw") {
+      dots[is_null_or_na] <- as.raw(0)
+      return(do.call(c, dots))
     } else {
       dots[is_null_or_na] <- NA
-      return(do.call(c, dots))
+      dots <- do.call(c, dots)
+      class(dots) <- all_classes
+      return(dots)
     }
   }
-  dots[is_null] <- NA
+  dots[is_null_or_na] <- NA
   # Convert factors to strings before they're (potentially) coerced to integers
   factors <- purrr::map_lgl(classes, ~ .[1] == "factor")
   dots[factors] <- purrr::map(dots[factors], as.character)
