@@ -52,6 +52,16 @@
 #'   dplyr::mutate(row2 = row) %>%
 #'   dplyr::select(row, header, row2) %>%
 #'   spatter(header, values = row2)
+#'
+#' # spatter() does the minimum necessary coercion of data types so that values
+#' # can coexist in the same column.  You can control the conversion yourself by
+#' # supplying custom functions, named according to the `data_type` column. If
+#' # your custom functions aren't sufficient to avoid the need for coercion,
+#' # then they will be overridden.
+#' cells %>%
+#'   behead(N, header) %>%
+#'   dplyr::select(row, data_type, header, character, numeric) %>%
+#'   spatter(header, character = ~ toupper(.), numeric = as.complex)
 spatter <- function(.data, key, ..., values, types = data_type) {
   UseMethod("spatter")
 }
