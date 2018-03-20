@@ -83,8 +83,6 @@ test_that("tidy_table works with all common datatypes", {
                   chr = c("a", "b"),
                   fct = factor(c("c", "d")),
                   stringsAsFactors = FALSE)
-  rownames <- FALSE
-  colnames <- FALSE
   y <- tidy_table(x)
   expect_equal(colnames(y),
                c("row", "col", "data_type", "chr", "cpl", "date", "dbl", "dttm",
