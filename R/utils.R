@@ -73,7 +73,7 @@ concatenate <- function(...) {
   classes <- purrr::map(dots, class)
   if(length(unique(classes[!is_null_or_na])) == 1L) {
     all_classes <- classes[!is_null_or_na][[1]]
-    first_class <- classes[!is_null_or_na][[1]][1]
+    first_class <- all_classes[1]
     if(first_class %in% c("factor", "ordered")) {
       dots[is_null_or_na] <- list(factor(NA_character_))
       return(forcats::fct_c(dots))
