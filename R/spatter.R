@@ -107,8 +107,7 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
                                        functions),
                   .value = dplyr::if_else(is_na, list(NA), .value)) %>%
     tidyr::spread(!! key, .value) %>%
-    dplyr::mutate_at(new_col_positions, concatenate) %>%
-    dplyr::mutate_if(is.list, concatenate)
+    dplyr::mutate_at(new_col_positions, concatenate)
   if(!is.null(original_types) &&
      rlang::expr_text(original_types) %in% colnames(out)) {
     out <- dplyr::select(out, - !! original_types)
