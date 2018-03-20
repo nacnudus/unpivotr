@@ -68,6 +68,9 @@ globalVariables(c(".",
 # types only when necessary
 concatenate <- function(...) {
   dots <- (...)
+  if(max(purrr::map_int(dots, length)) > 1) {
+    return(dots)
+  }
   is_null_or_na <- purrr::map_lgl(dots, ~ is.null(.) || is.na(.))
   if(all(is_null_or_na)) return(rep(NA, length(dots)))
   classes <- purrr::map(dots, class)

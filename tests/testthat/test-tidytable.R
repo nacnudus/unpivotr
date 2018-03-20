@@ -91,3 +91,12 @@ test_that("tidy_table works with all common datatypes", {
   y_class <- purrr::map(y, class)
   expect_equal(y_class[names(x_class)], x_class)
 })
+
+test_that("tidy_table leaves 'list' columns undisturbed", {
+  x <- data.frame(a = c("a", "b"), stringsAsFactors = FALSE)
+  x$b <- list(1:2, 3:4)
+  y <- unpivotr::tidy_table(x)
+  expect_equal(colnames(y), c("row", "col", "data_type", "chr", "list"))
+  expect_equal(nrow(y), 4L)
+  expect_equal(y$list, list(NULL, NULL, c(1L, 2L), c(3L, 4L)))
+})
