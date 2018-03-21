@@ -1,51 +1,73 @@
-#' Convert data frames into a tidy structure
+#' Tokenize data frames into a tidy 'melted' structure
 #'
-#' @description Data frames represent data in a
-#' tabular structure.  `tidy_table` takes the row and column position of
-#' each 'cell', and returns that information in a new data frame, alongside the
-#' content of each cell.
+#' For certain non-rectangular data formats, it can be useful to parse
+#' the data into a melted format where each row represents a single
+#' token.
 #'
-#' This makes certain tasks easier.  For example, a pivot table with multi-row
-#' headers that has been imported into R as a data frame may be easier to
-#' un-pivot by converting it with `tidy_table` first.
+#' @description Data frames represent data in a tabular structure.  `tidy_table`
+#' takes the row and column position of each 'cell', and returns that
+#' information in a new data frame, alongside the content and type of each cell.
 #'
-#' For HTML tables, the content of each cell is returned as standalone HTML that
-#' can be further parsed with tools such as the rvest package.  This is
-#' particularly useful when an HTML cell itself contains an HTML table, or
-#' contains both text and a URL, which must be extracted separately.  If the
-#' HTML itself is poorly formatted, try passing it through the htmltidy package
-#' first.
+#' This makes it easier to deal with complex or non-tabular data (e.g. pivot
+#' tables) that have been imported into R as data frames.  Once they have been
+#' 'melted' by [tidy_table()], you can use functions like [behead()] and
+#' [spatter()] to reshape them into conventional, tidy, unpivoted structures.
+#'
+#' For HTML tables, the content of each cell is returned as a standalone HTML
+#' string that can be further parsed with tools such as the rvest package.  This
+#' is particularly useful when an HTML cell itself contains an HTML table, or
+#' contains both text and a URL.  If the HTML itself is poorly formatted, try
+#' passing it through the htmltidy package first.
 #'
 #' This is an S3 generic.
 #'
 #' @param x A data.frame or an HTML document
-#' @param colnames Whether to include the column names in the output, Default:
-#' FALSE
-#' @param rownames Whether to include the row names in the output, Default:
-#' FALSE
+#' @param colnames Whether to treat the column names  as cells, Default: FALSE
+#' @param rownames Whether to treat the row names as cells, Default: FALSE
 #'
-#' @return A data.frame with columns 'row' and 'col' (integer) giving the
-#' original position of the 'cells', any relevant columns for cell values in
-#' their original types: 'chr', 'cplx', 'cplx', 'dbl', 'fctr', 'int', 'lgl', and
-#' 'list', and a column `data_type` to specify for each cell which column the
-#' value is in.  The column 'fctr' is, like 'list', a list-column (each element
-#' is itself a list) to avoid factor levels clashing.  For HTML tables, the
-#' column 'html' gives the HTML of the original cell.
+#' @return A data.frame with the following columns:
 #'
-#' Row and column names, when present and required, are treated as though they
-#' were cells in the table, and they appear in the 'chr' column.
+#' * `row` and `col` (integer) giving the original position of the 'cells'
+#' * any relevant columns for cell values in their original types: `chr`,
+#'   `cplx`, `cplx`, `dbl`, `fct`, `int`, `lgl`, `list`, and `ord`
+#' * `data_type` to specify for each cell which of the above columns (`chr`
+#'   etc.) the value is in.
+#'
+#' The columns `fct` and `ord` are, like `list`, list-columns (each element is
+#' itself a list) to avoid factor levels clashing.  For HTML tables, the column
+#' `html` gives the HTML string of the original cell.
+#'
+#' Row and column names, when present and required by `rownames = TRUE` or
+#' `colnames = TRUE`, are treated as though they were cells in the table, and
+#' they appear in the `chr` column.
 #'
 #' @examples
-#' Formaldehyde
-#' tidy_table(Formaldehyde)
-#' tidy_table(Formaldehyde, colnames = TRUE)
-#' tidy_table(Formaldehyde, rownames = TRUE)
+#'x <- data.frame(a = c(10, 20),
+#'                b = c("foo", "bar"),
+#'                stringsAsFactors = FALSE)
+#'x
+#'tidy_table(x)
+#'tidy_table(x, rownames = TRUE)
+#'tidy_table(x, colnames = TRUE)
 #'
 #' # 'list' columns are undisturbed
-#' x <- data.frame(a = c("a", "b"), stringsAsFactors = FALSE)
-#' x$b <- list(1:2, 3:4)
-#' x
-#' unpivotr::tidy_table(x)
+#' y <- data.frame(a = c("a", "b"), stringsAsFactors = FALSE)
+#' y$b <- list(1:2, 3:4)
+#' y
+#' tidy_table(y)
+#'
+#' # Factors are preserved by being wrapped in lists so that their levels don't
+#' # conflict.  Even the NAs used to fill the blanks are wrapped in factor-lists
+#' z <- data.frame(x = factor(c("a", "b")),
+#'                 y = factor(c("c", "d"), ordered = TRUE))
+#' tidy_table(z)
+#' tidy_table(z)$fct
+#' tidy_table(z)$ord
+#'
+#' HTML tables can be extracted from the output of xml2::read_html().  These are
+#' returned as a list of tables, similar to rvest::html_table().  The value of
+#' each cell is its standalone HTML string, which can contain anything -- even
+#' another table.
 #'
 #' colspan <- system.file("extdata", "colspan.html", package = "unpivotr")
 #' rowspan <- system.file("extdata", "rowspan.html", package = "unpivotr")
