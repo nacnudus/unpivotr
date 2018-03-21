@@ -34,7 +34,7 @@
 #'   etc.) the value is in.
 #'
 #' The columns `fct` and `ord` are, like `list`, list-columns (each element is
-#' itself a list) to avoid factor levels clashing.  For HTML tables, the column
+#' independent) to avoid factor levels clashing.  For HTML tables, the column
 #' `html` gives the HTML string of the original cell.
 #'
 #' Row and column names, when present and required by `rownames = TRUE` or
@@ -57,7 +57,7 @@
 #' tidy_table(y)
 #'
 #' # Factors are preserved by being wrapped in lists so that their levels don't
-#' # conflict.  Even the NAs used to fill the blanks are wrapped in factor-lists
+#' # conflict.  Blanks are NULLs.
 #' z <- data.frame(x = factor(c("a", "b")),
 #'                 y = factor(c("c", "d"), ordered = TRUE))
 #' tidy_table(z)
@@ -112,7 +112,9 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                                              exclude = c("row",
                                                          "col",
                                                          "data_type")),
-                          concatenate, combine_factors = FALSE)
+                          concatenate,
+                          combine_factors = FALSE,
+                          fill_factor_na = FALSE)
   # Append row and column names
   if (rownames) {
     row_names <- row.names(x)

@@ -41,7 +41,10 @@ unpack <- function(.data, values = value, name = "data_type",
   names(assignments) <- type_names
   out <-
     dplyr::mutate(.data, !! name := types, !!! assignments) %>%
-    dplyr::mutate_at(type_names, concatenate)
+    dplyr::mutate_at(type_names,
+                     concatenate,
+                     combine_factors = FALSE,
+                     fill_factor_na = FALSE)
   if(drop_packed) out <- dplyr::select(out, - !! values)
   out
 }

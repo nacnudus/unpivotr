@@ -66,7 +66,7 @@ globalVariables(c(".",
 
 # Concatenate lists into vectors, handling factors and NULLs, and coercing data
 # types only when necessary
-concatenate <- function(..., combine_factors = TRUE) {
+concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
   dots <- (...)
   if(max(purrr::map_int(dots, length)) > 1) {
     return(dots)
@@ -82,7 +82,7 @@ concatenate <- function(..., combine_factors = TRUE) {
         dots[is_null_or_na] <- list(factor(NA_character_))
         return(forcats::fct_c(dots))
       } else {
-        dots[is_null_or_na] <- list(factor(NA_character_))
+        if(fill_factor_na) dots[is_null_or_na] <- list(factor(NA_character_))
         return(dots)
       }
     } else if(first_class == "raw") {
