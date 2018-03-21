@@ -81,22 +81,28 @@ test_that("tidy_table works with all common datatypes", {
                   date = c(Sys.Date(), Sys.Date() + 1),
                   dttm = c(Sys.time(), Sys.time() + 1),
                   chr = c("a", "b"),
-                  fct = factor(c("c", "d")),
                   stringsAsFactors = FALSE)
   y <- tidy_table(x)
   expect_equal(colnames(y),
                c("row", "col", "data_type", "chr", "cpl", "date", "dbl", "dttm",
-                 "fct", "int", "lgl", "raw"))
+                 "int", "lgl", "raw"))
   x_class <- purrr::map(x, class)
   y_class <- purrr::map(y, class)
   expect_equal(y_class[names(x_class)], x_class)
-})
-
-test_that("tidy_table leaves 'list' columns undisturbed", {
-  x <- data.frame(a = c("a", "b"), stringsAsFactors = FALSE)
-  x$b <- list(1:2, 3:4)
-  y <- unpivotr::tidy_table(x)
-  expect_equal(colnames(y), c("row", "col", "data_type", "chr", "list"))
-  expect_equal(nrow(y), 4L)
-  expect_equal(y$list, list(NULL, NULL, c(1L, 2L), c(3L, 4L)))
+  # Separate test for factors, ordered factors and lists
+  x <- tibble(fct = factor(c("a", "b")),
+              ord = factor(c("c", "d"), ordered = TRUE),
+              list = list(1:2, list("a", "b")))
+  y <- tidy_table(x)
+  expect_equal(colnames(y), c("row", "col", "data_type", "fct", "list", "ord"))
+  expect_equal(class(y$fct), "list")
+  expect_equal(class(y$ord), "list")
+  expect_equal(class(y$list), "list")
+  expect_equal(y$fct[[1]], factor("a", levels = c("a", "b")))
+  expect_equal(y$fct[[3]], NULL)
+  expect_equal(y$ord[[2]], NULL)
+  expect_equal(y$ord[[4]], factor("d", levels = c("c", "d"), ordered = TRUE))
+  expect_equal(y$list[[4]], NULL)
+  expect_equal(y$list[[5]], 1:2)
+  expect_equal(y$list[[6]], list("a", "b"))
 })
