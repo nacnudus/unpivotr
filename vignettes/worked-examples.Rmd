@@ -181,12 +181,12 @@ alternative: headers in the first column, and each column of data is an
 observation.
 
 You can hack a way around this by importing without recognising any headers,
-converting to a matrix, transposing the matrix, and converting back to a data
-frame, but this almost always results in all the data types being converted.
+transposing with `t()` (which outputs a matrix), placing the headers as names,
+and converting back to a data frame, but this almost always results in all the
+data types being converted.
 
 ```{r}
 read_excel(path, sheet = "transposed", col_names = FALSE) %>%
-  as.matrix() %>%
   t() %>%
   `colnames<-`(.[1, ]) %>%
   .[-1, ] %>%
