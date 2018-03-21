@@ -74,30 +74,14 @@ behead <- function(cells, direction, name, ..., types = data_type,
     dplyr::filter(is_header) %>%
     pack(types = !! types) %>%
     dplyr::mutate(is_na = is.na(value),
-                  !! name := purrr::imap_chr(value,
-                                             format_list_element,
-                                             functions),
-                  !! name := dplyr::if_else(is_na,
-                                            NA_character_,
-                                            !! rlang::sym(name))) %>%
+                  !! name := purrr::imap(value,
+                                         maybe_format_list_element,
+                                         functions),
+                  !! name := concatenate(!! name)) %>%
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
   direction(datacells, headers, drop = FALSE)
-}
-
-# Apply format() to list-elements of a list-column created by pack(), descending
-# into factors (which are doubly wrapped in lists). If the list-element is
-# named, and the name is shared with a function in a named list of functions,
-# then use that function instead of format().
-format_list_element <- function(x, name, functions) {
-  if(name %in% names(functions)) {
-    func <- functions[[name]]
-  } else {
-    func <- format
-  }
-  if(is.list(x)) return(func(x[[1]]))
-  func(x)
 }
 
 # Construct a filter expression for stripping a header from a pivot table

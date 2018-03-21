@@ -109,3 +109,11 @@ na_types <- list(logical = NA,
                  character = NA_character_,
                  complex = NA_complex_)
 na_of_type <- function(x) structure(na_types[[typeof(x)]], class = class(x))
+
+# Apply custom functions to list-elements of a list-column created by pack()
+# whose type matches the custom function.
+maybe_format_list_element <- function(x, name, functions) {
+  func <- functions[[name]]
+  if(is.null(func)) func <- identity
+  func(x)
+}

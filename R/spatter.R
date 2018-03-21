@@ -105,8 +105,7 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
     out %>%
     dplyr::mutate(.value = purrr::imap(.value,
                                        maybe_format_list_element,
-                                       functions),
-                  .value = dplyr::if_else(is_na, list(NA), .value)) %>%
+                                       functions)) %>%
     tidyr::spread(!! key, .value) %>%
     dplyr::mutate_at(new_col_positions, concatenate)
   if(!is.null(original_types) &&
@@ -114,24 +113,4 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
     out <- dplyr::select(out, - !! original_types)
   }
   out
-}
-
-# Apply format() to certain list-elements of a list-column created by pack(),
-# descending into factors (which are doubly wrapped in lists). If the
-# list-element is named, and the name is shared with a function in a named list
-# of functions, then use that function, otherwise if it's a date or datetime,
-# use format(), otherwise use identity().
-maybe_format_list_element <- function(x, name, functions) {
-  if(is.list(x)) {
-    x <- x[[1]] # raise factors up a level, after pack() buries them
-  }
-  if(name %in% names(functions)) {
-    func <- functions[[name]]
-  } else if(class(x)[1] %in% c("logical", "integer", "numeric", "complex",
-                               "factor", "ordered")) {
-    func <- identity
-  } else {
-    func <- format
-  }
-  func(x)
 }
