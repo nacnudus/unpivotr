@@ -66,7 +66,7 @@ globalVariables(c(".",
 
 # Concatenate lists into vectors, handling factors and NULLs, and coercing data
 # types only when necessary
-concatenate <- function(...) {
+concatenate <- function(..., combine_factors = TRUE) {
   dots <- (...)
   if(max(purrr::map_int(dots, length)) > 1) {
     return(dots)
@@ -78,8 +78,13 @@ concatenate <- function(...) {
     all_classes <- classes[!is_null_or_na][[1]]
     first_class <- all_classes[1]
     if(first_class %in% c("factor", "ordered")) {
-      dots[is_null_or_na] <- list(factor(NA_character_))
-      return(forcats::fct_c(dots))
+      if(combine_factors) {
+        dots[is_null_or_na] <- list(factor(NA_character_))
+        return(forcats::fct_c(dots))
+      } else {
+        dots[is_null_or_na] <- list(factor(NA_character_))
+        return(dots)
+      }
     } else if(first_class == "raw") {
       dots[is_null_or_na] <- as.raw(0)
       return(do.call(c, dots))

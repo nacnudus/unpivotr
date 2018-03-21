@@ -90,7 +90,7 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                                              exclude = c("row",
                                                          "col",
                                                          "data_type")),
-                          concatenate)
+                          concatenate, combine_factors = FALSE)
   # Append row and column names
   if (rownames) {
     row_names <- row.names(x)

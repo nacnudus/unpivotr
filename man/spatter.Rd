@@ -67,7 +67,8 @@ cells \%>\%
 # can coexist in the same column.  You can control the conversion yourself by
 # supplying custom functions, named according to the `data_type` column. If
 # your custom functions aren't sufficient to avoid the need for coercion,
-# then they will be overridden.
+# then they will be overridden.  Ordered factors in particular will always be
+# coerced to unordered factors.
 cells \%>\%
   behead(N, header) \%>\%
   dplyr::select(row, data_type, header, character, numeric) \%>\%
