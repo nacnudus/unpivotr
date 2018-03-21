@@ -32,38 +32,6 @@ globalVariables(c(".",
                   "data_type",
                   ".boundary"))
 
-# # Wrapper of c() and fct_c() to dispatch the correct concatenation function
-# concatenate <- function(x) {
-#   if(length(x) == 0) return(x)
-#   if(!is.list(x)) return(c(x))
-#   # Replace any NAs with NULLs, then all NULLs with a value from above or below
-#   # (for the sake of concatentation), then put the NULLs/NAs back
-#   is_factor <- is.factor(x[[1]])
-#   is_list <- is.list(x)
-#   na <- na_types[[typeof(do.call(c, x))]]
-#   missings <- union(which(purrr::map_lgl(x, is.null)),
-#                     which(purrr::map_lgl(x, anyNA, recursive = FALSE)))
-#   x[missings] <- list(factor(NA))
-#   # x <-
-#   #   tibble::tibble(x) %>%
-#   #   tidyr::fill(x, .direction = "down") %>%
-#   #   tidyr::fill(x, .direction = "up") %>%
-#   #   dplyr::pull(1)
-#   # Dispatch the appropriate concatenation function
-#   if(is_factor) {
-#     x <- fct_c(x)
-#   } else {
-#     x <- do.call(c, x)
-#   }
-#   # Put back the NULLs/NAs
-#   if(is_list) {
-#     x[missings] <- list(NULL)
-#   } else {
-#     x[missings] <- na
-#   }
-#   return(x)
-# }
-
 # Concatenate lists into vectors, handling factors and NULLs, and coercing data
 # types only when necessary
 concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
