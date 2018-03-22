@@ -65,7 +65,7 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
   }
   dots[is_null_or_na] <- NA
   # Convert factors to strings before they're (potentially) coerced to integers
-  factors <- purrr::map_lgl(classes, ~ .[1] == "factor")
+  factors <- purrr::map_lgl(classes, ~ .[1] %in% c("factor", "ordered"))
   dots[factors] <- purrr::map(dots[factors], as.character)
   do.call(c, dots)
 }
