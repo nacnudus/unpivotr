@@ -77,3 +77,40 @@ test_that("behead() works with all common datatypes", {
   expect_equal(y$raw[[8]], as.raw(0))
   expect_equal(y$raw[[9]], as.raw(11))
 })
+
+test_that("behead() handles headers of mixed data types including dates", {
+  x <- data.frame(row = c(1L, 1L, 2L, 2L, 3L, 3L),
+                  col = c(1L, 2L, 1L, 2L, 1L, 2L),
+                  data_type = c("dttm", "date", "chr", "dbl", "chr", "dbl"),
+                  chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
+                  date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
+                  dttm = as.POSIXct(c("2001-01-01 11:00:00", rep(NA, 5))),
+                  dbl = c(NA, NA, NA, 11, NA, 12),
+                  stringsAsFactors = FALSE)
+  y <- behead(x, N, header)
+  expect_equal(y$header, rep(c("2001-01-01 11:00:00", "2000-01-01"), 2))
+})
+
+test_that("behead() handles headers of factor and ordered-factor data types", {
+  x <-
+    tibble(row = c(1L, 1L, 2L, 2L, 3L, 3L),
+           col = c(1L, 2L, 1L, 2L, 1L, 2L),
+           data_type = c("fct", "ord", "chr", "dbl", "chr", "dbl"),
+           chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
+           fct = list(factor("name"), NULL, NULL, NULL, NULL, NULL),
+           ord = list(NULL, factor("score", ordered = TRUE),
+                      NULL, NULL, NULL, NULL),
+           date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
+           dbl = c(NA, NA, NA, 11, NA, 12))
+  y <- behead(x, N, header)
+  expect_equal(y$header, rep(c("name", "score"), 2))
+})
+
+test_that("behead() supports custom formatters", {
+  x <-
+    tidy_table(BOD, FALSE, TRUE) %>%
+    behead(N, header, chr = ~ paste(.x, "foo")) %>%
+    behead(W, rowheader, dbl = as.complex)
+  expect_equal(x$header[1], "demand foo")
+  expect_equal(x$rowheader[1], 1+0i)
+})
