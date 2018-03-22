@@ -67,6 +67,9 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
   # Convert factors to strings before they're (potentially) coerced to integers
   factors <- purrr::map_lgl(classes, ~ .[1] %in% c("factor", "ordered"))
   dots[factors] <- purrr::map(dots[factors], as.character)
+  # Convert dates to strings before they're (potentially) coerced to numbers
+  dates <- purrr::map_lgl(classes, ~ .[1] %in% c("Date", "POSIXct", "POSIXlt"))
+  dots[dates] <- purrr::map(dots[dates], format)
   do.call(c, dots)
 }
 
