@@ -5,14 +5,14 @@
 \alias{print.cell_grid}
 \title{Display cells as though in a spreadsheet}
 \usage{
-rectify(cells, col = NULL, types = data_type)
+rectify(cells, values = NULL, types = data_type)
 
 \method{print}{cell_grid}(x, display = "terminal", ...)
 }
 \arguments{
 \item{cells}{Data frame or tbl, the cells to be displayed.}
 
-\item{col}{Optional. The column of \code{cells} to use as the values of each
+\item{values}{Optional. The column of \code{cells} to use as the values of each
 cell.  Given as a bare variable name.  If omitted (the default), the \code{types}
 argument will be used instead.}
 

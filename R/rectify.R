@@ -31,7 +31,7 @@
 #' spreadsheet application.
 #'
 #' @param cells Data frame or tbl, the cells to be displayed.
-#' @param col Optional. The column of `cells` to use as the values of each
+#' @param values Optional. The column of `cells` to use as the values of each
 #' cell.  Given as a bare variable name.  If omitted (the default), the `types`
 #' argument will be used instead.
 #' @param types The column of `cells` that names, for each cell, which column to
@@ -60,9 +60,9 @@
 #' x$row <- x$row + 5
 #' x$col <- x$col + 5
 #' rectify(x)
-rectify <- function(cells, col = NULL, types = data_type) {
-  col <- rlang::enexpr(col)
-  if(is.null(col)) {
+rectify <- function(cells, values = NULL, types = data_type) {
+  values <- rlang::enexpr(values)
+  if(is.null(values)) {
     types <- rlang::ensym(types)
     unique_types <- unique(dplyr::pull(cells, !! types))
     cells <- dplyr::select(cells,
@@ -71,13 +71,13 @@ rectify <- function(cells, col = NULL, types = data_type) {
                            !! types,
                            !!! rlang::syms(unique_types))
   } else {
-    col <- rlang::ensym(col)
-    colname <- rlang::expr_text(col)
+    values <- rlang::ensym(values)
+    colname <- rlang::expr_text(values)
     types <- rlang::sym("data_type")
     cells <-
       cells %>%
-      dplyr::select(row, col, !! col) %>%
-      dplyr::mutate(row, col, value = !! col) %>%
+      dplyr::select(row, col, !! values) %>%
+      dplyr::mutate(row, col, value = !! values) %>%
       dplyr::mutate(!! types := "value")
   }
   cells <- pack(cells, !! types)
