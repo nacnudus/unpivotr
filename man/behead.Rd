@@ -19,7 +19,13 @@ require certain ambiguities that are better handled by using the functions
 directly rather than via \code{\link[=behead]{behead()}}.  See the help file for \code{\link[=join_header]{join_header()}}.}
 
 \item{name}{A name to give the new column that will be created, e.g.
-\code{location} if the headers are locations.  Not quoted (not \code{"location"}).}
+\code{"location"} if the headers are locations.  Quoted (\code{"location"}, not
+\code{location}) because it doesn't refer to an actual object.}
+
+\item{...}{named functions for formatting each data type in a set of headers
+of mixed data types, e.g. when some headers are dates and others are
+characters.  These can be given as \code{character = toupper} or \code{character = ~ toupper(.x)}, similar to \link[purrr:map]{purrr::map}.}
+
 \item{values}{Optional. The column of \code{cells} to use as the values of each
 header.  Given as a bare variable name.  If omitted (the default), the
 \code{types} argument will be used instead.}
@@ -27,7 +33,9 @@ header.  Given as a bare variable name.  If omitted (the default), the
 \item{types}{The name of the column that names the data type of each cell.
 Usually called \code{data_types} (the default), this is a character column that
 names the other columns in \code{cells} that contain the values of each cell.
-E.g.  a cell with a character value will have \code{"character"} in this column.}
+E.g.  a cell with a character value will have \code{"character"} in this column.
+Unquoted(\code{data_types}, not \code{"data_types"}) because it refers to an actual
+object.}
 
 \item{drop_na}{logical Whether to filter out headers that have \code{NA} in the
 \code{value} column.  Default: \code{TRUE}.  This can happen with the output of
