@@ -114,3 +114,17 @@ test_that("behead() supports custom formatters", {
   expect_equal(x$header[1], "demand foo")
   expect_equal(x$rowheader[1], 1+0i)
 })
+
+test_that("behead() can use row, col and data_type as headers", {
+  x <- tidy_table(BOD, FALSE, TRUE)
+  y <- behead(x, N, header, values = row)
+  expect_equal(y$header, rep(1L, 12L))
+  expect_equal(colnames(y), c(colnames(x), "header"))
+  y <- behead(x, N, header, values = col)
+  expect_equal(y$header, rep(1:2, each = 6L))
+  expect_equal(colnames(y), c(colnames(x), "header"))
+  y <- behead(x, N, header, values = data_type)
+  expect_equal(y$header, rep("chr", 12L))
+  expect_equal(colnames(y), c(colnames(x), "header"))
+})
+

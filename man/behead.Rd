@@ -4,7 +4,8 @@
 \alias{behead}
 \title{Strip a level of headers from a pivot table}
 \usage{
-behead(cells, direction, name, types = data_type, drop_na = TRUE)
+behead(cells, direction, name, ..., values = NULL, types = data_type,
+  drop_na = TRUE)
 }
 \arguments{
 \item{cells}{Data frame. The cells of a pivot table, usually the output of
@@ -19,6 +20,9 @@ directly rather than via \code{\link[=behead]{behead()}}.  See the help file for
 
 \item{name}{A name to give the new column that will be created, e.g.
 \code{location} if the headers are locations.  Not quoted (not \code{"location"}).}
+\item{values}{Optional. The column of \code{cells} to use as the values of each
+header.  Given as a bare variable name.  If omitted (the default), the
+\code{types} argument will be used instead.}
 
 \item{types}{The name of the column that names the data type of each cell.
 Usually called \code{data_types} (the default), this is a character column that

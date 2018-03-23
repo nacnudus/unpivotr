@@ -21,6 +21,9 @@
 #' of mixed data types, e.g. when some headers are dates and others are
 #' characters.  These can be given as `character = toupper` or `character = ~
 #' toupper(.x)`, similar to [purrr::map].
+#' @param values Optional. The column of `cells` to use as the values of each
+#' header.  Given as a bare variable name.  If omitted (the default), the
+#' `types` argument will be used instead.
 #' @param types The name of the column that names the data type of each cell.
 #' Usually called `data_types` (the default), this is a character column that
 #' names the other columns in `cells` that contain the values of each cell.
@@ -60,12 +63,24 @@
 #' # The provided 'tidy' data is missing a row for Male 15-24-year-olds with a
 #' # postgraduate qualification and a sense of purpose between 0 and 6.  That
 #' # seems to have been an oversight by Statistics New Zealand.
-behead <- function(cells, direction, name, ..., types = data_type,
-                   drop_na = TRUE) {
+behead <- function(cells, direction, name, ..., values = NULL,
+                   types = data_type, drop_na = TRUE) {
   name <- rlang::ensym(name)
   dots <- list(...)
   functions <- purrr::map(dots, purrr::as_mapper)
-  types <- rlang::ensym(types)
+  values <- rlang::enexpr(values)
+  if(is.null(values)) {
+    values_was_null <- TRUE
+    types <- rlang::ensym(types)
+  } else {
+    values_was_null <- FALSE
+    values <- rlang::ensym(values)
+    types <- rlang::sym(".data_type")
+    cells <-
+      cells %>%
+      dplyr::mutate(.value = !! values) %>%
+      dplyr::mutate(!! types := ".value")
+  }
   type_names <- unique(dplyr::pull(cells, !! types))
   filter_expr <- direction_filter(!!rlang::ensym(direction))
   is_header <- rlang::eval_tidy(filter_expr, cells)
@@ -81,7 +96,9 @@ behead <- function(cells, direction, name, ..., types = data_type,
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
-  direction(datacells, headers, drop = FALSE)
+  out <- direction(datacells, headers, drop = FALSE)
+  if(!values_was_null) out <- select(out, -.value, -.data_type)
+  out
 }
 
 # Construct a filter expression for stripping a header from a pivot table
