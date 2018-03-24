@@ -78,7 +78,6 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
     types <- rlang::ensym(types)
     original_types <- NULL
   } else {
-    values <- rlang::ensym(values)
     original_types <- rlang::ensym(types)
     types <- rlang::sym(".data_type")
     .data <-
