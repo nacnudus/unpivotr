@@ -82,7 +82,7 @@
 #' N(datacells, gender)
 #' N(datacells, gender, drop = FALSE)
 join_header <- function(bag, header, direction, boundaries = NULL, drop = TRUE) {
-  direction <- quo_name(enexpr(direction))
+  direction <- rlang::quo_name(rlang::enexpr(direction))
   check_header(header)
   if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
     do.call(direction, list(bag, header, boundaries))
@@ -261,8 +261,8 @@ ABOVE <- function(bag, header, boundaries = NULL, drop = TRUE) {
     boundaries <- data.table::data.table(boundaries) # Must be done without %>%
     header <- # Rename columns to avoid misleading data.table renaming
       header %>%
-      rename(from_col = col) %>%
-      mutate(from_col = as.double(from_col), to_col = from_col) # For data.table join on Inf
+      dplyr::rename(from_col = col) %>%
+      dplyr::mutate(from_col = as.double(from_col), to_col = from_col) # For data.table join on Inf
     header <- data.table::data.table(header) # Must be done without %>%
     header <- header[boundaries, on = .(from_col >= from_col, to_col <= to_col), nomatch = nomatch] # Left-join (boundaries is left)
     # Boundaries without headers still exist but are NA

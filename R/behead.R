@@ -97,7 +97,7 @@ behead <- function(cells, direction, name, ..., values = NULL,
     dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
   out <- direction(datacells, headers, drop = FALSE)
-  if(!values_was_null) out <- select(out, -.value, -.data_type)
+  if(!values_was_null) out <- dplyr::select(out, -.value, -.data_type)
   out
 }
 

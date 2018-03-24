@@ -1,8 +1,5 @@
 context("tidy_table()")
 
-library(dplyr)
-library(rvest)
-
 test_that("tidy_table works with or without row and column names", {
   expect_equal(nrow(tidy_table(Formaldehyde)), 12)
   expect_equal(nrow(tidy_table(Formaldehyde, colnames = TRUE)), 14)
@@ -47,24 +44,24 @@ test_that("tidy_table works with html tables", {
                            2L,    2L,     "html",   "<td>cell (2, 2)(2, 1)</td>"))
   rowspan_parsed <-
     rowspan %>%
-    read_html() %>%
+    xml2::read_html() %>%
     tidy_table()
   colspan_parsed <-
     colspan %>%
-    read_html() %>%
+    xml2::read_html() %>%
     tidy_table()
   rowandcolspan_parsed <-
     rowandcolspan %>%
-    read_html() %>%
+    xml2::read_html() %>%
     tidy_table()
   nested_parsed <-
     nested %>%
-    read_html() %>%
+    xml2::read_html() %>%
     tidy_table() %>%
     .[[1]] %>%
     .$html %>%
     .[4] %>%
-    read_html() %>%
+    xml2::read_html() %>%
     tidy_table()
   expect_identical(rowspan_parsed, rowspan_correct)
   expect_identical(colspan_parsed, colspan_correct)

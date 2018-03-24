@@ -93,15 +93,15 @@ test_that("behead() handles headers of mixed data types including dates", {
 
 test_that("behead() handles headers of factor and ordered-factor data types", {
   x <-
-    tibble(row = c(1L, 1L, 2L, 2L, 3L, 3L),
-           col = c(1L, 2L, 1L, 2L, 1L, 2L),
-           data_type = c("fct", "ord", "chr", "dbl", "chr", "dbl"),
-           chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
-           fct = list(factor("name"), NULL, NULL, NULL, NULL, NULL),
-           ord = list(NULL, factor("score", ordered = TRUE),
-                      NULL, NULL, NULL, NULL),
-           date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
-           dbl = c(NA, NA, NA, 11, NA, 12))
+    tibble::tibble(row = c(1L, 1L, 2L, 2L, 3L, 3L),
+                   col = c(1L, 2L, 1L, 2L, 1L, 2L),
+                   data_type = c("fct", "ord", "chr", "dbl", "chr", "dbl"),
+                   chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
+                   fct = list(factor("name"), NULL, NULL, NULL, NULL, NULL),
+                   ord = list(NULL, factor("score", ordered = TRUE),
+                              NULL, NULL, NULL, NULL),
+                   date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
+                   dbl = c(NA, NA, NA, 11, NA, 12))
   y <- behead(x, N, header)
   expect_equal(y$header, rep(c("name", "score"), 2))
 })

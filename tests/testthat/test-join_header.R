@@ -1,8 +1,5 @@
 context("join_header()")
 
-library(tidyxl)
-library(dplyr)
-
 expect_purpose <-
 c("0 - 6", "7 - 10", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
 "0 - 6", "7 - 10", "0 - 6", "7 - 10", "7 - 10", "0 - 6", "7 - 10",
@@ -117,24 +114,24 @@ test_that("Compass directions N, NNW, W, and WNW work", {
   cells <- tidy_table(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row <= 2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row)
   row_headers <-
     cells %>%
-    filter(col <= 2, !is.na(chr)) %>% # Select all rows of headers at once
-    select(row, col, header = chr) %>%
+    dplyr::filter(col <= 2, !is.na(chr)) %>% # Select all rows of headers at once
+    dplyr::select(row, col, header = chr) %>%
     split(.$col) # Return each row of headers in its own element of a list
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(chr)) %>%
-    mutate(value = as.integer(chr)) %>%
-    select(row, col, value) %>%
+    dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value) %>%
     NNW(col_headers[[1]]) %>%
     N(col_headers[[2]]) %>%
     WNW(row_headers[[1]]) %>%
     W(row_headers[[2]]) %>%
-    arrange(row, col)
+    dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_sex)
   expect_equal(datacells[[5]], expect_purpose)
   expect_equal(datacells[[6]], expect_education)
@@ -145,22 +142,22 @@ test_that("Compass directions NNE and WSW work", {
   cells <- tidy_table(purpose$`NNE WSW`)
   row_headers <-
     cells %>%
-    filter(col <= 2, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(col <= 2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row <= 2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(chr)) %>%
-    mutate(value = as.integer(chr)) %>%
-    select(row, col, value) %>%
+    dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value) %>%
     NNE(col_headers[[1]]) %>%
     WSW(row_headers[[1]]) %>%
-    arrange(row, col)
+    dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_education)
   expect_equal(datacells[[5]], expect_sex)
 })
@@ -169,24 +166,24 @@ test_that("Compass directions S, SSE , E and ESE work", {
   cells <- tidy_table(purpose$`SSE ESE`)
   row_headers <-
     cells %>%
-    filter(col >= 5, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(col >= 5, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row >= 21, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row >= 21, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row)
     datacells <-
     cells %>%
-    filter(row <= 20, col <= 4, !is.na(chr)) %>%
-    mutate(value = as.integer(chr)) %>%
-    select(row, col, value) %>%
+    dplyr::filter(row <= 20, col <= 4, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value) %>%
     SSE(col_headers[[2]]) %>%
     S(col_headers[[1]]) %>%
     ESE(row_headers[[2]]) %>%
     E(row_headers[[1]]) %>%
-    arrange(row, col)
+    dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_sex)
   expect_equal(datacells[[5]], expect_purpose)
   expect_equal(datacells[[6]], expect_education)
@@ -197,22 +194,22 @@ test_that("Compass directions SSW and ENE work", {
   cells <- tidy_table(purpose$`SSW ENE`)
   row_headers <-
     cells %>%
-    filter(col >= 5, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(col >= 5, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row >= 21, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row >= 21, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row <= 20, col <= 4, !is.na(chr)) %>%
-    mutate(value = as.integer(chr)) %>%
-    select(row, col, value) %>%
+    dplyr::filter(row <= 20, col <= 4, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value) %>%
     SSW(col_headers[[2]]) %>% # Different from SSE ESE
     ENE(row_headers[[2]]) %>% # Different from SSE ESE
-    arrange(row, col)
+    dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_education)
   expect_equal(datacells[[5]], expect_sex)
 })
@@ -221,22 +218,22 @@ test_that("Compass directions ABOVE and LEFT work", {
   cells <- tidy_table(purpose$`ABOVE LEFT`)
   row_headers <-
     cells %>%
-    filter(col <= 2, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(col <= 2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row <= 2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(chr)) %>%
-    mutate(value = as.integer(chr)) %>%
-    select(row, col, value) %>%
+    dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value) %>%
     ABOVE(col_headers[[1]]) %>%
     LEFT(row_headers[[1]]) %>%
-    arrange(row, col)
+    dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_sex_short)
   expect_equal(datacells[[5]], expect_purpose_short)
 })
@@ -245,61 +242,62 @@ test_that("Compass directions BELOW and RIGHT work", {
   cells <- tidy_table(purpose$`BELOW RIGHT`)
   row_headers <-
     cells %>%
-    filter(col >= 7, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(col >= 7, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row >= 11, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row >= 11, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row <= 10, col <= 6, !is.na(chr)) %>%
-    mutate(value = as.integer(chr)) %>%
-    select(row, col, value) %>%
+    dplyr::filter(row <= 10, col <= 6, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value) %>%
     BELOW(col_headers[[2]]) %>%
     RIGHT(row_headers[[2]]) %>%
-    arrange(row, col)
+    dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_sex_short)
   expect_equal(datacells[[5]], expect_purpose_short)
 })
 
 test_that("Compass directions ABOVE and LEFT work with boundaries", {
+
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-  cells <- xlsx_cells(spreadsheet, "ABOVE LEFT border")
-  formatting <- xlsx_formats(spreadsheet)
+  cells <- tidyxl::xlsx_cells(spreadsheet, "ABOVE LEFT border")
+  formatting <- tidyxl::xlsx_formats(spreadsheet)
   left_borders <- which(!is.na(formatting$local$border$left$style))
   top_borders <- which(!is.na(formatting$local$border$top$style))
   left_border_cells <-
     cells %>%
-    filter(row == 2, local_format_id %in% left_borders) %>%
-    select(row, col)
+    dplyr::filter(row == 2, local_format_id %in% left_borders) %>%
+    dplyr::select(row, col)
   top_border_cells <-
     cells %>%
-    filter(col == 2, local_format_id %in% top_borders) %>%
-    select(row, col)
+    dplyr::filter(col == 2, local_format_id %in% top_borders) %>%
+    dplyr::select(row, col)
   row_headers <-
     cells %>%
-    filter(col <= 3, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    dplyr::filter(col <= 3, !is.na(character)) %>%
+    dplyr::select(row, col, header = character) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row <= 3, !is.na(character)) %>%
-    select(row, col, header = character) %>%
+    dplyr::filter(row <= 3, !is.na(character)) %>%
+    dplyr::select(row, col, header = character) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row >= 4, col >= 4, !is_blank) %>%
-    mutate(content = ifelse(is.na(character), numeric, NA)) %>%
-    mutate(value = as.integer(content)) %>%
-    select(row, col, value) %>%
+    dplyr::filter(row >= 4, col >= 4, !is_blank) %>%
+    dplyr::mutate(content = ifelse(is.na(character), numeric, NA)) %>%
+    dplyr::mutate(value = as.integer(content)) %>%
+    dplyr::select(row, col, value) %>%
     ABOVE(col_headers[[1]], left_border_cells) %>% # Different from ABOVE LEFT
     N(col_headers[[2]]) %>% # Same as ABOVE LEFT
     LEFT(row_headers[[1]], top_border_cells) %>% # Different from ABOVE LEFT
     W(row_headers[[2]]) %>% # Same as ABOVE LEFT
-    arrange(row, col)
+    dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_purpose_short)
   expect_equal(datacells[[5]], expect_age_short)
   expect_equal(datacells[[6]], expect_sex_short)
@@ -310,43 +308,44 @@ test_that("Compass directions ABOVE and LEFT work with boundaries", {
   expect_error(LEFT(datacells, row_headers[[1]], top_border_cells[-2, ]),
                "Multiple headers were detected within the same pair of boundaries.
   Please provide boundaries to separate every header.")
+
 })
 
 test_that("Compass directions BELOW and RIGHT work with boundaries", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-  cells <- xlsx_cells(spreadsheet, "BELOW RIGHT border")
-  formatting <- xlsx_formats(spreadsheet)
+  cells <- tidyxl::xlsx_cells(spreadsheet, "BELOW RIGHT border")
+  formatting <- tidyxl::xlsx_formats(spreadsheet)
   left_borders <- which(!is.na(formatting$local$border$left$style))
   top_borders <- which(!is.na(formatting$local$border$top$style))
   left_border_cells <-
     cells %>%
-    filter(row == 14, local_format_id %in% left_borders) %>%
-    select(row, col)
+    dplyr::filter(row == 14, local_format_id %in% left_borders) %>%
+    dplyr::select(row, col)
   top_border_cells <-
     cells %>%
-    filter(col == 11, local_format_id %in% top_borders) %>%
-    select(row, col)
+    dplyr::filter(col == 11, local_format_id %in% top_borders) %>%
+    dplyr::select(row, col)
   row_headers <-
     cells %>%
-    filter(col >= 10, !is_blank) %>%
-    select(row, col, header = character) %>%
+    dplyr::filter(col >= 10, !is_blank) %>%
+    dplyr::select(row, col, header = character) %>%
     split(.$col)
   col_headers <-
     cells %>%
-    filter(row >= 14, !is_blank) %>%
-    select(row, col, header = character) %>%
+    dplyr::filter(row >= 14, !is_blank) %>%
+    dplyr::select(row, col, header = character) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row <= 13, col <= 9, !is_blank) %>%
-    mutate(content = ifelse(is.na(character), numeric, NA)) %>%
-    mutate(value = as.integer(content)) %>%
-    select(row, col, value) %>%
+    dplyr::filter(row <= 13, col <= 9, !is_blank) %>%
+    dplyr::mutate(content = ifelse(is.na(character), numeric, NA)) %>%
+    dplyr::mutate(value = as.integer(content)) %>%
+    dplyr::select(row, col, value) %>%
     BELOW(col_headers[[2]], left_border_cells) %>% # Different from BELOW RIGHT
     S(col_headers[[1]]) %>% # Same as BELOW RIGHT
     RIGHT(row_headers[[2]], top_border_cells) %>% # Different from BELOW RIGHT
     E(row_headers[[1]]) %>% # Same as BELOW RIGHT
-    arrange(row, col)
+    dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_purpose_short)
   expect_equal(datacells[[5]], expect_age_short)
   expect_equal(datacells[[6]], expect_sex_short)
@@ -363,14 +362,14 @@ test_that("join_header() works", {
   cells <- tidy_table(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row <= 2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(chr)) %>%
-    mutate(value = as.integer(chr)) %>%
-    select(row, col, value)
+    dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value)
   expect_error(join_header(datacells, col_headers[[1]], "NORTH"),
                "The direction NORTH, is either not recognised or not yet supported.")
   expect_error(join_header(datacells,
@@ -388,31 +387,31 @@ test_that("join_header() works", {
 
 test_that("the `drop` argument works", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-  cells <- xlsx_cells(spreadsheet, "ABOVE LEFT border")
-  formatting <- xlsx_formats(spreadsheet)
+  cells <- tidyxl::xlsx_cells(spreadsheet, "ABOVE LEFT border")
+  formatting <- tidyxl::xlsx_formats(spreadsheet)
   left_borders <- which(!is.na(formatting$local$border$left$style))
   top_borders <- which(!is.na(formatting$local$border$top$style))
   left_border_cells <-
-    filter(cells, row == 2, local_format_id %in% left_borders) %>%
-    select(row, col)
+    dplyr::filter(cells, row == 2, local_format_id %in% left_borders) %>%
+    dplyr::select(row, col)
   top_border_cells <-
-    filter(cells, col == 2, local_format_id %in% top_borders) %>%
-    select(row, col)
+    dplyr::filter(cells, col == 2, local_format_id %in% top_borders) %>%
+    dplyr::select(row, col)
   sex <-
-    filter(cells, col == 2, !is_blank) %>%
-    select(row, col, sex = character)
+    dplyr::filter(cells, col == 2, !is_blank) %>%
+    dplyr::select(row, col, sex = character)
   qualification <-
-    filter(cells, col == 3, !is_blank) %>%
-    select(row, col, qualification = character)
+    dplyr::filter(cells, col == 3, !is_blank) %>%
+    dplyr::select(row, col, qualification = character)
   satisfaction <-
-    filter(cells, row == 2, !is_blank) %>%
-    select(row, col, satisfaction = character)
+    dplyr::filter(cells, row == 2, !is_blank) %>%
+    dplyr::select(row, col, satisfaction = character)
   age <-
-    filter(cells, row == 3, !is_blank) %>%
-    select(row, col, age = character)
+    dplyr::filter(cells, row == 3, !is_blank) %>%
+    dplyr::select(row, col, age = character)
   datacells <-
-    filter(cells, row >= 4, col >= 4, !is_blank) %>%
-    transmute(row, col, value = as.integer(numeric))
+    dplyr::filter(cells, row >= 4, col >= 4, !is_blank) %>%
+    dplyr::transmute(row, col, value = as.integer(numeric))
   expect_equal(nrow(N(datacells, satisfaction)), 20)
   expect_equal(nrow(N(datacells, satisfaction, drop = FALSE)), 55)
   expect_equal(nrow(W(datacells, sex)), 12)
@@ -434,14 +433,14 @@ test_that("Quoted directions still work for backwards compatibility", {
   cells <- tidy_table(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
-    filter(row <= 2, !is.na(chr)) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row <= 2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row)
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3, !is.na(chr)) %>%
-    mutate(value = as.integer(chr)) %>%
-    select(row, col, value)
+    dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value)
   expect_equal(join_header(datacells, col_headers[[1]], "N"),
                N(datacells, col_headers[[1]]))
 })
