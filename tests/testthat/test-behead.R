@@ -41,41 +41,42 @@ test_that("``\"ABOVE\"`` etc. don't work", {
 })
 
 test_that("behead() works with all common datatypes", {
-  sysdate <- Sys.Date()
-  systime <- Sys.time()
-  x <-
-    data.frame(lgl = c(TRUE, FALSE),
-               int = c(1L, 2L),
-               dbl = c(1, 2),
-               cpl = c(1i, 2i),
-               raw = as.raw(c(11, 12)),
-               date = c(sysdate, sysdate + 1),
-               dttm = c(systime, systime + 1),
-               chr = c("a", "b"),
-               fct = factor(c("c", "d")),
-               ord = factor(c("e", "f"), ordered = TRUE),
-               stringsAsFactors = FALSE) %>%
-    tidy_table(colnames = TRUE)
+  w <- tibble::tibble(lgl = c(TRUE, FALSE),
+                      int = c(1L, 2L),
+                      dbl = c(1, 2),
+                      cpl = c(1i, 2i),
+                      date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+                      dttm = c(as.POSIXct("2001-01-01 01:01:01"),
+                               as.POSIXct("2001-01-01 01:01:02")),
+                      chr = c("a", "b"),
+                      fct = factor(c("c", "d")),
+                      ord = factor(c("e", "f"), ordered = TRUE),
+                      list = list(1:2, letters[1:2]))
+  x <- tidy_table(w, colnames = TRUE)
   y <- behead(x, N, header)
-  expect_equal(y$chr[14], NA_character_)
-  expect_equal(y$chr[15], "a")
+  expect_equal(nrow(y), 20L)
+  expect_equal(y$header, rep(colnames(w), each = 2L))
+  expect_equal(y$chr[12], NA_character_)
+  expect_equal(y$chr[13], "a")
   expect_equal(y$cpl[6], NA_complex_)
   expect_equal(y$cpl[7], 0+1i)
-  expect_equal(y$date[10], as.Date(NA))
-  expect_equal(y$date[11], sysdate)
+  expect_equal(y$date[8], as.Date(NA))
+  expect_equal(y$date[9], as.Date("2001-01-01"))
   expect_equal(y$dbl[4], NA_real_)
   expect_equal(y$dbl[5], 1)
-  expect_equal(y$dttm[12], as.POSIXct(NA))
-  expect_equal(y$dttm[13], systime)
-  expect_equal(y$fct[[16]], NULL)
+  expect_equal(y$dttm[10], as.POSIXct(NA))
+  expect_equal(y$dttm[11], as.POSIXct("2001-01-01 01:01:01"))
+  expect_equal(y$fct[[16]], factor("d", levels = c("c", "d")))
+  expect_equal(y$fct[[17]], NULL)
   expect_equal(y$int[2], NA_integer_)
   expect_equal(y$int[3], 1L)
   expect_equal(y$lgl[2], FALSE)
   expect_equal(y$lgl[3], NA)
-  expect_equal(y$ord[[18]], NULL)
-  expect_equal(y$ord[[19]], factor("e", levels = c("e", "f"), ordered = TRUE))
-  expect_equal(y$raw[[8]], as.raw(0))
-  expect_equal(y$raw[[9]], as.raw(11))
+  expect_equal(y$ord[[18]], factor("f", levels = c("e", "f"), ordered = TRUE))
+  expect_equal(y$ord[[19]], NULL)
+  expect_equal(y$list[[18]], NULL)
+  expect_equal(y$list[[19]], 1:2)
+  expect_equal(y$list[[20]], letters[1:2])
 })
 
 test_that("behead() handles headers of mixed data types including dates", {
@@ -127,4 +128,3 @@ test_that("behead() can use row, col and data_type as headers", {
   expect_equal(y$header, rep("chr", 12L))
   expect_equal(colnames(y), c(colnames(x), "header"))
 })
-

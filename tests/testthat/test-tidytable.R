@@ -70,19 +70,17 @@ test_that("tidy_table works with html tables", {
 })
 
 test_that("tidy_table works with all common datatypes", {
-  x <- data.frame(lgl = c(TRUE, FALSE),
-                  int = c(1L, 2L),
-                  dbl = c(1, 2),
-                  cpl = c(1i, 2i),
-                  raw = as.raw(c(11, 12)),
-                  date = c(Sys.Date(), Sys.Date() + 1),
-                  dttm = c(Sys.time(), Sys.time() + 1),
-                  chr = c("a", "b"),
-                  stringsAsFactors = FALSE)
-  y <- tidy_table(x)
-  expect_equal(colnames(y),
-               c("row", "col", "data_type", "chr", "cpl", "date", "dbl", "dttm",
-                 "int", "lgl", "raw"))
+  x <- tibble::tibble(lgl = c(TRUE, FALSE),
+                      int = c(1L, 2L),
+                      dbl = c(1, 2),
+                      cpl = c(1i, 2i),
+                      date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+                      dttm = c(as.POSIXct("2001-01-01 01:01:01"),
+                               as.POSIXct("2001-01-01 01:01:02")),
+                      chr = c("a", "b"),
+                      list = list(1:2, letters[1:2]))
+  y <- tidy_table(x, colnames = TRUE)
+  expect_equal(colnames(y), c("row", "col", "data_type", sort(colnames(x))))
   x_class <- purrr::map(x, class)
   y_class <- purrr::map(y, class)
   expect_equal(y_class[names(x_class)], x_class)
@@ -91,7 +89,7 @@ test_that("tidy_table works with all common datatypes", {
               ord = factor(c("c", "d"), ordered = TRUE),
               list = list(1:2, list("a", "b")))
   y <- tidy_table(x)
-  expect_equal(colnames(y), c("row", "col", "data_type", "fct", "list", "ord"))
+  expect_equal(colnames(y), c("row", "col", "data_type", sort(colnames(x))))
   expect_equal(class(y$fct), "list")
   expect_equal(class(y$ord), "list")
   expect_equal(class(y$list), "list")

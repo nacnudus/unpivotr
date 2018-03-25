@@ -51,8 +51,8 @@ test_that("spatter() doesn't delete data_type if it isn't used", {
   expect_equal(purrr::map_chr(d, class),
                c(row = "integer",
                  data_type = "character",
-                 demand = "logical",
-                 Time = "logical"))
+                 demand = "character",
+                 Time = "character"))
 })
 
 test_that("spatter() does delete the 'values' column", {
@@ -116,20 +116,22 @@ test_that("spatter() retains factors when some missing but no other types", {
                  weight = "numeric"))
 })
 
-test_that("spatter() converts factors to logical when all missing", {
+test_that("spatter() doesn't convert factors to logical when all missing", {
   d <-
-    dplyr::mutate(chickwts, feed = NA_character_, feed = factor(feed)) %>%
-    tibble::as_tibble() %>%
-    tidy_table(FALSE, TRUE) %>%
+    tibble::tibble(dbl = c(1, 2),
+                   fct = factor(NA, NA),
+                   ord = factor(NA, NA, ordered = TRUE)) %>%
+    tidy_table(colnames = TRUE) %>%
     behead(N, header) %>%
     dplyr::select(-col, -chr) %>%
     spatter(header)
-  expect_equal(colnames(d), c("row", "feed", "weight"))
-  expect_equal(nrow(d), 71L)
+  expect_equal(colnames(d), c("row", "dbl", "fct", "ord"))
+  expect_equal(nrow(d), 2L)
   expect_equal(purrr::map_chr(d, class),
                c(row = "integer",
-                 feed = "logical",
-                 weight = "numeric"))
+                 dbl = "numeric",
+                 fct = "factor",
+                 ord = "factor"))
 })
 
 test_that("spatter() converts ordered factors to character", {
@@ -157,3 +159,27 @@ test_that("spatter() can use custom functions for converting data types", {
                          c("col", 1:7)))
   expect_equal(d$`1`, c("Time-header", "demand-header"))
 })
+
+test_that("spatter() works on common data types", {
+  x <-
+    tibble::tibble(lgl = c(TRUE, FALSE),
+                   int = c(1L, 2L),
+                   dbl = c(1, 2),
+                   cpl = c(1i, 2i),
+                   date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+                   dttm = c(as.POSIXct("2001-01-01 01:01:01"),
+                            as.POSIXct("2001-01-01 01:01:02")),
+                   chr = c("a", "b"),
+                   list = list(1:2, letters[1:2]))
+  y <-
+    tidy_table(x, colnames = TRUE) %>%
+    behead(N, header) %>%
+    dplyr::select(-col) %>%
+    spatter(header) %>%
+    dplyr::select(-row)
+  expect_equal(colnames(y), sort(colnames(x)))
+  x_class <- purrr::map(x, class)
+  y_class <- purrr::map(y, class)
+  expect_equal(y_class[names(x_class)], x_class)
+})
+

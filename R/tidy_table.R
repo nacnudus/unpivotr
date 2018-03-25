@@ -106,6 +106,24 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                             type = rep(types, each = nrows),
                             data_type = type)
   out <- tidyr::spread(out, type, value)
+  if (rownames) {
+    row_names <- row.names(x)
+    out$col <- out$col + 1L
+    out <- dplyr::bind_rows(out,
+                            tibble::data_frame(col = 1L,
+                                               row = seq_along(row_names),
+                                               chr = rlang::as_list(row_names),
+                                               data_type = "chr"))
+  }
+  if (colnames) {
+    col_names <- colnames(x)
+    out$row <- out$row + 1L
+    out <- dplyr::bind_rows(out,
+                            tibble::data_frame(row = 1L,
+                                               col = seq_along(col_names) + rownames,
+                                               chr = rlang::as_list(col_names),
+                                               data_type = "chr"))
+  }
   # Convert non-list-columns to vectors
   out <- dplyr::mutate_at(out,
                           dplyr::select_vars(names(out), dplyr::everything(),
@@ -116,24 +134,6 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                           combine_factors = FALSE,
                           fill_factor_na = FALSE)
   # Append row and column names
-  if (rownames) {
-    row_names <- row.names(x)
-    out$col <- out$col + 1L
-    out <- dplyr::bind_rows(out,
-                            tibble::data_frame(col = 1L,
-                                               row = seq_along(row_names),
-                                               chr = row_names,
-                                               data_type = "chr"))
-  }
-  if (colnames) {
-    col_names <- colnames(x)
-    out$row <- out$row + 1L
-    out <- dplyr::bind_rows(out,
-                            tibble::data_frame(row = 1L,
-                                               col = seq_along(col_names) + rownames,
-                                               chr = col_names,
-                                               data_type = "chr"))
-  }
   out <- dplyr::select(out, row, col, data_type, sort(colnames(out)))
   dplyr::arrange(out, col, row)
 }

@@ -66,3 +66,19 @@ test_that("Blank initial rows and columns are dropped", {
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x), rectify_correct)
 })
+
+test_that("rectify() works on common data types", {
+  x <- tibble::tibble(a = c(TRUE, FALSE),
+                      b = c(1L, 2L),
+                      c = c(1, 2),
+                      d = c(1i, 2i),
+                      e = c(Sys.Date(), Sys.Date() + 1),
+                      f = c(Sys.time(), Sys.time() + 1),
+                      g = c("a", "b"),
+                      h = factor(c("c", "d")),
+                      i = factor(c("e", "f"), ordered = TRUE),
+                      j = list(1:2, letters[1:2]),
+                      stringsAsFactors = FALSE)
+  y <- tidy_table(x, colnames = TRUE)
+  z <- rectify(y) # can't handle lists, because it converts everything to string.
+})

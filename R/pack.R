@@ -31,13 +31,10 @@ unpack <- function(.data, values = value, name = "data_type",
   name <- rlang::ensym(name)
   types <- names(dplyr::pull(.data, !! values))
   type_names <- unique(types)
-  missings <- map(type_names,
-                  ~ ifelse(.x %in% c("list", "fct", "ord"), list(NULL), NA))
-  assignments <- purrr::map2(type_names,
-                             missings,
-                             ~ rlang::expr(ifelse(types == !! .x,
-                                                  !! values,
-                                                  !! .y)))
+  assignments <- purrr::map(type_names,
+                            ~ rlang::expr(ifelse(types == !! .x,
+                                                 !! values,
+                                                 !! list(NULL))))
   names(assignments) <- type_names
   out <-
     dplyr::mutate(.data, !! name := types, !!! assignments) %>%
