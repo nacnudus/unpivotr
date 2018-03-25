@@ -95,7 +95,6 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
                                            rlang::expr_text(values)))
   }
   out <- pack(.data, types = !! types, name = ".value", drop_types = drop_types)
-  is_na <- purrr::map_lgl(out$.value, is.na)
   # Calculate the positions of cols to be created by spread()
   n_keys <- length(unique(dplyr::pull(.data, !! key)))
   n_cols <- ncol(out) - 2 + n_keys
