@@ -31,23 +31,19 @@ test_that("partition_dim() catches argument errors", {
 
 test_that("partition() works", {
   multiples <- dplyr::arrange(purpose$small_multiples, col, row)
-
   tl_corners <-
     dplyr::filter(multiples,
                   !is.na(chr),
                   !(chr %in% c("Sex", "Value", "Female", "Male")))
-
   expect_equal(partition(multiples, tl_corners)$partition,
                c(rep(rep(c(1, 3, 5), each = 4), 2),
                  rep(rep(c(2, 4), each = 4), 2)))
-
   bl_corners <- dplyr::filter(multiples, chr == "Male")
   expect_equal(partition(multiples,
                          bl_corners,
                          position = "bottom_left")$partition,
                c(rep(rep(c(4, 2, 1), each = 4), 2),
                  rep(rep(c(5, 3), each = 4), 2)))
-
   tr_corners <-
     multiples %>%
     dplyr::filter(chr == "Value") %>%
@@ -57,7 +53,6 @@ test_that("partition() works", {
                          position = "top_right")$partition,
                c(rep(rep(c(2, 4, 5), each = 4), 2),
                  rep(rep(c(1, 3), each = 4), 2)))
-
   br_corners <-
     multiples %>%
     dplyr::filter(chr == "Male") %>%
