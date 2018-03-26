@@ -22,9 +22,9 @@
 #' Would be presented as
 #'
 #' ```
-#'   1(A) 2(B)
-#' 1 "a"  "b"
-#' 2 "c"  "d"
+#' row/col 1(A) 2(B)
+#'       1 "a"  "b"
+#'       2 "c"  "d"
 #' ```
 #'
 #' The letters in the column names are for comparing this view with a
@@ -41,66 +41,54 @@
 #'
 #' @export
 #' @examples
+#' # This is the original form of the table, which is easy to read.
 #' BOD
-#' x <- tidy_table(BOD, TRUE, TRUE)
+#'
+#' # This is the 'tidy' arrangement that is difficult for humans to read (but
+#' # easy for computers)
+#' x <- tidy_table(BOD, colnames = TRUE)
 #' x
+#'
+#' # rectify() projects the cells as a spreadsheet again, for humans to read.
 #' rectify(x)
 #'
 #' # You can choose to use a particular column of the data
-#' rectify(x, chr)
-#' rectify(x, dbl)
+#' rectify(x, values = chr)
+#' rectify(x, values = dbl)
 #'
 #' # You can also show which row or which column each cell came from, which
 #' # helps with understanding what this function does.
-#' rectify(x, row)
-#' rectify(x, col)
+#' rectify(x, values = row)
+#' rectify(x, values = col)
 #'
 #' # Empty rows and columns up to the first occupied cell are dropped, but the
 #' # row and column names reflect the original row and column numbers.
 #' x$row <- x$row + 5
 #' x$col <- x$col + 5
 #' rectify(x)
-rectify <- function(cells, values = NULL, types = data_type) {
+rectify <- function(cells, ..., values = NULL, types = data_type) {
   values <- rlang::enexpr(values)
-  if(is.null(values)) {
-    types <- rlang::ensym(types)
-    unique_types <- unique(dplyr::pull(cells, !! types))
-    cells <- dplyr::select(cells,
-                           row,
-                           col,
-                           !! types,
-                           !!! rlang::syms(unique_types))
+  types <- rlang::ensym(types)
+  if (is.null(values)) {
+    out <- spatter(cells, col, ..., types = data_type)
   } else {
-    values <- rlang::ensym(values)
-    colname <- rlang::expr_text(values)
-    types <- rlang::sym("data_type")
-    cells <-
-      cells %>%
-      dplyr::select(row, col, !! values) %>%
-      dplyr::mutate(row, col, value = !! values) %>%
-      dplyr::mutate(!! types := "value")
+    cells <- dplyr::select(cells, row, col, !! values)
+    if (rlang::expr_text(values) == "row") {
+      cells$.row <- cells$row
+      values <- rlang::sym(".row")
+    }
+    out <- spatter(cells, col, values = !! values, types = !! types)
   }
-  cells <- pack(cells, !! types)
-  cells
-  cells <- dplyr::mutate(cells, value = purrr::map_chr(value, format_list))
-  # Only use used rows/cols
+  # Amend the headers
   minrow <- min(cells$row)
   mincol <- min(cells$col)
   nrows <- max(cells$row) - minrow + 1L
   ncols <- max(cells$col) - mincol + 1L
-  cells$row = cells$row - minrow + 1L
-  cells$col = cells$col - mincol + 1L
-  # Create a blank matrix.
-  out <- matrix(character(), nrow = nrows, ncol = ncols)
-  # Assign to several cells of a matrix cells at once
-  out[(cells$col - 1) * nrow(out) + cells$row] <- cells$value
-  out
-  # Put in the headers
   colnums <- seq_len(ncols) + mincol - 1L
   colnums <- paste0(colnums, "(", cellranger::num_to_letter(colnums), ")")
   rownums <- seq_len(nrows) + minrow - 1L
-  colnames(out) <- colnums
-  rownames(out) <- rownums
+  colnames(out) <- c("row/col", colnums)
+  out$`row/col` <- rownums
   class(out) <- c("cell_grid", class(out))
   out
 }
@@ -129,7 +117,6 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
     if (!("DT" %in% installed.packages())) {
       "You need to install the 'DT' package to view this in the browser."
     }
-    headers <- c(".", colnames(x)) # empty names disallowed
     DT::datatable(x,
                   extensions = c("FixedHeader",
                                  "KeyTable",
@@ -137,7 +124,7 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
                   options = list(paging = FALSE,
                                  fixedHeader = TRUE,
                                  keys = TRUE),
-                  colnames = headers)
+                  rownames = FALSE)
   } else if (display == "rstudio") {
     View(x)
   } else {
@@ -147,6 +134,7 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
 
 # Like format() but handles factors wrapped in lists, and leaves NA as-is
 format_list <- function(x) {
+  if (is.list(x) || length(x) > 1L) return(dput(x))
   if(is.na(x)) return(NA_character_)
-  format(x[[1]])
+  format(x)
 }

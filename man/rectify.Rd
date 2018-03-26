@@ -5,7 +5,7 @@
 \alias{print.cell_grid}
 \title{Display cells as though in a spreadsheet}
 \usage{
-rectify(cells, values = NULL, types = data_type)
+rectify(cells, ..., values = NULL, types = data_type)
 
 \method{print}{cell_grid}(x, display = "terminal", ...)
 }
@@ -43,9 +43,9 @@ Example: The following cells\preformatted{row col value
   2   2   "d"
 }
 
-Would be presented as\preformatted{  1(A) 2(B)
-1 "a"  "b"
-2 "c"  "d"
+Would be presented as\preformatted{row/col 1(A) 2(B)
+      1 "a"  "b"
+      2 "c"  "d"
 }
 
 The letters in the column names are for comparing this view with a
@@ -57,19 +57,25 @@ spreadsheet application.
 }}
 
 \examples{
+# This is the original form of the table, which is easy to read.
 BOD
-x <- tidy_table(BOD, TRUE, TRUE)
+
+# This is the 'tidy' arrangement that is difficult for humans to read (but
+# easy for computers)
+x <- tidy_table(BOD, colnames = TRUE)
 x
+
+# rectify() projects the cells as a spreadsheet again, for humans to read.
 rectify(x)
 
 # You can choose to use a particular column of the data
-rectify(x, chr)
-rectify(x, dbl)
+rectify(x, values = chr)
+rectify(x, values = dbl)
 
 # You can also show which row or which column each cell came from, which
 # helps with understanding what this function does.
-rectify(x, row)
-rectify(x, col)
+rectify(x, values = row)
+rectify(x, values = col)
 
 # Empty rows and columns up to the first occupied cell are dropped, but the
 # row and column names reflect the original row and column numbers.
