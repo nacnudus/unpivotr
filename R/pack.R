@@ -17,7 +17,7 @@ pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
   }
   if(drop_type_cols) {
     type_colnames <- setdiff(type_colnames, rlang::expr_text(name))
-    out <- dplyr::select(out, - !! type_colnames)
+    out <- dplyr::select(out, - dplyr::one_of(type_colnames))
   }
   out
 }
