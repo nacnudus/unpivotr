@@ -4,7 +4,8 @@
 \alias{pack}
 \title{Pack cell values from separate columns per data type into one list-column}
 \usage{
-pack(.data, types = data_type, name = value)
+pack(.data, types = data_type, name = "value", drop_types = TRUE,
+  drop_type_cols = TRUE)
 }
 \description{
 Pack cell values from separate columns per data type into one list-column

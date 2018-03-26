@@ -4,7 +4,7 @@
 \alias{unpack}
 \title{Unpack cell values from one list-column into separate columns per data type}
 \usage{
-unpack(.data, values = value, name = data_type)
+unpack(.data, values = value, name = "data_type", drop_packed = TRUE)
 }
 \description{
 Unpack cell values from one list-column into separate columns per data type

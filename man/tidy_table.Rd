@@ -24,7 +24,7 @@ etc.) the value is in.
 }
 
 The columns \code{fct} and \code{ord} are, like \code{list}, list-columns (each element is
-itself a list) to avoid factor levels clashing.  For HTML tables, the column
+independent) to avoid factor levels clashing.  For HTML tables, the column
 \code{html} gives the HTML string of the original cell.
 
 Row and column names, when present and required by \code{rownames = TRUE} or
@@ -70,7 +70,7 @@ y
 tidy_table(y)
 
 # Factors are preserved by being wrapped in lists so that their levels don't
-# conflict.  Even the NAs used to fill the blanks are wrapped in factor-lists
+# conflict.  Blanks are NULLs.
 z <- data.frame(x = factor(c("a", "b")),
                 y = factor(c("c", "d"), ordered = TRUE))
 tidy_table(z)
