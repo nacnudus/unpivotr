@@ -54,6 +54,7 @@
 #'   behead(N, `Sense of purpose`) %>%
 #'   behead(WNW, `Highest qualification`) %>%
 #'   behead(W, `Age group (Life-stages)`) %>%
+#'   dplyr::mutate(count = as.integer(chr)) %>%
 #'   dplyr::select(-row, -col, -data_type, -chr)
 #' head(tidy)
 #'
