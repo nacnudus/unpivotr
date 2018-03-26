@@ -62,7 +62,7 @@
 #'   behead(N, header) %>%
 #'   dplyr::select(row, data_type, header, character, numeric) %>%
 #'   spatter(header, character = ~ toupper(.), numeric = as.complex)
-spatter <- function(.data, key, ..., values, types = data_type) {
+spatter <- function(.data, key, ..., values = NULL, types = data_type) {
   UseMethod("spatter")
 }
 
