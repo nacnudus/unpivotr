@@ -97,3 +97,20 @@ test_that("rectify() allows formatting formulas", {
   expect_equal(rectify(x, chr = toupper, int = ~ .x * 10),
                rectify_correct)
 })
+
+test_that("Extraneous columns are dropped", {
+  x <- data.frame(row = c(2L, 2L, 3L, 3L),
+                  col = c(2L, 3L, 2L, 3L),
+                  data_type = rep("int", 4),
+                  int = c(1L, 2L, 3L, NA),
+                  foo = 1:4,
+                  stringsAsFactors = FALSE)
+  rectify_correct <- data.frame(`row/col` = 2:3,
+                                `2(B)` = c(1L, 3L),
+                                `3(C)` = c(2L, NA_integer_),
+                                stringsAsFactors = FALSE,
+                                check.names = FALSE)
+  class(rectify_correct) <- c("cell_grid", class(rectify_correct))
+  expect_equal(rectify(x), rectify_correct)
+})
+

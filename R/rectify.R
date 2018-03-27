@@ -70,7 +70,12 @@ rectify <- function(cells, ..., values = NULL, types = data_type) {
   values <- rlang::enexpr(values)
   types <- rlang::ensym(types)
   if (is.null(values)) {
-    out <- spatter(cells, col, ..., types = data_type)
+    out <-
+      cells %>%
+      pack() %>%
+      dplyr::select(row, col, value) %>%
+      unpack() %>%
+      spatter(col, ..., types = data_type)
   } else {
     cells <- dplyr::select(cells, row, col, !! values)
     if (rlang::expr_text(values) == "row") {
