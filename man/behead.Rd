@@ -53,7 +53,16 @@ of row-headers), and it only works on tables that have first come through
 \code{\link[=tidy_table]{tidy_table()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}.
 }
 \examples{
-# Load some pivoted data
+# A simple table with a row of headers
+(x <- data.frame(a = 1:2, b = 3:4))
+
+# Make a tidy representation of each cell
+(cells <- tidy_table(x, colnames = TRUE))
+
+# Strip the cells in row 1 (the original headers) and use them as data
+behead(cells, N, foo)
+
+# More complex example: pivot table with several layers of headers
 (x <- purpose$`NNW WNW`)
 
 # Make a tidy representation
