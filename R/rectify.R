@@ -113,11 +113,7 @@ rectify <- function(cells, ..., values = NULL, types = data_type) {
 #' }
 print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
   if (display == "terminal") {
-    # Print with maximum terminal width
-    width <- options()$width
-    options(width = 10000)
     NextMethod(x)
-    options(width = width)
   } else if (display == "browser") {
     if (!("DT" %in% installed.packages())) {
       "You need to install the 'DT' package to view this in the browser."
