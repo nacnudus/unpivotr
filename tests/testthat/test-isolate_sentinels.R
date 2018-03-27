@@ -38,6 +38,12 @@ test_that("isolate_sentinels() works on common data types", {
   expect_error(isolate_sentinels(w, list, c("e", "f")))
 })
 
+test_that("isolate_sentinels() is vectorised over sentinel values", {
+  y <- isolate_sentinels(w, chr, c("a", "b"))
+  expect_equal(y$chr, c(NA_character_, NA_character_))
+  expect_equal(y$sentinel, c("a", "b"))
+})
+
 test_that("isolate_sentinels() allows a custom name for the new column", {
   y <- isolate_sentinels(w, chr, "a", "foo")
   expect_equal(y$foo, c("a", NA_character_))
