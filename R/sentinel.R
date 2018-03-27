@@ -2,8 +2,9 @@
 #'
 #' @export
 #' @examples
-#' isolate_sentinels(Formaldehyde, 0.3, carb)
-#' isolate_sentinels(Formaldehyde, 0.3, carb, flag)
+#' isolate_sentinels(Formaldehyde, carb, 0.3)
+#' isolate_sentinels(Formaldehyde, carb, c(0.3, 0.5))
+#' isolate_sentinels(Formaldehyde, carb, 0.3, flag)
 isolate_sentinels <- function(.data, col, sentinels, into = "sentinel") {
   col <- rlang::ensym(col)
   into <- rlang::ensym(into)
