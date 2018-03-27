@@ -4,7 +4,7 @@
 \alias{isolate_sentinels}
 \title{Move sentinel values into a separate column leaving NA behind}
 \usage{
-isolate_sentinels(.data, sentinels, col, into = "sentinel")
+isolate_sentinels(.data, col, sentinels, into = "sentinel")
 }
 \description{
 Move sentinel values into a separate column leaving NA behind

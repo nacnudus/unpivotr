@@ -4,7 +4,7 @@
 #' @examples
 #' isolate_sentinels(Formaldehyde, 0.3, carb)
 #' isolate_sentinels(Formaldehyde, 0.3, carb, flag)
-isolate_sentinels <- function(.data, sentinels, col, into = "sentinel") {
+isolate_sentinels <- function(.data, col, sentinels, into = "sentinel") {
   col <- rlang::ensym(col)
   into <- rlang::ensym(into)
   if(typeof(dplyr::pull(.data, !! col)) != typeof(sentinels)) {
