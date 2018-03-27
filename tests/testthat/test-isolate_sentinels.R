@@ -44,6 +44,12 @@ test_that("isolate_sentinels() is vectorised over sentinel values", {
   expect_equal(y$sentinel, c("a", "b"))
 })
 
+test_that("isolate_sentinels() works when the sentinel doesn't appear", {
+  y <- isolate_sentinels(w, chr, "c")
+  expect_equal(y$chr, c("a", "b"))
+  expect_equal(y$sentinel, c(NA_character_, NA_character_))
+})
+
 test_that("isolate_sentinels() allows a custom name for the new column", {
   y <- isolate_sentinels(w, chr, "a", "foo")
   expect_equal(y$foo, c("a", NA_character_))
