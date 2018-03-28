@@ -80,8 +80,7 @@ pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
   out
 }
 
-#' Unpack cell values from one list-column into separate columns per data type
-#'
+#' @describeIn pack Unpack cell values from one list-column into separate columns per data type
 #' @export
 unpack <- function(.data, values = value, name = "data_type",
                    drop_packed = TRUE) {

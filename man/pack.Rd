@@ -2,10 +2,13 @@
 % Please edit documentation in R/pack.R
 \name{pack}
 \alias{pack}
+\alias{unpack}
 \title{Pack cell values from separate columns per data type into one list-column}
 \usage{
 pack(.data, types = data_type, name = "value", drop_types = TRUE,
   drop_type_cols = TRUE)
+
+unpack(.data, values = value, name = "data_type", drop_packed = TRUE)
 }
 \arguments{
 \item{.data}{A data frame of cells, one row per cell.  For \code{\link[=pack]{pack()}} it must
@@ -25,11 +28,11 @@ cell values.}
 
 \item{values}{For \code{\link[=unpack]{unpack()}}, the name of the list-column of cell values.}
 
-\item{name}{For \code{\link[=unpack]{unpack()}}, the name to give the new column that will name,
-for each cell, which of the other columns the value is in.}
-
 \item{drop_packed}{For \code{\link[=unpack]{unpack()}}, whether to drop the column named by
 \code{values}.}
+
+\item{name}{For \code{\link[=unpack]{unpack()}}, the name to give the new column that will name,
+for each cell, which of the other columns the value is in.}
 }
 \description{
 Pack cell values from separate columns per data type into one list-column
@@ -55,6 +58,11 @@ column.
 
 \code{\link[=unpack]{unpack()}} is the complement.
 }
+\section{Functions}{
+\itemize{
+\item \code{unpack}: Unpack cell values from one list-column into separate columns per data type
+}}
+
 \examples{
 
 # A normal data frame
