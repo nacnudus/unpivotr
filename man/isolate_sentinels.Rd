@@ -10,6 +10,7 @@ isolate_sentinels(.data, col, sentinels, into = "sentinel")
 Move sentinel values into a separate column leaving NA behind
 }
 \examples{
-isolate_sentinels(Formaldehyde, 0.3, carb)
-isolate_sentinels(Formaldehyde, 0.3, carb, flag)
+isolate_sentinels(Formaldehyde, carb, 0.3)
+isolate_sentinels(Formaldehyde, carb, c(0.3, 0.5))
+isolate_sentinels(Formaldehyde, carb, 0.3, flag)
 }
