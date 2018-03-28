@@ -36,3 +36,11 @@ test_that("unpack() works on common data types", {
   expect(all(colnames(z) %in% colnames(x)))
   expect(all(purrr::map_lgl(colnames(z), ~ identical(z[[.]], x[[.]]))))
 })
+
+test_that("unpack() orders type columns alphabetically", {
+  y <- pack(x)
+  z <- unpack(y)
+  expect_equal(colnames(z),
+               c("row", "col", "data_type", "chr", "cpl", "date",
+                 "dbl", "dttm", "fct", "int", "lgl", "list", "ord"))
+})

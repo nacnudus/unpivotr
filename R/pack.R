@@ -42,6 +42,9 @@ unpack <- function(.data, values = value, name = "data_type",
                      concatenate,
                      combine_factors = FALSE,
                      fill_factor_na = FALSE)
+  first_colnames <- setdiff(colnames(out), type_names)
+  last_colnames <- sort(type_names)
+  out <- dplyr::select(out, !!! vars(first_colnames), !!! vars(last_colnames))
   if(drop_packed) out <- dplyr::select(out, - !! values)
   out
 }
