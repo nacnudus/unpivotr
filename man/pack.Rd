@@ -7,6 +7,67 @@
 pack(.data, types = data_type, name = "value", drop_types = TRUE,
   drop_type_cols = TRUE)
 }
+\arguments{
+\item{.data}{A data frame of cells, one row per cell.  For \code{\link[=pack]{pack()}} it must
+have a column that names, for each cell/row, which of the other columns the
+value is in.  For \code{\link[=unpack]{unpack()}} it must have a list-column of cell values, where
+each element is named according to the data type of the value.}
+
+\item{types}{For \code{\link[=pack]{pack()}}, the name of the column that that names, for each
+cell/row, which of the other columns the value is in.}
+
+\item{name}{A string, the name to give the new list-column of values.}
+
+\item{drop_types}{For \code{\link[=pack]{pack()}}, whether to drop the column named by \code{types}.}
+
+\item{drop_type_cols}{For \code{\link[=pack]{pack()}}, whether to drop the original columns of
+cell values.}
+
+\item{values}{For \code{\link[=unpack]{unpack()}}, the name of the list-column of cell values.}
+
+\item{name}{For \code{\link[=unpack]{unpack()}}, the name to give the new column that will name,
+for each cell, which of the other columns the value is in.}
+
+\item{drop_packed}{For \code{\link[=unpack]{unpack()}}, whether to drop the column named by
+\code{values}.}
+}
 \description{
 Pack cell values from separate columns per data type into one list-column
+}
+\details{
+When cells are represented by rows of a data frame, the values of the cells
+will be in different columns accordding to their data type.  For example, the
+value of a cell containing text will be in a column called \code{chr} (or
+\code{character} if it came via tidyxl).  A column called \code{data_type} names, for
+each cell, which column its value is in.
+
+\code{\link[=pack]{pack()}} rearranges the cell values in a different way, so that they are all
+in one column, by
+\enumerate{
+\item taking each cell value, from whichever column.
+\item making it an element of a list.
+\item naming each element according to the column it came from.
+\item making the list into a new list-column of the original data frame.
+}
+
+By default, the original columns are dropped, and so is the \code{data_type}
+column.
+
+\code{\link[=unpack]{unpack()}} is the complement.
+}
+\examples{
+
+# A normal data frame
+w <- data_frame(foo = 1:2,
+                bar = c("a", "b"))
+w
+
+# The same data, represented by one row per cell, with integer values in the
+# `int` column and character values in the `chr` column.
+x <- tidy_table(w)
+x
+
+# pack() and unpack() are complements
+pack(x)
+unpack(pack(x))
 }

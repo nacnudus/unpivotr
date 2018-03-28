@@ -1,6 +1,64 @@
 #' Pack cell values from separate columns per data type into one list-column
 #'
+#' @details
+#' When cells are represented by rows of a data frame, the values of the cells
+#' will be in different columns accordding to their data type.  For example, the
+#' value of a cell containing text will be in a column called `chr` (or
+#' `character` if it came via tidyxl).  A column called `data_type` names, for
+#' each cell, which column its value is in.
+#'
+#' [pack()] rearranges the cell values in a different way, so that they are all
+#' in one column, by
+#'
+#' 1. taking each cell value, from whichever column.
+#' 1. making it an element of a list.
+#' 1. naming each element according to the column it came from.
+#' 1. making the list into a new list-column of the original data frame.
+#'
+#' By default, the original columns are dropped, and so is the `data_type`
+#' column.
+#'
+#' [unpack()] is the complement.
+#'
+#' @param .data A data frame of cells, one row per cell.  For [pack()] it must
+#' have a column that names, for each cell/row, which of the other columns the
+#' value is in.  For [unpack()] it must have a list-column of cell values, where
+#' each element is named according to the data type of the value.
+#'
+#' @param types For [pack()], the name of the column that that names, for each
+#' cell/row, which of the other columns the value is in.
+#'
+#' @param name A string, the name to give the new list-column of values.
+#'
+#' @param drop_types For [pack()], whether to drop the column named by `types`.
+#'
+#' @param drop_type_cols For [pack()], whether to drop the original columns of
+#' cell values.
+#'
+#' @param values For [unpack()], the name of the list-column of cell values.
+#'
+#' @param name For [unpack()], the name to give the new column that will name,
+#' for each cell, which of the other columns the value is in.
+#'
+#' @param drop_packed For [unpack()], whether to drop the column named by
+#' `values`.
+#'
 #' @export
+#' @examples
+#'
+#' # A normal data frame
+#' w <- data_frame(foo = 1:2,
+#'                 bar = c("a", "b"))
+#' w
+#'
+#' # The same data, represented by one row per cell, with integer values in the
+#' # `int` column and character values in the `chr` column.
+#' x <- tidy_table(w)
+#' x
+#'
+#' # pack() and unpack() are complements
+#' pack(x)
+#' unpack(pack(x))
 pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
                  drop_type_cols = TRUE) {
   types <- rlang::ensym(types)
