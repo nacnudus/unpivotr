@@ -11,7 +11,7 @@ spatter(.data, key, ..., values = NULL, types = data_type)
 \code{row} and \code{col}, usually a column \code{data_type}, and additional columns of
 cell values.}
 
-\item{key, value, type}{Column names or positions. This is passed to
+\item{key, values, types}{Column names or positions. This is passed to
 \code{\link[tidyselect:vars_pull]{tidyselect::vars_pull()}}.
 
 These arguments are passed by expression and support

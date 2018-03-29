@@ -10,7 +10,7 @@
 #' @param .data A data frame where each row represents a cell, with columns
 #'   `row` and `col`, usually a column `data_type`, and additional columns of
 #'   cell values.
-#' @param key,value,type Column names or positions. This is passed to
+#' @param key,values,types Column names or positions. This is passed to
 #'   [tidyselect::vars_pull()].
 #'
 #'   These arguments are passed by expression and support
