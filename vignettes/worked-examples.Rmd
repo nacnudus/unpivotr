@@ -995,7 +995,7 @@ second_header_row
 data_cells <-
   filter(all_cells, data_type == "numeric") %>%
   select(row, col, score = numeric)
-  # The data is examp scores in certain subjects, so give the data that title.
+  # The data is exam scores in certain subjects, so give the data that title.
   # The data is numeric, so select only that 'value'.  If some of the data was
   # also text or true/false, then you would select the `character` and `logical`
   # columns as well as `numeric`
