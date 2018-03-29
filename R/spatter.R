@@ -10,18 +10,13 @@
 #' @param .data A data frame where each row represents a cell, with columns
 #'   `row` and `col`, usually a column `data_type`, and additional columns of
 #'   cell values.
-#' @param key,values,types Column names or positions. This is passed to
-#'   [tidyselect::vars_pull()].
-#'
-#'   These arguments are passed by expression and support
-#'   [quasiquotation][rlang::quasiquotation] (you can unquote column
-#'   names or column positions).
+#' @param key The name of the column whose values will become column names
 #' @param ... functions for formatting particular data types, named by the data
 #'   type (the name of the column of `.data` that contains the cell value.
-#' @param value Optional. The column of `.data` to use as the value of each
+#' @param values Optional. The column of `.data` to use as the value of each
 #'   cell.  Given as a bare variable name.  If omitted (the default), the `type`
 #'   argument will be used instead.
-#' @param type Optional. The column that names, for each row of `.data`, which
+#' @param types Optional. The column that names, for each row of `.data`, which
 #'   column contains the cell value.  Defaults to `data_type`.
 #' @export
 #' @examples

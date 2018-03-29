@@ -11,21 +11,16 @@ spatter(.data, key, ..., values = NULL, types = data_type)
 \code{row} and \code{col}, usually a column \code{data_type}, and additional columns of
 cell values.}
 
-\item{key, values, types}{Column names or positions. This is passed to
-\code{\link[tidyselect:vars_pull]{tidyselect::vars_pull()}}.
-
-These arguments are passed by expression and support
-\link[rlang:quasiquotation]{quasiquotation} (you can unquote column
-names or column positions).}
+\item{key}{The name of the column whose values will become column names}
 
 \item{...}{functions for formatting particular data types, named by the data
 type (the name of the column of \code{.data} that contains the cell value.}
 
-\item{value}{Optional. The column of \code{.data} to use as the value of each
+\item{values}{Optional. The column of \code{.data} to use as the value of each
 cell.  Given as a bare variable name.  If omitted (the default), the \code{type}
 argument will be used instead.}
 
-\item{type}{Optional. The column that names, for each row of \code{.data}, which
+\item{types}{Optional. The column that names, for each row of \code{.data}, which
 column contains the cell value.  Defaults to \code{data_type}.}
 }
 \description{
