@@ -85,9 +85,9 @@ test_that("tidy_table works with all common datatypes", {
   y_class <- purrr::map(y, class)
   expect_equal(y_class[names(x_class)], x_class)
   # Separate test for factors, ordered factors and lists
-  x <- tibble(fct = factor(c("a", "b")),
-              ord = factor(c("c", "d"), ordered = TRUE),
-              list = list(1:2, list("a", "b")))
+  x <- tibble::tibble(fct = factor(c("a", "b")),
+                      ord = factor(c("c", "d"), ordered = TRUE),
+                      list = list(1:2, list("a", "b")))
   y <- tidy_table(x)
   expect_equal(colnames(y), c("row", "col", "data_type", sort(colnames(x))))
   expect_equal(class(y$fct), "list")

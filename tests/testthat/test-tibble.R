@@ -1,7 +1,6 @@
 context("tibbles")
 
 test_that("functions return tibbles", {
-  library(dplyr)
   # Load some pivoted data
   x <- purpose$`NNW WNW`
   # Make a tidy representation
@@ -10,12 +9,12 @@ test_that("functions return tibbles", {
   # Select the cells containing the values
   datacells <-
     cells %>%
-    filter(row >= 3, col >= 3)
+    dplyr::filter(row >= 3, col >= 3)
   # Select the column headers
   col_headers <-
     cells %>%
-    filter(row <= 2) %>%
-    select(row, col, header = chr) %>%
+    dplyr::filter(row <= 2) %>%
+    dplyr::select(row, col, header = chr) %>%
     split(.$row) # Separate each row of headers
   expect_true(tibble::is_tibble(pad(datacells)))
   expect_true(tibble::is_tibble(anchor(cells, 1, 1)))
