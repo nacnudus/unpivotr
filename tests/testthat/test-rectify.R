@@ -98,7 +98,7 @@ test_that("rectify() allows formatting formulas", {
                rectify_correct)
 })
 
-test_that("Extraneous columns are dropped", {
+test_that("Extraneous columns on the edges are dropped", {
   x <- data.frame(row = c(2L, 2L, 3L, 3L),
                   col = c(2L, 3L, 2L, 3L),
                   data_type = rep("int", 4),
@@ -114,3 +114,18 @@ test_that("Extraneous columns are dropped", {
   expect_equal(rectify(x), rectify_correct)
 })
 
+test_that("Blank columns amongst the data are retained", {
+  x <- data.frame(row = c(2L, 2L, 4L, 4L),
+                  col = c(2L, 4L, 2L, 4L),
+                  data_type = rep("int", 4),
+                  int = c(1L, 2L, 3L, NA),
+                  stringsAsFactors = FALSE)
+  rectify_correct <- data.frame(`row/col` = 2:4,
+                                `2(B)` = c(1L, NA_integer_, 3L),
+                                `3(C)` = c(NA, NA, NA),
+                                `4(D)` = c(2L, NA_integer_, NA_integer_),
+                                stringsAsFactors = FALSE,
+                                check.names = FALSE)
+  class(rectify_correct) <- c("cell_grid", class(rectify_correct))
+  expect_equal(rectify(x), rectify_correct)
+})

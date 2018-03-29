@@ -69,6 +69,7 @@
 rectify <- function(cells, ..., values = NULL, types = data_type) {
   values <- rlang::enexpr(values)
   types <- rlang::ensym(types)
+  cells <- pad(cells)
   if (is.null(values)) {
     out <-
       cells %>%
