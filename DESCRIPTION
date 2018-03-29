@@ -22,6 +22,7 @@ Imports:
     data.table (>= 1.9.7),
     dplyr,
     dtplyr,
+    forcats,
     purrr,
     tidyr,
     pillar,
