@@ -34,7 +34,9 @@ BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown,
+    readr,
     tidyxl,
+    readxl,
     stringr,
     htmltools,
     rvest,

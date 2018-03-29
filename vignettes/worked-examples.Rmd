@@ -63,11 +63,14 @@ vignette: >
 ## Load packages
 
 ```{r}
-library(tidyverse)
+library(tibble)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(readr)
 library(readxl)
 library(tidyxl)
 library(unpivotr)
-library(here)
 ```
 
 ## Data
