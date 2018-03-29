@@ -138,5 +138,5 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
 format_list <- function(x) {
   if (is.list(x) || length(x) > 1L) return(dput(x))
   if(is.na(x)) return(NA_character_)
-  format(x)
+  format(x, justify = "none")
 }
