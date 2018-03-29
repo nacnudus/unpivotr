@@ -97,7 +97,7 @@ unpack <- function(.data, values = value, name = "data_type",
   values <- rlang::ensym(values)
   name <- rlang::ensym(name)
   types <- names(dplyr::pull(.data, !! values))
-  type_names <- unique(types)
+  type_names <- format(unique(types), justify = "none")
   assignments <- purrr::map(type_names,
                             ~ rlang::expr(ifelse(types == !! .x,
                                                  !! values,
