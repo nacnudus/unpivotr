@@ -45,7 +45,7 @@
 #' @examples
 #' # The `purpose` dataset, represented in four summary tables
 #' multiples <- purpose$small_multiples
-#' rectify(multiples, chr, num)
+#' rectify(multiples, character, numeric)
 #'
 #' # The same thing in its raw 'melted' form that can be filtered
 #' multiples
@@ -53,8 +53,8 @@
 #' # First, find the cells that mark a corner of each table
 #' corners <-
 #'   dplyr::filter(multiples,
-#'                 !is.na(chr),
-#'                 !(chr %in% c("Sex", "Value", "Female", "Male")))
+#'                 !is.na(character),
+#'                 !(character %in% c("Sex", "Value", "Female", "Male")))
 #'
 #' # Then find out which cells fall into which partition
 #' partition(multiples, corners)
@@ -67,7 +67,7 @@
 #' tidyr::nest(x, -partition)
 #'
 #' # You can also use bottom-left corners (or top-right or bottom-right)
-#' bl_corners <- dplyr::filter(multiples, chr == "Yes")
+#' bl_corners <- dplyr::filter(multiples, character == "Yes")
 #' y <- partition(multiples, bl_corners, position = "bottom_left")
 #' split(y, y$partition)
 #'

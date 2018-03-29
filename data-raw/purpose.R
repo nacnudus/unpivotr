@@ -17,7 +17,7 @@ names(purpose) <- sheets
 tidy <- read.xlsx(path, "Tidy", stringsAsFactors = FALSE, check.names = FALSE)
 small_multiples <-
   xlsx_cells(path, "Small multiples") %>%
-  select(row, col, chr = character, num = numeric) %>%
+  select(row, col, data_type, character, numeric) %>%
   as.data.frame()
 purpose <- c(list(Tidy = tidy),
              purpose,
