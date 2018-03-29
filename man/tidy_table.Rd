@@ -56,8 +56,8 @@ token.
 }
 \examples{
 x <- data.frame(a = c(10, 20),
-               b = c("foo", "bar"),
-               stringsAsFactors = FALSE)
+                b = c("foo", "bar"),
+                stringsAsFactors = FALSE)
 x
 tidy_table(x)
 tidy_table(x, rownames = TRUE)
@@ -77,10 +77,10 @@ tidy_table(z)
 tidy_table(z)$fct
 tidy_table(z)$ord
 
-HTML tables can be extracted from the output of xml2::read_html().  These are
-returned as a list of tables, similar to rvest::html_table().  The value of
-each cell is its standalone HTML string, which can contain anything -- even
-another table.
+# HTML tables can be extracted from the output of xml2::read_html().  These
+# are returned as a list of tables, similar to rvest::html_table().  The
+# value of each cell is its standalone HTML string, which can contain
+# anything -- even another table.
 
 colspan <- system.file("extdata", "colspan.html", package = "unpivotr")
 rowspan <- system.file("extdata", "rowspan.html", package = "unpivotr")
