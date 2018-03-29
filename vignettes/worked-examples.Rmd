@@ -839,7 +839,6 @@ all_cells <-
   xlsx_cells(path, sheets = "pivot-annotations") %>%
   filter(col >= 4, !is_blank) %>% # Ignore the row headers in this example
   select(row, col, data_type, character, numeric)
-
 all_cells
 ```
 
