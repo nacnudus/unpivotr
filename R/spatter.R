@@ -102,6 +102,7 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
   dots <- list(...)
   functions <- purrr::map(dots, purrr::as_mapper)
   values <- rlang::enexpr(values)
+  new_colnames <- format(unique(dplyr::pull(.data, !! key)), justify = "none")
   if(is.null(values)) {
     types <- rlang::ensym(types)
     original_types <- NULL
@@ -138,5 +139,8 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
      rlang::expr_text(original_types) %in% colnames(out)) {
     out <- dplyr::select(out, - !! original_types)
   }
+  first_colnames <- setdiff(colnames(out), new_colnames)
+  last_colnames <- sort(new_colnames)
+  out <- dplyr::select(out, first_colnames, last_colnames)
   out
 }
