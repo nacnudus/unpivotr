@@ -1,10 +1,23 @@
 #' Move sentinel values into a separate column leaving NA behind
 #'
+#' @description A sentinel value, takes the place of a value that isn't
+#' available for some reason.  [isolate_sentinels()] removes these values from a
+#' column of data into a separate column, and optionally converts the data left
+#' behind into an appropriate data type.
+#'
+#' @param .data A data frame.
+#' @param col The name of the column of data containing sentinel values.
+#' @param sentinels A vector of sentinel values to be removed.
+#' @param into A name to give the new column of sentinal values.
+#'
 #' @export
 #' @examples
-#' isolate_sentinels(Formaldehyde, carb, 0.3)
-#' isolate_sentinels(Formaldehyde, carb, c(0.3, 0.5))
-#' isolate_sentinels(Formaldehyde, carb, 0.3, flag)
+#' x <- data.frame(name = c("Matilda", "Nicholas", "Olivia", "Paul"),
+#'                 score = c(10, "confidential", "N/A", 12),
+#'                 stringsAsFactors = FALSE)
+#' x
+#' isolate_sentinels(x, score, c("confidential", "N/A"))
+#' isolate_sentinels(x, score, c("confidential", "N/A"), "flag")
 isolate_sentinels <- function(.data, col, sentinels, into = "sentinel") {
   col <- rlang::ensym(col)
   into <- rlang::ensym(into)
