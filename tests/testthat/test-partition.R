@@ -28,17 +28,16 @@ test_that("partition_dim() catches argument errors", {
   expect_error(partition_dim(1:10, 5, "left"))
 })
 
-
 test_that("partition() works", {
   multiples <- dplyr::arrange(purpose$small_multiples, col, row)
   tl_corners <-
     dplyr::filter(multiples,
-                  !is.na(chr),
-                  !(chr %in% c("Sex", "Value", "Female", "Male")))
+                  !is.na(character),
+                  !(character %in% c("Sex", "Value", "Female", "Male")))
   expect_equal(partition(multiples, tl_corners)$partition,
                c(rep(rep(c(1, 3, 5), each = 4), 2),
                  rep(rep(c(2, 4), each = 4), 2)))
-  bl_corners <- dplyr::filter(multiples, chr == "Male")
+  bl_corners <- dplyr::filter(multiples, character == "Male")
   expect_equal(partition(multiples,
                          bl_corners,
                          position = "bottom_left")$partition,
@@ -46,7 +45,7 @@ test_that("partition() works", {
                  rep(rep(c(5, 3), each = 4), 2)))
   tr_corners <-
     multiples %>%
-    dplyr::filter(chr == "Value") %>%
+    dplyr::filter(character == "Value") %>%
     dplyr::mutate(row = row - 1)
   expect_equal(partition(multiples,
                          tr_corners,
@@ -55,7 +54,7 @@ test_that("partition() works", {
                  rep(rep(c(1, 3), each = 4), 2)))
   br_corners <-
     multiples %>%
-    dplyr::filter(chr == "Male") %>%
+    dplyr::filter(character == "Male") %>%
     dplyr::mutate(col = col + 1)
   expect_equal(partition(multiples,
                          br_corners,
@@ -68,18 +67,19 @@ test_that("partition() silently overwrites columns that already exist", {
   multiples <- purpose$small_multiples
   tl_corners <-
     dplyr::filter(multiples,
-                  !is.na(chr),
-                  !(chr %in% c("Sex", "Value", "Female", "Male")))
+                  !is.na(character),
+                  !(character %in% c("Sex", "Value", "Female", "Male")))
   expect_warning(x <- partition(multiples, tl_corners, partition_name = "row"),
                  NA)
-  expect_equal(colnames(x), c("row", "col", "chr", "num"))
+  expect_equal(colnames(x),
+               c("row", "col", "data_type", "character", "numeric"))
 })
 
 test_that("partition() arguments are checked", {
   multiples <- purpose$small_multiples
   tl_corners <-
     dplyr::filter(multiples,
-                  !is.na(chr),
-                  !(chr %in% c("Sex", "Value", "Female", "Male")))
+                  !is.na(character),
+                  !(character %in% c("Sex", "Value", "Female", "Male")))
   expect_error(partition(multiples, tl_corners, "top_bottom"))
 })
