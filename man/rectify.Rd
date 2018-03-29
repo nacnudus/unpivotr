@@ -12,6 +12,9 @@ rectify(cells, ..., values = NULL, types = data_type)
 \arguments{
 \item{cells}{Data frame or tbl, the cells to be displayed.}
 
+\item{...}{Named functions to format cell values for diplay, named according
+to the column that the cell value is in.}
+
 \item{values}{Optional. The column of \code{cells} to use as the values of each
 cell.  Given as a bare variable name.  If omitted (the default), the \code{types}
 argument will be used instead.}

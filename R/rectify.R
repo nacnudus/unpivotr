@@ -31,6 +31,8 @@
 #' spreadsheet application.
 #'
 #' @param cells Data frame or tbl, the cells to be displayed.
+#' @param ... Named functions to format cell values for diplay, named according
+#'   to the column that the cell value is in.
 #' @param values Optional. The column of `cells` to use as the values of each
 #' cell.  Given as a bare variable name.  If omitted (the default), the `types`
 #' argument will be used instead.
