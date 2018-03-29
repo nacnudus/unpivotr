@@ -28,7 +28,9 @@
 #' @param types For [pack()], the name of the column that that names, for each
 #' cell/row, which of the other columns the value is in.
 #'
-#' @param name A string, the name to give the new list-column of values.
+#' @param name A string. For [pack()], the name to give the new list-column of
+#' values.  For [unpack()], the name to give the new column that will name, for
+#' each cell, which of the other columns the value is in.
 #'
 #' @param drop_types For [pack()], whether to drop the column named by `types`.
 #'
@@ -36,9 +38,6 @@
 #' cell values.
 #'
 #' @param values For [unpack()], the name of the list-column of cell values.
-#'
-#' @param name For [unpack()], the name to give the new column that will name,
-#' for each cell, which of the other columns the value is in.
 #'
 #' @param drop_packed For [unpack()], whether to drop the column named by
 #' `values`.

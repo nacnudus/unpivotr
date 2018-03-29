@@ -19,7 +19,9 @@ each element is named according to the data type of the value.}
 \item{types}{For \code{\link[=pack]{pack()}}, the name of the column that that names, for each
 cell/row, which of the other columns the value is in.}
 
-\item{name}{A string, the name to give the new list-column of values.}
+\item{name}{A string. For \code{\link[=pack]{pack()}}, the name to give the new list-column of
+values.  For \code{\link[=unpack]{unpack()}}, the name to give the new column that will name, for
+each cell, which of the other columns the value is in.}
 
 \item{drop_types}{For \code{\link[=pack]{pack()}}, whether to drop the column named by \code{types}.}
 
@@ -30,9 +32,6 @@ cell values.}
 
 \item{drop_packed}{For \code{\link[=unpack]{unpack()}}, whether to drop the column named by
 \code{values}.}
-
-\item{name}{For \code{\link[=unpack]{unpack()}}, the name to give the new column that will name,
-for each cell, which of the other columns the value is in.}
 }
 \description{
 Pack cell values from separate columns per data type into one list-column
