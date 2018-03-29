@@ -13,8 +13,8 @@ test_that("rectify() has the right row/col headers", {
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, values = row), rectify_correct)
   rectify_correct <- data.frame(`row/col` = 1:2,
-                                `1(A)` = 1,
-                                `2(B)` = 2,
+                                `1(A)` = 1L,
+                                `2(B)` = 2L,
                                 check.names = FALSE)
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, values = col), rectify_correct)
@@ -51,8 +51,8 @@ test_that("rectify() can use 'row', 'col' and 'data_type' as values", {
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, values = row), rectify_correct)
   rectify_correct <- data.frame(`row/col` = 1:2,
-                                `1(A)` = 1,
-                                `2(B)` = 2,
+                                `1(A)` = 1L,
+                                `2(B)` = 2L,
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE)
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
