@@ -716,7 +716,7 @@ Here's another version using only tidyxl and unpivotr, which provides
 ```{r}
 xlsx_cells(path, sheet = "sentinels") %>%
   select(row, col, data_type, character, numeric) %>%
-  isolate_sentinels(c("NA", "…", "..C"), character) %>%
+  isolate_sentinels(character, c("NA", "…", "..C")) %>%
   behead(W, Name) %>%
   behead(N, variable) %>%
   select(Name, variable, character, numeric, sentinel)
