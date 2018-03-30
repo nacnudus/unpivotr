@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filter for a cell from which to select others — anchor • unpivotr</title>
+<title>Move sentinel values into a separate column leaving NA behind — isolate_sentinels • unpivotr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,13 +25,12 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Filter for a cell from which to select others — anchor" />
+<meta property="og:title" content="Move sentinel values into a separate column leaving NA behind — isolate_sentinels" />
 
-<meta property="og:description" content="anchor protects you from selecting initial cells that do
-not exist.  This is useful when choosing inital cells from which to search
-for others, using offset() and extend().  If the
-chosen cells do not exist, then cells are generated at the given rows and
-columns, with NAs in every column other than 'row' and 'col'." />
+<meta property="og:description" content="A sentinel value, takes the place of a value that isn't
+available for some reason.  isolate_sentinels() removes these values from a
+column of data into a separate column, and optionally converts the data left
+behind into an appropriate data type." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,59 +129,58 @@ columns, with NAs in every column other than 'row' and 'col'." />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Filter for a cell from which to select others</h1>
-    <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/anchor.R'><code>R/anchor.R</code></a></small>
+    <h1>Move sentinel values into a separate column leaving NA behind</h1>
+    <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/isolate_sentinels.R'><code>R/isolate_sentinels.R</code></a></small>
     </div>
 
     
-    <p><code>anchor</code> protects you from selecting initial cells that do
-not exist.  This is useful when choosing inital cells from which to search
-for others, using <code><a href='offset.html'>offset()</a></code> and <code><a href='extend.html'>extend()</a></code>.  If the
-chosen cells do not exist, then cells are generated at the given rows and
-columns, with NAs in every column other than 'row' and 'col'.</p>
+    <p>A sentinel value, takes the place of a value that isn't
+available for some reason.  <code>isolate_sentinels()</code> removes these values from a
+column of data into a separate column, and optionally converts the data left
+behind into an appropriate data type.</p>
     
 
-    <pre class="usage"><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='no'>rows</span>, <span class='no'>cols</span>, <span class='kw'>cross</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>isolate_sentinels</span>(<span class='no'>.data</span>, <span class='no'>col</span>, <span class='no'>sentinels</span>, <span class='kw'>into</span> <span class='kw'>=</span> <span class='st'>"sentinel"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cells</th>
-      <td><p>Data frame, the cells among which the anchor will be sought</p></td>
+      <th>.data</th>
+      <td><p>A data frame.</p></td>
     </tr>
     <tr>
-      <th>rows</th>
-      <td><p>Numeric, the rows of the intended cells</p></td>
+      <th>col</th>
+      <td><p>The name of the column of data containing sentinel values.</p></td>
     </tr>
     <tr>
-      <th>cols</th>
-      <td><p>Numeric, the columns of the intended cell</p></td>
+      <th>sentinels</th>
+      <td><p>A vector of sentinel values to be removed.</p></td>
     </tr>
     <tr>
-      <th>cross</th>
-      <td><p>Logical, whether to 'cross' the given rows and columns to
-generate all combinations. Unless this is TRUE, <code>rows</code> and <code>cols</code>
-must be the same length.  TRUE by default.</p></td>
+      <th>into</th>
+      <td><p>A name to give the new column of sentinal values.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>purpose</span>$<span class='no'>`NNW WNW`</span>)</div><span class='co'># NOT RUN {</span>
-  <span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
-  <span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>:<span class='fl'>2</span>)
-<span class='co'># }</span><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;     row   col data_type chr  
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;
-#&gt; 1     1     1 chr       &lt;NA&gt; </div><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>cross</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 4
-#&gt;     row   col data_type chr  
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;
-#&gt; 1     1     1 chr       &lt;NA&gt; 
-#&gt; 2     1     2 chr       &lt;NA&gt; </div><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>100</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;     row   col data_type chr  
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;
-#&gt; 1   100     1 &lt;NA&gt;      &lt;NA&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Matilda"</span>, <span class='st'>"Nicholas"</span>, <span class='st'>"Olivia"</span>, <span class='st'>"Paul"</span>),
+                <span class='kw'>score</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='st'>"confidential"</span>, <span class='st'>"N/A"</span>, <span class='fl'>12</span>),
+                <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>x</span></div><div class='output co'>#&gt;       name        score
+#&gt; 1  Matilda           10
+#&gt; 2 Nicholas confidential
+#&gt; 3   Olivia          N/A
+#&gt; 4     Paul           12</div><div class='input'><span class='fu'>isolate_sentinels</span>(<span class='no'>x</span>, <span class='no'>score</span>, <span class='fu'>c</span>(<span class='st'>"confidential"</span>, <span class='st'>"N/A"</span>))</div><div class='output co'>#&gt;       name score     sentinel
+#&gt; 1  Matilda    10         &lt;NA&gt;
+#&gt; 2 Nicholas  &lt;NA&gt; confidential
+#&gt; 3   Olivia  &lt;NA&gt;          N/A
+#&gt; 4     Paul    12         &lt;NA&gt;</div><div class='input'><span class='fu'>isolate_sentinels</span>(<span class='no'>x</span>, <span class='no'>score</span>, <span class='fu'>c</span>(<span class='st'>"confidential"</span>, <span class='st'>"N/A"</span>), <span class='st'>"flag"</span>)</div><div class='output co'>#&gt;       name score         flag
+#&gt; 1  Matilda    10         &lt;NA&gt;
+#&gt; 2 Nicholas  &lt;NA&gt; confidential
+#&gt; 3   Olivia  &lt;NA&gt;          N/A
+#&gt; 4     Paul    12         &lt;NA&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

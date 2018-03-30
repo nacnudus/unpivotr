@@ -8,8 +8,16 @@
 <title>Unpivot Complex and Irregular Data Layouts • unpivotr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Unpivot Complex and Irregular Data Layouts">
+<meta property="og:description" content="Tools for converting data from complex or irregular layouts to a
+    columnar structure.  For example, tables with multilevel column or row
+    headers, or spreadsheets.  Header and data cells are selected by their
+    contents and position, as well as formatting and comments where available,
+    and are associated with one other by their proximity in given directions.
+    Functions for data frames and HTML tables are provided.">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -33,8 +41,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">unpivotr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">unpivotr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -62,10 +74,13 @@
     <li>
       <a href="articles/small-multiples.html">Small Multiples</a>
     </li>
+    <li>
+      <a href="articles/worked-examples.html">Unpivoting Worked Examples</a>
+    </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -171,15 +186,15 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cells &lt;-<span class="st"> </span><span class="kw"><a href="reference/tidy_table.html">tidy_table</a></span>(pivoted, <span class="dt">colnames =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">cells &lt;-<span class="st"> </span>cells[<span class="op">!</span><span class="kw">is.na</span>(cells<span class="op">$</span>chr), ]</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">head</span>(cells)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;     row   col chr                       </span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;                     </span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 1     3     1 Bachelor's degree         </span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 2     7     1 Certificate               </span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 3    11     1 Diploma                   </span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 4    15     1 No Qualification          </span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 5    19     1 Postgraduate qualification</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 6     3     2 15 - 24</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; # A tibble: 6 x 4</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;     row   col data_type chr                       </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;                     </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 1     3     1 chr       Bachelor's degree         </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 2     7     1 chr       Certificate               </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 3    11     1 chr       Diploma                   </span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 4    15     1 chr       No Qualification          </span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 5    19     1 chr       Postgraduate qualification</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 6     3     2 chr       15 - 24</span></a></code></pre></div>
 <p>This can easily be subset for header and data cells.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; </span></a>
@@ -195,15 +210,15 @@
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"><span class="kw">head</span>(datacells)</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;     row   col chr  </span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; 1     3     3 7000 </span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 2     4     3 12000</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; 3     5     3 10000</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; 4     7     3 29000</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; 5     8     3 34000</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; 6     9     3 30000</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; # A tibble: 6 x 4</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;     row   col data_type chr  </span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; 1     3     3 chr       7000 </span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 2     4     3 chr       12000</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; 3     5     3 chr       10000</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; 4     7     3 chr       29000</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; 5     8     3 chr       34000</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; 6     9     3 chr       30000</span></a>
 <a class="sourceLine" id="cb4-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co"># Select the row headers</span></a>
 <a class="sourceLine" id="cb4-26" data-line-number="26">row_headers &lt;-</a>
@@ -264,47 +279,37 @@
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="reference/join_header.html">WNW</a></span>(row_headers<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Search west (left) and north-west</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="reference/join_header.html">W</a></span>(row_headers<span class="op">$</span><span class="st">`</span><span class="dt">2</span><span class="st">`</span>) <span class="co"># Search directly left (west)</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8">unpivoted</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; # A tibble: 72 x 7</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;      row   col chr   header.data header.header header.data.data </span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;            </span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  1     3     3 7000  Female      0 - 6         Bachelor's degree</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  2     4     3 12000 Female      0 - 6         Bachelor's degree</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;  3     5     3 10000 Female      0 - 6         Bachelor's degree</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;  4     7     3 29000 Female      0 - 6         Certificate      </span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;  5     8     3 34000 Female      0 - 6         Certificate      </span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;  6     9     3 30000 Female      0 - 6         Certificate      </span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;  7    10     3 12000 Female      0 - 6         Certificate      </span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;  8    12     3 10000 Female      0 - 6         Diploma          </span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;  9    13     3 6000  Female      0 - 6         Diploma          </span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; 10    14     3 5000  Female      0 - 6         Diploma          </span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; # A tibble: 72 x 8</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;      row   col data_type chr   header.data header.header header.data.data </span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;            </span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  1     3     3 chr       7000  Female      0 - 6         Bachelor's degree</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  2     4     3 chr       12000 Female      0 - 6         Bachelor's degree</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;  3     5     3 chr       10000 Female      0 - 6         Bachelor's degree</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;  4     7     3 chr       29000 Female      0 - 6         Certificate      </span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;  5     8     3 chr       34000 Female      0 - 6         Certificate      </span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;  6     9     3 chr       30000 Female      0 - 6         Certificate      </span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;  7    10     3 chr       12000 Female      0 - 6         Certificate      </span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;  8    12     3 chr       10000 Female      0 - 6         Diploma          </span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;  9    13     3 chr       6000  Female      0 - 6         Diploma          </span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; 10    14     3 chr       5000  Female      0 - 6         Diploma          </span></a>
 <a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; # ... with 62 more rows, and 1 more variable: header.header.header &lt;chr&gt;</span></a></code></pre></div>
 <p>We can re-pivot the final data in R using <code>ftable()</code> to check that it has been imported correctly.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">ftable</span>(unpivoted[<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>],</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">       <span class="dt">row.vars =</span> <span class="dv">4</span><span class="op">:</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">       <span class="dt">col.vars =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;                                                 header.data   Female         Male       </span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt;                                                 header.header  0 - 6 7 - 10 0 - 6 7 - 10</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; header.data.data           header.header.header                                         </span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; Bachelor's degree          15 - 24                                 1      1     0      1</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;                            25 - 44                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;                            45 - 64                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;                            65+                                     0      1     1      1</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; Certificate                15 - 24                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;                            25 - 44                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;                            45 - 64                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;                            65+                                     1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; Diploma                    15 - 24                                 0      1     1      1</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt;                            25 - 44                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt;                            45 - 64                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt;                            65+                                     1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; No Qualification           15 - 24                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt;                            25 - 44                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt;                            45 - 64                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt;                            65+                                     1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; Postgraduate qualification 15 - 24                                 0      1     0      0</span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt;                            25 - 44                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt;                            45 - 64                                 1      1     1      1</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt;                            65+                                     0      1     0      1</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;                                          chr           1000       10000      107000       11000      118000       12000       13000      137000       14000       16000      161000       17000      179000       18000       19000      190000      199000       21000      210000      219000       23000       27000       29000       30000       31000       34000       36000       37000       41000       43000       47000        5000       50000       55000       58000        6000       60000       64000       66000       68000        7000       75000       77000        8000       81000       86000        9000       91000     </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt;                                          header.data Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male Female Male</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; header.header header.data.data                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 0 - 6         Bachelor's degree                           0    0      1    0      0    0      0    0      0    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    2      0    0      0    0      0    0      0    0      0    0      0    1      0    0</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;               Certificate                                 0    0      0    0      0    0      0    0      0    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    1      0    0      1    0      1    1      0    1      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    1      0    0      0    0      0    0      0    0</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;               Diploma                                     0    1      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    1      0    0      0    0      0    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    1      0    0      0    0      0    1      0    0</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;               No Qualification                            0    0      1    0      0    0      1    0      0    0      0    1      0    0      0    0      0    0      1    0      0    0      0    1      0    0      0    0      1    0      0    0      0    0      0    1      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    1      0    0</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;               Postgraduate qualification                  0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    0      0    0      0    0      0    0      1    1      0    0      0    0      0    0      0    0      0    1      0    0      0    0      0    0      0    0      0    0      0    0      0    0</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 7 - 10        Bachelor's degree                           0    0      0    0      0    0      0    0      0    0      0    0      0    1      1    0      0    0      0    0      0    0      0    1      0    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    0      0    1      0    0      0    0      0    0      0    0      0    0      0    1      0    0      0    0      0    0</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;               Certificate                                 0    0      0    0      0    1      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    0      0    0      1    0      0    0      0    0      0    1      0    1      0    0      1    0      0    1      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    0      0    0      0    0      0    0      0    0      0    0</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;               Diploma                                     0    0      0    0      0    0      0    1      0    0      0    0      0    0      0    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    1      0    0      0    0      1    0      0    0      0    1      0    0      0    0      0    0      0    1      0    0      0    0      0    0      1    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt;               No Qualification                            0    0      0    0      0    0      0    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    0      0    1      0    0      1    0      0    0      0    0      0    1      0    0      0    0      0    0      0    0      0    0      0    1      0    0      0    0      0    1      0    0      0    0      0    0      0    0      0    0      1    0</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt;               Postgraduate qualification                  0    0      0    0      0    0      0    0      0    0      0    0      1    0      0    0      0    0      0    0      0    0      0    0      0    0      0    1      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      0    0      1    0      0    0      1    0      0    1      0    0      0    0      0    1      0    0      0    0      0    0      0    0      0    0      1    0      0    0      0    0</span></a></code></pre></div>
 </div>
 <div id="html-tables" class="section level2">
 <h2 class="hasAnchor">
@@ -364,17 +369,17 @@
 <a class="sourceLine" id="cb8-23" data-line-number="23">         <span class="dt">url =</span> purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(html, cell_url)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-24" data-line-number="24"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(text, url) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-25" data-line-number="25"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span>html)</a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; # A tibble: 8 x 4</span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt;     row   col text     url                  </span></a>
-<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;                </span></a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; 1     1     1 Scraping example1.co.nz       </span></a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; 2     1     1 HTML.    example2.co.nz       </span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; 3     2     1 Sweet    example3.co.nz       </span></a>
-<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; 4     1     2 &lt;NA&gt;     &lt;NA&gt;                 </span></a>
-<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; 5     2     2 as?      example4.co.nz       </span></a>
-<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; 6     1     3 &lt;NA&gt;     &lt;NA&gt;                 </span></a>
-<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; 7     2     3 Yeah,    example5.co.nz       </span></a>
-<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; 8     2     3 right.   http://www.tui.co.nz/</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; # A tibble: 8 x 5</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt;     row   col data_type text     url                  </span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;                </span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; 1     1     1 html      Scraping example1.co.nz       </span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; 2     1     1 html      HTML.    example2.co.nz       </span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; 3     2     1 html      Sweet    example3.co.nz       </span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; 4     1     2 html      &lt;NA&gt;     &lt;NA&gt;                 </span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; 5     2     2 html      as?      example4.co.nz       </span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; 6     1     3 html      &lt;NA&gt;     &lt;NA&gt;                 </span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; 7     2     3 html      Yeah,    example5.co.nz       </span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; 8     2     3 html      right.   http://www.tui.co.nz/</span></a></code></pre></div>
 </div>
 <div id="compass-directions" class="section level2">
 <h2 class="hasAnchor">
@@ -425,22 +430,33 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>Links</h2>
+    <div class="links">
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cran.r-project.org/package=unpivotr">https://​cran.r-project.org/​package=unpivotr</a>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=unpivotr">https://​cloud.r-project.org/​package=unpivotr</a>
 </li>
 <li>Browse source code at <br><a href="https://github.com/nacnudus/unpivotr">https://​github.com/​nacnudus/​unpivotr</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/nacnudus/unpivotr/issues">https://​github.com/​nacnudus/​unpivotr/​issues</a>
 </li>
 </ul>
+</div>
+<div class="license">
 <h2>License</h2>
-<p><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE.html">LICENSE</a></p>
+<ul class="list-unstyled">
+<li>
+<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
+</ul>
+</div>
+<div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Duncan Garmonsway <br><small class="roles"> Author, maintainer </small> </li>
+<li>Duncan Garmonsway <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
+</div>
+
+      <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/nacnudus/unpivotr"><img src="https://travis-ci.org/nacnudus/unpivotr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
@@ -449,6 +465,7 @@
 <li><a href="https://www.r-pkg.org/pkg/unpivotr"><img src="https://cranlogs.r-pkg.org/badges/unpivotr" alt="Cran Downloads"></a></li>
 <li><a href="https://codecov.io/gh/nacnudus/unpivotr"><img src="https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master" alt="codecov"></a></li>
 </ul>
+</div>
 </div>
 
 </div>

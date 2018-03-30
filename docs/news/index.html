@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • unpivotr</title>
+<title>Changelog • unpivotr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,16 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Changelog" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">unpivotr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">unpivotr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -88,10 +95,13 @@
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
     </li>
+    <li>
+      <a href="../articles/worked-examples.html">Unpivoting Worked Examples</a>
+    </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -114,10 +124,125 @@
 
   <div class="col-md-9">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
     <div class="contents">
+    <div id="unpivotr-0-3-1-9000" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-0-3-1-9000" class="anchor"></a>unpivotr 0.3.1.9000<small> Unreleased </small>
+</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>
+<code><a href="../reference/tidy_table.html">tidy_table()</a></code> now follows the tidyverse convention of <code>fct</code> for ‘factor’ and <code>ord</code> for ‘ordered factor’.</li>
+</ul>
+</div>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code><a href="../reference/behead.html">behead()</a></code> is takes one level of headers from a pivot table and make it part of the data. Think of it like <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">tidyr::gather()</a></code>, except that it works when there is more than one row of headers (or more than one column of row-headers), and it only works on tables that have first come through <code><a href="../reference/tidy_table.html">tidy_table()</a></code> or <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
+<li>
+<code><a href="../reference/rectify.html">rectify()</a></code> displays cells as though in a spreadsheet, rather than in the ‘melted’ form of <code><a href="../reference/tidy_table.html">tidy_table()</a></code> and <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>. This is useful for understanding the structure of a pivot table as a human, when planning how to unpivot it. A print method is available to render large datasets in the browser or the RStudio viewer pane.</li>
+<li>
+<code><a href="../reference/partition.html">partition()</a></code> divides a grid of cells into partitions containing individual tables. Give it the corner cells of each table on a spreadsheet, and it returns all the cells of the spreadsheet with a <code>partition</code> column that identifies which cells belong to which table.</li>
+<li>
+<code><a href="../reference/pack.html">pack()</a></code> packs cells values from separate columns per data type into one list-column. <code><a href="../reference/pack.html">unpack()</a></code> is the complement.</li>
+<li>
+<code><a href="../reference/isolate_sentinels.html">isolate_sentinels()</a></code> move sentinel values into a separate column, leaving <code>NA</code> behind (or <code>NULL</code> for list-columns).</li>
+<li>
+<code><a href="../reference/spatter.html">spatter()</a></code> is like <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">tidyr::spread()</a></code>, but preserves mixed data types.</li>
+<li>
+<code><a href="../reference/tidy_table.html">tidy_table()</a></code> now returns a <code>data_type</code> column that names the column that contains the value of a cell, similar to <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
+<li>
+<code><a href="../reference/tidy_table.html">tidy_table()</a></code> now follows the tidyverse convention of <code>fct</code> for ‘factor’ and <code>ord</code> for ‘ordered factor’.</li>
+<li>
+<code><a href="../reference/join_header.html">join_header()</a></code> and the related functions <code><a href="../reference/join_header.html">N()</a></code>, <code><a href="../reference/join_header.html">NNW()</a></code>, etc. gains a <code>drop =   TRUE</code> argument to control whether to discard cells that don’t have a matching header (e.g. ones that are left of the leftmost header in <code><a href="../reference/join_header.html">NNW()</a></code>).</li>
+<li>
+<code><a href="../reference/join_header.html">join_header()</a></code> encourages names <code>N</code>, <code>NNW</code> rather than quoted strings <code>"N"</code>, <code>"NNW"</code>, etc. in line with the tidyverse standard, because it names an actual object (a function).</li>
+<li>New vignette ‘worked-examples’ of common tasks when munging spreadsheets.</li>
+<li>
+<code>purpose</code> (built-in dataset) gains a new list-member <code>small-multiples</code>.</li>
+</ul>
+</div>
+<div id="many-other-tweaks-especially-to-documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#many-other-tweaks-especially-to-documentation" class="anchor"></a>Many other tweaks especially to documentation</h2>
+</div>
+</div>
+    <div id="unpivotr-0-3-1" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-0-3-1" class="anchor"></a>unpivotr 0.3.1<small> 2018-01-20 </small>
+</h1>
+<ul>
+<li>Performance improvements to <code><a href="../reference/tidy_table.html">tidy_table()</a></code>.</li>
+<li>Fixed a CRAN test on some platforms.</li>
+</ul>
+</div>
+    <div id="unpivotr-0-3-0" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-0-3-0" class="anchor"></a>unpivotr 0.3.0<small> 2017-12-03 </small>
+</h1>
+<ul>
+<li>Made compatible with tidyxl version 1.0.0 (avoids <code><a href="http://dplyr.tidyverse.org/reference/distinct.html">dplyr::distinct()</a></code>, which doesn’t handle list columns).</li>
+<li>Updated to use the new <code>dplyr</code>/<code>rlang</code> combination instead of the old <code>dplyr</code>/<code>lazyeval</code> one.</li>
+</ul>
+</div>
+    <div id="unpivotr-0-2-1" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-0-2-1" class="anchor"></a>unpivotr 0.2.1<small> 2017-07-02 </small>
+</h1>
+<p>This release overhauls the <code><a href="../reference/tidy_table.html">tidy_table()</a></code> function of unpivotr to preserve the original data types of table cells and to support HTML tables.</p>
+<ul>
+<li>
+<code>tidytable()</code> has been renamed <code><a href="../reference/tidy_table.html">tidy_table()</a></code>. <code>tidytable()</code> is an error, rather than a deprecation warning, because <code><a href="../reference/tidy_table.html">tidy_table()</a></code> is so different from before.</li>
+<li>There is a new <code><a href="../reference/tidy_table.html">tidy_table()</a></code> method and vignette for HTML.</li>
+<li>There is no <code><a href="../reference/tidy_table.html">tidy_table()</a></code> method for matrices. Convert matrices to data.frames first, choosing what to do with row and column names.</li>
+<li>
+<code><a href="../reference/tidy_table.html">tidy_table()</a></code> returns only relevant columns, according to the data types of the columns in the given data frame. It uses <code><a href="http://www.rdocumentation.org/packages/tibble/topics/reexports">tibble::type_sum()</a></code> to determine the column type and to name the columns, so whereas characters used to be returned in a column called <code>character</code>, they are now returned in a column called <code>chr</code>. The full list of column names is in <code><a href="../reference/tidy_table.html">?tidy_table</a></code> and is <code>chr</code>, <code>cplx</code>, <code>cplx</code>, <code>dbl</code>, <code>fctr</code>, <code>int</code>, <code>lgl</code>, <code>list</code>. The columns <code>fctr</code> and <code>list</code> are list-columns, where each element is itself a list. This means that factors with different levels are kept separate. For HTML tables, an <code>html</code> column is returned containing the standalone HTML of each cell.</li>
+<li>Both <code>rowname</code> and <code>colname</code> arguments to <code><a href="../reference/tidy_table.html">tidy_table()</a></code> now default to <code>FALSE</code>.</li>
+<li>All functions consistently return a <code>tibble</code>.</li>
+<li>Some error messages are more helpful.</li>
+</ul>
+</div>
+    <div id="unpivotr-0-1-1" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-0-1-1" class="anchor"></a>unpivotr 0.1.1<small> 2017-04-23 </small>
+</h1>
+<ul>
+<li>Fixed breakages introduced by dplyr 0.6.</li>
+</ul>
+</div>
+    <div id="unpivotr-0-1-0" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-0-1-0" class="anchor"></a>unpivotr 0.1.0<small> 2017-01-31 </small>
+</h1>
+<ul>
+<li>Moved images from <code>inst/extdata</code> to <code>vignettes</code>.</li>
+</ul>
+</div>
+    <div id="unpivotr-0-1-0-1" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-0-1-0-1" class="anchor"></a>unpivotr 0.1.0<small> 2017-01-31 </small>
+</h1>
+<ul>
+<li>Bumped version to match tidyxl, which is now more mature.</li>
+<li>Updated README and vignettes to use the new tidyxl api.</li>
+</ul>
+</div>
+    <div id="unpivotr-0-0-0-9000" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-0-0-0-9000" class="anchor"></a>unpivotr 0.0.0.9000<small> Unreleased </small>
+</h1>
+<ul>
+<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+</ul>
+</div>
     </div>
   </div>
 
@@ -125,6 +250,14 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#unpivotr-0-3-1-9000">0.3.1.9000</a></li>
+        <li><a href="#unpivotr-0-3-1">0.3.1</a></li>
+        <li><a href="#unpivotr-0-3-0">0.3.0</a></li>
+        <li><a href="#unpivotr-0-2-1">0.2.1</a></li>
+        <li><a href="#unpivotr-0-1-1">0.1.1</a></li>
+        <li><a href="#unpivotr-0-1-0">0.1.0</a></li>
+        <li><a href="#unpivotr-0-1-0-1">0.1.0</a></li>
+        <li><a href="#unpivotr-0-0-0-9000">0.0.0.9000</a></li>
       </ul>
     </div>
   </div>
@@ -145,3 +278,4 @@
 
   </body>
 </html>
+

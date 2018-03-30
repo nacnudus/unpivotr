@@ -18,13 +18,16 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Function reference" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">unpivotr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">unpivotr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -88,10 +95,13 @@
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
     </li>
+    <li>
+      <a href="../articles/worked-examples.html">Unpivoting Worked Examples</a>
+    </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -113,10 +123,7 @@
       <div class="row">
   <div class="col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.3.1</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
     <div class="contents">
@@ -137,35 +144,59 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="anchor.html">anchor</a></code> </p>
+            <p><code><a href="anchor.html">anchor()</a></code> </p>
           </td>
           <td><p>Filter for a cell from which to select others</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="extend.html">extend</a></code> <code><a href="extend.html">extend_N</a></code> <code><a href="extend.html">extend_E</a></code> <code><a href="extend.html">extend_S</a></code> <code><a href="extend.html">extend_W</a></code> </p>
+            <p><code><a href="behead.html">behead()</a></code> </p>
+          </td>
+          <td><p>Strip a level of headers from a pivot table</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="extend.html">extend()</a></code> <code><a href="extend.html">extend_N()</a></code> <code><a href="extend.html">extend_E()</a></code> <code><a href="extend.html">extend_S()</a></code> <code><a href="extend.html">extend_W()</a></code> </p>
           </td>
           <td><p>Extend a bag of cells in one direction, optionally up to a boundary
 condition.</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="join_header.html">join_header</a></code> <code><a href="join_header.html">N</a></code> <code><a href="join_header.html">E</a></code> <code><a href="join_header.html">S</a></code> <code><a href="join_header.html">W</a></code> <code><a href="join_header.html">NNW</a></code> <code><a href="join_header.html">NNE</a></code> <code><a href="join_header.html">ENE</a></code> <code><a href="join_header.html">ESE</a></code> <code><a href="join_header.html">SSE</a></code> <code><a href="join_header.html">SSW</a></code> <code><a href="join_header.html">WSW</a></code> <code><a href="join_header.html">WNW</a></code> <code><a href="join_header.html">ABOVE</a></code> <code><a href="join_header.html">LEFT</a></code> <code><a href="join_header.html">BELOW</a></code> <code><a href="join_header.html">RIGHT</a></code> </p>
+            <p><code><a href="isolate_sentinels.html">isolate_sentinels()</a></code> </p>
+          </td>
+          <td><p>Move sentinel values into a separate column leaving NA behind</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="join_header.html">join_header()</a></code> <code><a href="join_header.html">N()</a></code> <code><a href="join_header.html">E()</a></code> <code><a href="join_header.html">S()</a></code> <code><a href="join_header.html">W()</a></code> <code><a href="join_header.html">NNW()</a></code> <code><a href="join_header.html">NNE()</a></code> <code><a href="join_header.html">ENE()</a></code> <code><a href="join_header.html">ESE()</a></code> <code><a href="join_header.html">SSE()</a></code> <code><a href="join_header.html">SSW()</a></code> <code><a href="join_header.html">WSW()</a></code> <code><a href="join_header.html">WNW()</a></code> <code><a href="join_header.html">ABOVE()</a></code> <code><a href="join_header.html">LEFT()</a></code> <code><a href="join_header.html">BELOW()</a></code> <code><a href="join_header.html">RIGHT()</a></code> </p>
           </td>
           <td><p>Join a bag of data cells to some header, by proximity in a given direction,
 e.g. NNW searches up and up-left from a data cell to find a header cell.</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="offset.html">offset</a></code> <code><a href="offset.html">offset_N</a></code> <code><a href="offset.html">offset_E</a></code> <code><a href="offset.html">offset_S</a></code> <code><a href="offset.html">offset_W</a></code> </p>
+            <p><code><a href="offset.html">offset()</a></code> <code><a href="offset.html">offset_N()</a></code> <code><a href="offset.html">offset_E()</a></code> <code><a href="offset.html">offset_S()</a></code> <code><a href="offset.html">offset_W()</a></code> </p>
           </td>
           <td><p>Offset a bag of cells by some rows or columns.</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="pad.html">pad</a></code> </p>
+            <p><code><a href="pack.html">pack()</a></code> <code><a href="pack.html">unpack()</a></code> </p>
+          </td>
+          <td><p>Pack cell values from separate columns per data type into one list-column</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="pad.html">pad()</a></code> </p>
           </td>
           <td><p>Pad a bag of cells with blanks</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="partition.html">partition()</a></code> <code><a href="partition.html">partition_dim()</a></code> </p>
+          </td>
+          <td><p>Divide a grid of cells into partitions containing individual tables</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -175,9 +206,21 @@ e.g. NNW searches up and up-left from a data cell to find a header cell.</p></td
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="tidy_table.html">tidy_table</a></code> </p>
+            <p><code><a href="rectify.html">rectify()</a></code> <code><a href="rectify.html">print(<i>&lt;cell_grid&gt;</i>)</a></code> </p>
           </td>
-          <td><p>Convert data frames into a tidy structure</p></td>
+          <td><p>Display cells as though in a spreadsheet</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="spatter.html">spatter()</a></code> </p>
+          </td>
+          <td><p>Spread key-value pairs of mixed types across multiple columns</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="tidy_table.html">tidy_table()</a></code> </p>
+          </td>
+          <td><p>Tokenize data frames into a tidy 'melted' structure</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -212,3 +255,4 @@ e.g. NNW searches up and up-left from a data cell to find a header cell.</p></td
 
   </body>
 </html>
+

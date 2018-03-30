@@ -18,13 +18,23 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+<meta property="og:title" content="Pad a bag of cells with blanks — pad" />
+
+<meta property="og:description" content="When source data is sparse (e.g. spreadsheets from the 'tidyxl'
+package), the output of tidy_table() may also be sparse.  To fill
+the gaps with blank cells, use pad.  Internally, pad is used to
+ensure that functions like offset() and extend()
+behave intuitively, as though blank cells do actually exist." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -59,8 +69,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">unpivotr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">unpivotr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -88,10 +102,13 @@
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
     </li>
+    <li>
+      <a href="../articles/worked-examples.html">Unpivoting Worked Examples</a>
+    </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -114,19 +131,20 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Pad a bag of cells with blanks</h1>
+    <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/pad.R'><code>R/pad.R</code></a></small>
     </div>
 
     
     <p>When source data is sparse (e.g. spreadsheets from the 'tidyxl'
-package), the output of <code><a href='tidy_table.html'>tidy_table</a></code> may also be sparse.  To fill
+package), the output of <code><a href='tidy_table.html'>tidy_table()</a></code> may also be sparse.  To fill
 the gaps with blank cells, use <code>pad</code>.  Internally, <code>pad</code> is used to
-ensure that functions like <code><a href='offset.html'>offset</a></code> and <code><a href='extend.html'>extend</a></code>
+ensure that functions like <code><a href='offset.html'>offset()</a></code> and <code><a href='extend.html'>extend()</a></code>
 behave intuitively, as though blank cells do actually exist.</p>
     
 
     <pre class="usage"><span class='fu'>pad</span>(<span class='no'>cells</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='no'>cells</span>$<span class='no'>row</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='no'>cells</span>$<span class='no'>col</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -153,57 +171,57 @@ is outside the original range of columns)</p></td>
   <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>purpose</span>$<span class='no'>`NNW WNW`</span>) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(!<span class='fu'>is.na</span>(<span class='no'>chr</span>)) <span class='co'># Introduce 'holes' in the data</span>
 <span class='co'># Select a region with gaps</span>
-(<span class='no'>bag</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>%in%</span> <span class='fl'>2</span>:<span class='fl'>4</span>, <span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 3
-#&gt;     row   col chr              
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;            
-#&gt; 1     3     1 Bachelor's degree
-#&gt; 2     3     2 15 - 24          
-#&gt; 3     4     2 25 - 44          </div><div class='input'><span class='co'># Pad the gaps</span>
-<span class='fu'>pad</span>(<span class='no'>bag</span>) <span class='co'># By default, the selection is squared-off to its width and height</span></div><div class='output co'>#&gt; # A tibble: 4 x 3
-#&gt;     row   col chr              
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;            
-#&gt; 1     3     1 Bachelor's degree
-#&gt; 2     3     2 15 - 24          
-#&gt; 3     4     1 &lt;NA&gt;             
-#&gt; 4     4     2 25 - 44          </div><div class='input'><span class='fu'>pad</span>(<span class='no'>bag</span>, <span class='fl'>0</span>, <span class='fl'>0</span>) <span class='co'># Zeros are equivalent to the defaults</span></div><div class='output co'>#&gt; # A tibble: 4 x 3
-#&gt;     row   col chr              
-#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            
-#&gt; 1  3.00  1.00 Bachelor's degree
-#&gt; 2  3.00  2.00 15 - 24          
-#&gt; 3  4.00  1.00 &lt;NA&gt;             
-#&gt; 4  4.00  2.00 25 - 44          </div><div class='input'><span class='fu'>pad</span>(<span class='no'>bag</span>, <span class='fl'>2</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>3</span>) <span class='co'># Add a row and a column</span></div><div class='output co'>#&gt; # A tibble: 12 x 3
-#&gt;      row   col chr              
-#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;            
-#&gt;  1     2     1 &lt;NA&gt;             
-#&gt;  2     2     2 &lt;NA&gt;             
-#&gt;  3     2     3 &lt;NA&gt;             
-#&gt;  4     3     1 Bachelor's degree
-#&gt;  5     3     2 15 - 24          
-#&gt;  6     3     3 &lt;NA&gt;             
-#&gt;  7     4     1 &lt;NA&gt;             
-#&gt;  8     4     2 25 - 44          
-#&gt;  9     4     3 &lt;NA&gt;             
-#&gt; 10     5     1 &lt;NA&gt;             
-#&gt; 11     5     2 &lt;NA&gt;             
-#&gt; 12     5     3 &lt;NA&gt;             </div><div class='input'><span class='fu'>pad</span>(<span class='no'>bag</span>, <span class='fl'>6</span>, <span class='fl'>4</span>) <span class='co'># No gaps are left even when .rows or .cols are distant</span></div><div class='output co'>#&gt; # A tibble: 16 x 3
-#&gt;      row   col chr              
-#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            
-#&gt;  1  3.00  1.00 Bachelor's degree
-#&gt;  2  3.00  2.00 15 - 24          
-#&gt;  3  3.00  3.00 &lt;NA&gt;             
-#&gt;  4  3.00  4.00 &lt;NA&gt;             
-#&gt;  5  4.00  1.00 &lt;NA&gt;             
-#&gt;  6  4.00  2.00 25 - 44          
-#&gt;  7  4.00  3.00 &lt;NA&gt;             
-#&gt;  8  4.00  4.00 &lt;NA&gt;             
-#&gt;  9  5.00  1.00 &lt;NA&gt;             
-#&gt; 10  5.00  2.00 &lt;NA&gt;             
-#&gt; 11  5.00  3.00 &lt;NA&gt;             
-#&gt; 12  5.00  4.00 &lt;NA&gt;             
-#&gt; 13  6.00  1.00 &lt;NA&gt;             
-#&gt; 14  6.00  2.00 &lt;NA&gt;             
-#&gt; 15  6.00  3.00 &lt;NA&gt;             
-#&gt; 16  6.00  4.00 &lt;NA&gt;             </div></pre>
+(<span class='no'>bag</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>%in%</span> <span class='fl'>2</span>:<span class='fl'>4</span>, <span class='no'>col</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 4
+#&gt;     row   col data_type chr              
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;            
+#&gt; 1     3     1 chr       Bachelor's degree
+#&gt; 2     3     2 chr       15 - 24          
+#&gt; 3     4     2 chr       25 - 44          </div><div class='input'><span class='co'># Pad the gaps</span>
+<span class='fu'>pad</span>(<span class='no'>bag</span>) <span class='co'># By default, the selection is squared-off to its width and height</span></div><div class='output co'>#&gt; # A tibble: 4 x 4
+#&gt;     row   col data_type chr              
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;            
+#&gt; 1     3     1 chr       Bachelor's degree
+#&gt; 2     3     2 chr       15 - 24          
+#&gt; 3     4     1 &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 4     4     2 chr       25 - 44          </div><div class='input'><span class='fu'>pad</span>(<span class='no'>bag</span>, <span class='fl'>0</span>, <span class='fl'>0</span>) <span class='co'># Zeros are equivalent to the defaults</span></div><div class='output co'>#&gt; # A tibble: 4 x 4
+#&gt;     row   col data_type chr              
+#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;            
+#&gt; 1    3.    1. chr       Bachelor's degree
+#&gt; 2    3.    2. chr       15 - 24          
+#&gt; 3    4.    1. &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 4    4.    2. chr       25 - 44          </div><div class='input'><span class='fu'>pad</span>(<span class='no'>bag</span>, <span class='fl'>2</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>3</span>) <span class='co'># Add a row and a column</span></div><div class='output co'>#&gt; # A tibble: 12 x 4
+#&gt;      row   col data_type chr              
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;            
+#&gt;  1     2     1 &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  2     2     2 &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  3     2     3 &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  4     3     1 chr       Bachelor's degree
+#&gt;  5     3     2 chr       15 - 24          
+#&gt;  6     3     3 &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  7     4     1 &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  8     4     2 chr       25 - 44          
+#&gt;  9     4     3 &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 10     5     1 &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 11     5     2 &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 12     5     3 &lt;NA&gt;      &lt;NA&gt;             </div><div class='input'><span class='fu'>pad</span>(<span class='no'>bag</span>, <span class='fl'>6</span>, <span class='fl'>4</span>) <span class='co'># No gaps are left even when .rows or .cols are distant</span></div><div class='output co'>#&gt; # A tibble: 16 x 4
+#&gt;      row   col data_type chr              
+#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;            
+#&gt;  1    3.    1. chr       Bachelor's degree
+#&gt;  2    3.    2. chr       15 - 24          
+#&gt;  3    3.    3. &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  4    3.    4. &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  5    4.    1. &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  6    4.    2. chr       25 - 44          
+#&gt;  7    4.    3. &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  8    4.    4. &lt;NA&gt;      &lt;NA&gt;             
+#&gt;  9    5.    1. &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 10    5.    2. &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 11    5.    3. &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 12    5.    4. &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 13    6.    1. &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 14    6.    2. &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 15    6.    3. &lt;NA&gt;      &lt;NA&gt;             
+#&gt; 16    6.    4. &lt;NA&gt;      &lt;NA&gt;             </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -230,3 +248,4 @@ is outside the original range of columns)</p></td>
 
   </body>
 </html>
+
