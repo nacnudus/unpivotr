@@ -44,3 +44,8 @@ test_that("concatenate() factor features work", {
   expect_equal(concatenate(x, combine_factors = FALSE, fill_factor_na = FALSE),
                list(NULL, factor(NA), NULL, factor(NA)))
 })
+
+test_that("concatenate() handles all-null lists", {
+  x <- list(NULL, NULL)
+  expect_equal(concatenate(x), x)
+})
