@@ -2046,20 +2046,3 @@ comments
 left_join(values, comments, by = "row") %>%
   select(-row)
 ```
-
-```{r}
-# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-notes.xlsx")
-# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-annotations.xlsx")
-# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-highlighted.xlsx")
-# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-combined-highlights.xlsx")
-# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-highlight-hierarchy.xlsx")
-# writexl::write_xlsx(rownames_to_column(datasets::mtcars, "model"), "./mtcars-sentinels.xlsx")
-```
-
-```{r}
-# View the cells in their original positions on the spreadsheet
-rectify(all_cells)
-```
-(`rectify()` takes the 'melted' output of `tidy_table()` or
-`tidyxl::xlsx_cells()` and projects it as a normal table, or 'rectangle', so you
-can see its layout).
