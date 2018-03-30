@@ -66,7 +66,7 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
         dots[dots_is_null] <- list(factor(NA_character_))
       }
       if(combine_factors) {
-        return(forcats::fct_c(dots)) }
+        return(forcats::fct_c(rlang::splice(dots))) }
       else {
         return(dots)
       }
