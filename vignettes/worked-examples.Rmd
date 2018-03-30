@@ -11,55 +11,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-* Can't unpivotr just work it out by magic?
-  - adversarial example
-* Tidy tables but with gotchas
-  - other stuff on the same sheet
-  - meaningful formatting of whole rows
-  - meaningful formatting of single cells
-  - More than one kind of formatting at the same time
-  - Text sentinel values in non-text columns
-  - Transposed (headers in the first row, data extends to the right)
-* Pivot tables (multi-level headers)
-  - Two clear rows of text column headers, left-aligned
-  - Two clear columns of text row headers, top-aligned
-  - Two clear rows and columns of text headers, top-aligned and left-aligned
-  - Multiple rows or columns of headers, with meaningful formatting
-  - Mixed headers and notes in the same row/column, distinguished by formatting
-  - Mixed levels of headers in the same row/column, distinguished by formatting
-  - Repeated rows/columns of headers within the table
-  - Headers amongst the data
-* Small multiples
-  - Small multiples with all headers present for each multiple
-  - Small multiples sharing column headers or row headers (babynames)
-  - Same table in several worksheets/files (using the sheet/file name)
-  - Same table in several worksheets/files but in different positions
-* Formatting:
-  - Bold
-  - Italic
-  - Underline
-  - Strikethrough
-  - Fill colour
-  - Font colour
-  - Font size
-  - Font name
-  - Border
-    * Border colour
-    * Border weight
-    * Border line type
-  - Row height
-  - Column width
-  - Styles
-  - Conditional formatting (not implemented because derived from the data)
-* In-cell formatting
-* Data validation (tidyxl vignette?)
-* Other gotchas
-  - Non-text headers, e.g. dates.
-  - Superscript numbers in numeric columns to reference notes
-  - Data embedded in comments
-  - Data embedded in formulas
-  - Referring to named ranges
-
 ## Load packages
 
 ```{r}
@@ -2046,3 +1997,12 @@ comments
 left_join(values, comments, by = "row") %>%
   select(-row)
 ```
+
+## TODO:
+
+* Can't unpivotr just work it out by magic?
+  - adversarial example
+* Data validation (tidyxl vignette?)
+* Other gotchas
+  - Data embedded in formulas
+  - Referring to named ranges
