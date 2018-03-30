@@ -40,9 +40,7 @@ test_that("concatenate() factor features work", {
                     factor("a"), factor("b")))
   expect_equal(concatenate(x, combine_factors = FALSE, fill_factor_na = FALSE),
                list(NULL, factor(NA), factor("a"), factor("b")))
-
   x <- list(NULL, factor(NA), NULL, factor(NA))
   expect_equal(concatenate(x, combine_factors = FALSE, fill_factor_na = FALSE),
                list(NULL, factor(NA), NULL, factor(NA)))
-
 })
