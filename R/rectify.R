@@ -142,10 +142,3 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
     NextMethod(x)
   }
 } # nocov end
-
-# Like format() but handles factors wrapped in lists, and leaves NA as-is
-format_list <- function(x) {
-  if (is.list(x) || length(x) > 1L) return(dput(x))
-  if(is.na(x)) return(NA_character_)
-  format(x, justify = "none")
-}
