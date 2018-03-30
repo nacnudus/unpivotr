@@ -1,17 +1,45 @@
 # unpivotr 0.3.1.9000
 
-* `rectify()` is a new function to display cells as though in a spreadsheet,
-    rather than in the 'melted' form of `tidy_table()` and
-    `tidyxl::xlsx_cells()`.  This is useful for understanding the structure of
-    a pivot table as a human, when planning how to unpivot it.  A print method
-    is available to render large datasets in the broswer or the RStudio viewer
-    pane.
-* `partition()` is a new function to divide a grid of cells into partitions
-    containing individual tables.  Give it the corner cells of each table on a
-    spreadsheet, and it returns all the cells of the spreadsheet with a
-    `partition` column that identifies which cells belong to which table.
+## Breaking changes
+
+* `tidy_table()` now follows the tidyverse convention of `fct` for 'factor' and
+    `ord` for 'ordered factor'.
+
+## New features
+
+* `behead()` is takes one level of headers from a pivot table and make it part
+    of the data.  Think of it like `tidyr::gather()`, except that it works when
+    there is more than one row of headers (or more than one column of
+    row-headers), and it only works on tables that have first come through
+    `tidy_table()` or `tidyxl::xlsx_cells()`.
+* `rectify()` displays cells as though in a spreadsheet, rather than in the
+    'melted' form of `tidy_table()` and `tidyxl::xlsx_cells()`.  This is useful
+    for understanding the structure of a pivot table as a human, when planning
+    how to unpivot it.  A print method is available to render large datasets in
+    the browser or the RStudio viewer pane.
+* `partition()` divides a grid of cells into partitions containing individual
+    tables.  Give it the corner cells of each table on a spreadsheet, and it
+    returns all the cells of the spreadsheet with a `partition` column that
+    identifies which cells belong to which table.
+* `pack()` packs cells values from separate columns per data type into one
+    list-column.  `unpack()` is the complement.
+* `isolate_sentinels()` move sentinel values into a separate column, leaving
+    `NA` behind (or `NULL` for list-columns).
+* `spatter()` is like `tidyr::spread()`, but preserves mixed data types.
 * `tidy_table()` now returns a `data_type` column that names the column that
     contains the value of a cell, similar to `tidyxl::xlsx_cells()`.
+* `tidy_table()` now follows the tidyverse convention of `fct` for 'factor' and
+    `ord` for 'ordered factor'.
+* `join_header()` and the related functions `N()`, `NNW()`, etc. gains a `drop =
+    TRUE` argument to control whether to discard cells that don't have a
+    matching header (e.g. ones that are left of the leftmost header in `NNW()`).
+* `join_header()` encourages names `N`, `NNW` rather than quoted strings `"N"`,
+    `"NNW"`, etc. in line with the tidyverse standard, because it names an
+    actual object (a function).
+* New vignette 'worked-examples' of common tasks when munging spreadsheets.
+* `purpose` (built-in dataset) gains a new list-member `small-multiples`.
+
+## Many other tweaks especially to documentation
 
 # unpivotr 0.3.1
 
