@@ -55,3 +55,7 @@ test_that("isolate_sentinels() allows a custom name for the new column", {
   y <- isolate_sentinels(x, chr, "a", "foo")
   expect_equal(y$foo, c("a", NA_character_))
 })
+
+test_that("isolate_sentinels() requires type agreement", {
+  expect_error(isolate_sentinels(x, chr, 1L))
+})
