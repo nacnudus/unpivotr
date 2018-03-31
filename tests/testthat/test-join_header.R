@@ -158,8 +158,8 @@ test_that("Compass directions NNE and WSW work", {
     NNE(col_headers[[1]]) %>%
     WSW(row_headers[[1]]) %>%
     dplyr::arrange(row, col)
-  expect_equal(datacells[[4]], expect_education)
-  expect_equal(datacells[[5]], expect_sex)
+  expect_equal(datacells[[5]], expect_education)
+  expect_equal(datacells[[4]], expect_sex)
 })
 
 test_that("Compass directions S, SSE , E and ESE work", {
@@ -210,8 +210,8 @@ test_that("Compass directions SSW and ENE work", {
     SSW(col_headers[[2]]) %>% # Different from SSE ESE
     ENE(row_headers[[2]]) %>% # Different from SSE ESE
     dplyr::arrange(row, col)
-  expect_equal(datacells[[4]], expect_education)
-  expect_equal(datacells[[5]], expect_sex)
+  expect_equal(datacells[[5]], expect_education)
+  expect_equal(datacells[[4]], expect_sex)
 })
 
 test_that("Compass directions ABOVE and LEFT work", {
@@ -263,7 +263,6 @@ test_that("Compass directions BELOW and RIGHT work", {
 })
 
 test_that("Compass directions ABOVE and LEFT work with boundaries", {
-
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
   cells <- tidyxl::xlsx_cells(spreadsheet, "ABOVE LEFT border")
   formatting <- tidyxl::xlsx_formats(spreadsheet)
@@ -308,7 +307,6 @@ test_that("Compass directions ABOVE and LEFT work with boundaries", {
   expect_error(LEFT(datacells, row_headers[[1]], top_border_cells[-2, ]),
                "Multiple headers were detected within the same pair of boundaries.
   Please provide boundaries to separate every header.")
-
 })
 
 test_that("Compass directions BELOW and RIGHT work with boundaries", {

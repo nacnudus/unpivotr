@@ -134,110 +134,57 @@ W <- E
 #' @describeIn join_header Join nearest header in the 'NNW' direction.
 #' @export
 NNW <- function(bag, header, drop = TRUE) {
-  check_header(header)
-  nomatch <- ifelse(drop, 0, NA)
-  header <-
-    header %>%
-    dplyr::select(-row) %>%
-    dplyr::arrange(col) %>%
-    dplyr::mutate(col = as.double(col),
-                  to_col = dplyr::lead(col - 1, default = Inf))
-  header <- data.table::data.table(header) # Must be done without %>%
-  bag$row <- as.double(bag$row) # Required for data.table join on Inf
-  bag$col <- as.double(bag$col)
-  bag <- data.table::data.table(bag)       # Must be done without %>%
-  header[bag, on = .(col <= col, to_col >= col), nomatch = nomatch] %>% # Left-join (bag is left)
-    dplyr::tbl_df() %>%
-    dplyr::select(-to_col) %>%
-    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
-    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
-    tibble::as_tibble()
+  corner_join(bag, header, "top_left", drop)
 }
 
 #' @describeIn join_header Join nearest header in the 'NNE' direction.
 #' @export
 NNE <- function(bag, header, drop = TRUE) {
-  check_header(header)
-  nomatch <- ifelse(drop, 0, NA)
-  header <-
-    header %>%
-    dplyr::select(-row) %>%
-    dplyr::arrange(col) %>%
-    dplyr::mutate(col = as.double(col),
-                  from_col = dplyr::lag(col + 1, default = -Inf))
-  header <- data.table::data.table(header) # Must be done without %>%
-  bag$row <- as.double(bag$row) # Required for data.table join on Inf
-  bag$col <- as.double(bag$col)
-  bag <- data.table::data.table(bag)       # Must be done without %>%
-  header[bag, on = .(from_col <= col, col >= col), nomatch = nomatch] %>% # Left-join (bag is left)
-    dplyr::tbl_df() %>%
-    dplyr::select(-from_col) %>%
-    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
-    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
-    tibble::as_tibble()
-}
-
-#' @describeIn join_header Join nearest header in the 'ENE' direction.
-#' @export
-ENE <- function(bag, header, drop = TRUE) {
-  check_header(header)
-  nomatch <- ifelse(drop, 0, NA)
-  header <-
-    header %>%
-    dplyr::select(-col) %>%
-    dplyr::arrange(row) %>%
-    dplyr::mutate(row = as.double(row),
-                  to_row = dplyr::lead(row - 1, default = Inf))
-  header <- data.table::data.table(header) # Must be done without %>%
-  bag$row <- as.double(bag$row) # Required for data.table join on Inf
-  bag$col <- as.double(bag$col)
-  bag <- data.table::data.table(bag)       # Must be done without %>%
-  header[bag, on = .(row <= row, to_row >= row), nomatch = nomatch] %>% # Left-join (bag is left)
-    dplyr::tbl_df() %>%
-    dplyr::select(-to_row) %>%
-    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
-    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
-    tibble::as_tibble()
-}
-
-#' @describeIn join_header Join nearest header in the 'ESE' direction.
-#' @export
-ESE <- function(bag, header, drop = TRUE) {
-  check_header(header)
-  nomatch <- ifelse(drop, 0, NA)
-  header <-
-    header %>%
-    dplyr::select(-col) %>%
-    dplyr::arrange(row) %>%
-    dplyr::mutate(row = as.double(row),
-                  from_row = dplyr::lag(row + 1, default = -Inf))
-  header <- data.table::data.table(header) # Must be done without %>%
-  bag$row <- as.double(bag$row) # Required for data.table join on Inf
-  bag$col <- as.double(bag$col)
-  bag <- data.table::data.table(bag)       # Must be done without %>%
-  header[bag, on = .(from_row <= row, row >= row), nomatch = nomatch] %>% # Left-join (bag is left)
-    dplyr::tbl_df() %>%
-    dplyr::select(-from_row) %>%
-    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
-    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
-    tibble::as_tibble()
+  corner_join(bag, header, "top_right", drop)
 }
 
 #' @describeIn join_header Join nearest header in the 'SSE' direction.
 #' @export
-SSE <- NNE
+SSE <- function(bag, header, drop = TRUE) {
+  corner_join(bag, header, "bottom_right", drop)
+}
 
 #' @describeIn join_header Join nearest header in the 'SSW' direction.
 #' @export
-SSW <- NNW
-
-#' @describeIn join_header Join nearest header in the 'WSW' direction.
-#' @export
-WSW <- ESE
+SSW <- function(bag, header, drop = TRUE) {
+  corner_join(bag, header, "bottom_left", drop)
+}
 
 #' @describeIn join_header Join nearest header in the 'WNW' direction.
 #' @export
-WNW <- ENE
+WNW <- NNW
+
+#' @describeIn join_header Join nearest header in the 'ENE' direction.
+#' @export
+ENE <- NNE
+
+#' @describeIn join_header Join nearest header in the 'ESE' direction.
+#' @export
+ESE <- SSE
+
+#' @describeIn join_header Join nearest header in the 'WSW' direction.
+#' @export
+WSW <- SSW
+
+corner_join <- function(bag, header, corner, drop = TRUE) {
+  headers <-
+    partition(header, header, corner, ".partition") %>%
+    dplyr::select(-row, -col)
+  data_cells <-
+    partition(bag, header, corner, ".partition") %>%
+    dplyr::inner_join(headers, by = ".partition") %>%
+    dplyr::select(-.partition)
+  if (!drop) {
+    remainder <- anti_join(bag, data_cells, by = c("row", "col"))
+    data_cells <- bind_rows(data_cells, remainder)
+  }
+  data_cells
+}
 
 #' @describeIn join_header Join nearest header in the 'ABOVE' direction.
 #' @export
