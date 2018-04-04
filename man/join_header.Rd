@@ -8,12 +8,12 @@
 \alias{W}
 \alias{NNW}
 \alias{NNE}
-\alias{ENE}
-\alias{ESE}
 \alias{SSE}
 \alias{SSW}
-\alias{WSW}
 \alias{WNW}
+\alias{ENE}
+\alias{ESE}
+\alias{WSW}
 \alias{ABOVE}
 \alias{LEFT}
 \alias{BELOW}
@@ -21,7 +21,7 @@
 \title{Join a bag of data cells to some header, by proximity in a given direction,
 e.g. NNW searches up and up-left from a data cell to find a header cell.}
 \usage{
-join_header(bag, header, direction, boundaries = NULL, drop = TRUE)
+join_header(bag, header, direction, corners = NULL, drop = TRUE)
 
 N(bag, header, drop = TRUE)
 
@@ -35,25 +35,25 @@ NNW(bag, header, drop = TRUE)
 
 NNE(bag, header, drop = TRUE)
 
-ENE(bag, header, drop = TRUE)
-
-ESE(bag, header, drop = TRUE)
-
 SSE(bag, header, drop = TRUE)
 
 SSW(bag, header, drop = TRUE)
 
-WSW(bag, header, drop = TRUE)
-
 WNW(bag, header, drop = TRUE)
 
-ABOVE(bag, header, boundaries = NULL, drop = TRUE)
+ENE(bag, header, drop = TRUE)
 
-LEFT(bag, header, boundaries = NULL, drop = TRUE)
+ESE(bag, header, drop = TRUE)
 
-BELOW(bag, header, boundaries = NULL, drop = TRUE)
+WSW(bag, header, drop = TRUE)
 
-RIGHT(bag, header, boundaries = NULL, drop = TRUE)
+ABOVE(bag, header, corners = NULL, drop = TRUE)
+
+LEFT(bag, header, corners = NULL, drop = TRUE)
+
+BELOW(bag, header, corners = NULL, drop = TRUE)
+
+RIGHT(bag, header, corners = NULL, drop = TRUE)
 }
 \arguments{
 \item{bag}{Data frame. A bag of data cells including at least the columns
@@ -66,12 +66,12 @@ RIGHT(bag, header, boundaries = NULL, drop = TRUE)
 of \code{N}, \code{E}, \code{S}, \code{W}, \code{NNW}, \code{NNE}, \code{ENE}, \code{ESE}, \code{SSE}, \code{SSW}. \code{WSW},
 \code{WNW}, \code{ABOVE}, \code{BELOW}, \code{LEFT} and \code{RIGHT}.  See 'details'.}
 
-\item{boundaries}{Data frame. Only applies to the directions "ABOVE",
-"RIGHT", "BELOW" and "LEFT".  A bag of cells in one row or one column,
-demarking boundaries within which to match headers with cells.  For example,
-a boundary could be a bag of cells with borders on one side.  This is useful
-when the nearest header might be the wrong header because it lies on the
-other side of a border.}
+\item{corners}{Data frame. Only applies to the directions "ABOVE", "RIGHT",
+"BELOW" and "LEFT".  A bag of cells in one row or one column, giving the
+corner of the area that a header applies to.  For example, \code{corners} could
+be a bag of cells with borders on one side.  This is useful when the nearest
+header might be the wrong header because it lies on the other side of a
+border.}
 
 \item{drop}{Logical vector length 1. Whether data cells that can't be
 associated with a header should be dropped.  Default: TRUE.}
@@ -118,25 +118,25 @@ directions are provided as their own functions, wrapping the concept of
 
 \item \code{NNE}: Join nearest header in the 'NNE' direction.
 
-\item \code{ENE}: Join nearest header in the 'ENE' direction.
-
-\item \code{ESE}: Join nearest header in the 'ESE' direction.
-
 \item \code{SSE}: Join nearest header in the 'SSE' direction.
 
 \item \code{SSW}: Join nearest header in the 'SSW' direction.
 
-\item \code{WSW}: Join nearest header in the 'WSW' direction.
-
 \item \code{WNW}: Join nearest header in the 'WNW' direction.
+
+\item \code{ENE}: Join nearest header in the 'ENE' direction.
+
+\item \code{ESE}: Join nearest header in the 'ESE' direction.
+
+\item \code{WSW}: Join nearest header in the 'WSW' direction.
 
 \item \code{ABOVE}: Join nearest header in the 'ABOVE' direction.
 
-\item \code{LEFT}: Join nearest header in the 'LEFT' direction.
+\item \code{LEFT}: Join nearest header in the 'ABOVE' direction.
 
-\item \code{BELOW}: Join nearest header in the 'BELOW' direction.
+\item \code{BELOW}: Join nearest header in the 'ABOVE' direction.
 
-\item \code{RIGHT}: Join nearest header in the 'BELOW' direction.
+\item \code{RIGHT}: Join nearest header in the 'ABOVE' direction.
 }}
 
 \examples{

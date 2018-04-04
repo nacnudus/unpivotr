@@ -12,12 +12,12 @@
 #' 'row' and 'column', which are numeric/integer vectors.
 #' @param header Data frame. A bag of data cells including at least the columns
 #' 'row' and 'column', which are numeric/integer vectors.
-#' @param boundaries Data frame. Only applies to the directions "ABOVE",
-#' "RIGHT", "BELOW" and "LEFT".  A bag of cells in one row or one column,
-#' demarking boundaries within which to match headers with cells.  For example,
-#' a boundary could be a bag of cells with borders on one side.  This is useful
-#' when the nearest header might be the wrong header because it lies on the
-#' other side of a border.
+#' @param corners Data frame. Only applies to the directions "ABOVE", "RIGHT",
+#' "BELOW" and "LEFT".  A bag of cells in one row or one column, giving the
+#' corner of the area that a header applies to.  For example, `corners` could
+#' be a bag of cells with borders on one side.  This is useful when the nearest
+#' header might be the wrong header because it lies on the other side of a
+#' border.
 #' @param direction The name of a function that joins headers to data cells, one
 #' of `N`, `E`, `S`, `W`, `NNW`, `NNE`, `ENE`, `ESE`, `SSE`, `SSW`. `WSW`,
 #' `WNW`, `ABOVE`, `BELOW`, `LEFT` and `RIGHT`.  See 'details'.
@@ -81,18 +81,18 @@
 #' # can't be joined to a header are dropped.  Otherwise they are kept.
 #' N(datacells, gender)
 #' N(datacells, gender, drop = FALSE)
-join_header <- function(bag, header, direction, boundaries = NULL, drop = TRUE) {
+join_header <- function(bag, header, direction, corners = NULL, drop = TRUE) {
   direction <- rlang::quo_name(rlang::enexpr(direction))
   check_header(header)
   if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
-    do.call(direction, list(bag, header, boundaries))
+    do.call(direction, list(bag, header, corners))
   } else if (direction %in% c("N", "E", "S", "W",
                              "NNW", "NNE",
                              "ENE", "ESE",
                              "SSE", "SSW",
                              "WSW", "WNW")) {
-    if (!is.null(boundaries)) {
-      stop("'boundaries' is only supported for the directions 'ABOVE', 'RIGHT'",
+    if (!is.null(corners)) {
+      stop("'corners' is only supported for the directions 'ABOVE', 'RIGHT'",
            ", 'BELOW' and 'LEFT'.")
     }
     do.call(direction, list(bag, header, drop))
@@ -177,135 +177,103 @@ corner_join <- function(bag, header, corner, drop = TRUE) {
     dplyr::select(-row, -col)
   data_cells <-
     partition(bag, header, corner, ".partition") %>%
-    dplyr::inner_join(headers, by = ".partition") %>%
+    dplyr::inner_join(headers, by = ".partition", suffix = c("", ".y")) %>%
     dplyr::select(-.partition)
   if (!drop) {
-    remainder <- anti_join(bag, data_cells, by = c("row", "col"))
-    data_cells <- bind_rows(data_cells, remainder)
+    remainder <- dplyr::anti_join(bag, data_cells, by = c("row", "col"))
+    data_cells <- dplyr::bind_rows(data_cells, remainder)
   }
   data_cells
 }
 
 #' @describeIn join_header Join nearest header in the 'ABOVE' direction.
 #' @export
-ABOVE <- function(bag, header, boundaries = NULL, drop = TRUE) {
-  check_header(header)
-  nomatch <- ifelse(drop, 0, NA)
-  header <-
-    header %>%
-    dplyr::select(-row) %>%
-    dplyr::arrange(col)
-  if (!is.null(boundaries)) {
-    # Align the headers to the boundaries.
-    # A boundary is marked at col=1 if it doesn't already exist.  There may then
-    # be fewer headers than boundaries, but not more headers than boundaries.
-    boundaries <-
-      boundaries %>%
-      dplyr::arrange(col) %>%
-      dplyr::mutate(to_col = dplyr::lead(col - 1, default = Inf)) %>%
-      dplyr::select(col, to_col) %>%
-      dplyr::rename(from_col = col)
-    boundaries <- data.table::data.table(boundaries) # Must be done without %>%
-    header <- # Rename columns to avoid misleading data.table renaming
-      header %>%
-      dplyr::rename(from_col = col) %>%
-      dplyr::mutate(from_col = as.double(from_col), to_col = from_col) # For data.table join on Inf
-    header <- data.table::data.table(header) # Must be done without %>%
-    header <- header[boundaries, on = .(from_col >= from_col, to_col <= to_col), nomatch = nomatch] # Left-join (boundaries is left)
-    # Boundaries without headers still exist but are NA
-    if (any(diff(header$from_col) == 0)) {
-      stop("Multiple headers were detected within the same pair of boundaries.",
-           "\n  Please provide boundaries to separate every header.")
-    }
+ABOVE <- function(bag, header, corners = NULL, drop = TRUE) {
+  if (is.null(corners) || min(corners$col) <= min(header$col)) {
+    corner <- rlang::quo(NNW)
   } else {
-    # The domain of each header is up to (but not including) half-way between it
-    # and headers either side, except the ends, which extend to the edge of the
-    # sheet.
-    header <-
-      header %>%
-      dplyr::mutate(
-        from_col = floor((col + dplyr::lag(as.numeric(col), default = -Inf) + 2)/2),
-        to_col = ceiling((col + dplyr::lead(as.numeric(col), default = Inf) - 2)/2)
-      ) %>%
-      dplyr::select(-col)
-    header <- data.table::data.table(header) # Must be done without %>%
+    corner <- rlang::quo(NNE)
   }
-  bag$row <- as.double(bag$row) # For data.table join on Inf
-  bag$col <- as.double(bag$col)
-  bag <- data.table::data.table(bag) # Must be done without %>%
-  header[bag, on = .(from_col <= col, to_col >= col), nomatch = nomatch] %>%
-    dplyr::tbl_df() %>%
-    dplyr::rename(col = from_col) %>%
-    dplyr::select(-to_col) %>%
-    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
-    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
-    tibble::as_tibble()
+  side_join(bag, header, !! corner, corners, drop)
 }
 
-#' @describeIn join_header Join nearest header in the 'LEFT' direction.
+#' @describeIn join_header Join nearest header in the 'ABOVE' direction.
 #' @export
-LEFT <- function(bag, header, boundaries = NULL, drop = TRUE) {
-  check_header(header)
-  nomatch <- ifelse(drop, 0, NA)
-  header <-
-    header %>%
-    dplyr::select(-col) %>%
-    dplyr::arrange(row)
-  if (!is.null(boundaries)) {
-    # Align the headers to the boundaries.
-    # A boundary is marked at row=1 if it doesn't already exist.  There may then
-    # be fewer headers than boundaries, but not more headers than boundaries.
-    boundaries <-
-      boundaries %>%
-      dplyr::arrange(row) %>%
-      dplyr::mutate(to_row = dplyr::lead(row - 1, default = Inf)) %>%
-      dplyr::select(row, to_row) %>%
-      dplyr::rename(from_row = row)
-    boundaries <- data.table::data.table(boundaries) # Must be done without %>%
-    header <- # Rename rowumns to avoid misleading data.table renaming
-      header %>%
-      dplyr::rename(from_row = row) %>%
-      dplyr::mutate(to_row = from_row) %>%
-      dplyr::mutate(from_row = as.double(from_row), to_row = from_row) # For data.table join on Inf
-    header <- data.table::data.table(header) # Must be done without %>%
-    header <- header[boundaries, on = .(from_row >= from_row, to_row <= to_row), nomatch = nomatch] # Left-join (boundaries is left)
-    # Boundaries without headers still exist but are NA
-    if (any(diff(header$from_row) == 0)) {
-      stop("Multiple headers were detected within the same pair of boundaries.",
-           "\n  Please provide boundaries to separate every header.")
-    }
+LEFT <- function(bag, header, corners = NULL, drop = TRUE) {
+  if (is.null(corners) || min(corners$row) <= min(header$row)) {
+    corner <- rlang::quo(WNW)
   } else {
-    # The domain of each header is up to (but not including) half-way between it
-    # and headers either side, except the ends, which extend to the edge of the
-    # sheet.
-    header <-
-      header %>%
-      dplyr::mutate(
-        from_row = floor((row + dplyr::lag(as.numeric(row), default = -Inf) + 2)/2),
-        to_row = ceiling((row + dplyr::lead(as.numeric(row), default = Inf) - 2)/2)
-      ) %>%
-      dplyr::select(-row)
-    header <- data.table::data.table(header) # Must be done without %>%
+    corner <- rlang::quo(WSW)
   }
-  bag$row <- as.double(bag$row) # For data.table join on Inf
-  bag$col <- as.double(bag$col)
-  bag <- data.table::data.table(bag) # Must be done without %>%
-  header[bag, on = .(from_row <= row, to_row >= row), nomatch = nomatch] %>%
-    dplyr::tbl_df() %>%
-    dplyr::rename(row = from_row) %>%
-    dplyr::select(-to_row) %>%
-    dplyr::mutate(row = as.integer(row), col = as.integer(col)) %>%
-    dplyr::select(colnames(bag), dplyr::everything(.)) %>%
-    tibble::as_tibble()
+  side_join(bag, header, !! corner, corners, drop)
 }
 
-#' @describeIn join_header Join nearest header in the 'BELOW' direction.
+#' @describeIn join_header Join nearest header in the 'ABOVE' direction.
 #' @export
-BELOW <- ABOVE
+BELOW <- function(bag, header, corners = NULL, drop = TRUE) {
+  if (is.null(corners) || min(corners$col) <= min(header$col)) {
+    corner <- rlang::quo(SSW)
+  } else {
+    corner <- rlang::quo(SSE)
+  }
+  side_join(bag, header, !! corner, corners, drop)
+}
 
-#' @describeIn join_header Join nearest header in the 'BELOW' direction.
+#' @describeIn join_header Join nearest header in the 'ABOVE' direction.
 #' @export
-RIGHT <- LEFT
+RIGHT <- function(bag, header, corners = NULL, drop = TRUE) {
+  if (is.null(corners) || min(corners$row) <= min(header$row)) {
+    corner <- rlang::quo(ENE)
+  } else {
+    corner <- rlang::quo(ESE)
+  }
+  side_join(bag, header, !! corner, corners, drop)
+}
+
+side_join <- function(bag, header, corner, corners = NULL, drop = TRUE) {
+  corner <- rlang::enquo(corner)
+  unpivotr:::check_header(header)
+  if (!is.null(corners)) {
+    if (nrow(corners) != nrow(header)) {
+      stop("`corners` must have the same number of rows as `header`.")
+    }
+    header <- dplyr::arrange(header, row, col)
+    corners <- dplyr::arrange(corners, row, col)
+    header$row <- corners$row
+    header$col <- corners$col
+  } else {
+    corner_text <- rlang::f_text(corner)
+    if (corner_text %in% c("NNW", "NNE", "SSW", "SSE")) {
+      pos <- rlang::sym("col")
+    } else {
+      pos <- rlang::sym("row")
+    }
+    # The domain of each header is up to (but not including) half-way between it
+    # and the previous header
+    header <- dplyr::mutate(header, !! pos := corner_pos(!! pos, corner))
+  }
+  rlang::as_function(corner)()(bag, header, drop = drop)
+}
+
+corner_pos <- function(cells, corner) {
+  corner_names <- c("NNW", "NNE", "ENE", "ESE", "SSE", "SSW", "WSW", "WNW")
+  corner_poss <- rep(c("col", "col", "row", "row"), 2L)
+  corner_looks <- c(rep(c(dplyr::lag, dplyr::lead), 2L),
+                    rep(c(dplyr::lead, dplyr::lag), 2L))
+  corner_defaults <- c(1L, 16384L, 1L, 1048576L, 16384L, 1L, 1048576L, 1L)
+  corner_coefs <- c(2L, -2L, 2L, -2L, -2L, 2L, -2L, 2L)
+  corner_extremes <- c(rep(c(floor, ceiling), 2L),
+                       rep(c(ceiling, floor), 2L))
+  corner_i <- match(rlang::f_text(corner), corner_names)
+  pos <- rlang::sym(corner_poss[corner_i])
+  look <- rlang::as_function(corner_looks[[corner_i]], ns_env("dplyr"))
+  default <- corner_defaults[corner_i]
+  extreme <- corner_extremes[[corner_i]]
+  coef <- corner_coefs[corner_i]
+  out <- extreme((cells + look(cells) + coef) / 2)
+  out[is.na(out)] <- default
+  out
+}
 
 check_header <- function(header) {
   if (length(unique(header$row)) > 1 & length(unique(header$col)) > 1) {
@@ -315,4 +283,3 @@ check_header <- function(header) {
          " `vignette(\"small-multiples\", package = \"unpivotr\")`.")
   }
 }
-

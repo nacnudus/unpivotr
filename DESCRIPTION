@@ -19,7 +19,6 @@ Imports:
     methods,
     rlang,
     magrittr,
-    data.table (>= 1.9.7),
     dplyr,
     dtplyr,
     forcats,

@@ -231,11 +231,13 @@ test_that("Compass directions ABOVE and LEFT work", {
     dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value) %>%
-    ABOVE(col_headers[[1]]) %>%
-    LEFT(row_headers[[1]]) %>%
+    ABOVE(col_headers[[1]], drop = FALSE) %>%
+    LEFT(row_headers[[1]], drop = FALSE) %>%
+    ABOVE(col_headers[[2]], drop = FALSE) %>%
+    LEFT(row_headers[[2]], drop = FALSE) %>%
     dplyr::arrange(row, col)
-  expect_equal(datacells[[4]], expect_sex_short)
-  expect_equal(datacells[[5]], expect_purpose_short)
+  expect_equal(datacells[[5]], expect_sex_short)
+  expect_equal(datacells[[4]], expect_purpose_short)
 })
 
 test_that("Compass directions BELOW and RIGHT work", {
@@ -258,11 +260,11 @@ test_that("Compass directions BELOW and RIGHT work", {
     BELOW(col_headers[[2]]) %>%
     RIGHT(row_headers[[2]]) %>%
     dplyr::arrange(row, col)
-  expect_equal(datacells[[4]], expect_sex_short)
-  expect_equal(datacells[[5]], expect_purpose_short)
+  expect_equal(datacells[[5]], expect_sex_short)
+  expect_equal(datacells[[4]], expect_purpose_short)
 })
 
-test_that("Compass directions ABOVE and LEFT work with boundaries", {
+test_that("Compass directions ABOVE and LEFT work with corners", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
   cells <- tidyxl::xlsx_cells(spreadsheet, "ABOVE LEFT border")
   formatting <- tidyxl::xlsx_formats(spreadsheet)
@@ -302,14 +304,12 @@ test_that("Compass directions ABOVE and LEFT work with boundaries", {
   expect_equal(datacells[[6]], expect_sex_short)
   expect_equal(datacells[[7]], expect_education_short)
   expect_error(ABOVE(datacells, col_headers[[1]], left_border_cells[-2, ]),
-               "Multiple headers were detected within the same pair of boundaries.
-  Please provide boundaries to separate every header.")
+               "`corners` must have the same number of rows as `header`.")
   expect_error(LEFT(datacells, row_headers[[1]], top_border_cells[-2, ]),
-               "Multiple headers were detected within the same pair of boundaries.
-  Please provide boundaries to separate every header.")
+               "`corners` must have the same number of rows as `header`.")
 })
 
-test_that("Compass directions BELOW and RIGHT work with boundaries", {
+test_that("Compass directions BELOW and RIGHT work with corners", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
   cells <- tidyxl::xlsx_cells(spreadsheet, "BELOW RIGHT border")
   formatting <- tidyxl::xlsx_formats(spreadsheet)
@@ -349,11 +349,9 @@ test_that("Compass directions BELOW and RIGHT work with boundaries", {
   expect_equal(datacells[[6]], expect_sex_short)
   expect_equal(datacells[[7]], expect_education_short)
   expect_error(BELOW(datacells, col_headers[[1]], left_border_cells[-2, ]),
-               "Multiple headers were detected within the same pair of boundaries.
-  Please provide boundaries to separate every header.")
+               "`corners` must have the same number of rows as `header`.")
   expect_error(RIGHT(datacells, row_headers[[1]], top_border_cells[-2, ]),
-               "Multiple headers were detected within the same pair of boundaries.
-  Please provide boundaries to separate every header.")
+               "`corners` must have the same number of rows as `header`.")
 })
 
 test_that("join_header() works", {
@@ -375,8 +373,8 @@ test_that("join_header() works", {
                            W),
                "Multiple lines of headers are not supported in this way*")
   expect_error(join_header(datacells, col_headers[[1]], N,
-                           boundaries = col_headers[[2]]),
-               "'boundaries' is only supported for the directions 'ABOVE', 'RIGHT', 'BELOW' and 'LEFT'.")
+                           corners = col_headers[[2]]),
+               "'corners' is only supported for the directions 'ABOVE', 'RIGHT', 'BELOW' and 'LEFT'.")
   expect_equal(join_header(datacells, col_headers[[1]], ABOVE),
                ABOVE(datacells, col_headers[[1]]))
   expect_equal(join_header(datacells, col_headers[[1]], N),
@@ -418,13 +416,6 @@ test_that("the `drop` argument works", {
   expect_equal(nrow(NNW(datacells, satisfaction, drop = FALSE)), 55)
   expect_equal(nrow(WNW(datacells, sex)), 49)
   expect_equal(nrow(WNW(datacells, sex, drop = FALSE)), 55)
-  # Introduce an extra border where there is no header
-  left_border_cells <- rbind(left_border_cells, list(2L, 5L))
-  top_border_cells <- rbind(top_border_cells, list(5L, 2L))
-  expect_equal(nrow(ABOVE(datacells, satisfaction, left_border_cells)), 49)
-  expect_equal(nrow(ABOVE(datacells, satisfaction, left_border_cells, drop = FALSE)), 55)
-  expect_equal(nrow(LEFT(datacells, sex, top_border_cells)), 49)
-  expect_equal(nrow(LEFT(datacells, sex, top_border_cells, drop = FALSE)), 55)
 })
 
 test_that("Quoted directions still work for backwards compatibility", {
