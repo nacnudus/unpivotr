@@ -102,7 +102,9 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
   dots <- list(...)
   functions <- purrr::map(dots, purrr::as_mapper)
   values <- rlang::enexpr(values)
-  new_colnames <- format(unique(dplyr::pull(.data, !! key)), justify = "none")
+  new_colnames <- format(sort(unique(dplyr::pull(.data, !! key))),
+                         justify = "none",
+                         trim = TRUE)
   if(is.null(values)) {
     types <- rlang::ensym(types)
     original_types <- NULL

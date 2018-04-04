@@ -90,7 +90,7 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
   dots[factors] <- purrr::map(dots[factors], as.character)
   # Convert dates to strings before they're (potentially) coerced to numbers
   dates <- purrr::map_lgl(classes, ~ .[1] %in% c("Date", "POSIXct", "POSIXlt"))
-  dots[dates] <- purrr::map(dots[dates], format)
+  dots[dates] <- purrr::map(dots[dates], format, justify = "none", trim = TRUE)
   # Finally go with c()'s default homegnising of remaining classes.  Don't use
   # purrr::flatten(), because it strips classes from dates.
   do.call(c, dots)

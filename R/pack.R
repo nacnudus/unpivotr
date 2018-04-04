@@ -64,14 +64,17 @@ pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
   types <- rlang::ensym(types)
   name <- rlang::ensym(name)
   type_colnames <- format(unique(dplyr::pull(.data, !! types)),
-                          justify = "none")
+                          justify = "none",
+                          trim = TRUE)
   # Default any types without corresponding value columns to NA
   missing_types <- setdiff(type_colnames, colnames(.data))
   new_cols <- rep_len(NA, length(missing_types))
   names(new_cols) <- missing_types
   .data <- dplyr::mutate(.data,
                          !!! new_cols,
-                         !! types := format(!! types, justify = "none"))
+                         !! types := format(!! types,
+                                            justify = "none",
+                                            trim = TRUE))
   # Create the packed value column
   out <-
     .data %>%
@@ -97,7 +100,7 @@ unpack <- function(.data, values = value, name = "data_type",
   values <- rlang::ensym(values)
   name <- rlang::ensym(name)
   types <- names(dplyr::pull(.data, !! values))
-  type_names <- format(unique(types), justify = "none")
+  type_names <- format(unique(types), justify = "none", trim = TRUE)
   assignments <- purrr::map(type_names,
                             ~ rlang::expr(ifelse(types == !! .x,
                                                  !! values,
