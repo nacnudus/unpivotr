@@ -172,6 +172,7 @@ ESE <- SSE
 WSW <- SSW
 
 corner_join <- function(bag, header, corner, drop = TRUE) {
+  check_header(header)
   headers <-
     partition(header, header, corner, ".partition") %>%
     dplyr::select(-row, -col)
@@ -232,7 +233,7 @@ RIGHT <- function(bag, header, corners = NULL, drop = TRUE) {
 
 side_join <- function(bag, header, corner, corners = NULL, drop = TRUE) {
   corner <- rlang::enquo(corner)
-  unpivotr:::check_header(header)
+  check_header(header)
   if (!is.null(corners)) {
     if (nrow(corners) != nrow(header)) {
       stop("`corners` must have the same number of rows as `header`.")
@@ -279,7 +280,6 @@ check_header <- function(header) {
   if (length(unique(header$row)) > 1 & length(unique(header$col)) > 1) {
     stop("Multiple lines of headers are not supported in this way.",
          "\n  Perhaps you meant to concatenate them together first,",
-         "\n  Or look at the examples in",
-         " `vignette(\"small-multiples\", package = \"unpivotr\")`.")
+         "\n  Or look at ?partition")
   }
 }
