@@ -1103,6 +1103,108 @@ data_cells %>%
   select(-row, -col)
 ```
 
+### Centre-aligned headers
+
+Headers aren't always aligned to one side of the data cells that they describe.
+
+```{r}
+all_cells <- xlsx_cells(path, sheets = "pivot-centre-aligned")
+rectify(all_cells)
+```
+
+Looking at that table, it's not immediately obvious where the boundary between
+`Female` and `Male` falls, or between `Humanities` and `Performance`.  A naive
+approach would be to match the inner headers to the outer ones by proximity, but
+that wouldn't work in all cases.
+
+* `Languages` is closest to the `Performance` header, but is a humanity.
+* `Lenny` is the same distance from `Female` as from `Male`.
+
+There are four functions to resolve this: `ABOVE()`, `LEFT()`, `BELOW()` and
+`RIGHT()`, which do the same job as `N()`, `NNW()` etc., but require two sets of
+header cells instead of one:
+
+* `header` is the cells whose value will be used as the header
+* `corners` is the cells whose position is in one corner of the domain of the
+  header (e.g. the top-left-hand corner).
+
+In the original spreadsheet, the borders mark the boundaries.  So the corner
+cells of the headers can be found by filtering for cells with a particular
+border.
+
+```{r}
+formats <- xlsx_formats(path)
+top_borders <- which(!is.na(formats$local$border$top$style))
+left_borders <- which(!is.na(formats$local$border$left$style))
+
+first_header_row_corners <-
+  filter(all_cells, row == 2, local_format_id %in% left_borders) %>%
+  select(row, col)
+first_header_row_corners
+
+first_header_col_corners <-
+  filter(all_cells, col == 2, local_format_id %in% top_borders) %>%
+  select(row, col)
+first_header_col_corners
+```
+
+The rest of this example is the same as "Two clear rows and columns of text
+headers, top-aligned and left-aligned", the only difference being the use of
+`ABOVE()` and `LEFT()` instead of `NNW()` and `WNW()`
+
+```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-centre-aligned") %>%
+  filter(!is_blank) %>%
+  select(row, col, data_type, character, numeric, local_format_id)
+
+first_header_row <-
+  filter(all_cells, row == 2) %>%
+  select(row, col, sex = character)
+  # the title of this header is 'sex'
+  # the cells are text cells (`"Female"` and `"Male"`) so take the value in the
+  # '`character` column.
+first_header_row
+
+second_header_row <-
+  filter(all_cells, row == 3) %>%
+  select(row, col, name = character)
+  # The title of this header is 'name'.
+  # The cells are text cells, so take the value in the '`character` column.
+second_header_row
+
+first_header_col <-
+  filter(all_cells, col == 2) %>%
+  select(row, col, field = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+first_header_col
+
+second_header_col <-
+  filter(all_cells, col == 3) %>%
+  select(row, col, subject = character)
+  # The title of this header is 'subject'
+  # The cells are text cells (`"history"`, etc.) so take the value in the
+  # '`character` column.
+second_header_col
+
+data_cells <-
+  filter(all_cells, data_type == "numeric") %>%
+  select(row, col, score = numeric)
+  # The data is examp scores in certain subjects, so give the data that title.
+  # The data is numeric, so select only that 'value'.  If some of the data was
+  # also text or true/false, then you would select the `character` and `logical`
+  # columns as well as `numeric`
+
+data_cells %>%
+  ABOVE(first_header_row, corners = first_header_row_corners) %>%
+  N(second_header_row) %>%
+  LEFT(first_header_col, corners = first_header_col_corners) %>%
+  W(second_header_col) %>%
+  select(-row, -col)
+```
+
 ### Multiple rows or columns of headers, with meaningful formatting
 
 This is a combination of the previous section with "meaningful formatting
