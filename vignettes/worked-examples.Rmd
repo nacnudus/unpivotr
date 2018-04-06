@@ -1124,8 +1124,8 @@ There are four functions to resolve this: `ABOVE()`, `LEFT()`, `BELOW()` and
 `RIGHT()`, which do the same job as `N()`, `NNW()` etc., but require two sets of
 header cells instead of one:
 
-* `header` is the cells whose value will be used as the header
-* `corners` is the cells whose position is in one corner of the domain of the
+* `header_cells` is the cells whose value will be used as the header
+* `corner_cells` is the cells whose position is in one corner of the domain of the
   header (e.g. the top-left-hand corner).
 
 In the original spreadsheet, the borders mark the boundaries.  So the corner
@@ -1198,9 +1198,9 @@ data_cells <-
   # columns as well as `numeric`
 
 data_cells %>%
-  ABOVE(first_header_row, corners = first_header_row_corners) %>%
+  ABOVE(first_header_row, corner_cells = first_header_row_corners) %>%
   N(second_header_row) %>%
-  LEFT(first_header_col, corners = first_header_col_corners) %>%
+  LEFT(first_header_col, corner_cells = first_header_col_corners) %>%
   W(second_header_col) %>%
   select(-row, -col)
 ```

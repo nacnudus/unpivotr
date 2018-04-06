@@ -264,7 +264,7 @@ test_that("Compass directions BELOW and RIGHT work", {
   expect_equal(datacells[[4]], expect_purpose_short)
 })
 
-test_that("Compass directions ABOVE and LEFT work with corners", {
+test_that("Compass directions ABOVE and LEFT work with corner_cells", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
   cells <- tidyxl::xlsx_cells(spreadsheet, "ABOVE LEFT border")
   formatting <- tidyxl::xlsx_formats(spreadsheet)
@@ -304,12 +304,12 @@ test_that("Compass directions ABOVE and LEFT work with corners", {
   expect_equal(datacells[[6]], expect_sex_short)
   expect_equal(datacells[[7]], expect_education_short)
   expect_error(ABOVE(datacells, col_headers[[1]], left_border_cells[-2, ]),
-               "`corners` must have the same number of rows as `header`.")
+               "`corner_cells` must have the same number of rows as `header_cells`.")
   expect_error(LEFT(datacells, row_headers[[1]], top_border_cells[-2, ]),
-               "`corners` must have the same number of rows as `header`.")
+               "`corner_cells` must have the same number of rows as `header_cells`.")
 })
 
-test_that("Compass directions BELOW and RIGHT work with corners", {
+test_that("Compass directions BELOW and RIGHT work with corner_cells", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
   cells <- tidyxl::xlsx_cells(spreadsheet, "BELOW RIGHT border")
   formatting <- tidyxl::xlsx_formats(spreadsheet)
@@ -349,9 +349,9 @@ test_that("Compass directions BELOW and RIGHT work with corners", {
   expect_equal(datacells[[6]], expect_sex_short)
   expect_equal(datacells[[7]], expect_education_short)
   expect_error(BELOW(datacells, col_headers[[1]], left_border_cells[-2, ]),
-               "`corners` must have the same number of rows as `header`.")
+               "`corner_cells` must have the same number of rows as `header_cells`.")
   expect_error(RIGHT(datacells, row_headers[[1]], top_border_cells[-2, ]),
-               "`corners` must have the same number of rows as `header`.")
+               "`corner_cells` must have the same number of rows as `header_cells`.")
 })
 
 test_that("join_header() works", {
@@ -373,8 +373,8 @@ test_that("join_header() works", {
                            W),
                "Multiple lines of headers are not supported in this way*")
   expect_error(join_header(datacells, col_headers[[1]], N,
-                           corners = col_headers[[2]]),
-               "'corners' is only supported for the directions 'ABOVE', 'RIGHT', 'BELOW' and 'LEFT'.")
+                           corner_cells = col_headers[[2]]),
+               "'corner_cells' is only supported for the directions 'ABOVE', 'RIGHT', 'BELOW' and 'LEFT'.")
   expect_equal(join_header(datacells, col_headers[[1]], ABOVE),
                ABOVE(datacells, col_headers[[1]]))
   expect_equal(join_header(datacells, col_headers[[1]], N),
