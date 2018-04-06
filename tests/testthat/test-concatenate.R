@@ -49,3 +49,18 @@ test_that("concatenate() handles all-null lists", {
   x <- list(NULL, NULL)
   expect_equal(concatenate(x), x)
 })
+
+test_that("concatenate() handles timezones", {
+  x <- as.POSIXct("2018-01-01 01:00:00", tz = "UTC")
+  y <- as.POSIXct("2018-04-01 01:00:00", tz = "UTC")
+  expect_equal(concatenate(list(x, y)),
+               as.POSIXct(c("2018-01-01 01:00:00",
+                            "2018-04-01 01:00:00"),
+                          tz = "UTC"))
+x <- as.POSIXct("2018-01-01 01:00:00", tz = "UTC")
+y <- as.POSIXct("2018-04-01 01:00:00", tz = "EST")
+  expect_equal(concatenate(list(x, y)),
+               as.POSIXct(c("2018-01-01 01:00:00",
+                            "2018-04-01 06:00:00"),
+                          tz = "UTC"))
+})

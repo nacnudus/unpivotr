@@ -39,6 +39,9 @@ globalVariables(c(".",
 # Concatenate lists into vectors, handling factors and NULLs, and coercing data
 # types only when necessary
 concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
+  c.POSIXct <- function(..., recursive = FALSE) {
+    .POSIXct(c(unlist(lapply(list(...), unclass))), tz = "UTC")
+  }
   dots <- (...)
   dots_is_null <- purrr::map_lgl(dots, rlang::is_null)
   # If all elements are NULL, return as-is
