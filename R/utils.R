@@ -2,7 +2,6 @@
 #' @export
 magrittr::`%>%`
 
-#' @import data.table
 #' @import tidyr
 
 #' @importFrom methods is
