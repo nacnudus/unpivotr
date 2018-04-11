@@ -5,8 +5,7 @@
 \alias{partition_dim}
 \title{Divide a grid of cells into partitions containing individual tables}
 \usage{
-partition(cells, corners, position = "top_left",
-  partition_name = "partition")
+partition(cells, corners, align = "top_left", partition_name = "partition")
 
 partition_dim(positions, cutpoints, bound = "upper")
 }
@@ -16,10 +15,9 @@ partition_dim(positions, cutpoints, bound = "upper")
 
 \item{corners}{a subset of \code{cells}, being the corners of individual tables.}
 
-\item{position}{Character, the position of the corner cells relative to their
+\item{align}{Character, the position of the corner cells relative to their
 tables, one of \code{"top-left"} (default), \code{"top-right"}, \code{"bottom-left"},
-\code{"bottom-right"}.
-position or the column position), which are to be grouped between cutpoints.}
+\code{"bottom-right"}.}
 
 \item{partition_name}{Character vector length 1, what to call the new column
 that will be created to identify the partitions.  Default: \code{"partition"}.}
@@ -95,7 +93,7 @@ tidyr::nest(x, -partition)
 
 # You can also use bottom-left corners (or top-right or bottom-right)
 bl_corners <- dplyr::filter(multiples, character == "Yes")
-y <- partition(multiples, bl_corners, position = "bottom_left")
+y <- partition(multiples, bl_corners, align = "bottom_left")
 split(y, y$partition)
 
 # If `partition_name` is already the name of a column in `cells`, then it

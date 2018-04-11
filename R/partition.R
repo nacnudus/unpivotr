@@ -17,10 +17,9 @@
 #' @param corners a subset of `cells`, being the corners of individual tables.
 #' @param partition_name Character vector length 1, what to call the new column
 #' that will be created to identify the partitions.  Default: `"partition"`.
-#' @param position Character, the position of the corner cells relative to their
+#' @param align Character, the position of the corner cells relative to their
 #' tables, one of `"top-left"` (default), `"top-right"`, `"bottom-left"`,
 #' `"bottom-right"`.
-#' position or the column position), which are to be grouped between cutpoints.
 #' @param positions Integer vector, the positions of cells (either the row
 #' position or the column position), which are to be grouped between cutpoints.
 #' @param cutpoints Integer vector. The `positions` will be separated into
@@ -68,23 +67,23 @@
 #'
 #' # You can also use bottom-left corners (or top-right or bottom-right)
 #' bl_corners <- dplyr::filter(multiples, character == "Yes")
-#' y <- partition(multiples, bl_corners, position = "bottom_left")
+#' y <- partition(multiples, bl_corners, align = "bottom_left")
 #' split(y, y$partition)
 #'
 #' # If `partition_name` is already the name of a column in `cells`, then it
 #' # will be silently overwritten
 #' multiples$important_column <- "Will be overwritten"
 #' partition(multiples, corners, partition_name = "important_column")
-partition <- function(cells, corners, position = "top_left",
+partition <- function(cells, corners, align = "top_left",
                      partition_name = "partition") {
-  if (!(position %in% c("top_left", "top_right",
+  if (!(align %in% c("top_left", "top_right",
                        "bottom_left", "bottom_right"))) {
-    stop("`position` must be one of:
+    stop("`align` must be one of:
          \"top_left\", \"top_right\", \"bottom_left\", \"bottom_right\"")
   }
   partition_name <- rlang::ensym(partition_name)
-  row_bound <- (if(position %in% c("top_left", "top_right")) "upper" else "lower")
-  col_bound <- (if(position %in% c("top_left", "bottom_left")) "upper" else "lower")
+  row_bound <- (if(align %in% c("top_left", "top_right")) "upper" else "lower")
+  col_bound <- (if(align %in% c("top_left", "bottom_left")) "upper" else "lower")
   row_groups <- partition_dim(cells$row, unique(corners$row), row_bound)
   col_groups <- partition_dim(cells$col, unique(corners$col), col_bound)
   cells %>%

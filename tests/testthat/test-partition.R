@@ -40,7 +40,7 @@ test_that("partition() works", {
   bl_corners <- dplyr::filter(multiples, character == "Male")
   expect_equal(partition(multiples,
                          bl_corners,
-                         position = "bottom_left")$partition,
+                         align = "bottom_left")$partition,
                c(rep(rep(c(4, 2, 1), each = 4), 2),
                  rep(rep(c(5, 3), each = 4), 2)))
   tr_corners <-
@@ -49,7 +49,7 @@ test_that("partition() works", {
     dplyr::mutate(row = row - 1)
   expect_equal(partition(multiples,
                          tr_corners,
-                         position = "top_right")$partition,
+                         align = "top_right")$partition,
                c(rep(rep(c(2, 4, 5), each = 4), 2),
                  rep(rep(c(1, 3), each = 4), 2)))
   br_corners <-
@@ -58,7 +58,7 @@ test_that("partition() works", {
     dplyr::mutate(col = col + 1)
   expect_equal(partition(multiples,
                          br_corners,
-                         position = "bottom_right")$partition,
+                         align = "bottom_right")$partition,
                c(rep(rep(c(5, 3, 1), each = 4), 2),
                  rep(rep(c(4, 2), each = 4), 2)))
 })
