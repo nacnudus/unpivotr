@@ -21,8 +21,6 @@ test_that("functions return tibbles", {
     dplyr::filter(col <= 2) %>%
     dplyr::select(row, col, header = chr) %>%
     split(.$col) # Separate each row of headers
-  expect_true(tibble::is_tibble(pad(datacells)))
-  expect_true(tibble::is_tibble(anchor(cells, 1, 1)))
   expect_true(tibble::is_tibble(ABOVE(datacells, col_headers$`1`)))
   expect_true(tibble::is_tibble(BELOW(datacells, col_headers$`1`)))
   expect_true(tibble::is_tibble(LEFT(datacells, row_headers$`1`)))
@@ -39,8 +37,4 @@ test_that("functions return tibbles", {
   expect_true(tibble::is_tibble(SSW(datacells, col_headers$`1`)))
   expect_true(tibble::is_tibble(WSW(datacells, row_headers$`1`)))
   expect_true(tibble::is_tibble(WNW(datacells, row_headers$`1`)))
-  expect_true(tibble::is_tibble(extend(datacells, cells, "N", 1)))
-  expect_true(tibble::is_tibble(extend(datacells, cells, "N", boundary = ~ TRUE)))
 })
-
-

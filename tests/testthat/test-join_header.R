@@ -366,10 +366,14 @@ test_that("join_header() works", {
     dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value)
+  multirow_header <-
+    cells %>%
+    dplyr::filter(row %in% 1:2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr)
   expect_error(join_header(datacells, col_headers[[1]], "NORTH"),
                "The direction NORTH, is either not recognised or not yet supported.")
   expect_error(join_header(datacells,
-                           col_headers[[1]] %>% extend_S(cells, 1),
+                           multirow_header,
                            W),
                "Multiple lines of headers are not supported in this way*")
   expect_error(join_header(datacells, col_headers[[1]], N,

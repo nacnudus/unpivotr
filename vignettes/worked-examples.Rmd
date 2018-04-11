@@ -161,9 +161,6 @@ xlsx_cells(path, sheet = "transposed") %>%
 
 ### Other stuff on the same sheet
 
-TODO: Demonstrate offset() and extend() better.  Maybe in a separate section on
-'finding the data'
-
 It will be more complicated when the table doesn't begin in cell A1, or if there
 are non-blank cells above, below or either side of the table.
 

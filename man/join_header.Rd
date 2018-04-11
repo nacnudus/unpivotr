@@ -18,91 +18,96 @@
 \alias{LEFT}
 \alias{BELOW}
 \alias{RIGHT}
-\title{Join a bag of data cells to some header, by proximity in a given direction,
-e.g. NNW searches up and up-left from a data cell to find a header cell.}
+\title{Join data cells to headers}
 \usage{
-join_header(bag, header, direction, corners = NULL, drop = TRUE)
+join_header(data_cells, header_cells, direction, corner_cells = NULL,
+  drop = TRUE)
 
-N(bag, header, drop = TRUE)
+N(data_cells, header_cells, drop = TRUE)
 
-E(bag, header, drop = TRUE)
+E(data_cells, header_cells, drop = TRUE)
 
-S(bag, header, drop = TRUE)
+S(data_cells, header_cells, drop = TRUE)
 
-W(bag, header, drop = TRUE)
+W(data_cells, header_cells, drop = TRUE)
 
-NNW(bag, header, drop = TRUE)
+NNW(data_cells, header_cells, drop = TRUE)
 
-NNE(bag, header, drop = TRUE)
+NNE(data_cells, header_cells, drop = TRUE)
 
-SSE(bag, header, drop = TRUE)
+SSE(data_cells, header_cells, drop = TRUE)
 
-SSW(bag, header, drop = TRUE)
+SSW(data_cells, header_cells, drop = TRUE)
 
-WNW(bag, header, drop = TRUE)
+WNW(data_cells, header_cells, drop = TRUE)
 
-ENE(bag, header, drop = TRUE)
+ENE(data_cells, header_cells, drop = TRUE)
 
-ESE(bag, header, drop = TRUE)
+ESE(data_cells, header_cells, drop = TRUE)
 
-WSW(bag, header, drop = TRUE)
+WSW(data_cells, header_cells, drop = TRUE)
 
-ABOVE(bag, header, corners = NULL, drop = TRUE)
+ABOVE(data_cells, header_cells, corner_cells = NULL, drop = TRUE)
 
-LEFT(bag, header, corners = NULL, drop = TRUE)
+LEFT(data_cells, header_cells, corner_cells = NULL, drop = TRUE)
 
-BELOW(bag, header, corners = NULL, drop = TRUE)
+BELOW(data_cells, header_cells, corner_cells = NULL, drop = TRUE)
 
-RIGHT(bag, header, corners = NULL, drop = TRUE)
+RIGHT(data_cells, header_cells, corner_cells = NULL, drop = TRUE)
 }
 \arguments{
-\item{bag}{Data frame. A bag of data cells including at least the columns
-'row' and 'column', which are numeric/integer vectors.}
+\item{data_cells}{Data frame of data cells with at least the columns 'row'
+and 'column', which are \code{numeric} or \code{integer}.}
 
-\item{header}{Data frame. A bag of data cells including at least the columns
+\item{header_cells}{Data frame of header cells with at least the columns
 'row' and 'column', which are numeric/integer vectors.}
 
 \item{direction}{The name of a function that joins headers to data cells, one
 of \code{N}, \code{E}, \code{S}, \code{W}, \code{NNW}, \code{NNE}, \code{ENE}, \code{ESE}, \code{SSE}, \code{SSW}. \code{WSW},
 \code{WNW}, \code{ABOVE}, \code{BELOW}, \code{LEFT} and \code{RIGHT}.  See 'details'.}
 
-\item{corners}{Data frame. Only applies to the directions "ABOVE", "RIGHT",
-"BELOW" and "LEFT".  A bag of cells in one row or one column, giving the
-corner of the area that a header applies to.  For example, \code{corners} could
-be a bag of cells with borders on one side.  This is useful when the nearest
-header might be the wrong header because it lies on the other side of a
-border.}
+\item{corner_cells}{Data frame of cells in one row or one column, giving the
+corner of the area that a header applies to.  "BELOW" and "LEFT".  For
+example, \code{corner_cells} could be cells with borders on one side.  This is
+useful when the nearest header might be the wrong header because it lies on
+the other side of a border.}
 
 \item{drop}{Logical vector length 1. Whether data cells that can't be
-associated with a header should be dropped.  Default: TRUE.}
+associated with a header should be dropped.  Default: \code{TRUE}.}
 }
 \description{
-A bag of data cells is a data frame with at least the columns
-'row' and 'col', as well as any others that carry information about the
-cells, e.g. their values.  Cells in a table are associated with header cells
-by proximity.  Having collected header cells and data cells into separate
-data frames, 'join_header' and the related functions 'NNW', 'ABOVE', etc.,
-join the values in the header cells to the data cells, choose the nearest
-header to each cell, in a given direction.
+Data cells in a table are associated with header cells by proximity.
+\code{\link[=join_header]{join_header()}} and the shorthand functions \code{\link[=NNW]{NNW()}}, \code{\link[=ABOVE]{ABOVE()}}, etc., join a
+data frame of data cells to a data frame of header cells, choosing the
+nearest header cells in the given direction.
 }
 \details{
-Headers are associated with data by proximity in a given direction.
-The directions are mapped to the points of the compass, where 'N' is north
-(up), 'E' is east (right), and so on.  \code{join_header()} finds the nearest
-header to a given data cell in a given direction, and joins its value to the
-data cell.  The most common directions to search are 'NNW' (for left-aligned
-headers at the top of the table) and 'WNW' for top-aligned headers at the
-side of the table.  The difference between 'N' and 'ABOVE' (and similar pairs
-of directions) is that 'N' finds headers directly above the data cell,
-whereas 'ABOVE' matches the nearest header, whether above-left, above-right
-or directly above the data cell.  This is useful for matching headers that
-are not aligned to the edge of the data cells that they refer to.  There can
-be a tie in the directions 'ABOVE', 'BELOW', 'LEFT' and 'RIGHT' , causing NAs
-to be returned in the place of header values.  The full list of available
-directions is 'N', 'E', 'S', 'W', 'NNW', 'NNE', 'ENE', 'ESE', 'SSE', 'SSW',
-'WSW', 'WNW', 'ABOVE', 'BELOW', 'LEFT', 'RIGHT'.  For convenience, these
-directions are provided as their own functions, wrapping the concept of
-'join_header()'.
+Headers are associated with data by proximity in a given direction.  The
+directions are mapped to the points of the compass, where 'N' is north (up),
+'E' is east (right), and so on.  \code{\link[=join_header]{join_header()}} finds the nearest header to
+a given data cell in a given direction, and joins it to the data cell.
+
+The most common directions to search are 'NNW' (for left-aligned headers at
+the top of the table) and 'WNW' for top-aligned headers at the side of the
+table.
+
+The full list of available directions is 'N', 'E', 'S', 'W', 'NNW', 'NNE',
+'ENE', 'ESE', 'SSE', 'SSW', 'WSW', 'WNW', 'ABOVE', 'BELOW', 'LEFT', 'RIGHT'.
+For convenience, these directions are provided as their own functions,
+wrapping the concept of 'join_header()'.
+
+The difference between 'N' and 'ABOVE' (and similar pairs of
+directions) is that 'N' finds headers directly above the data cell, whereas
+'ABOVE' matches the nearest header, whether above-left, above-right or
+directly above the data cell.  This is useful for matching headers that are
+not aligned to the edge of the data cells that they refer to.  There can be a
+tie in the directions 'ABOVE', 'BELOW', 'LEFT' and 'RIGHT' , causing NAs to
+be returned in the place of header values.
+
+The full list of available directions is 'N', 'E', 'S', 'W', 'NNW', 'NNE',
+'ENE', 'ESE', 'SSE', 'SSW', 'WSW', 'WNW', 'ABOVE', 'BELOW', 'LEFT', 'RIGHT'.
+For convenience, these directions are provided as their own functions,
+wrapping the concept of 'join_header()'.
 }
 \section{Functions}{
 \itemize{
