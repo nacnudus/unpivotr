@@ -1,8 +1,9 @@
 #' Divide a grid of cells into partitions containing individual tables
 #'
-#' @description Given the positions of corner cells that mark individual tables
-#' in a single spreadsheet, `partion()` works out which cells belong to which
-#' tables, and gives them an ID.  This can be used with `dplyr::group_by()` or
+#' @description
+#' Given the positions of corner cells that mark individual tables in a single
+#' spreadsheet, `partion()` works out which cells belong to which tables, and
+#' gives them an ID.  This can be used with `dplyr::group_by()` or
 #' `tidyr::nest()` to operate on each single table within a spreadsheet of
 #' several tables.
 #'
@@ -13,32 +14,37 @@
 #' `partition_dim()` partitions along one dimension at a time.
 #'
 #' @param cells Data frame or tbl, the cells to be partitioned, from
-#' [tidy_table()] or [tidyxl::xlsx_cells()].
+#'   [tidy_table()] or [tidyxl::xlsx_cells()].
 #' @param corners a subset of `cells`, being the corners of individual tables.
 #' @param partition_name Character vector length 1, what to call the new column
-#' that will be created to identify the partitions.  Default: `"partition"`.
+#'   that will be created to identify the partitions.  Default: `"partition"`.
 #' @param align Character, the position of the corner cells relative to their
-#' tables, one of `"top-left"` (default), `"top-right"`, `"bottom-left"`,
-#' `"bottom-right"`.
+#'   tables, one of `"top-left"` (default), `"top-right"`, `"bottom-left"`,
+#'   `"bottom-right"`.
+#' @param nest Logical, whether to nest the partitions in a list-column of data
+#'   frames.
+#' @param strict Logical, whether to omit partitions that don't contain a corner
+#'   cell.
 #' @param positions Integer vector, the positions of cells (either the row
-#' position or the column position), which are to be grouped between cutpoints.
+#'   position or the column position), which are to be grouped between
+#'   cutpoints.
 #' @param cutpoints Integer vector. The `positions` will be separated into
-#' groups either side of each cutpoint.
+#'   groups either side of each cutpoint.
 #' @param bound One of `"upper"` or `"lower"`, controls whether cells that lie
-#' on a cutpoint are should be grouped with cells below or above the cutpoint.
-#' For example, if column 5 is a cutpoint, and a cell is in column 5, `"lower"`
-#' would group it with cells in columns 1 to 4, whereas `"upper"` would group it
-#' with cells in columns 6 to 10.  This is so that you can use cells at the
-#' bottom or the right-hand side of a table as the cutpoints (either of which
-#' would be 'upper' bounds because row and column numbers count from 1 in the
-#' top-left row and column).  When `"upper"`, any `cell_positions` above the
-#' first cutpoint will be in group 0; when `"lower"`, any `cell_positions` below
-#' the final cutpoint will be 0.
+#'   on a cutpoint are should be grouped with cells below or above the cutpoint.
+#'   For example, if column 5 is a cutpoint, and a cell is in column 5,
+#'   `"lower"` would group it with cells in columns 1 to 4, whereas `"upper"`
+#'   would group it with cells in columns 6 to 10.  This is so that you can use
+#'   cells at the bottom or the right-hand side of a table as the cutpoints
+#'   (either of which would be 'upper' bounds because row and column numbers
+#'   count from 1 in the top-left row and column).  When `"upper"`, any
+#'   `cell_positions` above the first cutpoint will be in group 0; when
+#'   `"lower"`, any `cell_positions` below the final cutpoint will be 0.
 #'
 #' @return `partition_dim()` returns an integer vector, numbering the groups of
-#' cells.  Group 0 represents the cells above the first cutpoint (when `bound =
-#' "upper"`), or below the first cutpoint (when `bound = "lower"`).  The other
-#' groups are numbered from 1, where group 1 is adjacent to group 0.
+#'   cells.  Group 0 represents the cells above the first cutpoint (when `bound
+#'   = "upper"`), or below the first cutpoint (when `bound = "lower"`).  The
+#'   other groups are numbered from 1, where group 1 is adjacent to group 0.
 #'
 #' @export
 #' @examples
@@ -58,24 +64,16 @@
 #' # Then find out which cells fall into which partition
 #' partition(multiples, corners)
 #'
-#' # It's more obvious if you also split() by the new 'partition' column
-#' x <- partition(multiples, corners)
-#' split(x, x$partition)
-#'
-#' # An alternative to split() is tidyr::nest()
-#' tidyr::nest(x, -partition)
-#'
 #' # You can also use bottom-left corners (or top-right or bottom-right)
-#' bl_corners <- dplyr::filter(multiples, character == "Yes")
-#' y <- partition(multiples, bl_corners, align = "bottom_left")
-#' split(y, y$partition)
+#' bl_corners <- dplyr::filter(multiples, character == "Male")
+#' partition(multiples, bl_corners, align = "bottom_left")
 #'
-#' # If `partition_name` is already the name of a column in `cells`, then it
-#' # will be silently overwritten
-#' multiples$important_column <- "Will be overwritten"
-#' partition(multiples, corners, partition_name = "important_column")
+#' # To complete the grid even when not all corners are supplied, use `strict`
+#' bl_corners <- bl_corners[-1, ]
+#' partition(multiples, bl_corners, align = "bottom_left")
+#' partition(multiples, bl_corners, align = "bottom_left", strict = FALSE)
 partition <- function(cells, corners, align = "top_left",
-                     partition_name = "partition") {
+                     partition_name = "partition", nest = TRUE, strict = TRUE) {
   if (!(align %in% c("top_left", "top_right",
                        "bottom_left", "bottom_right"))) {
     stop("`align` must be one of:
@@ -86,10 +84,25 @@ partition <- function(cells, corners, align = "top_left",
   col_bound <- (if(align %in% c("top_left", "bottom_left")) "upper" else "lower")
   row_groups <- partition_dim(cells$row, unique(corners$row), row_bound)
   col_groups <- partition_dim(cells$col, unique(corners$col), col_bound)
-  cells %>%
-    dplyr::mutate(!!partition_name := paste(row_groups, col_groups, sep = ",")) %>%
+  out <-
+    cells %>%
+    dplyr::mutate(!! partition_name := paste(row_groups,
+                                             col_groups,
+                                             sep = ",")) %>%
     dplyr::filter(row_groups >= 1, col_groups >= 1) %>%
-    dplyr::mutate(!!partition_name := as.integer(factor(!!partition_name)))
+    dplyr::mutate(!! partition_name := as.integer(factor(!! partition_name))) %>%
+    tidyr::nest(-(!! partition_name), .key = "cells")
+  if (strict) {
+    out <- dplyr::filter(out, purrr::map_lgl(cells, contains_corner, corners))
+  }
+  if (!nest) {
+    out <- tidyr::unnest(out)
+  }
+  out
+}
+
+contains_corner <- function(.data, corners) {
+  nrow(dplyr::inner_join(.data, corners, by = c("row", "col"))) != 0L
 }
 
 #' @describeIn partition Divide a grid of cells into chunks along one dimension

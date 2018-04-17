@@ -12,11 +12,11 @@ behead(cells, direction, name, ..., values = NULL, types = data_type,
 \code{\link[=tidy_table]{tidy_table()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}, or of a subsequent operation on
 those outputs.}
 
-\item{direction}{The name of a function that joins headers to data cells, one
-of \code{N}, \code{E}, \code{S}, \code{W}, \code{NNW}, \code{NNE}, \code{ENE}, \code{ESE}, \code{SSE}, \code{SSW}. \code{WSW},
-\code{WNW}.  \code{ABOVE}, \code{BELOW}, \code{LEFT} and \code{RIGHT} aren't available because they
-require certain ambiguities that are better handled by using the functions
-directly rather than via \code{\link[=behead]{behead()}}.  See the help file for \code{\link[=join_header]{join_header()}}.}
+\item{direction}{The direction between a data cell and its header, one of
+\code{"N"}, \code{"E"}, \code{"S"}, \code{"W"}, \code{"NNW"}, \code{"NNE"}, \code{"ENE"}, \code{"ESE"}, \code{"SSE"},
+\code{"SSW"}. \code{"WSW"} and \code{"WNW"}.  See 'details'.  \code{"ABOVE"}, \code{"BELOW"}, \code{"LEFT"}
+and \code{"RIGHT"} aren't available because they require certain ambiguities that
+are better handled by using \code{\link[=enhead]{enhead()}} directly rather than via \code{\link[=behead]{behead()}}.}
 
 \item{name}{A name to give the new column that will be created, e.g.
 \code{"location"} if the headers are locations.  Quoted (\code{"location"}, not
@@ -57,10 +57,10 @@ of row-headers), and it only works on tables that have first come through
 (x <- data.frame(a = 1:2, b = 3:4))
 
 # Make a tidy representation of each cell
-(cells <- tidy_table(x, colnames = TRUE))
+(cells <- tidy_table(x, col_names = TRUE))
 
 # Strip the cells in row 1 (the original headers) and use them as data
-behead(cells, N, foo)
+behead(cells, "N", foo)
 
 # More complex example: pivot table with several layers of headers
 (x <- purpose$`NNW WNW`)
@@ -73,10 +73,10 @@ tail(cells)
 # Strip the headers and make them into data
 tidy <-
   cells \%>\%
-  behead(NNW, Sex) \%>\%
-  behead(N, `Sense of purpose`) \%>\%
-  behead(WNW, `Highest qualification`) \%>\%
-  behead(W, `Age group (Life-stages)`) \%>\%
+  behead("NNW", Sex) \%>\%
+  behead("N", `Sense of purpose`) \%>\%
+  behead("WNW", `Highest qualification`) \%>\%
+  behead("W", `Age group (Life-stages)`) \%>\%
   dplyr::mutate(count = as.integer(chr)) \%>\%
   dplyr::select(-row, -col, -data_type, -chr)
 head(tidy)

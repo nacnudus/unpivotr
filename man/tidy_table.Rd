@@ -4,14 +4,14 @@
 \alias{tidy_table}
 \title{Tokenize data frames into a tidy 'melted' structure}
 \usage{
-tidy_table(x, rownames = FALSE, colnames = FALSE)
+tidy_table(x, row_names = FALSE, col_names = FALSE)
 }
 \arguments{
 \item{x}{A data.frame or an HTML document}
 
-\item{rownames}{Whether to treat the row names as cells, Default: FALSE}
+\item{row_names}{Whether to treat the row names as cells, Default: FALSE}
 
-\item{colnames}{Whether to treat the column names  as cells, Default: FALSE}
+\item{col_names}{Whether to treat the column names  as cells, Default: FALSE}
 }
 \value{
 A data.frame with the following columns:
@@ -27,8 +27,8 @@ The columns \code{fct} and \code{ord} are, like \code{list}, list-columns (each 
 independent) to avoid factor levels clashing.  For HTML tables, the column
 \code{html} gives the HTML string of the original cell.
 
-Row and column names, when present and required by \code{rownames = TRUE} or
-\code{colnames = TRUE}, are treated as though they were cells in the table, and
+Row and column names, when present and required by \code{row_names = TRUE} or
+\code{col_names = TRUE}, are treated as though they were cells in the table, and
 they appear in the \code{chr} column.
 }
 \description{
@@ -60,8 +60,8 @@ x <- data.frame(a = c(10, 20),
                 stringsAsFactors = FALSE)
 x
 tidy_table(x)
-tidy_table(x, rownames = TRUE)
-tidy_table(x, colnames = TRUE)
+tidy_table(x, row_names = TRUE)
+tidy_table(x, col_names = TRUE)
 
 # 'list' columns are undisturbed
 y <- data.frame(a = c("a", "b"), stringsAsFactors = FALSE)

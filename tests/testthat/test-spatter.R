@@ -6,11 +6,11 @@ colnames(BOD) <- c("time", "demand")
 x <- tidy_table(BOD, FALSE, TRUE)
 y <-
   tidy_table(BOD, FALSE, TRUE) %>%
-  behead(N, "header") %>%
+  behead("N", "header") %>%
   dplyr::select(-col, -chr)
 z <-
   tidy_table(BOD, FALSE, TRUE) %>%
-  behead(N, "header") %>%
+  behead("N", "header") %>%
   dplyr::mutate(data_type_2 = "chr") %>%
   dplyr::select(-col, -dbl)
 
@@ -92,7 +92,7 @@ test_that("spatter() retains factors", {
     dplyr::mutate(chickwts, feed = "a", feed = factor(feed)) %>%
     tibble::as_tibble() %>%
     tidy_table(FALSE, TRUE) %>%
-    behead(N, header) %>%
+    behead("N", header) %>%
     dplyr::select(-col, -chr) %>%
     spatter(header)
   expect_equal(colnames(d), c("row", "feed", "weight"))
@@ -108,7 +108,7 @@ test_that("spatter() retains factors when some missing but no other types", {
     dplyr::mutate(chickwts, feed = c("a", rep(NA, 70)), feed = factor(feed)) %>%
     tibble::as_tibble() %>%
     tidy_table(FALSE, TRUE) %>%
-    behead(N, header) %>%
+    behead("N", header) %>%
     dplyr::select(-col, -chr) %>%
     spatter(header)
   expect_equal(colnames(d), c("row", "feed", "weight"))
@@ -125,7 +125,7 @@ test_that("spatter() doesn't convert factors to logical when all missing", {
                    fct = factor(NA, NA),
                    ord = factor(NA, NA, ordered = TRUE)) %>%
     tidy_table(colnames = TRUE) %>%
-    behead(N, header) %>%
+    behead("N", header) %>%
     dplyr::select(-col, -chr) %>%
     spatter(header)
   expect_equal(colnames(d), c("row", "dbl", "fct", "ord"))
@@ -142,7 +142,7 @@ test_that("spatter() converts ordered factors to character", {
     dplyr::mutate(chickwts, feed = "a", feed = factor(feed, ordered = TRUE)) %>%
     tibble::as_tibble() %>%
     tidy_table(FALSE, TRUE) %>%
-    behead(N, header) %>%
+    behead("N", header) %>%
     dplyr::select(-col, -chr) %>%
     spatter(header)
   expect_equal(colnames(d), c("row", "feed", "weight"))
@@ -176,7 +176,7 @@ test_that("spatter() works on common data types", {
                    list = list(1:2, letters[1:2]))
   y <-
     tidy_table(x, colnames = TRUE) %>%
-    behead(N, header) %>%
+    behead("N", header) %>%
     dplyr::select(-col) %>%
     spatter(header) %>%
     dplyr::select(-row)

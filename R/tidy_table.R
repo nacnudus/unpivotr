@@ -22,8 +22,8 @@
 #' This is an S3 generic.
 #'
 #' @param x A data.frame or an HTML document
-#' @param colnames Whether to treat the column names  as cells, Default: FALSE
-#' @param rownames Whether to treat the row names as cells, Default: FALSE
+#' @param col_names Whether to treat the column names  as cells, Default: FALSE
+#' @param row_names Whether to treat the row names as cells, Default: FALSE
 #'
 #' @return A data.frame with the following columns:
 #'
@@ -37,8 +37,8 @@
 #' independent) to avoid factor levels clashing.  For HTML tables, the column
 #' `html` gives the HTML string of the original cell.
 #'
-#' Row and column names, when present and required by `rownames = TRUE` or
-#' `colnames = TRUE`, are treated as though they were cells in the table, and
+#' Row and column names, when present and required by `row_names = TRUE` or
+#' `col_names = TRUE`, are treated as though they were cells in the table, and
 #' they appear in the `chr` column.
 #'
 #' @examples
@@ -47,8 +47,8 @@
 #'                 stringsAsFactors = FALSE)
 #' x
 #' tidy_table(x)
-#' tidy_table(x, rownames = TRUE)
-#' tidy_table(x, colnames = TRUE)
+#' tidy_table(x, row_names = TRUE)
+#' tidy_table(x, col_names = TRUE)
 #'
 #' # 'list' columns are undisturbed
 #' y <- data.frame(a = c("a", "b"), stringsAsFactors = FALSE)
@@ -83,16 +83,16 @@
 #' tidy_table(xml2::read_html(rowspan))
 #' tidy_table(xml2::read_html(nested))
 #' @export
-tidy_table <- function(x, rownames = FALSE, colnames = FALSE) {
+tidy_table <- function(x, row_names = FALSE, col_names = FALSE) {
   UseMethod("tidy_table")
 }
 
 #' @export
-tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
-  if (!rownames) {
+tidy_table.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
+  if (!row_names) {
     row.names(x) <- NULL
   }
-  if (!colnames) {
+  if (!col_names) {
     colnames(x) <- NULL
   }
   values <- do.call(c, purrr::map(x, as.list))
@@ -106,7 +106,7 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                             type = rep(types, each = nrows),
                             data_type = type)
   out <- tidyr::spread(out, type, value)
-  if (rownames) {
+  if (row_names) {
     row_names <- row.names(x)
     out$col <- out$col + 1L
     out <- dplyr::bind_rows(out,
@@ -115,12 +115,12 @@ tidy_table.data.frame <- function(x, rownames = FALSE, colnames = FALSE) {
                                                chr = rlang::as_list(row_names),
                                                data_type = "chr"))
   }
-  if (colnames) {
+  if (col_names) {
     col_names <- colnames(x)
     out$row <- out$row + 1L
     out <- dplyr::bind_rows(out,
                             tibble::data_frame(row = 1L,
-                                               col = seq_along(col_names) + rownames,
+                                               col = seq_along(col_names) + row_names,
                                                chr = rlang::as_list(col_names),
                                                data_type = "chr"))
   }
@@ -155,7 +155,7 @@ grow_matrix <- function(x, i, j, value) {
 }
 
 #' @export
-tidy_table.xml_node <- function(x, rownames = FALSE, colnames = FALSE) {
+tidy_table.xml_node <- function(x, row_names = FALSE, col_names = FALSE) {
   # Remove ancestors
   x <-
     x %>%
@@ -204,7 +204,7 @@ tidy_table.xml_node <- function(x, rownames = FALSE, colnames = FALSE) {
   out <- purrr::map(out, purrr::flatten_chr)
   out <- tibble::set_tidy_names(out, quiet = TRUE)
   out <- tibble::as_data_frame(out)
-  out <- tidy_table(out, rownames = FALSE, colnames = FALSE)
+  out <- tidy_table(out, row_names = FALSE, col_names = FALSE)
   out[, c("double", "integer", "logical")] <- NULL
   colnames(out) <- c("row", "col", "data_type", "html")
   out$data_type <- "html"
@@ -212,7 +212,7 @@ tidy_table.xml_node <- function(x, rownames = FALSE, colnames = FALSE) {
 }
 
 #' @export
-tidy_table.xml_document <- function (x, rownames = FALSE, colnames = FALSE) {
+tidy_table.xml_document <- function (x, row_names = FALSE, col_names = FALSE) {
   tables <- xml2::xml_find_all(x, xpath = "//table[not(ancestor::table)]")
   lapply(tables, tidy_table)
 }

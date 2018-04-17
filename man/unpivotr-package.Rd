@@ -8,11 +8,13 @@
 \description{
 'Unpivotr' provides tools for converting data from complex or irregular
 layouts to a columnar structure.  For example, tables with multi-level column
-or row headers, or spreadsheets, or nested HTML tables.  Header and data
-cells can selected by their contents, position and formatting, and can be
-associated with one other by their relative positions.
+or row headers, or spreadsheets of several tables, nested HTML tables, and
+data that uses several different sentinel values.
 }
 \details{
+Header and data cells can selected by their contents, position, data type and
+formatting, and can be associated with one other by their relative positions.
+
 The input data must be a data frame with the columns 'row' and 'col' to
 describe the position of a 'cell' of data.  For cells that are to be
 interpreted as data, further columns containing the 'value' of the cell are,
@@ -24,10 +26,6 @@ requirements by using the \code{\link[=tidy_table]{tidy_table()}} function.  Exc
 files can be imported directly into the required format with the 'tidyxl'
 package, available at \url{https://github.com/nacnudus/tidyxl}, which has the
 advantage that it retains cell formatting and comments.
-
-The functions are documented in \code{\link[=join_header]{join_header()}},
-\code{\link[=extend]{extend()}} and \code{\link[=offset]{offset()}}.  All functions are designed to
-work well with the pipe \code{\%>\%} from the magrittr package.
 }
 \seealso{
 Useful links:

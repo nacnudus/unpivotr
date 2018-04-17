@@ -7,33 +7,33 @@
 #' [tidy_table()] or [tidyxl::xlsx_cells()].
 #'
 #' @param cells Data frame. The cells of a pivot table, usually the output of
-#' [tidy_table()] or [tidyxl::xlsx_cells()], or of a subsequent operation on
-#' those outputs.
-#' @param direction The name of a function that joins headers to data cells, one
-#' of `N`, `E`, `S`, `W`, `NNW`, `NNE`, `ENE`, `ESE`, `SSE`, `SSW`. `WSW`,
-#' `WNW`.  `ABOVE`, `BELOW`, `LEFT` and `RIGHT` aren't available because they
-#' require certain ambiguities that are better handled by using the functions
-#' directly rather than via [behead()].  See the help file for [join_header()].
+#'   [tidy_table()] or [tidyxl::xlsx_cells()], or of a subsequent operation on
+#'   those outputs.
+#' @param direction The direction between a data cell and its header, one of
+#' `"N"`, `"E"`, `"S"`, `"W"`, `"NNW"`, `"NNE"`, `"ENE"`, `"ESE"`, `"SSE"`,
+#' `"SSW"`. `"WSW"` and `"WNW"`.  See 'details'.  `"ABOVE"`, `"BELOW"`, `"LEFT"`
+#' and `"RIGHT"` aren't available because they require certain ambiguities that
+#' are better handled by using [enhead()] directly rather than via [behead()].
 #' @param name A name to give the new column that will be created, e.g.
-#' `"location"` if the headers are locations.  Quoted (`"location"`, not
-#' `location`) because it doesn't refer to an actual object.
+#'   `"location"` if the headers are locations.  Quoted (`"location"`, not
+#'   `location`) because it doesn't refer to an actual object.
 #' @param ... named functions for formatting each data type in a set of headers
-#' of mixed data types, e.g. when some headers are dates and others are
-#' characters.  These can be given as `character = toupper` or `character = ~
-#' toupper(.x)`, similar to [purrr::map].
+#'   of mixed data types, e.g. when some headers are dates and others are
+#'   characters.  These can be given as `character = toupper` or `character = ~
+#'   toupper(.x)`, similar to [purrr::map].
 #' @param values Optional. The column of `cells` to use as the values of each
-#' header.  Given as a bare variable name.  If omitted (the default), the
-#' `types` argument will be used instead.
+#'   header.  Given as a bare variable name.  If omitted (the default), the
+#'   `types` argument will be used instead.
 #' @param types The name of the column that names the data type of each cell.
-#' Usually called `data_types` (the default), this is a character column that
-#' names the other columns in `cells` that contain the values of each cell.
-#' E.g.  a cell with a character value will have `"character"` in this column.
-#' Unquoted(`data_types`, not `"data_types"`) because it refers to an actual
-#' object.
+#'   Usually called `data_types` (the default), this is a character column that
+#'   names the other columns in `cells` that contain the values of each cell.
+#'   E.g.  a cell with a character value will have `"character"` in this column.
+#'   Unquoted(`data_types`, not `"data_types"`) because it refers to an actual
+#'   object.
 #' @param drop_na logical Whether to filter out headers that have `NA` in the
-#' `value` column.  Default: `TRUE`.  This can happen with the output of
-#' `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
-#' applied to it, but should be ignored.
+#'   `value` column.  Default: `TRUE`.  This can happen with the output of
+#'   `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
+#'   applied to it, but should be ignored.
 #'
 #' @return A data frame
 #'
@@ -43,10 +43,10 @@
 #' (x <- data.frame(a = 1:2, b = 3:4))
 #'
 #' # Make a tidy representation of each cell
-#' (cells <- tidy_table(x, colnames = TRUE))
+#' (cells <- tidy_table(x, col_names = TRUE))
 #'
 #' # Strip the cells in row 1 (the original headers) and use them as data
-#' behead(cells, N, foo)
+#' behead(cells, "N", foo)
 #'
 #' # More complex example: pivot table with several layers of headers
 #' (x <- purpose$`NNW WNW`)
@@ -59,10 +59,10 @@
 #' # Strip the headers and make them into data
 #' tidy <-
 #'   cells %>%
-#'   behead(NNW, Sex) %>%
-#'   behead(N, `Sense of purpose`) %>%
-#'   behead(WNW, `Highest qualification`) %>%
-#'   behead(W, `Age group (Life-stages)`) %>%
+#'   behead("NNW", Sex) %>%
+#'   behead("N", `Sense of purpose`) %>%
+#'   behead("WNW", `Highest qualification`) %>%
+#'   behead("W", `Age group (Life-stages)`) %>%
 #'   dplyr::mutate(count = as.integer(chr)) %>%
 #'   dplyr::select(-row, -col, -data_type, -chr)
 #' head(tidy)
@@ -75,6 +75,7 @@
 #' # seems to have been an oversight by Statistics New Zealand.
 behead <- function(cells, direction, name, ..., values = NULL,
                    types = data_type, drop_na = TRUE) {
+  check_direction_behead(direction)
   name <- rlang::ensym(name)
   dots <- list(...)
   functions <- purrr::map(dots, purrr::as_mapper)
@@ -92,7 +93,7 @@ behead <- function(cells, direction, name, ..., values = NULL,
       dplyr::mutate(!! types := ".value")
   }
   type_names <- unique(dplyr::pull(cells, !! types))
-  filter_expr <- direction_filter(!!rlang::ensym(direction))
+  filter_expr <- direction_filter(direction)
   is_header <- rlang::eval_tidy(filter_expr, cells)
   headers <-
     cells %>%
@@ -106,15 +107,13 @@ behead <- function(cells, direction, name, ..., values = NULL,
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
   datacells <- dplyr::filter(cells, !is_header)
-  out <- direction(datacells, headers, drop = FALSE)
+  out <- enhead(datacells, headers, direction, drop = FALSE)
   if(!values_was_null) out <- dplyr::select(out, -.value, -.data_type)
   out
 }
 
 # Construct a filter expression for stripping a header from a pivot table
 direction_filter <- function(direction) {
-  direction <- rlang::expr_text(rlang::ensym(direction))
-  check_direction(direction)
   direction <- substr(direction, 1L, 1L)
   dplyr::case_when(direction == "N" ~ rlang::expr(.data$row == min(.data$row)),
                    direction == "E" ~ rlang::expr(.data$col == max(.data$col)),
@@ -123,11 +122,19 @@ direction_filter <- function(direction) {
 }
 
 # Check that a given direction is a supported compass direction
-check_direction <- function(direction_string) {
+check_direction_behead <- function(direction_string) {
   directions <- c("NNW", "N", "NNE",
-                        "ENE", "E", "ESE",
-                        "SSE", "S", "SSW",
-                        "WSW", "W", "WNW")
+                  "ENE", "E", "ESE",
+                  "SSE", "S", "SSW",
+                  "WSW", "W", "WNW")
+  other_directions <- c("ABOVE", "LEFT", "RIGHT", "BELOW")
+  if (direction_string %in% other_directions) {
+    stop("`direction` must be one of \"",
+         paste(directions, collapse = "\", \""),
+         "\".  To use the directions \"",
+         paste(other_directions, collapse = "\", \""),
+         "\" look at `?enhead`.")
+  }
   if (!(direction_string %in% directions)) {
     stop("`direction` must be one of \"",
          paste(directions, collapse = "\", \""),

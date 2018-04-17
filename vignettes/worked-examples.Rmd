@@ -53,7 +53,7 @@ Here's the full process.
 
 ```{r}
 xlsx_cells(path, sheet = "clean") %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   select(row, data_type, header, character, numeric) %>%
   spatter(header) %>%
   select(-row)
@@ -81,7 +81,7 @@ and it only works on tables that have first come through
 ```{r}
 xlsx_cells(path, sheet = "clean") %>%
   select(row, col, data_type, character, numeric) %>%
-  behead(N, header)
+  behead("N", header)
 ```
 
 `unpivotr::spatter()` spreads key-value pairs across multiple columns, like
@@ -94,7 +94,7 @@ can be confused by extraneous data, so it's usually a good idea to drop the
 ```{r}
 xlsx_cells(path, sheet = "clean") %>%
   select(row, col, data_type, character, numeric) %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   select(-col) %>%
   spatter(header) %>%
   select(-row)
@@ -148,12 +148,12 @@ read_excel(path, sheet = "transposed", col_names = FALSE) %>%
 ```
 
 Tidyxl and unpivotr are agnostic to the layout of tables.  Importing the
-transpose is the same is importing the usual layout, merely using the `W` (west)
-direction instead of `N` (north) when beheading the headers.
+transpose is the same is importing the usual layout, merely using the `"W"`
+(west) direction instead of `"N"` (north) when beheading the headers.
 
 ```{r}
 xlsx_cells(path, sheet = "transposed") %>%
-  behead(W, header) %>%
+  behead("W", header) %>%
   select(col, data_type, header, character, numeric) %>%
   spatter(header) %>%
   select(Name, Age)
@@ -214,16 +214,6 @@ bottom_right <-
   summarise(row = max(row), col = max(col))
 bottom_right
 
-# Alternatively we could assume that every cell in the table has a value, so
-# begin from the top left and move right and down until we meet a blank row or
-# column.
-bottom_right <-
-  anchor(cells, top_left$row, top_left$col) %>%
-  offset_S(cells, boundary = ~ is.na(data_type)) %>%
-  offset_E(cells, boundary = ~ is.na(data_type)) %>%
-  select(row, col)
-bottom_right
-
 # Step 2: construct the arguments `skip` and `n_max` for read_excel()
 skip <- top_left$row - 1L
 n_rows <- bottom_right$row - skip
@@ -240,7 +230,7 @@ cells %>%
   filter(between(row, top_left$row, bottom_right$row),
          between(col, top_left$col, bottom_right$col)) %>%
   select(row, col, data_type, character, numeric) %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   select(-col) %>%
   spatter(header) %>%
   select(-row)
@@ -313,7 +303,7 @@ fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
 xlsx_cells(path, sheet = "highlights") %>%
   mutate(fill_colour = fill_colours[local_format_id]) %>%
   select(row, col, data_type, character, numeric, fill_colour) %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   select(-col, -character) %>%
   spatter(header) %>%
   select(-row)
@@ -376,14 +366,14 @@ cells
 values <-
   cells %>%
   select(-fill_colour) %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   select(-col) %>%
   spatter(header)
 values
 
 fills <-
   cells %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   mutate(header = paste0(header, "_fill")) %>%
   select(row, header, fill_colour) %>%
   spread(header, fill_colour)
@@ -453,8 +443,8 @@ fill_colours <- xlsx_formats(path)$local$fill$patternFill$fgColor$rgb
 xlsx_cells(path, sheet = "annotations") %>%
   mutate(fill_colour = fill_colours[local_format_id]) %>%
   select(row, col, data_type, character, numeric, fill_colour) %>%
-  behead(W, Name) %>%
-  behead(N, variable) %>%
+  behead("W", Name) %>%
+  behead("N", variable) %>%
   select(-data_type, -character, value = numeric)
 ```
 
@@ -509,8 +499,8 @@ cells <-
   mutate(fill_colour = fill_colours[local_format_id],
          font_colour = font_colours[local_format_id]) %>%
   select(row, col, data_type, character, numeric, fill_colour, font_colour) %>%
-  behead(N, header) %>%
-  behead(W, Name) %>%
+  behead("N", header) %>%
+  behead("W", Name) %>%
   select(-col, -character)
 
 values <-
@@ -582,7 +572,7 @@ xlsx_cells(path, sheet = "highlight-hierarchy") %>%
                            italic ~ "satisfactory",
                            TRUE ~ "good")) %>%
   select(row, col, data_type, character, numeric, bold, italic, grade) %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   select(-col) %>%
   spatter(header)
 ```
@@ -668,8 +658,8 @@ Here's another version using only tidyxl and unpivotr, which provides
 xlsx_cells(path, sheet = "sentinels") %>%
   select(row, col, data_type, character, numeric) %>%
   isolate_sentinels(character, c("NA", "…", "..C")) %>%
-  behead(W, Name) %>%
-  behead(N, variable) %>%
+  behead("W", Name) %>%
+  behead("N", variable) %>%
   select(Name, variable, character, numeric, sentinel)
 ```
 
@@ -799,26 +789,26 @@ specify how the header cells relate to the data cells.
 
 The outermost header is the top row, `"Female" NA "Male" NA`.  The `"Female"`
 and `"Male"` headers are above and to-the-left-of the data cells.  We express
-this as a compass direction, north-north-west, or `NNW`.  We also give the
+this as a compass direction, north-north-west, or `"NNW"`.  We also give the
 headers a name, `sex`, and say which column of `all_cells` contains the value
 of the header cells -- it's usually the `character` column.
 
 ```{r}
 all_cells %>%
-  behead(NNW, sex)
+  behead("NNW", sex)
 ```
 
-That did half the job.  The value 2 in row 4 column 5 is indeed a score
-of a female. But the value `"matilda"` in row 3 column 4 isn't a
-population -- it's another header.  The next step is to strip that second level
-of column headers.  This time, the compass direction is `N`, because the headers
-are directly above the associated data cells, and we call it `name`, because it
-represents names of people.
+That did half the job.  The value 2 in row 4 column 5 is indeed a score of a
+female. But the value `"matilda"` in row 3 column 4 isn't a population -- it's
+another header.  The next step is to strip that second level of column headers.
+This time, the compass direction is `"N"`, because the headers are directly
+above the associated data cells, and we call it `name`, because it represents
+names of people.
 
 ```{r}
 all_cells %>%
-  behead(NNW, sex) %>%
-  behead(N, `name`)
+  behead("NNW", sex) %>%
+  behead("N", `name`)
 ```
 
 A final step is a normal clean-up.  We drop the `row`, `col` and `character`
@@ -827,15 +817,15 @@ represents.
 
 ```{r}
 all_cells %>%
-  behead(NNW, sex) %>%
-  behead(N, `name`) %>%
+  behead("NNW", sex) %>%
+  behead("N", `name`) %>%
   select(score = numeric, sex, `name`)
 ```
 
 ### Two clear rows and columns of text headers, top-aligned and left-aligned
 
-There are no new techniques are used, just more compass directions: `W` for
-headers directly to the left of the data cells, and `WNW` for headers
+There are no new techniques are used, just more compass directions: `"W"` for
+headers directly to the left of the data cells, and `"WNW"` for headers
 left-and-above the data cells.
 
 ```{r}
@@ -846,10 +836,10 @@ all_cells <-
   print()
 
 all_cells %>%
-  behead(NNW, sex) %>%   # As before
-  behead(N, `name`) %>%  # As before
-  behead(WNW, field) %>% # Left-and-above
-  behead(W, subject) %>% # Directly left
+  behead("NNW", sex) %>%   # As before
+  behead("N", `name`) %>%  # As before
+  behead("WNW", field) %>% # Left-and-above
+  behead("W", subject) %>% # Directly left
   rename(score = numeric) %>%
   select(-row, -col, -character)
 ```
@@ -875,10 +865,10 @@ all_cells <-
 
 unpivoted <-
   all_cells %>%
-  behead(NNW, sex) %>%   # As before
-  behead(N, `name`) %>%  # As before
-  behead(WNW, field) %>% # Left-and-above
-  behead(W, subject) %>% # Directly left
+  behead("NNW", sex) %>%   # As before
+  behead("N", `name`) %>%  # As before
+  behead("WNW", field) %>% # Left-and-above
+  behead("W", subject) %>% # Directly left
   rename(score = numeric) %>%
   select(-character)                # Retain the row and col for now
 unpivoted
@@ -905,9 +895,9 @@ left_join(unpivoted, annotations, by = c("row", "col")) %>%
 ## Complex unpivoting
 
 When `behead()` isn't powerful enough (it makes certain assumptions, and it
-doesn't understand formatting), then you
-can get much more control by using the compass-direction functions `N()`,
-`NNW()` etc. directly.
+doesn't understand formatting), then you can get much more control by using
+`enhead()`, which joins together two separate data frames of data cells and
+header cells.
 
 This kind of unpivoting is always done in two stages.
 
@@ -957,19 +947,17 @@ headers.  Unpivotr provides a set of functions for this, derived from the points
 of the compass.
 
 Starting from the point of view of a data cell, the relevant column header from
-the second row of headers is the one directly north (up), which is described by
-the function `N()`.
+the second row of headers is the one directly north (up), or `"N"`.
 
 ```{r}
-N(data_cells, second_header_row)
+enhead(data_cells, second_header_row, "N")
 ```
 
 The first row of headers, from the point of view of a data cell, is either
-directly north (up), or north and west (up and left), which is described by the
-function `NNW()`.
+directly north (up), or north and west (up and left), or `"NNW"`.
 
 ```{r}
-NNW(data_cells, first_header_row)
+enhead(data_cells, first_header_row, "NNW")
 ```
 
 Piping everything together, we get a complete, tidy dataset, and can finally
@@ -977,19 +965,19 @@ drop the `row` and `col` columns.
 
 ```{r}
 data_cells %>%
-  NNW(first_header_row) %>%
-  N(second_header_row) %>%
+  enhead(first_header_row, "NNW") %>%
+  enhead(second_header_row, "N") %>%
   select(-row, -col)
 ```
 
 ### Two clear columns of text row headers, top-aligned
 
 This is almost the same as "Two clear rows of text column headers,
-left-aligned", but with different compass directions: `W()` for directly west
-(left), and `WNW()` for west and north (left and up).
+left-aligned", but with different compass directions: `"W"` for directly west
+(left), and `"WNW"` for west and north (left and up).
 
-(`NNW()` and `WNW()` look like synonyms, but behave differently in some special
-cases.  See "Headers amongst the data")
+(`"NNW"` and `"WNW"` look like synonyms.  They happen to be synonyms in
+`enhead()`, but they aren't in `behead()`.
 
 In this example, the table has no column headers, only row headers.  This is
 artificial here, but sometimes table are deliberately laid out in transpose
@@ -1031,8 +1019,8 @@ data_cells <-
   # columns as well as `numeric`
 
 data_cells %>%
-  WNW(first_header_col) %>%
-  W(second_header_col) %>%
+  enhead(first_header_col, "WNW") %>%
+  enhead(second_header_col, "W") %>%
   select(-row, -col)
 ```
 
@@ -1093,10 +1081,10 @@ data_cells <-
   # columns as well as `numeric`
 
 data_cells %>%
-  NNW(first_header_row) %>%
-  N(second_header_row) %>%
-  WNW(first_header_col) %>%
-  W(second_header_col) %>%
+  enhead(first_header_row, "NNW") %>%
+  enhead(second_header_row, "N") %>%
+  enhead(first_header_col, "WNW") %>%
+  enhead(second_header_col, "W") %>%
   select(-row, -col)
 ```
 
@@ -1117,13 +1105,13 @@ that wouldn't work in all cases.
 * `Languages` is closest to the `Performance` header, but is a humanity.
 * `Lenny` is the same distance from `Female` as from `Male`.
 
-There are four functions to resolve this: `ABOVE()`, `LEFT()`, `BELOW()` and
-`RIGHT()`, which do the same job as `N()`, `NNW()` etc., but require two sets of
+There are four directions to resolve this: `"ABOVE"`, `"LEFT"`, `"BELOW"` and
+`"RIGHT"`, which do the same job as `"N"`, `"NNW"` etc., but require two sets of
 header cells instead of one:
 
 * `header_cells` is the cells whose value will be used as the header
-* `corner_cells` is the cells whose position is in one corner of the domain of the
-  header (e.g. the top-left-hand corner).
+* `corner_cells` is the cells whose position is in one corner of the domain of
+  the header (e.g. the top-left-hand corner).
 
 In the original spreadsheet, the borders mark the boundaries.  So the corner
 cells of the headers can be found by filtering for cells with a particular
@@ -1147,7 +1135,7 @@ first_header_col_corners
 
 The rest of this example is the same as "Two clear rows and columns of text
 headers, top-aligned and left-aligned", the only difference being the use of
-`ABOVE()` and `LEFT()` instead of `NNW()` and `WNW()`
+`"ABOVE"` and `"LEFT"` instead of `"NNW"` and `"WNW"`
 
 ```{r}
 all_cells <-
@@ -1195,10 +1183,10 @@ data_cells <-
   # columns as well as `numeric`
 
 data_cells %>%
-  ABOVE(first_header_row, corner_cells = first_header_row_corners) %>%
-  N(second_header_row) %>%
-  LEFT(first_header_col, corner_cells = first_header_col_corners) %>%
-  W(second_header_col) %>%
+  enhead(first_header_row, "ABOVE", corner_cells = first_header_row_corners) %>%
+  enhead(second_header_row, "N") %>%
+  enhead(first_header_col, "LEFT", corner_cells = first_header_col_corners) %>%
+  enhead(second_header_col, "W") %>%
   select(-row, -col)
 ```
 
@@ -1265,10 +1253,10 @@ data_cells <-
 
 unpivoted <-
   data_cells %>%
-  NNW(first_header_row) %>%
-  N(second_header_row) %>%
-  WNW(first_header_col) %>%
-  W(second_header_col)
+  enhead(first_header_row, "NNW") %>%
+  enhead(second_header_row, "N") %>%
+  enhead(first_header_col, "WNW") %>%
+  enhead(second_header_col, "W")
   # Don't delet the `row` and `col` columns yet, because we need them to join on
   # the formatting
 
@@ -1354,8 +1342,8 @@ second_header_col <-
   # '`character` column.
 
 data_cells %>%
-  NNW(first_header_row) %>%
-  WNW(first_header_col) %>%
+  enhead(first_header_row, "NNW") %>%
+  enhead(first_header_col, "WNW") %>%
   select(-row, -col)
 ```
 
@@ -1426,9 +1414,9 @@ data_cells <-
   # columns as well as `numeric`
 
 data_cells %>%
-  WNW(field) %>%
-  W(subject) %>%
-  N(name) %>%
+  enhead(field, "WNW") %>%
+  enhead(subject, "W") %>%
+  enhead(name, "N") %>%
   select(-row, -col)
 ```
 
@@ -1487,9 +1475,9 @@ data_cells <-
 data_cells
 
 data_cells %>%
-  N(term) %>%
-  NNW(subject) %>%
-  W(name) %>%
+  enhead(term, "N") %>%
+  enhead(subject, "NNW") %>%
+  enhead(name, "W") %>%
   select(-row, -col)
 ```
 
@@ -1500,9 +1488,8 @@ the left of the data, is presented above the data.  (Alternatively, what is
 actually a column header, instead of being presented above the data, is
 presented to the side.)
 
-The way to handle it is to *pretend* that it is a row header, and use the `WNW()`
-direction as normal.  Note that `NNW()` is not a synonym in this case -- try it
-and see what happens.
+The way to handle it is to *pretend* that it is a row header, and use the
+`"WNW"` direction as normal.
 
 ```{r}
 all_cells <-
@@ -1557,9 +1544,9 @@ data_cells <-
 data_cells
 
 data_cells %>%
-  WNW(subject) %>%
-  N(term) %>%
-  W(name) %>%
+  enhead(subject, "WNW") %>%
+  enhead(term, "N") %>%
+  enhead(name, "W") %>%
   select(-row, -col)
 ```
 
@@ -1587,8 +1574,8 @@ The code to import one of these multiples will be simple.
 
 ```{r, eval = FALSE}
 # cells %>%
-#   behead(NNW, subject) %>%
-#   behead(N, header) %>%
+#   behead("NNW", subject) %>%
+#   behead("N", header) %>%
 #   select(-col, - local_format_id) %>%
 #   spatter(header) %>%
 #   select(-row)
@@ -1606,8 +1593,8 @@ all_cells <-
 table1 <- filter(all_cells, row %in% 1:4, col %in% 1:3)
 
 table1 %>%
-  behead(NNW, subject) %>%
-  behead(N, header) %>%
+  behead("NNW", subject) %>%
+  behead("N", header) %>%
   select(-col, - local_format_id) %>%
   spatter(header) %>%
   select(-row)
@@ -1618,8 +1605,8 @@ We wrap that code in a function, to be applied to each separate table.
 ```{r}
 unpivot <- function(cells) {
   cells %>%
-    behead(NNW, subject) %>%
-    behead(N, header) %>%
+    behead("NNW", subject) %>%
+    behead("N", header) %>%
     select(-col, - local_format_id) %>%
     spatter(header) %>%
     select(-row)
@@ -1642,10 +1629,7 @@ Finally, map the unpivoting function over the partitions, and combine the
 results.
 
 ```{r}
-partitions %>%
-  nest(-partition) %>%
-  pull(data) %>%
-  map(unpivot) %>%
+map(partitions$cells, unpivot) %>%
   bind_rows()
 ```
 
@@ -1682,8 +1666,8 @@ statements.  Further clean-up can be saved until the end.
 ```{r}
 unpivot <- function(cells) {
   cells %>%
-    behead(N, name) %>%
-    behead(W, subject)
+    behead("N", name) %>%
+    behead("W", subject)
 }
 ```
 
@@ -1719,9 +1703,8 @@ robust to differences in the placement and context of the table on each sheet.
 
 In this example, both tables begin in the same column, but there is an extra row
 of notes above one of the tables.  There are a few ways to tackle this problem.
-Here, we will begin at an anchor cell, `A1`, move down until we reach the
-`Subject` cell, which is either `A3` or `A4`, and then extend the selection to
-include the whole table.
+Here, we filter for the `Subject` cell, which is either `A3` or `A4`, and then
+extend the selection to include the whole table.
 
 ```{r}
 all_cells <-
@@ -1732,12 +1715,11 @@ all_cells
 
 unpivot <- function(cells) {
   cells %>%
-    anchor(1L, 1L) %>% # Cell A1 is in row 1, column 1
-    offset_S(cells, boundary = ~ character == "Subject", include = TRUE) %>%
-    extend_S(cells, 2) %>% # The table is three cells wide, and three high
-    extend_E(cells, 2) %>%
-    behead(N, name) %>%
-    behead(W, subject)
+    filter(character == "Subject") %>%
+    pull(row) %>%
+    {filter(cells, row >= .)} %>%
+    behead("N", name) %>%
+    behead("W", subject)
 }
 
 all_cells %>%
@@ -1964,7 +1946,7 @@ strikethrough <-
   select(row, strikethrough)
 
 left_join(cells, strikethrough, by = "row") %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   select(-col) %>%
   spatter(header) %>%
   select(ID, strikethrough, Count)
@@ -2027,8 +2009,8 @@ the header of a data frame.  Another way to format headers as part of the
 
 ```{r}
 xlsx_cells(path, sheet = "non-text headers") %>%
-  behead(W, name) %>%
-  behead(N, `academic-year`) %>%
+  behead("W", name) %>%
+  behead("N", `academic-year`) %>%
   mutate(`academic-year` = strftime(`academic-year`, "%Y")) %>%
   select(row, data_type, `academic-year`, name, numeric) %>%
   spatter(`academic-year`) %>%
@@ -2042,7 +2024,7 @@ before converting them all to text via `format()`.
 ```{r}
 xlsx_cells(path, sheet = "non-text headers") %>%
   select(row, col, data_type, character, numeric, date) %>%
-  behead(N, header)
+  behead("N", header)
 ```
 
 To format a header when a single set of headers are of mixed data types, you
@@ -2051,7 +2033,7 @@ can specify a function for each data type in the call to `behead()`.
 ```{r}
 xlsx_cells(path, sheet = "non-text headers") %>%
   select(row, col, data_type, character, numeric, date) %>%
-  behead(N, header, date = ~ strftime(.x, "%Y"), character = toupper)
+  behead("N", header, date = ~ strftime(.x, "%Y"), character = toupper)
 ```
 
 ### Data embedded in comments
@@ -2065,7 +2047,7 @@ imported into a `comment_formatted` column, similarly to `character_formatted`.
 ```{r}
 xlsx_cells(path, sheet = "comments") %>%
   select(row, col, data_type, character, numeric, comment) %>%
-  behead(N, "header")
+  behead("N", "header")
 ```
 
 Comments apply to single cells, so follow the same procedure as "Already a tidy
@@ -2080,14 +2062,14 @@ cells
 values <-
   cells %>%
   select(-comment) %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   select(-col) %>%
   spatter(header)
 values
 
 comments <-
   cells %>%
-  behead(N, header) %>%
+  behead("N", header) %>%
   mutate(header = paste0(header, "_comment")) %>%
   select(row, header, comment) %>%
   spread(header, comment)

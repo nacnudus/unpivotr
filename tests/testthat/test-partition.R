@@ -34,45 +34,32 @@ test_that("partition() works", {
     dplyr::filter(multiples,
                   !is.na(character),
                   !(character %in% c("Sex", "Value", "Female", "Male")))
-  expect_equal(partition(multiples, tl_corners)$partition,
-               c(rep(rep(c(1, 3, 5), each = 4), 2),
-                 rep(rep(c(2, 4), each = 4), 2)))
+  expect_equal(partition(multiples, tl_corners, nest = FALSE)$partition,
+               rep(c(1, 3, 5, 2, 4), each = 8))
   bl_corners <- dplyr::filter(multiples, character == "Male")
   expect_equal(partition(multiples,
                          bl_corners,
-                         align = "bottom_left")$partition,
-               c(rep(rep(c(4, 2, 1), each = 4), 2),
-                 rep(rep(c(5, 3), each = 4), 2)))
+                         align = "bottom_left",
+                         nest = FALSE)$partition,
+               rep(c(4, 2, 1, 5, 3), each = 8))
   tr_corners <-
     multiples %>%
     dplyr::filter(character == "Value") %>%
     dplyr::mutate(row = row - 1)
   expect_equal(partition(multiples,
                          tr_corners,
-                         align = "top_right")$partition,
-               c(rep(rep(c(2, 4, 5), each = 4), 2),
-                 rep(rep(c(1, 3), each = 4), 2)))
+                         align = "top_right",
+                         nest = FALSE)$partition,
+               rep(c(2, 4, 5, 1, 3), each = 8))
   br_corners <-
     multiples %>%
     dplyr::filter(character == "Male") %>%
     dplyr::mutate(col = col + 1)
   expect_equal(partition(multiples,
                          br_corners,
-                         align = "bottom_right")$partition,
-               c(rep(rep(c(5, 3, 1), each = 4), 2),
-                 rep(rep(c(4, 2), each = 4), 2)))
-})
-
-test_that("partition() silently overwrites columns that already exist", {
-  multiples <- purpose$small_multiples
-  tl_corners <-
-    dplyr::filter(multiples,
-                  !is.na(character),
-                  !(character %in% c("Sex", "Value", "Female", "Male")))
-  expect_warning(x <- partition(multiples, tl_corners, partition_name = "row"),
-                 NA)
-  expect_equal(colnames(x),
-               c("row", "col", "data_type", "character", "numeric"))
+                         align = "bottom_right",
+                         nest = FALSE)$partition,
+               rep(c(5, 3, 1, 4, 2), each = 8))
 })
 
 test_that("partition() arguments are checked", {

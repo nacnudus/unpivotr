@@ -5,7 +5,8 @@
 \alias{partition_dim}
 \title{Divide a grid of cells into partitions containing individual tables}
 \usage{
-partition(cells, corners, align = "top_left", partition_name = "partition")
+partition(cells, corners, align = "top_left", partition_name = "partition",
+  nest = TRUE, strict = TRUE)
 
 partition_dim(positions, cutpoints, bound = "upper")
 }
@@ -22,27 +23,34 @@ tables, one of \code{"top-left"} (default), \code{"top-right"}, \code{"bottom-le
 \item{partition_name}{Character vector length 1, what to call the new column
 that will be created to identify the partitions.  Default: \code{"partition"}.}
 
+\item{nest}{Logical, whether to nest the partitions in a list-column of data
+frames.}
+
+\item{strict}{Logical, whether to omit partitions that don't contain a corner
+cell.}
+
 \item{positions}{Integer vector, the positions of cells (either the row
-position or the column position), which are to be grouped between cutpoints.}
+position or the column position), which are to be grouped between
+cutpoints.}
 
 \item{cutpoints}{Integer vector. The \code{positions} will be separated into
 groups either side of each cutpoint.}
 
 \item{bound}{One of \code{"upper"} or \code{"lower"}, controls whether cells that lie
 on a cutpoint are should be grouped with cells below or above the cutpoint.
-For example, if column 5 is a cutpoint, and a cell is in column 5, \code{"lower"}
-would group it with cells in columns 1 to 4, whereas \code{"upper"} would group it
-with cells in columns 6 to 10.  This is so that you can use cells at the
-bottom or the right-hand side of a table as the cutpoints (either of which
-would be 'upper' bounds because row and column numbers count from 1 in the
-top-left row and column).  When \code{"upper"}, any \code{cell_positions} above the
-first cutpoint will be in group 0; when \code{"lower"}, any \code{cell_positions} below
-the final cutpoint will be 0.}
+For example, if column 5 is a cutpoint, and a cell is in column 5,
+\code{"lower"} would group it with cells in columns 1 to 4, whereas \code{"upper"}
+would group it with cells in columns 6 to 10.  This is so that you can use
+cells at the bottom or the right-hand side of a table as the cutpoints
+(either of which would be 'upper' bounds because row and column numbers
+count from 1 in the top-left row and column).  When \code{"upper"}, any
+\code{cell_positions} above the first cutpoint will be in group 0; when
+\code{"lower"}, any \code{cell_positions} below the final cutpoint will be 0.}
 }
 \value{
 \code{partition_dim()} returns an integer vector, numbering the groups of
-cells.  Group 0 represents the cells above the first cutpoint (when \code{bound = "upper"}), or below the first cutpoint (when \code{bound = "lower"}).  The other
-groups are numbered from 1, where group 1 is adjacent to group 0.
+cells.  Group 0 represents the cells above the first cutpoint (when \code{bound = "upper"}), or below the first cutpoint (when \code{bound = "lower"}).  The
+other groups are numbered from 1, where group 1 is adjacent to group 0.
 
 \code{partition_dim()} returns an integer vector, numbering the groups of cells.
 Group 0 represents the cells above the first cutpoint (when \code{bound = "upper"}), or below the first cutpoint (when \code{bound = "lower"}).  The other
@@ -50,9 +58,9 @@ groups are numbered from 1, where group 1 is adjacent to group 0.  Divide a
 grid of cells into chunks along both dimensions
 }
 \description{
-Given the positions of corner cells that mark individual tables
-in a single spreadsheet, \code{partion()} works out which cells belong to which
-tables, and gives them an ID.  This can be used with \code{dplyr::group_by()} or
+Given the positions of corner cells that mark individual tables in a single
+spreadsheet, \code{partion()} works out which cells belong to which tables, and
+gives them an ID.  This can be used with \code{dplyr::group_by()} or
 \code{tidyr::nest()} to operate on each single table within a spreadsheet of
 several tables.
 
@@ -84,22 +92,14 @@ corners <-
 # Then find out which cells fall into which partition
 partition(multiples, corners)
 
-# It's more obvious if you also split() by the new 'partition' column
-x <- partition(multiples, corners)
-split(x, x$partition)
-
-# An alternative to split() is tidyr::nest()
-tidyr::nest(x, -partition)
-
 # You can also use bottom-left corners (or top-right or bottom-right)
-bl_corners <- dplyr::filter(multiples, character == "Yes")
-y <- partition(multiples, bl_corners, align = "bottom_left")
-split(y, y$partition)
+bl_corners <- dplyr::filter(multiples, character == "Male")
+partition(multiples, bl_corners, align = "bottom_left")
 
-# If `partition_name` is already the name of a column in `cells`, then it
-# will be silently overwritten
-multiples$important_column <- "Will be overwritten"
-partition(multiples, corners, partition_name = "important_column")
+# To complete the grid even when not all corners are supplied, use `strict`
+bl_corners <- bl_corners[-1, ]
+partition(multiples, bl_corners, align = "bottom_left")
+partition(multiples, bl_corners, align = "bottom_left", strict = FALSE)
 # Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and 7th
 # rows. Row 3 is the top row of group 1.
 partition_dim(1:10, c(3, 5, 7))

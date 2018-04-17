@@ -127,10 +127,10 @@ test_that("Compass directions N, NNW, W, and WNW work", {
     dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value) %>%
-    NNW(col_headers[[1]]) %>%
-    N(col_headers[[2]]) %>%
-    WNW(row_headers[[1]]) %>%
-    W(row_headers[[2]]) %>%
+    enhead(col_headers[[1]], "NNW") %>%
+    enhead(col_headers[[2]], "N") %>%
+    enhead(row_headers[[1]], "WNW") %>%
+    enhead(row_headers[[2]], "W") %>%
     dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_sex)
   expect_equal(datacells[[5]], expect_purpose)
@@ -155,8 +155,8 @@ test_that("Compass directions NNE and WSW work", {
     dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value) %>%
-    NNE(col_headers[[1]]) %>%
-    WSW(row_headers[[1]]) %>%
+    enhead(col_headers[[1]], "NNE") %>%
+    enhead(row_headers[[1]], "WSW") %>%
     dplyr::arrange(row, col)
   expect_equal(datacells[[5]], expect_education)
   expect_equal(datacells[[4]], expect_sex)
@@ -179,10 +179,10 @@ test_that("Compass directions S, SSE , E and ESE work", {
     dplyr::filter(row <= 20, col <= 4, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value) %>%
-    SSE(col_headers[[2]]) %>%
-    S(col_headers[[1]]) %>%
-    ESE(row_headers[[2]]) %>%
-    E(row_headers[[1]]) %>%
+    enhead(col_headers[[2]], "SSE") %>%
+    enhead(col_headers[[1]], "S") %>%
+    enhead(row_headers[[2]], "ESE") %>%
+    enhead(row_headers[[1]], "E") %>%
     dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_sex)
   expect_equal(datacells[[5]], expect_purpose)
@@ -207,8 +207,8 @@ test_that("Compass directions SSW and ENE work", {
     dplyr::filter(row <= 20, col <= 4, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value) %>%
-    SSW(col_headers[[2]]) %>% # Different from SSE ESE
-    ENE(row_headers[[2]]) %>% # Different from SSE ESE
+    enhead(col_headers[[2]], "SSW") %>%
+    enhead(row_headers[[2]], "ENE") %>%
     dplyr::arrange(row, col)
   expect_equal(datacells[[5]], expect_education)
   expect_equal(datacells[[4]], expect_sex)
@@ -231,10 +231,10 @@ test_that("Compass directions ABOVE and LEFT work", {
     dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value) %>%
-    ABOVE(col_headers[[1]], drop = FALSE) %>%
-    LEFT(row_headers[[1]], drop = FALSE) %>%
-    ABOVE(col_headers[[2]], drop = FALSE) %>%
-    LEFT(row_headers[[2]], drop = FALSE) %>%
+    enhead(col_headers[[1]], "ABOVE", drop = FALSE) %>%
+    enhead(row_headers[[1]], "LEFT", drop = FALSE) %>%
+    enhead(col_headers[[2]], "ABOVE", drop = FALSE) %>%
+    enhead(row_headers[[2]], "LEFT", drop = FALSE) %>%
     dplyr::arrange(row, col)
   expect_equal(datacells[[5]], expect_sex_short)
   expect_equal(datacells[[4]], expect_purpose_short)
@@ -294,18 +294,24 @@ test_that("Compass directions ABOVE and LEFT work with corner_cells", {
     dplyr::mutate(content = ifelse(is.na(character), numeric, NA)) %>%
     dplyr::mutate(value = as.integer(content)) %>%
     dplyr::select(row, col, value) %>%
-    ABOVE(col_headers[[1]], left_border_cells) %>% # Different from ABOVE LEFT
-    N(col_headers[[2]]) %>% # Same as ABOVE LEFT
-    LEFT(row_headers[[1]], top_border_cells) %>% # Different from ABOVE LEFT
-    W(row_headers[[2]]) %>% # Same as ABOVE LEFT
+    enhead(col_headers[[1]], "ABOVE", left_border_cells) %>%
+    enhead(col_headers[[2]], "N") %>%
+    enhead(row_headers[[1]], "LEFT", top_border_cells) %>%
+    enhead(row_headers[[2]], "W") %>%
     dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_purpose_short)
   expect_equal(datacells[[5]], expect_age_short)
   expect_equal(datacells[[6]], expect_sex_short)
   expect_equal(datacells[[7]], expect_education_short)
-  expect_error(ABOVE(datacells, col_headers[[1]], left_border_cells[-2, ]),
+  expect_error(enhead(datacells,
+                      col_headers[[1]],
+                      "ABOVE",
+                      left_border_cells[-2, ]),
                "`corner_cells` must have the same number of rows as `header_cells`.")
-  expect_error(LEFT(datacells, row_headers[[1]], top_border_cells[-2, ]),
+  expect_error(enhead(datacells,
+                      row_headers[[1]],
+                      "LEFT",
+                      top_border_cells[-2, ]),
                "`corner_cells` must have the same number of rows as `header_cells`.")
 })
 
@@ -339,22 +345,28 @@ test_that("Compass directions BELOW and RIGHT work with corner_cells", {
     dplyr::mutate(content = ifelse(is.na(character), numeric, NA)) %>%
     dplyr::mutate(value = as.integer(content)) %>%
     dplyr::select(row, col, value) %>%
-    BELOW(col_headers[[2]], left_border_cells) %>% # Different from BELOW RIGHT
-    S(col_headers[[1]]) %>% # Same as BELOW RIGHT
-    RIGHT(row_headers[[2]], top_border_cells) %>% # Different from BELOW RIGHT
-    E(row_headers[[1]]) %>% # Same as BELOW RIGHT
+    enhead(col_headers[[2]], "BELOW", left_border_cells) %>%
+    enhead(col_headers[[1]], "S") %>%
+    enhead(row_headers[[2]], "RIGHT", top_border_cells, "") %>%
+    enhead(row_headers[[1]], "E") %>%
     dplyr::arrange(row, col)
   expect_equal(datacells[[4]], expect_purpose_short)
   expect_equal(datacells[[5]], expect_age_short)
   expect_equal(datacells[[6]], expect_sex_short)
   expect_equal(datacells[[7]], expect_education_short)
-  expect_error(BELOW(datacells, col_headers[[1]], left_border_cells[-2, ]),
+  expect_error(enhead(datacells,
+                      col_headers[[1]],
+                      "BELOW",
+                      left_border_cells[-2, ]),
                "`corner_cells` must have the same number of rows as `header_cells`.")
-  expect_error(RIGHT(datacells, row_headers[[1]], top_border_cells[-2, ]),
+  expect_error(enhead(datacells,
+                      row_headers[[1]],
+                      "RIGHT",
+                      top_border_cells[-2, ]),
                "`corner_cells` must have the same number of rows as `header_cells`.")
 })
 
-test_that("join_header() works", {
+test_that("enhead() works", {
   cells <- tidy_table(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
@@ -370,19 +382,13 @@ test_that("join_header() works", {
     cells %>%
     dplyr::filter(row %in% 1:2, !is.na(chr)) %>%
     dplyr::select(row, col, header = chr)
-  expect_error(join_header(datacells, col_headers[[1]], "NORTH"),
-               "The direction NORTH, is either not recognised or not yet supported.")
-  expect_error(join_header(datacells,
-                           multirow_header,
-                           W),
+  expect_error(enhead(datacells, col_headers[[1]], "NORTH"),
+               "`direction` must be one of \"NNW\", \"N\", \"NNE\", \"ENE\", \"E\", \"ESE\", \"SSE\", \"S\", \"SSW\", \"WSW\", \"W\", \"WNW\", \"ABOVE\", \"LEFT\", \"RIGHT\", \"BELOW\"")
+  expect_error(enhead(datacells, multirow_header, "W"),
                "Multiple lines of headers are not supported in this way*")
-  expect_error(join_header(datacells, col_headers[[1]], N,
+  expect_error(enhead(datacells, col_headers[[1]], "N",
                            corner_cells = col_headers[[2]]),
                "'corner_cells' is only supported for the directions 'ABOVE', 'RIGHT', 'BELOW' and 'LEFT'.")
-  expect_equal(join_header(datacells, col_headers[[1]], ABOVE),
-               ABOVE(datacells, col_headers[[1]]))
-  expect_equal(join_header(datacells, col_headers[[1]], N),
-               N(datacells, col_headers[[1]]))
 })
 
 test_that("the `drop` argument works", {
@@ -412,28 +418,12 @@ test_that("the `drop` argument works", {
   datacells <-
     dplyr::filter(cells, row >= 4, col >= 4, !is_blank) %>%
     dplyr::transmute(row, col, value = as.integer(numeric))
-  expect_equal(nrow(N(datacells, satisfaction)), 20)
-  expect_equal(nrow(N(datacells, satisfaction, drop = FALSE)), 55)
-  expect_equal(nrow(W(datacells, sex)), 12)
-  expect_equal(nrow(W(datacells, sex, drop = FALSE)), 55)
-  expect_equal(nrow(NNW(datacells, satisfaction)), 39)
-  expect_equal(nrow(NNW(datacells, satisfaction, drop = FALSE)), 55)
-  expect_equal(nrow(WNW(datacells, sex)), 49)
-  expect_equal(nrow(WNW(datacells, sex, drop = FALSE)), 55)
-})
-
-test_that("Quoted directions still work for backwards compatibility", {
-  cells <- tidy_table(purpose$`NNW WNW`)
-  col_headers <-
-    cells %>%
-    dplyr::filter(row <= 2, !is.na(chr)) %>%
-    dplyr::select(row, col, header = chr) %>%
-    split(.$row)
-  datacells <-
-    cells %>%
-    dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
-    dplyr::mutate(value = as.integer(chr)) %>%
-    dplyr::select(row, col, value)
-  expect_equal(join_header(datacells, col_headers[[1]], "N"),
-               N(datacells, col_headers[[1]]))
+  expect_equal(nrow(enhead(datacells, satisfaction, "N")), 20)
+  expect_equal(nrow(enhead(datacells, satisfaction, "N", drop = FALSE)), 55)
+  expect_equal(nrow(enhead(datacells, sex, "W")), 12)
+  expect_equal(nrow(enhead(datacells, sex, "W", drop = FALSE)), 55)
+  expect_equal(nrow(enhead(datacells, satisfaction, "NNW")), 39)
+  expect_equal(nrow(enhead(datacells, satisfaction, "NNW", drop = FALSE)), 55)
+  expect_equal(nrow(enhead(datacells, sex, "WNW")), 49)
+  expect_equal(nrow(enhead(datacells, sex, "WNW", drop = FALSE)), 55)
 })

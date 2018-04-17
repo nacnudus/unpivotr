@@ -45,7 +45,7 @@ x
 rectify(x)
 
 # How it looks after treating the cells in row 1 as headers
-y <- behead(x, N, header)
+y <- behead(x, "N", header)
 y$col <- NULL # Drop the 'col' column
 y
 

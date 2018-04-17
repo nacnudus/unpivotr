@@ -7,10 +7,10 @@ test_that("behead() works", {
   # Strip the headers and make them into data
   tidy <-
     cells %>%
-    behead(NNW, "Sex") %>%
-    behead(N, "Sense of purpose") %>%
-    behead(WNW, "Highest qualification") %>%
-    behead(W, "Age group (Life-stages)") %>%
+    behead("NNW", "Sex") %>%
+    behead("N", "Sense of purpose") %>%
+    behead("WNW", "Highest qualification") %>%
+    behead("W", "Age group (Life-stages)") %>%
     dplyr::select(-row, -col, -data_type, -chr)
   # Check against the provided 'tidy' version of the data.
   expect_equal(nrow(dplyr::anti_join(tidy, purpose$Tidy)), 1)
@@ -23,21 +23,21 @@ test_that("the `drop_na` argument of behead() works", {
   # Strip the headers and make them into data
   tidy <-
     cells %>%
-    behead(N, "Sex", drop_na = FALSE) %>%
-    behead(N, "Sense of purpose") %>%
-    behead(WNW, "Highest qualification") %>%
-    behead(W, "Age group (Life-stages)") %>%
+    behead("N", "Sex", drop_na = FALSE) %>%
+    behead("N", "Sense of purpose") %>%
+    behead("WNW", "Highest qualification") %>%
+    behead("W", "Age group (Life-stages)") %>%
     dplyr::select(-row, -col, -data_type, -chr)
   # Check against the provided 'tidy' version of the data.
   expect_equal(nrow(tidy), 80)
-  expect_equal(tidy$Sex, rep(c("Female", NA, "Male", NA), each = 20))
+  expect_equal(tidy$Sex, rep(rep(c("Female", NA, "Male", NA), each = 4), 5))
 })
 
 test_that("``\"ABOVE\"`` etc. don't work", {
   error_message <- "`direction` must be one of \"NNW\", \"N\", \"NNE\", \"ENE\", \"E\", \"ESE\", \"SSE\", \"S\", \"SSW\", \"WSW\", \"W\", \"WNW\""
   # Strip the headers and make them into data
-  expect_error(behead(cells, ABOVE, "Sex"), error_message)
-  expect_error(behead(cells, FOO, "Sex"), error_message)
+  expect_error(behead(cells, "ABOVE", "Sex"), error_message)
+  expect_error(behead(cells, "FOO", "Sex"), error_message)
 })
 
 test_that("behead() works with all common datatypes", {
@@ -53,7 +53,7 @@ test_that("behead() works with all common datatypes", {
                       ord = factor(c("e", "f"), ordered = TRUE),
                       list = list(1:2, letters[1:2]))
   x <- tidy_table(w, colnames = TRUE)
-  y <- behead(x, N, header)
+  y <- behead(x, "N", header)
   expect_equal(nrow(y), 20L)
   expect_equal(y$header, rep(colnames(w), each = 2L))
   expect_equal(y$chr[12], NA_character_)
@@ -88,7 +88,7 @@ test_that("behead() handles headers of mixed data types including dates", {
                   dttm = as.POSIXct(c("2001-01-01 11:00:00", rep(NA, 5))),
                   dbl = c(NA, NA, NA, 11, NA, 12),
                   stringsAsFactors = FALSE)
-  y <- behead(x, N, header)
+  y <- behead(x, "N", header)
   expect_equal(y$header, rep(c("2001-01-01 11:00:00", "2000-01-01"), 2))
 })
 
@@ -103,28 +103,28 @@ test_that("behead() handles headers of factor and ordered-factor data types", {
                               NULL, NULL, NULL, NULL),
                    date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
                    dbl = c(NA, NA, NA, 11, NA, 12))
-  y <- behead(x, N, header)
+  y <- behead(x, "N", header)
   expect_equal(y$header, rep(c("name", "score"), 2))
 })
 
 test_that("behead() supports custom formatters", {
   x <-
     tidy_table(BOD, FALSE, TRUE) %>%
-    behead(N, header, chr = ~ paste(.x, "foo")) %>%
-    behead(W, rowheader, dbl = as.complex)
+    behead("N", header, chr = ~ paste(.x, "foo")) %>%
+    behead("W", rowheader, dbl = as.complex)
   expect_equal(x$header[1], "demand foo")
   expect_equal(x$rowheader[1], 1+0i)
 })
 
 test_that("behead() can use row, col and data_type as headers", {
   x <- tidy_table(BOD, FALSE, TRUE)
-  y <- behead(x, N, header, values = row)
+  y <- behead(x, "N", header, values = row)
   expect_equal(y$header, rep(1L, 12L))
   expect_equal(colnames(y), c(colnames(x), "header"))
-  y <- behead(x, N, header, values = col)
+  y <- behead(x, "N", header, values = col)
   expect_equal(y$header, rep(1:2, each = 6L))
   expect_equal(colnames(y), c(colnames(x), "header"))
-  y <- behead(x, N, header, values = data_type)
+  y <- behead(x, "N", header, values = data_type)
   expect_equal(y$header, rep("chr", 12L))
   expect_equal(colnames(y), c(colnames(x), "header"))
 })
