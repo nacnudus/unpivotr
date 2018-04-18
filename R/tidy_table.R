@@ -107,21 +107,21 @@ tidy_table.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
                             data_type = type)
   out <- tidyr::spread(out, type, value)
   if (row_names) {
-    row_names <- row.names(x)
+    rnames <- row.names(x)
     out$col <- out$col + 1L
     out <- dplyr::bind_rows(out,
                             tibble::data_frame(col = 1L,
-                                               row = seq_along(row_names),
-                                               chr = rlang::as_list(row_names),
+                                               row = seq_along(rnames),
+                                               chr = rlang::as_list(rnames),
                                                data_type = "chr"))
   }
   if (col_names) {
-    col_names <- colnames(x)
+    cnames <- colnames(x)
     out$row <- out$row + 1L
     out <- dplyr::bind_rows(out,
                             tibble::data_frame(row = 1L,
-                                               col = seq_along(col_names) + row_names,
-                                               chr = rlang::as_list(col_names),
+                                               col = seq_along(cnames) + row_names,
+                                               chr = rlang::as_list(cnames),
                                                data_type = "chr"))
   }
   # Convert non-list-columns to vectors

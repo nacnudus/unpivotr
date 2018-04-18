@@ -2,9 +2,9 @@ context("tidy_table()")
 
 test_that("tidy_table works with or without row and column names", {
   expect_equal(nrow(tidy_table(Formaldehyde)), 12)
-  expect_equal(nrow(tidy_table(Formaldehyde, colnames = TRUE)), 14)
-  expect_equal(nrow(tidy_table(Formaldehyde, rownames = TRUE)), 18)
-  expect_equal(nrow(tidy_table(Formaldehyde, rownames = TRUE, colnames = TRUE)), 20)
+  expect_equal(nrow(tidy_table(Formaldehyde, col_names = TRUE)), 14)
+  expect_equal(nrow(tidy_table(Formaldehyde, row_names = TRUE)), 18)
+  expect_equal(nrow(tidy_table(Formaldehyde, row_names = TRUE, col_names = TRUE)), 20)
 })
 
 test_that("tidy_table works with html tables", {
@@ -79,7 +79,7 @@ test_that("tidy_table works with all common datatypes", {
                                as.POSIXct("2001-01-01 01:01:02")),
                       chr = c("a", "b"),
                       list = list(1:2, letters[1:2]))
-  y <- tidy_table(x, colnames = TRUE)
+  y <- tidy_table(x, col_names = TRUE)
   expect_equal(colnames(y), c("row", "col", "data_type", sort(colnames(x))))
   x_class <- purrr::map(x, class)
   y_class <- purrr::map(y, class)

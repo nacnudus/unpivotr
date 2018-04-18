@@ -124,7 +124,7 @@ test_that("spatter() doesn't convert factors to logical when all missing", {
     tibble::tibble(dbl = c(1, 2),
                    fct = factor(NA, NA),
                    ord = factor(NA, NA, ordered = TRUE)) %>%
-    tidy_table(colnames = TRUE) %>%
+    tidy_table(col_names = TRUE) %>%
     behead("N", header) %>%
     dplyr::select(-col, -chr) %>%
     spatter(header)
@@ -175,7 +175,7 @@ test_that("spatter() works on common data types", {
                    chr = c("a", "b"),
                    list = list(1:2, letters[1:2]))
   y <-
-    tidy_table(x, colnames = TRUE) %>%
+    tidy_table(x, col_names = TRUE) %>%
     behead("N", header) %>%
     dplyr::select(-col) %>%
     spatter(header) %>%

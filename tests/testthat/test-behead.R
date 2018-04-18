@@ -52,7 +52,7 @@ test_that("behead() works with all common datatypes", {
                       fct = factor(c("c", "d")),
                       ord = factor(c("e", "f"), ordered = TRUE),
                       list = list(1:2, letters[1:2]))
-  x <- tidy_table(w, colnames = TRUE)
+  x <- tidy_table(w, col_names = TRUE)
   y <- behead(x, "N", header)
   expect_equal(nrow(y), 20L)
   expect_equal(y$header, rep(colnames(w), each = 2L))

@@ -72,7 +72,7 @@ To unpivot this table, first get a tabular representation of each cell, its
 value and its position in the original pivot table.
 
 ```{r, echo = TRUE}
-cells <- tidy_table(pivoted, colnames = FALSE)
+cells <- tidy_table(pivoted, col_names = FALSE)
 cells <- cells[!is.na(cells$chr), ]
 head(cells)
 ```
