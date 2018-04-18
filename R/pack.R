@@ -20,7 +20,7 @@
 #'
 #' [unpack()] is the complement.
 #'
-#' @param .data A data frame of cells, one row per cell.  For [pack()] it must
+#' @param cells A data frame of cells, one row per cell.  For [pack()] it must
 #' have a column that names, for each cell/row, which of the other columns the
 #' value is in.  For [unpack()] it must have a list-column of cell values, where
 #' each element is named according to the data type of the value.
@@ -59,30 +59,30 @@
 #' # pack() and unpack() are complements
 #' pack(x)
 #' unpack(pack(x))
-pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
+pack <- function(cells, types = data_type, name = "value", drop_types = TRUE,
                  drop_type_cols = TRUE) {
   types <- rlang::ensym(types)
   name <- rlang::ensym(name)
-  type_colnames <- format(unique(dplyr::pull(.data, !! types)),
+  type_colnames <- format(unique(dplyr::pull(cells, !! types)),
                           justify = "none",
                           trim = TRUE)
   # Default any types without corresponding value columns to NA
-  missing_types <- setdiff(type_colnames, colnames(.data))
+  missing_types <- setdiff(type_colnames, colnames(cells))
   new_cols <- rep_len(NA, length(missing_types))
   names(new_cols) <- missing_types
-  .data <- dplyr::mutate(.data,
+  cells <- dplyr::mutate(cells,
                          !!! new_cols,
                          !! types := format(!! types,
                                             justify = "none",
                                             trim = TRUE))
   # Create the packed value column
   out <-
-    .data %>%
+    cells %>%
     dplyr::mutate(!! name := purrr::map2(seq_len(n()),
                                          !! types,
-                                         ~ (!! .data)[.x, .y, drop = TRUE][[1]]))
+                                         ~ (!! cells)[.x, .y, drop = TRUE][[1]]))
   # Name the elements of the packed value column by their types
-  names(out[[rlang::expr_text(name)]]) <- dplyr::pull(.data, !! types)
+  names(out[[rlang::expr_text(name)]]) <- dplyr::pull(cells, !! types)
   if(drop_types && rlang::expr_text(types) != rlang::expr_text(name)) {
     out <- dplyr::select(out, - !! types)
   }
@@ -95,11 +95,11 @@ pack <- function(.data, types = data_type, name = "value", drop_types = TRUE,
 
 #' @describeIn pack Unpack cell values from one list-column into separate columns per data type
 #' @export
-unpack <- function(.data, values = value, name = "data_type",
+unpack <- function(cells, values = value, name = "data_type",
                    drop_packed = TRUE) {
   values <- rlang::ensym(values)
   name <- rlang::ensym(name)
-  types <- names(dplyr::pull(.data, !! values))
+  types <- names(dplyr::pull(cells, !! values))
   type_names <- format(unique(types), justify = "none", trim = TRUE)
   assignments <- purrr::map(type_names,
                             ~ rlang::expr(ifelse(types == !! .x,
@@ -107,7 +107,7 @@ unpack <- function(.data, values = value, name = "data_type",
                                                  !! list(NULL))))
   names(assignments) <- type_names
   out <-
-    dplyr::mutate(.data, !! name := types, !!! assignments) %>%
+    dplyr::mutate(cells, !! name := types, !!! assignments) %>%
     dplyr::mutate_at(type_names,
                      concatenate,
                      combine_factors = FALSE,

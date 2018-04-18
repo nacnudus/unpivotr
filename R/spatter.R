@@ -7,16 +7,16 @@
 #' the value of the cell is represented in a different column, depending on the
 #' data type.
 #'
-#' @param .data A data frame where each row represents a cell, with columns
+#' @param cells A data frame where each row represents a cell, with columns
 #'   `row` and `col`, usually a column `data_type`, and additional columns of
 #'   cell values.
 #' @param key The name of the column whose values will become column names
 #' @param ... functions for formatting particular data types, named by the data
-#'   type (the name of the column of `.data` that contains the cell value.
-#' @param values Optional. The column of `.data` to use as the value of each
+#'   type (the name of the column of `cells` that contains the cell value.
+#' @param values Optional. The column of `cells` to use as the value of each
 #'   cell.  Given as a bare variable name.  If omitted (the default), the `type`
 #'   argument will be used instead.
-#' @param types Optional. The column that names, for each row of `.data`, which
+#' @param types Optional. The column that names, for each row of `cells`, which
 #'   column contains the cell value.  Defaults to `data_type`.
 #' @export
 #' @examples
@@ -91,18 +91,18 @@
 #' # column).  If your custom functions aren't sufficient to avoid the need for
 #' # coercion, then they will be overridden.
 #' spatter(y, header, character = ~ toupper(.), numeric = as.complex)
-spatter <- function(.data, key, ..., values = NULL, types = data_type) {
+spatter <- function(cells, key, ..., values = NULL, types = data_type) {
   UseMethod("spatter")
 }
 
 #' @export
-spatter.data.frame <- function(.data, key, ..., values = NULL,
+spatter.data.frame <- function(cells, key, ..., values = NULL,
                                types = data_type) {
   key <- rlang::ensym(key)
   dots <- list(...)
   functions <- purrr::map(dots, purrr::as_mapper)
   values <- rlang::enexpr(values)
-  new_colnames <- format(sort(unique(dplyr::pull(.data, !! key))),
+  new_colnames <- format(sort(unique(dplyr::pull(cells, !! key))),
                          justify = "none",
                          trim = TRUE)
   if(is.null(values)) {
@@ -111,12 +111,12 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
   } else {
     original_types <- rlang::ensym(types)
     types <- rlang::sym(".data_type")
-    .data <-
-      .data %>%
+    cells <-
+      cells %>%
       dplyr::mutate(.value = !! values) %>%
       dplyr::mutate(!! types := ".value")
     if(!(rlang::expr_text(values) %in% c(rlang::expr_text(key)))) {
-        .data <- dplyr::select(.data, - !! values)
+        cells <- dplyr::select(cells, - !! values)
     }
   }
   if(is.null(values)) {
@@ -125,9 +125,9 @@ spatter.data.frame <- function(.data, key, ..., values = NULL,
     drop_types <- !(c(".data_type") %in% c(rlang::expr_text(key),
                                            rlang::expr_text(values)))
   }
-  out <- pack(.data, types = !! types, name = ".value", drop_types = drop_types)
+  out <- pack(cells, types = !! types, name = ".value", drop_types = drop_types)
   # Calculate the positions of cols to be created by spread()
-  n_keys <- length(unique(dplyr::pull(.data, !! key)))
+  n_keys <- length(unique(dplyr::pull(cells, !! key)))
   n_cols <- ncol(out) - 2 + n_keys
   new_col_positions <- seq_len(n_keys) + (n_cols - n_keys)
   out <-
