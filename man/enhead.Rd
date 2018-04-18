@@ -66,10 +66,10 @@ cells <- tidy_table(x)
 cells <- cells[!is.na(cells$chr), ]
 head(cells)
 # Select the cells containing the values
-datacells <-
+data_cells <-
   filter(cells, row >= 3, col >= 3) \%>\%
   transmute(row, col, count = as.integer(chr))
-head(datacells)
+head(data_cells)
 # Select the headers
 qualification <-
   filter(cells, col == 1) \%>\%
@@ -84,7 +84,7 @@ satisfaction <-
   filter(cells, row == 2) \%>\%
   select(row, col, satisfaction = chr)
 # From each data cell, search for the nearest one of each of the headers
-datacells \%>\%
+data_cells \%>\%
   enhead(gender, "NNW") \%>\%
   enhead(satisfaction, "N") \%>\%
   enhead(qualification, "WNW") \%>\%
@@ -94,6 +94,6 @@ datacells \%>\%
 # The `drop` argument controls what happens when for some cells there is no
 # header in the given direction. When `drop = TRUE` (the default), cells that
 # can't be joined to a header are dropped.  Otherwise they are kept.
-enhead(datacells, gender, "N")
-enhead(datacells, gender, "N", drop = FALSE)
+enhead(data_cells, gender, "N")
+enhead(data_cells, gender, "N", drop = FALSE)
 }

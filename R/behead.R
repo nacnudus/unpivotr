@@ -106,8 +106,8 @@ behead <- function(cells, direction, name, ..., values = NULL,
                   !! name := concatenate(!! name)) %>%
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
-  datacells <- dplyr::filter(cells, !is_header)
-  out <- enhead(datacells, headers, direction, drop = FALSE)
+  data_cells <- dplyr::filter(cells, !is_header)
+  out <- enhead(data_cells, headers, direction, drop = FALSE)
   if(!values_was_null) out <- dplyr::select(out, -.value, -.data_type)
   out
 }

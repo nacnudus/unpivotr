@@ -7,7 +7,7 @@ test_that("functions return tibbles", {
   cells <- tidy_table(x)
   cells <- cells[!is.na(cells$chr), ]
   # Select the cells containing the values
-  datacells <-
+  data_cells <-
     cells %>%
     dplyr::filter(row >= 3, col >= 3)
   # Select the column headers
@@ -21,20 +21,20 @@ test_that("functions return tibbles", {
     dplyr::filter(col <= 2) %>%
     dplyr::select(row, col, header = chr) %>%
     split(.$col) # Separate each row of headers
-  expect_true(tibble::is_tibble(ABOVE(datacells, col_headers$`1`)))
-  expect_true(tibble::is_tibble(BELOW(datacells, col_headers$`1`)))
-  expect_true(tibble::is_tibble(LEFT(datacells, row_headers$`1`)))
-  expect_true(tibble::is_tibble(RIGHT(datacells, row_headers$`1`)))
-  expect_true(tibble::is_tibble(N(datacells, col_headers$`1`)))
-  expect_true(tibble::is_tibble(E(datacells, row_headers$`1`)))
-  expect_true(tibble::is_tibble(S(datacells, col_headers$`1`)))
-  expect_true(tibble::is_tibble(W(datacells, row_headers$`1`)))
-  expect_true(tibble::is_tibble(NNE(datacells, col_headers$`1`)))
-  expect_true(tibble::is_tibble(NNW(datacells, col_headers$`1`)))
-  expect_true(tibble::is_tibble(ENE(datacells, row_headers$`1`)))
-  expect_true(tibble::is_tibble(ESE(datacells, row_headers$`1`)))
-  expect_true(tibble::is_tibble(SSE(datacells, col_headers$`1`)))
-  expect_true(tibble::is_tibble(SSW(datacells, col_headers$`1`)))
-  expect_true(tibble::is_tibble(WSW(datacells, row_headers$`1`)))
-  expect_true(tibble::is_tibble(WNW(datacells, row_headers$`1`)))
+  expect_true(tibble::is_tibble(ABOVE(data_cells, col_headers$`1`)))
+  expect_true(tibble::is_tibble(BELOW(data_cells, col_headers$`1`)))
+  expect_true(tibble::is_tibble(LEFT(data_cells, row_headers$`1`)))
+  expect_true(tibble::is_tibble(RIGHT(data_cells, row_headers$`1`)))
+  expect_true(tibble::is_tibble(N(data_cells, col_headers$`1`)))
+  expect_true(tibble::is_tibble(E(data_cells, row_headers$`1`)))
+  expect_true(tibble::is_tibble(S(data_cells, col_headers$`1`)))
+  expect_true(tibble::is_tibble(W(data_cells, row_headers$`1`)))
+  expect_true(tibble::is_tibble(NNE(data_cells, col_headers$`1`)))
+  expect_true(tibble::is_tibble(NNW(data_cells, col_headers$`1`)))
+  expect_true(tibble::is_tibble(ENE(data_cells, row_headers$`1`)))
+  expect_true(tibble::is_tibble(ESE(data_cells, row_headers$`1`)))
+  expect_true(tibble::is_tibble(SSE(data_cells, col_headers$`1`)))
+  expect_true(tibble::is_tibble(SSW(data_cells, col_headers$`1`)))
+  expect_true(tibble::is_tibble(WSW(data_cells, row_headers$`1`)))
+  expect_true(tibble::is_tibble(WNW(data_cells, row_headers$`1`)))
 })
