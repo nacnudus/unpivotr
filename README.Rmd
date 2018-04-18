@@ -111,10 +111,10 @@ the data cells with the headers, by proximity in given compass directions.
 # From each data cell, search for the nearest one of each of the headers
 unpivoted <-
   data_cells %>%
-  NNW(col_headers$`1`) %>% # Search north (up) and north-west (up-left)
-  N(col_headers$`2`) %>% # Search directly north (up)
-  WNW(row_headers$`1`) %>% # Search west (left) and north-west
-  W(row_headers$`2`) # Search directly left (west)
+  enhead(col_headers$`1`, "NNW") %>% # Search north (up) and north-west (up-left)
+  enhead(col_headers$`2`, "N") %>% # Search directly north (up)
+  enhead(row_headers$`1`, "WNW") %>% # Search west (left) and north-west
+  enhead(row_headers$`2`, "W") # Search directly left (west)
 unpivoted
 ```
 
