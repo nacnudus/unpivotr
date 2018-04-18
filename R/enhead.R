@@ -102,9 +102,6 @@ enhead <- function(data_cells, header_cells, direction,
            ", 'BELOW' and 'LEFT'.")
     }
     do.call(direction, list(data_cells, header_cells, drop))
-  } else {
-    stop("The direction ", direction,
-         ", is either not recognised or not yet supported.")
   }
 }
 
