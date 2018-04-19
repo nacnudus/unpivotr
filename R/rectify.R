@@ -81,6 +81,7 @@ rectify <- function(cells, ..., values = NULL, types = data_type) {
 
 #' @export
 rectify.data.frame <- function(cells, ..., values = NULL, types = data_type) {
+  if (nrow(cells) == 0L) return(tibble::tibble())
   values <- rlang::enexpr(values)
   types <- rlang::ensym(types)
   cells <- pad(cells)

@@ -129,3 +129,7 @@ test_that("Blank columns amongst the data are retained", {
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x), rectify_correct)
 })
+
+test_that("rectify() handles zero-row data frames", {
+  expect_error(rectify(slice(tidy_table(mtcars, col_names = TRUE), 0L)), NA)
+})
