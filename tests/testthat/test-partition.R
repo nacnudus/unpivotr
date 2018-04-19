@@ -70,3 +70,16 @@ test_that("partition() arguments are checked", {
                   !(character %in% c("Sex", "Value", "Female", "Male")))
   expect_error(partition(multiples, tl_corners, "top_bottom"))
 })
+
+test_that("partition() stops on non-distinct cells", {
+  multiples <- dplyr::arrange(purpose$small_multiples, col, row)
+  tl_corners <-
+    dplyr::filter(multiples,
+                  !is.na(character),
+                  !(character %in% c("Sex", "Value", "Female", "Male")))
+  expect_error(partition(dplyr::bind_rows(multiples, multiples),
+                         tl_corners,
+                         nest = FALSE),
+               "dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells) is not TRUE",
+               fixed = TRUE)
+})

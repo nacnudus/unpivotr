@@ -128,3 +128,10 @@ test_that("behead() can use row, col and data_type as headers", {
   expect_equal(y$header, rep("chr", 12L))
   expect_equal(colnames(y), c(colnames(x), "header"))
 })
+
+test_that("behead() stops on non-distinct cells", {
+  expect_error(behead(dplyr::bind_rows(cells, cells), "NNW"),
+               "dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells) is not TRUE",
+               fixed = TRUE)
+})
+

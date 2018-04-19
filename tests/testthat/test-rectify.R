@@ -133,3 +133,15 @@ test_that("Blank columns amongst the data are retained", {
 test_that("rectify() handles zero-row data frames", {
   expect_error(rectify(slice(tidy_table(mtcars, col_names = TRUE), 0L)), NA)
 })
+
+test_that("rectify() stops on non-distinct cells", {
+  x <- data.frame(row = c(1L, 1L, 2L, 2L),
+                  col = c(1L, 2L, 1L, 2L),
+                  data_type = rep("chr", 4),
+                  chr = c("a", "b", "c", "d"),
+                  stringsAsFactors = FALSE)
+  expect_error(rectify(dplyr::bind_rows(x, x), values = row),
+               "dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells) is not TRUE",
+               fixed = TRUE)
+})
+

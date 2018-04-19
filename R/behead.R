@@ -76,6 +76,7 @@
 behead <- function(cells, direction, name, ..., values = NULL,
                    types = data_type, drop_na = TRUE) {
   check_direction_behead(direction)
+  check_distinct(cells)
   name <- rlang::ensym(name)
   dots <- list(...)
   functions <- purrr::map(dots, purrr::as_mapper)

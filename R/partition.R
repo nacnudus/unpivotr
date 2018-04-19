@@ -74,6 +74,7 @@
 #' partition(multiples, bl_corners, align = "bottom_left", strict = FALSE)
 partition <- function(cells, corners, align = "top_left",
                      partition_name = "partition", nest = TRUE, strict = TRUE) {
+  check_distinct(cells)
   if (!(align %in% c("top_left", "top_right",
                        "bottom_left", "bottom_right"))) {
     stop("`align` must be one of:

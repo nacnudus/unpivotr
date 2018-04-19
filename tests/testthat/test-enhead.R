@@ -322,3 +322,25 @@ test_that("the `drop` argument works", {
   expect_equal(nrow(enhead(data_cells, sex, "WNW")), 49)
   expect_equal(nrow(enhead(data_cells, sex, "WNW", drop = FALSE)), 55)
 })
+
+test_that("enhead() stops on non-distinct cells", {
+  cells <- tidy_table(purpose$`NNW WNW`)
+  col_headers <-
+    cells %>%
+    dplyr::filter(row <= 2, !is.na(chr)) %>%
+    dplyr::select(row, col, header = chr) %>%
+    split(.$row)
+  row_headers <-
+    cells %>%
+    dplyr::filter(col <= 2, !is.na(chr)) %>% # Select all rows of headers at once
+    dplyr::select(row, col, header = chr) %>%
+    split(.$col) # Return each row of headers in its own element of a list
+  data_cells <-
+    cells %>%
+    dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
+    dplyr::mutate(value = as.integer(chr)) %>%
+    dplyr::select(row, col, value)
+  expect_error(enhead(dplyr::bind_rows(cells, cells), col_headers[[1]], "NNW"),
+               "dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells) is not TRUE",
+               fixed = TRUE)
+})

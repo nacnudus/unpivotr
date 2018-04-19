@@ -84,6 +84,8 @@
 enhead <- function(data_cells, header_cells, direction, drop = TRUE) {
   check_header(header_cells)
   check_direction_enhead(direction)
+  check_distinct(data_cells)
+  check_distinct(header_cells)
   if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
     do.call(direction, list(data_cells, header_cells))
   } else if (direction %in% c("N", "E", "S", "W",
@@ -232,4 +234,8 @@ check_direction_enhead <- function(direction_string) {
          paste(directions, collapse = "\", \""),
          "\"")
   }
+}
+
+check_distinct <- function(cells) {
+  stopifnot(dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells))
 }
