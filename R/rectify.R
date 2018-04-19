@@ -151,10 +151,6 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
 } # nocov end
 
 pad <- function(cells, rows = cells$row, cols = cells$col) {
-  if (nrow(cells) == 0 & (length(rows) == 0 | length(cols) == 0)) {
-    # Neither any cells provided, nor any rows/cols to pad
-    return(cells)
-  }
   padding <- tidyr::crossing(row = tidyr::full_seq(c(cells$row, rows), 1L),
                              col = tidyr::full_seq(c(cells$col, cols), 1L))
   dplyr::full_join(padding, cells, by = c("row", "col"))
