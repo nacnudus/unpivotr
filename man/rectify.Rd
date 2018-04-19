@@ -69,7 +69,7 @@ x
 
 # This is the 'tidy' arrangement that is difficult for humans to read (but
 # easy for computers)
-y <- tidy_table(x, colnames = TRUE)
+y <- tidy_table(x, col_names = TRUE)
 y
 
 # rectify() projects the cells as a spreadsheet again, for humans to read.

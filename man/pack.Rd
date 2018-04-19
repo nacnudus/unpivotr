@@ -5,13 +5,13 @@
 \alias{unpack}
 \title{Pack cell values from separate columns per data type into one list-column}
 \usage{
-pack(.data, types = data_type, name = "value", drop_types = TRUE,
+pack(cells, types = data_type, name = "value", drop_types = TRUE,
   drop_type_cols = TRUE)
 
-unpack(.data, values = value, name = "data_type", drop_packed = TRUE)
+unpack(cells, values = value, name = "data_type", drop_packed = TRUE)
 }
 \arguments{
-\item{.data}{A data frame of cells, one row per cell.  For \code{\link[=pack]{pack()}} it must
+\item{cells}{A data frame of cells, one row per cell.  For \code{\link[=pack]{pack()}} it must
 have a column that names, for each cell/row, which of the other columns the
 value is in.  For \code{\link[=unpack]{unpack()}} it must have a list-column of cell values, where
 each element is named according to the data type of the value.}

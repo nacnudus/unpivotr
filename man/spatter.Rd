@@ -4,23 +4,23 @@
 \alias{spatter}
 \title{Spread key-value pairs of mixed types across multiple columns}
 \usage{
-spatter(.data, key, ..., values = NULL, types = data_type)
+spatter(cells, key, ..., values = NULL, types = data_type)
 }
 \arguments{
-\item{.data}{A data frame where each row represents a cell, with columns
+\item{cells}{A data frame where each row represents a cell, with columns
 \code{row} and \code{col}, usually a column \code{data_type}, and additional columns of
 cell values.}
 
 \item{key}{The name of the column whose values will become column names}
 
 \item{...}{functions for formatting particular data types, named by the data
-type (the name of the column of \code{.data} that contains the cell value.}
+type (the name of the column of \code{cells} that contains the cell value.}
 
-\item{values}{Optional. The column of \code{.data} to use as the value of each
+\item{values}{Optional. The column of \code{cells} to use as the value of each
 cell.  Given as a bare variable name.  If omitted (the default), the \code{type}
 argument will be used instead.}
 
-\item{types}{Optional. The column that names, for each row of \code{.data}, which
+\item{types}{Optional. The column that names, for each row of \code{cells}, which
 column contains the cell value.  Defaults to \code{data_type}.}
 }
 \description{
