@@ -2,6 +2,7 @@
 
 S3method(justify,data.frame)
 S3method(print,cell_grid)
+S3method(rectify,data.frame)
 S3method(spatter,data.frame)
 S3method(tidy_table,data.frame)
 S3method(tidy_table,xml_document)

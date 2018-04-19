@@ -76,6 +76,11 @@
 #' # Supply named functions to format cell values for display.
 #' rectify(y, chr = toupper, int = ~ . * 10)
 rectify <- function(cells, ..., values = NULL, types = data_type) {
+  UseMethod("rectify")
+}
+
+#' @export
+rectify.data.frame <- function(cells, ..., values = NULL, types = data_type) {
   values <- rlang::enexpr(values)
   types <- rlang::ensym(types)
   cells <- pad(cells)

@@ -54,9 +54,9 @@ Would be presented as\preformatted{row/col 1(A) 2(B)
 The letters in the column names are for comparing this view with a
 spreadsheet application.
 }
-\section{Methods (by generic)}{
+\section{Methods (by class)}{
 \itemize{
-\item \code{print}: S3 method for class \code{cell_grid}
+\item \code{cell_grid}: S3 method for class \code{cell_grid}
 }}
 
 \examples{
