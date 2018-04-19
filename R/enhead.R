@@ -9,11 +9,6 @@
 #'   and 'column', which are `numeric` or `integer`.
 #' @param header_cells Data frame of header cells with at least the columns
 #'   'row' and 'column', which are numeric/integer vectors.
-#' @param corner_cells Data frame of cells in one row or one column, giving the
-#'   corner of the area that a header applies to.  "BELOW" and "LEFT".  For
-#'   example, `corner_cells` could be cells with borders on one side.  This is
-#'   useful when the nearest header might be the wrong header because it lies on
-#'   the other side of a border.
 #' @param direction The direction between a data cell and its header, one of
 #' `"N"`, `"E"`, `"S"`, `"W"`, `"NNW"`, `"NNE"`, `"ENE"`, `"ESE"`, `"SSE"`,
 #' `"SSW"`. `"WSW"`, `"WNW"`, `"ABOVE"`, `"BELOW"`, `"LEFT"` and `"RIGHT"`.  See
@@ -42,8 +37,8 @@
 #' the data cell.  This is useful for matching headers that are not aligned to
 #' the edge of the data cells that they refer to.  There can be a tie in the
 #' directions `"ABOVE"`, `"BELOW"`, `"LEFT"` and `"RIGHT"` , causing `NA`s to be
-#' returned in the place of header values.  Provide `corner_cells` to break
-#' ties.
+#' returned in the place of header values.  Avoid ties by using [justify()]
+#' first to align header cells to the corner of the data cells they describe.
 #'
 #' @name enhead
 #' @export
@@ -86,21 +81,16 @@
 #' # can't be joined to a header are dropped.  Otherwise they are kept.
 #' enhead(data_cells, gender, "N")
 #' enhead(data_cells, gender, "N", drop = FALSE)
-enhead <- function(data_cells, header_cells, direction,
-                        corner_cells = NULL, drop = TRUE) {
+enhead <- function(data_cells, header_cells, direction, drop = TRUE) {
   check_header(header_cells)
   check_direction_enhead(direction)
   if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
-    do.call(direction, list(data_cells, header_cells, corner_cells))
+    do.call(direction, list(data_cells, header_cells))
   } else if (direction %in% c("N", "E", "S", "W",
                              "NNW", "NNE",
                              "ENE", "ESE",
                              "SSE", "SSW",
                              "WSW", "WNW")) {
-    if (!is.null(corner_cells)) {
-      stop("'corner_cells' is only supported for the directions 'ABOVE', 'RIGHT'",
-           ", 'BELOW' and 'LEFT'.")
-    }
     do.call(direction, list(data_cells, header_cells, drop))
   }
 }
@@ -172,65 +162,34 @@ corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   out
 }
 
-ABOVE <- function(data_cells, header_cells, corner_cells = NULL, drop = TRUE) {
-  if (is.null(corner_cells) || min(corner_cells$col) <= min(header_cells$col)) {
-    corner <- rlang::quo(NNW)
-  } else {
-    corner <- rlang::quo(NNE)
-  }
-  side_join(data_cells, header_cells, !! corner, corner_cells, drop)
+ABOVE <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "NNW", drop)
 }
 
-LEFT <- function(data_cells, header_cells, corner_cells = NULL, drop = TRUE) {
-  if (is.null(corner_cells) || min(corner_cells$row) <= min(header_cells$row)) {
-    corner <- rlang::quo(WNW)
-  } else {
-    corner <- rlang::quo(WSW)
-  }
-  side_join(data_cells, header_cells, !! corner, corner_cells, drop)
+LEFT <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "WNW", drop)
 }
 
-BELOW <- function(data_cells, header_cells, corner_cells = NULL, drop = TRUE) {
-  if (is.null(corner_cells) || min(corner_cells$col) <= min(header_cells$col)) {
-    corner <- rlang::quo(SSW)
-  } else {
-    corner <- rlang::quo(SSE)
-  }
-  side_join(data_cells, header_cells, !! corner, corner_cells, drop)
+BELOW <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "SSW", drop)
 }
 
-RIGHT <- function(data_cells, header_cells, corner_cells = NULL, drop = TRUE) {
-  if (is.null(corner_cells) || min(corner_cells$row) <= min(header_cells$row)) {
-    corner <- rlang::quo(ENE)
-  } else {
-    corner <- rlang::quo(ESE)
-  }
-  side_join(data_cells, header_cells, !! corner, corner_cells, drop)
+RIGHT <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "ENE", drop)
 }
 
-side_join <- function(data_cells, header_cells, corner, corner_cells = NULL, drop = TRUE) {
-  corner <- rlang::enquo(corner)
+side_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   check_header(header_cells)
-  if (!is.null(corner_cells)) {
-    if (nrow(corner_cells) != nrow(header_cells)) {
-      stop("`corner_cells` must have the same number of rows as `header_cells`.")
-    }
-    header_cells <- dplyr::arrange(header_cells, row, col)
-    corner_cells <- dplyr::arrange(corner_cells, row, col)
-    header_cells$row <- corner_cells$row
-    header_cells$col <- corner_cells$col
+  if (corner %in% c("NNW", "NNE", "SSW", "SSE")) {
+    pos <- rlang::sym("col")
   } else {
-    corner_text <- rlang::f_text(corner)
-    if (corner_text %in% c("NNW", "NNE", "SSW", "SSE")) {
-      pos <- rlang::sym("col")
-    } else {
-      pos <- rlang::sym("row")
-    }
-    # The domain of each header is up to (but not including) half-way between it
-    # and the previous header
-    header_cells <- dplyr::mutate(header_cells, !! pos := corner_pos(!! pos, corner))
+    pos <- rlang::sym("row")
   }
-  rlang::as_function(corner)()(data_cells, header_cells, drop = drop)
+  # The domain of each header is up to (but not including) half-way between it
+  # and the previous header
+  header_cells <- dplyr::mutate(header_cells,
+                                !! pos := corner_pos(!! pos, corner))
+  rlang::as_function(corner)(data_cells, header_cells, drop = drop)
 }
 
 corner_pos <- function(cells, corner) {
@@ -242,7 +201,7 @@ corner_pos <- function(cells, corner) {
   corner_coefs <- c(2L, -2L, 2L, -2L, -2L, 2L, -2L, 2L)
   corner_extremes <- c(rep(c(floor, ceiling), 2L),
                        rep(c(ceiling, floor), 2L))
-  corner_i <- match(rlang::f_text(corner), corner_names)
+  corner_i <- match(corner, corner_names)
   pos <- rlang::sym(corner_poss[corner_i])
   look <- rlang::as_function(corner_looks[[corner_i]], ns_env("dplyr"))
   default <- corner_defaults[corner_i]

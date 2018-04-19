@@ -4,8 +4,7 @@
 \alias{enhead}
 \title{Join data cells to headers}
 \usage{
-enhead(data_cells, header_cells, direction, corner_cells = NULL,
-  drop = TRUE)
+enhead(data_cells, header_cells, direction, drop = TRUE)
 }
 \arguments{
 \item{data_cells}{Data frame of data cells with at least the columns 'row'
@@ -18,12 +17,6 @@ and 'column', which are \code{numeric} or \code{integer}.}
 \code{"N"}, \code{"E"}, \code{"S"}, \code{"W"}, \code{"NNW"}, \code{"NNE"}, \code{"ENE"}, \code{"ESE"}, \code{"SSE"},
 \code{"SSW"}. \code{"WSW"}, \code{"WNW"}, \code{"ABOVE"}, \code{"BELOW"}, \code{"LEFT"} and \code{"RIGHT"}.  See
 'details'.}
-
-\item{corner_cells}{Data frame of cells in one row or one column, giving the
-corner of the area that a header applies to.  "BELOW" and "LEFT".  For
-example, \code{corner_cells} could be cells with borders on one side.  This is
-useful when the nearest header might be the wrong header because it lies on
-the other side of a border.}
 
 \item{drop}{Logical vector length 1. Whether data cells that can't be
 associated with a header should be dropped.  Default: \code{TRUE}.}
@@ -54,8 +47,8 @@ matches the nearest header, whether above-left, above-right or directly above
 the data cell.  This is useful for matching headers that are not aligned to
 the edge of the data cells that they refer to.  There can be a tie in the
 directions \code{"ABOVE"}, \code{"BELOW"}, \code{"LEFT"} and \code{"RIGHT"} , causing \code{NA}s to be
-returned in the place of header values.  Provide \code{corner_cells} to break
-ties.
+returned in the place of header values.  Avoid ties by using \code{\link[=justify]{justify()}}
+first to align header cells to the corner of the data cells they describe.
 }
 \examples{
 library(dplyr)

@@ -264,108 +264,6 @@ test_that("Compass directions BELOW and RIGHT work", {
   expect_equal(data_cells[[4]], expect_purpose_short)
 })
 
-test_that("Compass directions ABOVE and LEFT work with corner_cells", {
-  spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-  cells <- tidyxl::xlsx_cells(spreadsheet, "ABOVE LEFT border")
-  formatting <- tidyxl::xlsx_formats(spreadsheet)
-  left_borders <- which(!is.na(formatting$local$border$left$style))
-  top_borders <- which(!is.na(formatting$local$border$top$style))
-  left_border_cells <-
-    cells %>%
-    dplyr::filter(row == 2, local_format_id %in% left_borders) %>%
-    dplyr::select(row, col)
-  top_border_cells <-
-    cells %>%
-    dplyr::filter(col == 2, local_format_id %in% top_borders) %>%
-    dplyr::select(row, col)
-  row_headers <-
-    cells %>%
-    dplyr::filter(col <= 3, !is.na(character)) %>%
-    dplyr::select(row, col, header = character) %>%
-    split(.$col)
-  col_headers <-
-    cells %>%
-    dplyr::filter(row <= 3, !is.na(character)) %>%
-    dplyr::select(row, col, header = character) %>%
-    split(.$row)
-  data_cells <-
-    cells %>%
-    dplyr::filter(row >= 4, col >= 4, !is_blank) %>%
-    dplyr::mutate(content = ifelse(is.na(character), numeric, NA)) %>%
-    dplyr::mutate(value = as.integer(content)) %>%
-    dplyr::select(row, col, value) %>%
-    enhead(col_headers[[1]], "ABOVE", left_border_cells) %>%
-    enhead(col_headers[[2]], "N") %>%
-    enhead(row_headers[[1]], "LEFT", top_border_cells) %>%
-    enhead(row_headers[[2]], "W") %>%
-    dplyr::arrange(row, col)
-  expect_equal(data_cells[[4]], expect_purpose_short)
-  expect_equal(data_cells[[5]], expect_age_short)
-  expect_equal(data_cells[[6]], expect_sex_short)
-  expect_equal(data_cells[[7]], expect_education_short)
-  expect_error(enhead(data_cells,
-                      col_headers[[1]],
-                      "ABOVE",
-                      left_border_cells[-2, ]),
-               "`corner_cells` must have the same number of rows as `header_cells`.")
-  expect_error(enhead(data_cells,
-                      row_headers[[1]],
-                      "LEFT",
-                      top_border_cells[-2, ]),
-               "`corner_cells` must have the same number of rows as `header_cells`.")
-})
-
-test_that("Compass directions BELOW and RIGHT work with corner_cells", {
-  spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-  cells <- tidyxl::xlsx_cells(spreadsheet, "BELOW RIGHT border")
-  formatting <- tidyxl::xlsx_formats(spreadsheet)
-  left_borders <- which(!is.na(formatting$local$border$left$style))
-  top_borders <- which(!is.na(formatting$local$border$top$style))
-  left_border_cells <-
-    cells %>%
-    dplyr::filter(row == 14, local_format_id %in% left_borders) %>%
-    dplyr::select(row, col)
-  top_border_cells <-
-    cells %>%
-    dplyr::filter(col == 11, local_format_id %in% top_borders) %>%
-    dplyr::select(row, col)
-  row_headers <-
-    cells %>%
-    dplyr::filter(col >= 10, !is_blank) %>%
-    dplyr::select(row, col, header = character) %>%
-    split(.$col)
-  col_headers <-
-    cells %>%
-    dplyr::filter(row >= 14, !is_blank) %>%
-    dplyr::select(row, col, header = character) %>%
-    split(.$row)
-  data_cells <-
-    cells %>%
-    dplyr::filter(row <= 13, col <= 9, !is_blank) %>%
-    dplyr::mutate(content = ifelse(is.na(character), numeric, NA)) %>%
-    dplyr::mutate(value = as.integer(content)) %>%
-    dplyr::select(row, col, value) %>%
-    enhead(col_headers[[2]], "BELOW", left_border_cells) %>%
-    enhead(col_headers[[1]], "S") %>%
-    enhead(row_headers[[2]], "RIGHT", top_border_cells, "") %>%
-    enhead(row_headers[[1]], "E") %>%
-    dplyr::arrange(row, col)
-  expect_equal(data_cells[[4]], expect_purpose_short)
-  expect_equal(data_cells[[5]], expect_age_short)
-  expect_equal(data_cells[[6]], expect_sex_short)
-  expect_equal(data_cells[[7]], expect_education_short)
-  expect_error(enhead(data_cells,
-                      col_headers[[1]],
-                      "BELOW",
-                      left_border_cells[-2, ]),
-               "`corner_cells` must have the same number of rows as `header_cells`.")
-  expect_error(enhead(data_cells,
-                      row_headers[[1]],
-                      "RIGHT",
-                      top_border_cells[-2, ]),
-               "`corner_cells` must have the same number of rows as `header_cells`.")
-})
-
 test_that("enhead() works", {
   cells <- tidy_table(purpose$`NNW WNW`)
   col_headers <-
@@ -386,9 +284,6 @@ test_that("enhead() works", {
                "`direction` must be one of \"NNW\", \"N\", \"NNE\", \"ENE\", \"E\", \"ESE\", \"SSE\", \"S\", \"SSW\", \"WSW\", \"W\", \"WNW\", \"ABOVE\", \"LEFT\", \"RIGHT\", \"BELOW\"")
   expect_error(enhead(data_cells, multirow_header, "W"),
                "Multiple lines of headers are not supported in this way*")
-  expect_error(enhead(data_cells, col_headers[[1]], "N",
-                           corner_cells = col_headers[[2]]),
-               "'corner_cells' is only supported for the directions 'ABOVE', 'RIGHT', 'BELOW' and 'LEFT'.")
 })
 
 test_that("the `drop` argument works", {

@@ -40,6 +40,10 @@
 * `enhead()` (formerly `join_header()`) gains a `drop = TRUE` argument to
   control whether to discard cells that don't have a matching header (e.g. ones
   that are left of the leftmost header in `enhead(x, y, "NNW")`).
+* `justify()` moves one set of cells to the same positions as another set.  This
+    is useful when header cells aren't at the corner of the cells they describle.
+    Put the header cells into `justify()`, along with cells that *are* at the
+    corner.
 * New vignette 'worked-examples' of common tasks when munging spreadsheets.
 * The 'small-multiples' vignette has been refactored to use the new features.
 * `purpose` (built-in dataset) gains a new list-member `small-multiples`.

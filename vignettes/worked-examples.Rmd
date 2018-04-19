@@ -1099,15 +1099,19 @@ rectify(all_cells)
 
 Looking at that table, it's not immediately obvious where the boundary between
 `Female` and `Male` falls, or between `Humanities` and `Performance`.  A naive
-approach would be to match the inner headers to the outer ones by proximity, but
-that wouldn't work in all cases.
+approach would be to match the inner headers to the outer ones by proximity, and
+there are four directions to do so: `"ABOVE"`, `"LEFT"`, `"BELOW"`, and
+`"RIGHT"`.
+
+But in this case, those directions are too naive.
 
 * `Languages` is closest to the `Performance` header, but is a humanity.
 * `Lenny` is the same distance from `Female` as from `Male`.
 
-There are four directions to resolve this: `"ABOVE"`, `"LEFT"`, `"BELOW"` and
-`"RIGHT"`, which do the same job as `"N"`, `"NNW"` etc., but require two sets of
-header cells instead of one:
+You can fix this by justifying the header cells towards one side of the data
+cells that they describe, and then use a direction like `"NNW"` as usual.  Do
+this with `justify()`, providing the header cells with a second set of cells
+at the positions you want the header cells to move to.
 
 * `header_cells` is the cells whose value will be used as the header
 * `corner_cells` is the cells whose position is in one corner of the domain of
@@ -1118,6 +1122,10 @@ cells of the headers can be found by filtering for cells with a particular
 border.
 
 ```{r}
+all_cells <-
+  xlsx_cells(path, sheets = "pivot-centre-aligned") %>%
+  select(row, col, is_blank, data_type, character, numeric, local_format_id)
+
 formats <- xlsx_formats(path)
 top_borders <- which(!is.na(formats$local$border$top$style))
 left_borders <- which(!is.na(formats$local$border$left$style))
@@ -1133,38 +1141,46 @@ first_header_col_corners <-
 first_header_col_corners
 ```
 
-The rest of this example is the same as "Two clear rows and columns of text
-headers, top-aligned and left-aligned", the only difference being the use of
-`"ABOVE"` and `"LEFT"` instead of `"NNW"` and `"WNW"`
+Next, get the first row and first column of header cells as usual.
 
 ```{r}
-all_cells <-
-  xlsx_cells(path, sheets = "pivot-centre-aligned") %>%
-  filter(!is_blank) %>%
-  select(row, col, data_type, character, numeric, local_format_id)
-
 first_header_row <-
-  filter(all_cells, row == 2) %>%
+  filter(all_cells, !is_blank, row == 2) %>%
   select(row, col, sex = character)
   # the title of this header is 'sex'
   # the cells are text cells (`"Female"` and `"Male"`) so take the value in the
   # '`character` column.
 first_header_row
 
+first_header_col <-
+  filter(all_cells, !is_blank, col == 2) %>%
+  select(row, col, field = character)
+  # the title of this header is 'field', meaning 'group of subjects'.
+  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
+  # in the '`character` column.
+first_header_col
+```
+
+And now justify the header cells to the same positions as the corner cells.
+
+```{r}
+first_header_row <- justify(first_header_row, first_header_row_corners)
+first_header_col <- justify(first_header_col, first_header_col_corners)
+
+first_header_row
+first_header_col
+```
+
+The rest of this example is the same as "Two clear rows and columns of text
+headers, top-aligned and left-aligned".
+
+```{r}
 second_header_row <-
   filter(all_cells, row == 3) %>%
   select(row, col, name = character)
   # The title of this header is 'name'.
   # The cells are text cells, so take the value in the '`character` column.
 second_header_row
-
-first_header_col <-
-  filter(all_cells, col == 2) %>%
-  select(row, col, field = character)
-  # the title of this header is 'field', meaning 'group of subjects'.
-  # The cells are text cells (`"Humanities"`, `"Performance"`) so take the value
-  # in the '`character` column.
-first_header_col
 
 second_header_col <-
   filter(all_cells, col == 3) %>%
@@ -1183,9 +1199,9 @@ data_cells <-
   # columns as well as `numeric`
 
 data_cells %>%
-  enhead(first_header_row, "ABOVE", corner_cells = first_header_row_corners) %>%
+  enhead(first_header_row, "NNW") %>%
   enhead(second_header_row, "N") %>%
-  enhead(first_header_col, "LEFT", corner_cells = first_header_col_corners) %>%
+  enhead(first_header_col, "WNW") %>%
   enhead(second_header_col, "W") %>%
   select(-row, -col)
 ```
