@@ -131,7 +131,8 @@ test_that("Blank columns amongst the data are retained", {
 })
 
 test_that("rectify() handles zero-row data frames", {
-  expect_error(rectify(slice(tidy_table(mtcars, col_names = TRUE), 0L)), NA)
+  expect_error(rectify(dplyr::slice(tidy_table(mtcars, col_names = TRUE), 0L)),
+               NA)
 })
 
 test_that("rectify() stops on non-distinct cells", {
