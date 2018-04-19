@@ -75,6 +75,12 @@
 #' # seems to have been an oversight by Statistics New Zealand.
 behead <- function(cells, direction, name, ..., values = NULL,
                    types = data_type, drop_na = TRUE) {
+  UseMethod("behead")
+}
+
+#' @export
+behead.data.frame <- function(cells, direction, name, ..., values = NULL,
+                              types = data_type, drop_na = TRUE) {
   check_direction_behead(direction)
   check_distinct(cells)
   name <- rlang::ensym(name)

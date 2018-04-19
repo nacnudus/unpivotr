@@ -82,6 +82,12 @@
 #' enhead(data_cells, gender, "N")
 #' enhead(data_cells, gender, "N", drop = FALSE)
 enhead <- function(data_cells, header_cells, direction, drop = TRUE) {
+  UseMethod("enhead")
+}
+
+#' @export
+enhead.data.frame <- function(data_cells, header_cells, direction,
+                              drop = TRUE) {
   check_header(header_cells)
   check_direction_enhead(direction)
   check_distinct(data_cells)
