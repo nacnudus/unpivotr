@@ -257,8 +257,8 @@ test_that("Compass directions BELOW and RIGHT work", {
     dplyr::filter(row <= 10, col <= 6, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value) %>%
-    BELOW(col_headers[[2]]) %>%
-    RIGHT(row_headers[[2]]) %>%
+    enhead(col_headers[[2]], "BELOW") %>%
+    enhead(row_headers[[2]], "RIGHT") %>%
     dplyr::arrange(row, col)
   expect_equal(data_cells[[5]], expect_sex_short)
   expect_equal(data_cells[[4]], expect_purpose_short)
