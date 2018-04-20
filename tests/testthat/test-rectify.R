@@ -146,3 +146,19 @@ test_that("rectify() stops on non-distinct cells", {
                fixed = TRUE)
 })
 
+test_that("rectify() works on common data types", {
+  x <-
+    tibble::tibble(lgl = c(TRUE, FALSE),
+                   int = c(1L, 2L),
+                   dbl = c(1, 2),
+                   cpl = c(1i, 2i),
+                   date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+                   chr = c("a", "b"),
+                   fct = factor(c("c", "d")),
+                   list = list(1:2, letters[1:2]))
+  y <-
+    tidy_table(x) %>%
+    rectify() %>%
+    dplyr::select(-1)
+  expect(all(purrr::map2_lgl(y, x, identical)))
+})
