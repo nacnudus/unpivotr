@@ -173,6 +173,7 @@ test_that("spatter() works on common data types", {
                    dttm = c(as.POSIXct("2001-01-01 01:01:01"),
                             as.POSIXct("2001-01-01 01:01:02")),
                    chr = c("a", "b"),
+                   fct = factor(c("c", "d")),
                    list = list(1:2, letters[1:2]))
   y <-
     tidy_table(x, col_names = TRUE) %>%
@@ -185,4 +186,3 @@ test_that("spatter() works on common data types", {
   y_class <- purrr::map(y, class)
   expect_equal(y_class[names(x_class)], x_class)
 })
-
