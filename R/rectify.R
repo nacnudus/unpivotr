@@ -31,15 +31,14 @@
 #' spreadsheet application.
 #'
 #' @param cells Data frame or tbl, the cells to be displayed.
-#' @param ... Named functions to format cell values for diplay, named according
-#'   to the column that the cell value is in.
 #' @param values Optional. The column of `cells` to use as the values of each
 #' cell.  Given as a bare variable name.  If omitted (the default), the `types`
 #' argument will be used instead.
 #' @param types The column of `cells` that names, for each cell, which column to
 #' use for the value of the cell.  E.g.  a cell with a character value will have
-#' `"character"` in this column.  If this argument is given, then `...` will be
-#' ignored.
+#' `"character"` in this column.
+#' @param formatters A named list of functions to format cell values for diplay,
+#'   named according to the column that the cell value is in.
 #'
 #' @export
 #' @examples
@@ -74,13 +73,15 @@
 #' rectify(y)
 #'
 #' # Supply named functions to format cell values for display.
-#' rectify(y, chr = toupper, int = ~ . * 10)
-rectify <- function(cells, ..., values = NULL, types = data_type) {
+#' rectify(y, formatters = list(chr = toupper, int = ~ . * 10))
+rectify <- function(cells, values = NULL, types = data_type,
+                    formatters = list()) {
   UseMethod("rectify")
 }
 
 #' @export
-rectify.data.frame <- function(cells, ..., values = NULL, types = data_type) {
+rectify.data.frame <- function(cells, values = NULL, types = data_type,
+                               formatters = list()) {
   check_distinct(cells)
   if (nrow(cells) == 0L) return(tibble::tibble())
   values <- rlang::enexpr(values)
@@ -92,7 +93,7 @@ rectify.data.frame <- function(cells, ..., values = NULL, types = data_type) {
       pack() %>%
       dplyr::select(row, col, value) %>%
       unpack() %>%
-      spatter(col, ..., types = data_type)
+      spatter(col, types = data_type, formatters = formatters)
   } else {
     cells <- dplyr::select(cells, row, col, !! values)
     if (rlang::expr_text(values) == "row") {

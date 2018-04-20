@@ -94,7 +94,7 @@ test_that("rectify() allows formatting formulas", {
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE)
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
-  expect_equal(rectify(x, chr = toupper, int = ~ .x * 10),
+  expect_equal(rectify(x, formatters = list(chr = toupper, int = ~ .x * 10)),
                rectify_correct)
 })
 

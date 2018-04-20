@@ -154,7 +154,9 @@ test_that("spatter() converts ordered factors to character", {
 })
 
 test_that("spatter() can use custom functions for converting data types", {
-  d <- spatter(x, row, chr = ~ paste0(., "-header"), dbl = as.integer)
+  d <- spatter(x, row,
+               formatters = list(chr = ~ paste0(., "-header"),
+                                 dbl = as.integer))
   expect_equal(colnames(d), c("col", as.character(1:7)))
   expect_equal(nrow(d), 2L)
   expect_equal(purrr::map_chr(d, class),

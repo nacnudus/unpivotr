@@ -11,13 +11,14 @@
 #'   `row` and `col`, usually a column `data_type`, and additional columns of
 #'   cell values.
 #' @param key The name of the column whose values will become column names
-#' @param ... functions for formatting particular data types, named by the data
-#'   type (the name of the column of `cells` that contains the cell value.
 #' @param values Optional. The column of `cells` to use as the value of each
 #'   cell.  Given as a bare variable name.  If omitted (the default), the `type`
 #'   argument will be used instead.
 #' @param types Optional. The column that names, for each row of `cells`, which
 #'   column contains the cell value.  Defaults to `data_type`.
+#' @param formatters  A named list of functions for formatting particular data
+#'   types, named by the data type (the name of the column of `cells` that
+#'   contains the cell value.
 #' @export
 #' @examples
 #' # A tidy representation of cells of mixed data types
@@ -90,17 +91,18 @@
 #' # by the data type of the cells they are to convert (look at the `data_type`
 #' # column).  If your custom functions aren't sufficient to avoid the need for
 #' # coercion, then they will be overridden.
-#' spatter(y, header, character = ~ toupper(.), numeric = as.complex)
-spatter <- function(cells, key, ..., values = NULL, types = data_type) {
+#' spatter(y, header,
+#'         formatters = list(character = ~ toupper(.), numeric = as.complex))
+spatter <- function(cells, key, values = NULL, types = data_type,
+                    formatters = list()) {
   UseMethod("spatter")
 }
 
 #' @export
-spatter.data.frame <- function(cells, key, ..., values = NULL,
-                               types = data_type) {
+spatter.data.frame <- function(cells, key, values = NULL, types = data_type,
+                               formatters = list()) {
   key <- rlang::ensym(key)
-  dots <- list(...)
-  functions <- purrr::map(dots, purrr::as_mapper)
+  functions <- purrr::map(formatters, purrr::as_mapper)
   values <- rlang::enexpr(values)
   new_colnames <- format(sort(unique(dplyr::pull(cells, !! key))),
                          justify = "none",

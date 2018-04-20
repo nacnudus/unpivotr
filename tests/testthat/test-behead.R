@@ -110,8 +110,8 @@ test_that("behead() handles headers of factor and ordered-factor data types", {
 test_that("behead() supports custom formatters", {
   x <-
     tidy_table(BOD, FALSE, TRUE) %>%
-    behead("N", header, chr = ~ paste(.x, "foo")) %>%
-    behead("W", rowheader, dbl = as.complex)
+    behead("N", header, formatters = list(chr = ~ paste(.x, "foo"))) %>%
+    behead("W", rowheader, formatters = list(dbl = as.complex))
   expect_equal(x$header[1], "demand foo")
   expect_equal(x$rowheader[1], 1+0i)
 })

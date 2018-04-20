@@ -17,10 +17,6 @@
 #' @param name A name to give the new column that will be created, e.g.
 #'   `"location"` if the headers are locations.  Quoted (`"location"`, not
 #'   `location`) because it doesn't refer to an actual object.
-#' @param ... named functions for formatting each data type in a set of headers
-#'   of mixed data types, e.g. when some headers are dates and others are
-#'   characters.  These can be given as `character = toupper` or `character = ~
-#'   toupper(.x)`, similar to [purrr::map].
 #' @param values Optional. The column of `cells` to use as the values of each
 #'   header.  Given as a bare variable name.  If omitted (the default), the
 #'   `types` argument will be used instead.
@@ -30,6 +26,10 @@
 #'   E.g.  a cell with a character value will have `"character"` in this column.
 #'   Unquoted(`data_types`, not `"data_types"`) because it refers to an actual
 #'   object.
+#' @param formatters A named list of functions for formatting each data type in
+#'   a set of headers of mixed data types, e.g. when some headers are dates and
+#'   others are characters.  These can be given as `character = toupper` or
+#'   `character = ~ toupper(.x)`, similar to [purrr::map].
 #' @param drop_na logical Whether to filter out headers that have `NA` in the
 #'   `value` column.  Default: `TRUE`.  This can happen with the output of
 #'   `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
@@ -73,19 +73,19 @@
 #' # The provided 'tidy' data is missing a row for Male 15-24-year-olds with a
 #' # postgraduate qualification and a sense of purpose between 0 and 6.  That
 #' # seems to have been an oversight by Statistics New Zealand.
-behead <- function(cells, direction, name, ..., values = NULL,
-                   types = data_type, drop_na = TRUE) {
+behead <- function(cells, direction, name, values = NULL, types = data_type,
+                   formatters = list(), drop_na = TRUE) {
   UseMethod("behead")
 }
 
 #' @export
-behead.data.frame <- function(cells, direction, name, ..., values = NULL,
-                              types = data_type, drop_na = TRUE) {
+behead.data.frame <- function(cells, direction, name, values = NULL,
+                              types = data_type, formatters = list(),
+                              drop_na = TRUE) {
   check_direction_behead(direction)
   check_distinct(cells)
   name <- rlang::ensym(name)
-  dots <- list(...)
-  functions <- purrr::map(dots, purrr::as_mapper)
+  functions <- purrr::map(formatters, purrr::as_mapper)
   values <- rlang::enexpr(values)
   if(is.null(values)) {
     values_was_null <- TRUE

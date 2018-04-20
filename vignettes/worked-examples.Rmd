@@ -2049,7 +2049,8 @@ can specify a function for each data type in the call to `behead()`.
 ```{r}
 xlsx_cells(path, sheet = "non-text headers") %>%
   select(row, col, data_type, character, numeric, date) %>%
-  behead("N", header, date = ~ strftime(.x, "%Y"), character = toupper)
+  behead("N", header, formatters = list(date = ~ strftime(.x, "%Y"),
+                                        character = toupper))
 ```
 
 ### Data embedded in comments

@@ -4,8 +4,8 @@
 \alias{behead}
 \title{Strip a level of headers from a pivot table}
 \usage{
-behead(cells, direction, name, ..., values = NULL, types = data_type,
-  drop_na = TRUE)
+behead(cells, direction, name, values = NULL, types = data_type,
+  formatters = list(), drop_na = TRUE)
 }
 \arguments{
 \item{cells}{Data frame. The cells of a pivot table, usually the output of
@@ -22,10 +22,6 @@ are better handled by using \code{\link[=enhead]{enhead()}} directly rather than
 \code{"location"} if the headers are locations.  Quoted (\code{"location"}, not
 \code{location}) because it doesn't refer to an actual object.}
 
-\item{...}{named functions for formatting each data type in a set of headers
-of mixed data types, e.g. when some headers are dates and others are
-characters.  These can be given as \code{character = toupper} or \code{character = ~ toupper(.x)}, similar to \link[purrr:map]{purrr::map}.}
-
 \item{values}{Optional. The column of \code{cells} to use as the values of each
 header.  Given as a bare variable name.  If omitted (the default), the
 \code{types} argument will be used instead.}
@@ -36,6 +32,11 @@ names the other columns in \code{cells} that contain the values of each cell.
 E.g.  a cell with a character value will have \code{"character"} in this column.
 Unquoted(\code{data_types}, not \code{"data_types"}) because it refers to an actual
 object.}
+
+\item{formatters}{A named list of functions for formatting each data type in
+a set of headers of mixed data types, e.g. when some headers are dates and
+others are characters.  These can be given as \code{character = toupper} or
+\code{character = ~ toupper(.x)}, similar to \link[purrr:map]{purrr::map}.}
 
 \item{drop_na}{logical Whether to filter out headers that have \code{NA} in the
 \code{value} column.  Default: \code{TRUE}.  This can happen with the output of

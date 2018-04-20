@@ -5,15 +5,12 @@
 \alias{print.cell_grid}
 \title{Display cells as though in a spreadsheet}
 \usage{
-rectify(cells, ..., values = NULL, types = data_type)
+rectify(cells, values = NULL, types = data_type, formatters = list())
 
 \method{print}{cell_grid}(x, display = "terminal", ...)
 }
 \arguments{
 \item{cells}{Data frame or tbl, the cells to be displayed.}
-
-\item{...}{Named functions to format cell values for diplay, named according
-to the column that the cell value is in.}
 
 \item{values}{Optional. The column of \code{cells} to use as the values of each
 cell.  Given as a bare variable name.  If omitted (the default), the \code{types}
@@ -21,8 +18,10 @@ argument will be used instead.}
 
 \item{types}{The column of \code{cells} that names, for each cell, which column to
 use for the value of the cell.  E.g.  a cell with a character value will have
-\code{"character"} in this column.  If this argument is given, then \code{...} will be
-ignored.}
+\code{"character"} in this column.}
+
+\item{formatters}{A named list of functions to format cell values for diplay,
+named according to the column that the cell value is in.}
 
 \item{x}{The output of \code{\link[=rectify]{rectify()}}}
 
@@ -91,7 +90,7 @@ y$col <- y$col + 5
 rectify(y)
 
 # Supply named functions to format cell values for display.
-rectify(y, chr = toupper, int = ~ . * 10)
+rectify(y, formatters = list(chr = toupper, int = ~ . * 10))
 #
 # Print in the browser or in the RStudio viewer pane
 \dontrun{
