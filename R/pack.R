@@ -20,6 +20,27 @@
 #'
 #' [unpack()] is the complement.
 #'
+#' This can be useful for dropping all columns of `cells` except the ones that
+#' contain data.  For example, [tidyxl::xlsx_cells()] returns a very wide data
+#' frame, and to make it narrow you might do:
+#'
+#' ```
+#' select(cells, row, col, character, numeric, date)
+#' ```
+#'
+#' But what if you don't know in advance that the data types you need are
+#' `character`, `numeric` and `date`?  You might also need `logical` and
+#' `error`.
+#'
+#' Instead, [pack()] all the data types into a single column, select it, and
+#' then unpack.
+#'
+#' ```
+#' pack(cells) %>%
+#'   select(row, col, value) %>%
+#'   unpack()
+#' ```
+#'
 #' @param cells A data frame of cells, one row per cell.  For [pack()] it must
 #' have a column that names, for each cell/row, which of the other columns the
 #' value is in.  For [unpack()] it must have a list-column of cell values, where
@@ -44,7 +65,6 @@
 #'
 #' @export
 #' @examples
-#'
 #' # A normal data frame
 #' w <- data.frame(foo = 1:2,
 #'                 bar = c("a", "b"),
@@ -59,6 +79,16 @@
 #' # pack() and unpack() are complements
 #' pack(x)
 #' unpack(pack(x))
+#'
+#' # Drop non-data columns from a wide data frame of cells from tidyxl
+#' if (require(tidyxl)) {
+#'   cells <- tidyxl::xlsx_cells(system.file("extdata", "purpose.xlsx", package = "unpivotr"))
+#'   cells
+#'
+#'   pack(cells) %>%
+#'     dplyr::select(row, col, value) %>%
+#'     unpack()
+#' }
 pack <- function(cells, types = data_type, name = "value", drop_types = TRUE,
                  drop_type_cols = TRUE) {
   types <- rlang::ensym(types)

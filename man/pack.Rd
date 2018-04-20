@@ -56,6 +56,21 @@ By default, the original columns are dropped, and so is the \code{data_type}
 column.
 
 \code{\link[=unpack]{unpack()}} is the complement.
+
+This can be useful for dropping all columns of \code{cells} except the ones that
+contain data.  For example, \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}} returns a very wide data
+frame, and to make it narrow you might do:\preformatted{select(cells, row, col, character, numeric, date)
+}
+
+But what if you don't know in advance that the data types you need are
+\code{character}, \code{numeric} and \code{date}?  You might also need \code{logical} and
+\code{error}.
+
+Instead, \code{\link[=pack]{pack()}} all the data types into a single column, select it, and
+then unpack.\preformatted{pack(cells) %>%
+  select(row, col, value) %>%
+  unpack()
+}
 }
 \section{Functions}{
 \itemize{
@@ -63,7 +78,6 @@ column.
 }}
 
 \examples{
-
 # A normal data frame
 w <- data.frame(foo = 1:2,
                 bar = c("a", "b"),
@@ -78,4 +92,14 @@ x
 # pack() and unpack() are complements
 pack(x)
 unpack(pack(x))
+
+# Drop non-data columns from a wide data frame of cells from tidyxl
+if (require(tidyxl)) {
+  cells <- tidyxl::xlsx_cells(system.file("extdata", "purpose.xlsx", package = "unpivotr"))
+  cells
+
+  pack(cells) \%>\%
+    dplyr::select(row, col, value) \%>\%
+    unpack()
+}
 }
