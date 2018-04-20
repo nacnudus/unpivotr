@@ -124,9 +124,9 @@ rectify.data.frame <- function(cells, ..., values = NULL, types = data_type) {
 #' #
 #' # Print in the browser or in the RStudio viewer pane
 #' \dontrun{
-#'   y <- rectify(mtcars_tidy, chr, dbl)
-#'   print(y, "browser")
-#'   print(y, "rstudio")
+#'   z <- rectify(y)
+#'   print(z, "browser")
+#'   print(z, "rstudio")
 #' }
 print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
   if (display == "terminal") {

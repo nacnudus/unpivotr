@@ -95,8 +95,8 @@ rectify(y, chr = toupper, int = ~ . * 10)
 #
 # Print in the browser or in the RStudio viewer pane
 \dontrun{
-  y <- rectify(mtcars_tidy, chr, dbl)
-  print(y, "browser")
-  print(y, "rstudio")
+  z <- rectify(y)
+  print(z, "browser")
+  print(z, "rstudio")
 }
 }
