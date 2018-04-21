@@ -34,6 +34,8 @@ globalVariables(c(".",
                   ".data_type",
                   "n",
                   ":=",
+                  ".partition",
+                  "ns_env",
                   ".boundary"))
 
 # Concatenate lists into vectors, handling factors and NULLs, and coercing data
