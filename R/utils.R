@@ -33,6 +33,7 @@ globalVariables(c(".",
                   ".value",
                   ".data_type",
                   "n",
+                  ":=",
                   ".boundary"))
 
 # Concatenate lists into vectors, handling factors and NULLs, and coercing data
