@@ -38,7 +38,10 @@ This vignette uses several common packages.
 ```{r}
 library(unpivotr)
 library(tidyxl)
-library(tidyverse)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(stringr)
 ```
 
 The spreadsheet is distributed with the unpivotr package, so can be loaded as a
@@ -140,12 +143,15 @@ unpivoted <- left_join(unpivoted, row_headers, by = "row")
 unpivoted
 ```
 
-## 31-line code listing
+## 34-line code listing
 
 ```{r, eval = FALSE}
 library(unpivotr)
 library(tidyxl)
-library(tidyverse)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(stringr)
 
 cells <-
   xlsx_cells(system.file("extdata/enron.xlsx", package = "unpivotr")) %>%
