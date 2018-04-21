@@ -174,7 +174,7 @@ functions.</p>
 spreadsheet application.</p>
     
 
-    <pre class="usage"><span class='fu'>rectify</span>(<span class='no'>cells</span>, <span class='no'>...</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>)
+    <pre class="usage"><span class='fu'>rectify</span>(<span class='no'>cells</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>, <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>())
 
 <span class='co'># S3 method for cell_grid</span>
 <span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>display</span> <span class='kw'>=</span> <span class='st'>"terminal"</span>, <span class='no'>...</span>)</pre>
@@ -187,11 +187,6 @@ spreadsheet application.</p>
       <td><p>Data frame or tbl, the cells to be displayed.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Named functions to format cell values for diplay, named according
-to the column that the cell value is in.</p></td>
-    </tr>
-    <tr>
       <th>values</th>
       <td><p>Optional. The column of <code>cells</code> to use as the values of each
 cell.  Given as a bare variable name.  If omitted (the default), the <code>types</code>
@@ -201,8 +196,12 @@ argument will be used instead.</p></td>
       <th>types</th>
       <td><p>The column of <code>cells</code> that names, for each cell, which column to
 use for the value of the cell.  E.g.  a cell with a character value will have
-<code>"character"</code> in this column.  If this argument is given, then <code>...</code> will be
-ignored.</p></td>
+<code>"character"</code> in this column.</p></td>
+    </tr>
+    <tr>
+      <th>formatters</th>
+      <td><p>A named list of functions to format cell values for diplay,
+named according to the column that the cell value is in.</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -215,10 +214,10 @@ display in the browser you must have the <code>DT</code> package installed.</p><
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
+    <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
 
     <ul>
-<li><p><code>print</code>: S3 method for class <code>cell_grid</code></p></li>
+<li><p><code>cell_grid</code>: S3 method for class <code>cell_grid</code></p></li>
 </ul>
     
 
@@ -233,7 +232,7 @@ display in the browser you must have the <code>DT</code> package installed.</p><
 #&gt; 2 Nicholas    10</div><div class='input'>
 <span class='co'># This is the 'tidy' arrangement that is difficult for humans to read (but</span>
 <span class='co'># easy for computers)</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>x</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>x</span>, <span class='kw'>col_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>y</span></div><div class='output co'>#&gt; # A tibble: 6 x 5
 #&gt;     row   col data_type chr        int
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;
@@ -286,7 +285,7 @@ display in the browser you must have the <code>DT</code> package installed.</p><
 #&gt; 2        7. Matilda  14    
 #&gt; 3        8. Nicholas 10    </div><div class='input'>
 <span class='co'># Supply named functions to format cell values for display.</span>
-<span class='fu'>rectify</span>(<span class='no'>y</span>, <span class='kw'>chr</span> <span class='kw'>=</span> <span class='no'>toupper</span>, <span class='kw'>int</span> <span class='kw'>=</span> ~ <span class='no'>.</span> * <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
+<span class='fu'>rectify</span>(<span class='no'>y</span>, <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>chr</span> <span class='kw'>=</span> <span class='no'>toupper</span>, <span class='kw'>int</span> <span class='kw'>=</span> ~ <span class='no'>.</span> * <span class='fl'>10</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt;   `row/col` `6(F)`   `7(G)`
 #&gt;       &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; 
 #&gt; 1        6. NAME     SCORE 
@@ -294,9 +293,9 @@ display in the browser you must have the <code>DT</code> package installed.</p><
 #&gt; 3        8. NICHOLAS 100   </div><div class='input'>#
 # Print in the browser or in the RStudio viewer pane
 </div><span class='co'># NOT RUN {</span>
-  <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rectify</span>(<span class='no'>mtcars_tidy</span>, <span class='no'>chr</span>, <span class='no'>dbl</span>)
-  <span class='fu'>print</span>(<span class='no'>y</span>, <span class='st'>"browser"</span>)
-  <span class='fu'>print</span>(<span class='no'>y</span>, <span class='st'>"rstudio"</span>)
+  <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>rectify</span>(<span class='no'>y</span>)
+  <span class='fu'>print</span>(<span class='no'>z</span>, <span class='st'>"browser"</span>)
+  <span class='fu'>print</span>(<span class='no'>z</span>, <span class='st'>"rstudio"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -304,7 +303,7 @@ display in the browser you must have the <code>DT</code> package installed.</p><
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#methods-by-generic-">Methods (by generic)</a></li>
+      <li><a href="#methods-by-class-">Methods (by class)</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

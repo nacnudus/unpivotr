@@ -137,8 +137,11 @@
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <ul>
+<li>The family of functions <code>NNW()</code> etc. has been removed in favour of the verbose <code>join_header()</code>, which has itself been renamed to <code><a href="../reference/enhead.html">enhead()</a></code> to suggest its similarity to <code><a href="../reference/behead.html">behead()</a></code> (though they are <em>not</em> complements).</li>
 <li>
-<code><a href="../reference/tidy_table.html">tidy_table()</a></code> now follows the tidyverse convention of <code>fct</code> for ‘factor’ and <code>ord</code> for ‘ordered factor’.</li>
+<code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code> now follows the tidyverse convention of <code>fct</code> for ‘factor’ and <code>ord</code> for ‘ordered factor’.</li>
+<li>
+<code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code>) now uses <code>col_names</code> and <code>row_names</code> as arguments instead of <code>colnames</code> and <code>rownames</code>, for consistency with tidyr.</li>
 </ul>
 </div>
 <div id="new-features" class="section level2">
@@ -146,9 +149,9 @@
 <a href="#new-features" class="anchor"></a>New features</h2>
 <ul>
 <li>
-<code><a href="../reference/behead.html">behead()</a></code> is takes one level of headers from a pivot table and make it part of the data. Think of it like <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">tidyr::gather()</a></code>, except that it works when there is more than one row of headers (or more than one column of row-headers), and it only works on tables that have first come through <code><a href="../reference/tidy_table.html">tidy_table()</a></code> or <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
+<code><a href="../reference/behead.html">behead()</a></code> is takes one level of headers from a pivot table and make it part of the data. Think of it like <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">tidyr::gather()</a></code>, except that it works when there is more than one row of headers (or more than one column of row-headers), and it only works on tables that have first come through <code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code> or <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
 <li>
-<code><a href="../reference/rectify.html">rectify()</a></code> displays cells as though in a spreadsheet, rather than in the ‘melted’ form of <code><a href="../reference/tidy_table.html">tidy_table()</a></code> and <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>. This is useful for understanding the structure of a pivot table as a human, when planning how to unpivot it. A print method is available to render large datasets in the browser or the RStudio viewer pane.</li>
+<code><a href="../reference/rectify.html">rectify()</a></code> displays cells as though in a spreadsheet, rather than in the ‘melted’ form of <code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code>) and <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>. This is useful for understanding the structure of a pivot table as a human, when planning how to unpivot it. A print method is available to render large datasets in the browser or the RStudio viewer pane.</li>
 <li>
 <code><a href="../reference/partition.html">partition()</a></code> divides a grid of cells into partitions containing individual tables. Give it the corner cells of each table on a spreadsheet, and it returns all the cells of the spreadsheet with a <code>partition</code> column that identifies which cells belong to which table.</li>
 <li>
@@ -158,16 +161,24 @@
 <li>
 <code><a href="../reference/spatter.html">spatter()</a></code> is like <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">tidyr::spread()</a></code>, but preserves mixed data types.</li>
 <li>
-<code><a href="../reference/tidy_table.html">tidy_table()</a></code> now returns a <code>data_type</code> column that names the column that contains the value of a cell, similar to <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
+<code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code><a href="../reference/tidy_table.html">tidy_table()</a></code>) now returns a <code>data_type</code> column that names the column that contains the value of a cell, similar to <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
 <li>
-<code><a href="../reference/tidy_table.html">tidy_table()</a></code> now follows the tidyverse convention of <code>fct</code> for ‘factor’ and <code>ord</code> for ‘ordered factor’.</li>
+<code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code> now follows the tidyverse convention of <code>fct</code> for ‘factor’ and <code>ord</code> for ‘ordered factor’.</li>
 <li>
-<code><a href="../reference/join_header.html">join_header()</a></code> and the related functions <code><a href="../reference/join_header.html">N()</a></code>, <code><a href="../reference/join_header.html">NNW()</a></code>, etc. gains a <code>drop =   TRUE</code> argument to control whether to discard cells that don’t have a matching header (e.g. ones that are left of the leftmost header in <code><a href="../reference/join_header.html">NNW()</a></code>).</li>
+<code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code>) gains a <code>drop = TRUE</code> argument to control whether to discard cells that don’t have a matching header (e.g. ones that are left of the leftmost header in <code><a href="../reference/enhead.html">enhead(x, y, "NNW")</a></code>).</li>
 <li>
-<code><a href="../reference/join_header.html">join_header()</a></code> encourages names <code>N</code>, <code>NNW</code> rather than quoted strings <code>"N"</code>, <code>"NNW"</code>, etc. in line with the tidyverse standard, because it names an actual object (a function).</li>
+<code><a href="../reference/justify.html">justify()</a></code> moves one set of cells to the same positions as another set. This is useful when header cells aren’t at the corner of the cells they describle. Put the header cells into <code><a href="../reference/justify.html">justify()</a></code>, along with cells that <em>are</em> at the corner.</li>
 <li>New vignette ‘worked-examples’ of common tasks when munging spreadsheets.</li>
+<li>The ‘small-multiples’ vignette has been refactored to use the new features.</li>
 <li>
 <code>purpose</code> (built-in dataset) gains a new list-member <code>small-multiples</code>.</li>
+</ul>
+</div>
+<div id="under-the-hood" class="section level2">
+<h2 class="hasAnchor">
+<a href="#under-the-hood" class="anchor"></a>Under the hood</h2>
+<ul>
+<li>No longer depends on the data.table package.</li>
 </ul>
 </div>
 <div id="many-other-tweaks-especially-to-documentation" class="section level2">

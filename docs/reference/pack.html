@@ -134,16 +134,16 @@
     <p>Pack cell values from separate columns per data type into one list-column</p>
     
 
-    <pre class="usage"><span class='fu'>pack</span>(<span class='no'>.data</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"value"</span>, <span class='kw'>drop_types</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <pre class="usage"><span class='fu'>pack</span>(<span class='no'>cells</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"value"</span>, <span class='kw'>drop_types</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>drop_type_cols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>unpack</span>(<span class='no'>.data</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='no'>value</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"data_type"</span>, <span class='kw'>drop_packed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>unpack</span>(<span class='no'>cells</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='no'>value</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"data_type"</span>, <span class='kw'>drop_packed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
+      <th>cells</th>
       <td><p>A data frame of cells, one row per cell.  For <code>pack()</code> it must
 have a column that names, for each cell/row, which of the other columns the
 value is in.  For <code>unpack()</code> it must have a list-column of cell values, where
@@ -197,6 +197,18 @@ in one column, by</p><ol>
     <p>By default, the original columns are dropped, and so is the <code>data_type</code>
 column.</p>
 <p><code>unpack()</code> is the complement.</p>
+<p>This can be useful for dropping all columns of <code>cells</code> except the ones that
+contain data.  For example, <code><a href='http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells'>tidyxl::xlsx_cells()</a></code> returns a very wide data
+frame, and to make it narrow you might do:</p><pre>select(cells, row, col, character, numeric, date)
+</pre>
+    <p>But what if you don't know in advance that the data types you need are
+<code>character</code>, <code>numeric</code> and <code>date</code>?  You might also need <code>logical</code> and
+<code>error</code>.</p>
+<p>Instead, <code>pack()</code> all the data types into a single column, select it, and
+then unpack.</p><pre>pack(cells) <!-- %&gt;% -->
+  select(row, col, value) <!-- %&gt;% -->
+  unpack()
+</pre>
     
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
@@ -206,8 +218,7 @@ column.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># A normal data frame</span>
+    <pre class="examples"><div class='input'><span class='co'># A normal data frame</span>
 <span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>,
                 <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>),
                 <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -237,7 +248,29 @@ column.</p>
 #&gt; 1     1     1 int       &lt;NA&gt;      1
 #&gt; 2     2     1 int       &lt;NA&gt;      2
 #&gt; 3     1     2 chr       a        NA
-#&gt; 4     2     2 chr       b        NA</div></pre>
+#&gt; 4     2     2 chr       b        NA</div><div class='input'>
+<span class='co'># Drop non-data columns from a wide data frame of cells from tidyxl</span>
+<span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>tidyxl</span>)) {
+  <span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tidyxl</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells'>xlsx_cells</a></span>(<span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"purpose.xlsx"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"unpivotr"</span>))
+  <span class='no'>cells</span>
+
+  <span class='fu'>pack</span>(<span class='no'>cells</span>) <span class='kw'>%&gt;%</span>
+    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='no'>value</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>unpack</span>()
+}</div><div class='output co'>#&gt; # A tibble: 1,721 x 7
+#&gt;      row   col data_type blank character                          error numeric
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;lgl&gt; &lt;chr&gt;                              &lt;chr&gt;   &lt;dbl&gt;
+#&gt;  1     1     1 character NA    The data is 'Sense of purpose by … &lt;NA&gt;       NA
+#&gt;  2     2     1 character NA    It can be found in the section 'P… &lt;NA&gt;       NA
+#&gt;  3     3     1 character NA    The description provided by Stati… &lt;NA&gt;       NA
+#&gt;  4     5     1 character NA    The 2014 New Zealand General Soci… &lt;NA&gt;       NA
+#&gt;  5     6     1 character NA    It provides new and redeveloped d… &lt;NA&gt;       NA
+#&gt;  6     7     1 character NA    Symbols used in this table:        &lt;NA&gt;       NA
+#&gt;  7     8     1 character NA    S - Data has been suppressed.      &lt;NA&gt;       NA
+#&gt;  8     9     1 character NA    * - Relative sampling error of 50… &lt;NA&gt;       NA
+#&gt;  9    10     1 character NA    For more tables using the NZGSS 2… &lt;NA&gt;       NA
+#&gt; 10    11     1 character NA    Data quality                       &lt;NA&gt;       NA
+#&gt; # ... with 1,711 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

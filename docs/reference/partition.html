@@ -27,9 +27,9 @@
 <script src="../pkgdown.js"></script>
 <meta property="og:title" content="Divide a grid of cells into partitions containing individual tables — partition" />
 
-<meta property="og:description" content="Given the positions of corner cells that mark individual tables
-in a single spreadsheet, partion() works out which cells belong to which
-tables, and gives them an ID.  This can be used with dplyr::group_by() or
+<meta property="og:description" content="Given the positions of corner cells that mark individual tables in a single
+spreadsheet, partion() works out which cells belong to which tables, and
+gives them an ID.  This can be used with dplyr::group_by() or
 tidyr::nest() to operate on each single table within a spreadsheet of
 several tables.
 Corners must all be in the top-left, or bottom-left, or top-right, or
@@ -139,9 +139,9 @@ partition_dim() partitions along one dimension at a time." />
     </div>
 
     
-    <p>Given the positions of corner cells that mark individual tables
-in a single spreadsheet, <code>partion()</code> works out which cells belong to which
-tables, and gives them an ID.  This can be used with <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>dplyr::group_by()</a></code> or
+    <p>Given the positions of corner cells that mark individual tables in a single
+spreadsheet, <code>partion()</code> works out which cells belong to which tables, and
+gives them an ID.  This can be used with <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>dplyr::group_by()</a></code> or
 <code><a href='http://www.rdocumentation.org/packages/tidyr/topics/nest'>tidyr::nest()</a></code> to operate on each single table within a spreadsheet of
 several tables.</p>
 <p>Corners must all be in the top-left, or bottom-left, or top-right, or
@@ -150,8 +150,8 @@ bottom-right of each table.</p>
 <code>partition_dim()</code> partitions along one dimension at a time.</p>
     
 
-    <pre class="usage"><span class='fu'>partition</span>(<span class='no'>cells</span>, <span class='no'>corners</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"top_left"</span>,
-  <span class='kw'>partition_name</span> <span class='kw'>=</span> <span class='st'>"partition"</span>)
+    <pre class="usage"><span class='fu'>partition</span>(<span class='no'>cells</span>, <span class='no'>corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"top_left"</span>, <span class='kw'>partition_name</span> <span class='kw'>=</span> <span class='st'>"partition"</span>,
+  <span class='kw'>nest</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>partition_dim</span>(<span class='no'>positions</span>, <span class='no'>cutpoints</span>, <span class='kw'>bound</span> <span class='kw'>=</span> <span class='st'>"upper"</span>)</pre>
     
@@ -168,11 +168,10 @@ bottom-right of each table.</p>
       <td><p>a subset of <code>cells</code>, being the corners of individual tables.</p></td>
     </tr>
     <tr>
-      <th>position</th>
+      <th>align</th>
       <td><p>Character, the position of the corner cells relative to their
 tables, one of <code>"top-left"</code> (default), <code>"top-right"</code>, <code>"bottom-left"</code>,
-<code>"bottom-right"</code>.
-position or the column position), which are to be grouped between cutpoints.</p></td>
+<code>"bottom-right"</code>.</p></td>
     </tr>
     <tr>
       <th>partition_name</th>
@@ -180,9 +179,20 @@ position or the column position), which are to be grouped between cutpoints.</p>
 that will be created to identify the partitions.  Default: <code>"partition"</code>.</p></td>
     </tr>
     <tr>
+      <th>nest</th>
+      <td><p>Logical, whether to nest the partitions in a list-column of data
+frames.</p></td>
+    </tr>
+    <tr>
+      <th>strict</th>
+      <td><p>Logical, whether to omit partitions that don't contain a corner
+cell.</p></td>
+    </tr>
+    <tr>
       <th>positions</th>
       <td><p>Integer vector, the positions of cells (either the row
-position or the column position), which are to be grouped between cutpoints.</p></td>
+position or the column position), which are to be grouped between
+cutpoints.</p></td>
     </tr>
     <tr>
       <th>cutpoints</th>
@@ -193,22 +203,22 @@ groups either side of each cutpoint.</p></td>
       <th>bound</th>
       <td><p>One of <code>"upper"</code> or <code>"lower"</code>, controls whether cells that lie
 on a cutpoint are should be grouped with cells below or above the cutpoint.
-For example, if column 5 is a cutpoint, and a cell is in column 5, <code>"lower"</code>
-would group it with cells in columns 1 to 4, whereas <code>"upper"</code> would group it
-with cells in columns 6 to 10.  This is so that you can use cells at the
-bottom or the right-hand side of a table as the cutpoints (either of which
-would be 'upper' bounds because row and column numbers count from 1 in the
-top-left row and column).  When <code>"upper"</code>, any <code>cell_positions</code> above the
-first cutpoint will be in group 0; when <code>"lower"</code>, any <code>cell_positions</code> below
-the final cutpoint will be 0.</p></td>
+For example, if column 5 is a cutpoint, and a cell is in column 5,
+<code>"lower"</code> would group it with cells in columns 1 to 4, whereas <code>"upper"</code>
+would group it with cells in columns 6 to 10.  This is so that you can use
+cells at the bottom or the right-hand side of a table as the cutpoints
+(either of which would be 'upper' bounds because row and column numbers
+count from 1 in the top-left row and column).  When <code>"upper"</code>, any
+<code>cell_positions</code> above the first cutpoint will be in group 0; when
+<code>"lower"</code>, any <code>cell_positions</code> below the final cutpoint will be 0.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>partition_dim()</code> returns an integer vector, numbering the groups of
-cells.  Group 0 represents the cells above the first cutpoint (when <code>bound = "upper"</code>), or below the first cutpoint (when <code>bound = "lower"</code>).  The other
-groups are numbered from 1, where group 1 is adjacent to group 0.</p>
+cells.  Group 0 represents the cells above the first cutpoint (when <code>bound = "upper"</code>), or below the first cutpoint (when <code>bound = "lower"</code>).  The
+other groups are numbered from 1, where group 1 is adjacent to group 0.</p>
 <p><code>partition_dim()</code> returns an integer vector, numbering the groups of cells.
 Group 0 represents the cells above the first cutpoint (when <code>bound = "upper"</code>), or below the first cutpoint (when <code>bound = "lower"</code>).  The other
 groups are numbered from 1, where group 1 is adjacent to group 0.  Divide a
@@ -226,21 +236,21 @@ grid of cells into chunks along both dimensions</p>
 <span class='no'>multiples</span> <span class='kw'>&lt;-</span> <span class='no'>purpose</span>$<span class='no'>small_multiples</span>
 <span class='fu'><a href='rectify.html'>rectify</a></span>(<span class='no'>multiples</span>, <span class='no'>character</span>, <span class='no'>numeric</span>)</div><div class='output co'>#&gt; # A tibble: 14 x 6
 #&gt;    `row/col` `1(A)`                     `2(B)` `3(C)` `4(D)`            `5(E)`
-#&gt;        &lt;int&gt; &lt;chr&gt;                      &lt;chr&gt;  &lt;lgl&gt;  &lt;chr&gt;             &lt;chr&gt; 
-#&gt;  1         1 Postgraduate qualification &lt;NA&gt;   NA     Bachelor's degree &lt;NA&gt;  
-#&gt;  2         2 Sex                        Value  NA     Sex               Value 
-#&gt;  3         3 Female                     171000 NA     Female            275000
-#&gt;  4         4 Male                       159000 NA     Male              2e+05 
-#&gt;  5         5 &lt;NA&gt;                       &lt;NA&gt;   NA     &lt;NA&gt;              &lt;NA&gt;  
-#&gt;  6         6 Diploma                    &lt;NA&gt;   NA     Certificate       &lt;NA&gt;  
-#&gt;  7         7 Sex                        Value  NA     Sex               Value 
-#&gt;  8         8 Female                     210000 NA     Female            732000
-#&gt;  9         9 Male                       173000 NA     Male              807000
-#&gt; 10        10 &lt;NA&gt;                       &lt;NA&gt;   NA     &lt;NA&gt;              &lt;NA&gt;  
-#&gt; 11        11 No Qualification           &lt;NA&gt;   NA     &lt;NA&gt;              &lt;NA&gt;  
-#&gt; 12        12 Sex                        Value  NA     &lt;NA&gt;              &lt;NA&gt;  
-#&gt; 13        13 Female                     344000 NA     &lt;NA&gt;              &lt;NA&gt;  
-#&gt; 14        14 Male                       287000 NA     &lt;NA&gt;              &lt;NA&gt;  </div><div class='input'>
+#&gt;        &lt;int&gt; &lt;chr&gt;                      &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;             &lt;chr&gt; 
+#&gt;  1         1 Postgraduate qualification &lt;NA&gt;   &lt;NA&gt;   Bachelor's degree &lt;NA&gt;  
+#&gt;  2         2 Sex                        Value  &lt;NA&gt;   Sex               Value 
+#&gt;  3         3 Female                     &lt;NA&gt;   &lt;NA&gt;   Female            &lt;NA&gt;  
+#&gt;  4         4 Male                       &lt;NA&gt;   &lt;NA&gt;   Male              &lt;NA&gt;  
+#&gt;  5         5 &lt;NA&gt;                       &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;              &lt;NA&gt;  
+#&gt;  6         6 Diploma                    &lt;NA&gt;   &lt;NA&gt;   Certificate       &lt;NA&gt;  
+#&gt;  7         7 Sex                        Value  &lt;NA&gt;   Sex               Value 
+#&gt;  8         8 Female                     &lt;NA&gt;   &lt;NA&gt;   Female            &lt;NA&gt;  
+#&gt;  9         9 Male                       &lt;NA&gt;   &lt;NA&gt;   Male              &lt;NA&gt;  
+#&gt; 10        10 &lt;NA&gt;                       &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;              &lt;NA&gt;  
+#&gt; 11        11 No Qualification           &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;              &lt;NA&gt;  
+#&gt; 12        12 Sex                        Value  &lt;NA&gt;   &lt;NA&gt;              &lt;NA&gt;  
+#&gt; 13        13 Female                     &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;              &lt;NA&gt;  
+#&gt; 14        14 Male                       &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;              &lt;NA&gt;  </div><div class='input'>
 <span class='co'># The same thing in its raw 'melted' form that can be filtered</span>
 <span class='no'>multiples</span></div><div class='output co'>#&gt;    row col data_type                  character numeric
 #&gt; 1    1   1 character Postgraduate qualification      NA
@@ -290,107 +300,8 @@ grid of cells into chunks along both dimensions</p>
                 !(<span class='no'>character</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"Sex"</span>, <span class='st'>"Value"</span>, <span class='st'>"Female"</span>, <span class='st'>"Male"</span>)))
 
 <span class='co'># Then find out which cells fall into which partition</span>
-<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>corners</span>)</div><div class='output co'>#&gt;    row col data_type                  character numeric partition
-#&gt; 1    1   1 character Postgraduate qualification      NA         1
-#&gt; 2    1   2     blank                       &lt;NA&gt;      NA         1
-#&gt; 3    1   4 character          Bachelor's degree      NA         2
-#&gt; 4    1   5     blank                       &lt;NA&gt;      NA         2
-#&gt; 5    2   1 character                        Sex      NA         1
-#&gt; 6    2   2 character                      Value      NA         1
-#&gt; 7    2   4 character                        Sex      NA         2
-#&gt; 8    2   5 character                      Value      NA         2
-#&gt; 9    3   1 character                     Female      NA         1
-#&gt; 10   3   2   numeric                       &lt;NA&gt;  171000         1
-#&gt; 11   3   4 character                     Female      NA         2
-#&gt; 12   3   5   numeric                       &lt;NA&gt;  275000         2
-#&gt; 13   4   1 character                       Male      NA         1
-#&gt; 14   4   2   numeric                       &lt;NA&gt;  159000         1
-#&gt; 15   4   4 character                       Male      NA         2
-#&gt; 16   4   5   numeric                       &lt;NA&gt;  200000         2
-#&gt; 17   6   1 character                    Diploma      NA         3
-#&gt; 18   6   2     blank                       &lt;NA&gt;      NA         3
-#&gt; 19   6   4 character                Certificate      NA         4
-#&gt; 20   6   5     blank                       &lt;NA&gt;      NA         4
-#&gt; 21   7   1 character                        Sex      NA         3
-#&gt; 22   7   2 character                      Value      NA         3
-#&gt; 23   7   4 character                        Sex      NA         4
-#&gt; 24   7   5 character                      Value      NA         4
-#&gt; 25   8   1 character                     Female      NA         3
-#&gt; 26   8   2   numeric                       &lt;NA&gt;  210000         3
-#&gt; 27   8   4 character                     Female      NA         4
-#&gt; 28   8   5   numeric                       &lt;NA&gt;  732000         4
-#&gt; 29   9   1 character                       Male      NA         3
-#&gt; 30   9   2   numeric                       &lt;NA&gt;  173000         3
-#&gt; 31   9   4 character                       Male      NA         4
-#&gt; 32   9   5   numeric                       &lt;NA&gt;  807000         4
-#&gt; 33  11   1 character           No Qualification      NA         5
-#&gt; 34  11   2     blank                       &lt;NA&gt;      NA         5
-#&gt; 35  12   1 character                        Sex      NA         5
-#&gt; 36  12   2 character                      Value      NA         5
-#&gt; 37  13   1 character                     Female      NA         5
-#&gt; 38  13   2   numeric                       &lt;NA&gt;  344000         5
-#&gt; 39  14   1 character                       Male      NA         5
-#&gt; 40  14   2   numeric                       &lt;NA&gt;  287000         5</div><div class='input'>
-<span class='co'># It's more obvious if you also split() by the new 'partition' column</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>corners</span>)
-<span class='fu'>split</span>(<span class='no'>x</span>, <span class='no'>x</span>$<span class='no'>partition</span>)</div><div class='output co'>#&gt; $`1`
-#&gt;    row col data_type                  character numeric partition
-#&gt; 1    1   1 character Postgraduate qualification      NA         1
-#&gt; 2    1   2     blank                       &lt;NA&gt;      NA         1
-#&gt; 5    2   1 character                        Sex      NA         1
-#&gt; 6    2   2 character                      Value      NA         1
-#&gt; 9    3   1 character                     Female      NA         1
-#&gt; 10   3   2   numeric                       &lt;NA&gt;  171000         1
-#&gt; 13   4   1 character                       Male      NA         1
-#&gt; 14   4   2   numeric                       &lt;NA&gt;  159000         1
-#&gt; 
-#&gt; $`2`
-#&gt;    row col data_type         character numeric partition
-#&gt; 3    1   4 character Bachelor's degree      NA         2
-#&gt; 4    1   5     blank              &lt;NA&gt;      NA         2
-#&gt; 7    2   4 character               Sex      NA         2
-#&gt; 8    2   5 character             Value      NA         2
-#&gt; 11   3   4 character            Female      NA         2
-#&gt; 12   3   5   numeric              &lt;NA&gt;  275000         2
-#&gt; 15   4   4 character              Male      NA         2
-#&gt; 16   4   5   numeric              &lt;NA&gt;  200000         2
-#&gt; 
-#&gt; $`3`
-#&gt;    row col data_type character numeric partition
-#&gt; 17   6   1 character   Diploma      NA         3
-#&gt; 18   6   2     blank      &lt;NA&gt;      NA         3
-#&gt; 21   7   1 character       Sex      NA         3
-#&gt; 22   7   2 character     Value      NA         3
-#&gt; 25   8   1 character    Female      NA         3
-#&gt; 26   8   2   numeric      &lt;NA&gt;  210000         3
-#&gt; 29   9   1 character      Male      NA         3
-#&gt; 30   9   2   numeric      &lt;NA&gt;  173000         3
-#&gt; 
-#&gt; $`4`
-#&gt;    row col data_type   character numeric partition
-#&gt; 19   6   4 character Certificate      NA         4
-#&gt; 20   6   5     blank        &lt;NA&gt;      NA         4
-#&gt; 23   7   4 character         Sex      NA         4
-#&gt; 24   7   5 character       Value      NA         4
-#&gt; 27   8   4 character      Female      NA         4
-#&gt; 28   8   5   numeric        &lt;NA&gt;  732000         4
-#&gt; 31   9   4 character        Male      NA         4
-#&gt; 32   9   5   numeric        &lt;NA&gt;  807000         4
-#&gt; 
-#&gt; $`5`
-#&gt;    row col data_type        character numeric partition
-#&gt; 33  11   1 character No Qualification      NA         5
-#&gt; 34  11   2     blank             &lt;NA&gt;      NA         5
-#&gt; 35  12   1 character              Sex      NA         5
-#&gt; 36  12   2 character            Value      NA         5
-#&gt; 37  13   1 character           Female      NA         5
-#&gt; 38  13   2   numeric             &lt;NA&gt;  344000         5
-#&gt; 39  14   1 character             Male      NA         5
-#&gt; 40  14   2   numeric             &lt;NA&gt;  287000         5
-#&gt; </div><div class='input'>
-<span class='co'># An alternative to split() is tidyr::nest()</span>
-<span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tidyr/topics/nest'>nest</a></span>(<span class='no'>x</span>, -<span class='no'>partition</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
-#&gt;   partition data                
+<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>corners</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
+#&gt;   partition cells               
 #&gt;       &lt;int&gt; &lt;list&gt;              
 #&gt; 1         1 &lt;data.frame [8 × 5]&gt;
 #&gt; 2         2 &lt;data.frame [8 × 5]&gt;
@@ -398,53 +309,31 @@ grid of cells into chunks along both dimensions</p>
 #&gt; 4         4 &lt;data.frame [8 × 5]&gt;
 #&gt; 5         5 &lt;data.frame [8 × 5]&gt;</div><div class='input'>
 <span class='co'># You can also use bottom-left corners (or top-right or bottom-right)</span>
-<span class='no'>bl_corners</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>multiples</span>, <span class='no'>character</span> <span class='kw'>==</span> <span class='st'>"Yes"</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>)
-<span class='fu'>split</span>(<span class='no'>y</span>, <span class='no'>y</span>$<span class='no'>partition</span>)</div><div class='output co'>#&gt; named list()</div><div class='input'>
-<span class='co'># If `partition_name` is already the name of a column in `cells`, then it</span>
-<span class='co'># will be silently overwritten</span>
-<span class='no'>multiples</span>$<span class='no'>important_column</span> <span class='kw'>&lt;-</span> <span class='st'>"Will be overwritten"</span>
-<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>corners</span>, <span class='kw'>partition_name</span> <span class='kw'>=</span> <span class='st'>"important_column"</span>)</div><div class='output co'>#&gt;    row col data_type                  character numeric important_column
-#&gt; 1    1   1 character Postgraduate qualification      NA                1
-#&gt; 2    1   2     blank                       &lt;NA&gt;      NA                1
-#&gt; 3    1   4 character          Bachelor's degree      NA                2
-#&gt; 4    1   5     blank                       &lt;NA&gt;      NA                2
-#&gt; 5    2   1 character                        Sex      NA                1
-#&gt; 6    2   2 character                      Value      NA                1
-#&gt; 7    2   4 character                        Sex      NA                2
-#&gt; 8    2   5 character                      Value      NA                2
-#&gt; 9    3   1 character                     Female      NA                1
-#&gt; 10   3   2   numeric                       &lt;NA&gt;  171000                1
-#&gt; 11   3   4 character                     Female      NA                2
-#&gt; 12   3   5   numeric                       &lt;NA&gt;  275000                2
-#&gt; 13   4   1 character                       Male      NA                1
-#&gt; 14   4   2   numeric                       &lt;NA&gt;  159000                1
-#&gt; 15   4   4 character                       Male      NA                2
-#&gt; 16   4   5   numeric                       &lt;NA&gt;  200000                2
-#&gt; 17   6   1 character                    Diploma      NA                3
-#&gt; 18   6   2     blank                       &lt;NA&gt;      NA                3
-#&gt; 19   6   4 character                Certificate      NA                4
-#&gt; 20   6   5     blank                       &lt;NA&gt;      NA                4
-#&gt; 21   7   1 character                        Sex      NA                3
-#&gt; 22   7   2 character                      Value      NA                3
-#&gt; 23   7   4 character                        Sex      NA                4
-#&gt; 24   7   5 character                      Value      NA                4
-#&gt; 25   8   1 character                     Female      NA                3
-#&gt; 26   8   2   numeric                       &lt;NA&gt;  210000                3
-#&gt; 27   8   4 character                     Female      NA                4
-#&gt; 28   8   5   numeric                       &lt;NA&gt;  732000                4
-#&gt; 29   9   1 character                       Male      NA                3
-#&gt; 30   9   2   numeric                       &lt;NA&gt;  173000                3
-#&gt; 31   9   4 character                       Male      NA                4
-#&gt; 32   9   5   numeric                       &lt;NA&gt;  807000                4
-#&gt; 33  11   1 character           No Qualification      NA                5
-#&gt; 34  11   2     blank                       &lt;NA&gt;      NA                5
-#&gt; 35  12   1 character                        Sex      NA                5
-#&gt; 36  12   2 character                      Value      NA                5
-#&gt; 37  13   1 character                     Female      NA                5
-#&gt; 38  13   2   numeric                       &lt;NA&gt;  344000                5
-#&gt; 39  14   1 character                       Male      NA                5
-#&gt; 40  14   2   numeric                       &lt;NA&gt;  287000                5</div><div class='input'><span class='co'># Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and 7th</span>
+<span class='no'>bl_corners</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>multiples</span>, <span class='no'>character</span> <span class='kw'>==</span> <span class='st'>"Male"</span>)
+<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
+#&gt;   partition cells               
+#&gt;       &lt;int&gt; &lt;list&gt;              
+#&gt; 1         4 &lt;data.frame [8 × 5]&gt;
+#&gt; 2         5 &lt;data.frame [8 × 5]&gt;
+#&gt; 3         2 &lt;data.frame [8 × 5]&gt;
+#&gt; 4         3 &lt;data.frame [8 × 5]&gt;
+#&gt; 5         1 &lt;data.frame [8 × 5]&gt;</div><div class='input'>
+<span class='co'># To complete the grid even when not all corners are supplied, use `strict`</span>
+<span class='no'>bl_corners</span> <span class='kw'>&lt;-</span> <span class='no'>bl_corners</span>[-<span class='fl'>1</span>, ]
+<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 2
+#&gt;   partition cells               
+#&gt;       &lt;int&gt; &lt;list&gt;              
+#&gt; 1         5 &lt;data.frame [8 × 5]&gt;
+#&gt; 2         2 &lt;data.frame [8 × 5]&gt;
+#&gt; 3         3 &lt;data.frame [8 × 5]&gt;
+#&gt; 4         1 &lt;data.frame [8 × 5]&gt;</div><div class='input'><span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
+#&gt;   partition cells               
+#&gt;       &lt;int&gt; &lt;list&gt;              
+#&gt; 1         4 &lt;data.frame [8 × 5]&gt;
+#&gt; 2         5 &lt;data.frame [8 × 5]&gt;
+#&gt; 3         2 &lt;data.frame [8 × 5]&gt;
+#&gt; 4         3 &lt;data.frame [8 × 5]&gt;
+#&gt; 5         1 &lt;data.frame [8 × 5]&gt;</div><div class='input'><span class='co'># Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and 7th</span>
 <span class='co'># rows. Row 3 is the top row of group 1.</span>
 <span class='fu'>partition_dim</span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>7</span>))</div><div class='output co'>#&gt;  [1] 0 0 1 1 2 2 3 3 3 3</div><div class='input'>
 <span class='co'># Given a set of cells in columns 1 to 10, partition them at the 3rd, 5th and</span>

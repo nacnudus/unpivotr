@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filter for a cell from which to select others — anchor • unpivotr</title>
+<title>Align one set of cells with another set — justify • unpivotr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,13 +25,11 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Filter for a cell from which to select others — anchor" />
+<meta property="og:title" content="Align one set of cells with another set — justify" />
 
-<meta property="og:description" content="anchor protects you from selecting initial cells that do
-not exist.  This is useful when choosing inital cells from which to search
-for others, using offset() and extend().  If the
-chosen cells do not exist, then cells are generated at the given rows and
-columns, with NAs in every column other than 'row' and 'col'." />
+<meta property="og:description" content="If the header cells of a table aren't aligned to the left, right, top or
+bottom of the data cells that they describe, then use justify() to re-align
+them, using a second set of cells as a guide." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,59 +128,48 @@ columns, with NAs in every column other than 'row' and 'col'." />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Filter for a cell from which to select others</h1>
-    <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/anchor.R'><code>R/anchor.R</code></a></small>
+    <h1>Align one set of cells with another set</h1>
+    <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/justify.R'><code>R/justify.R</code></a></small>
     </div>
 
     
-    <p><code>anchor</code> protects you from selecting initial cells that do
-not exist.  This is useful when choosing inital cells from which to search
-for others, using <code><a href='offset.html'>offset()</a></code> and <code><a href='extend.html'>extend()</a></code>.  If the
-chosen cells do not exist, then cells are generated at the given rows and
-columns, with NAs in every column other than 'row' and 'col'.</p>
+    <p>If the header cells of a table aren't aligned to the left, right, top or
+bottom of the data cells that they describe, then use <code>justify()</code> to re-align
+them, using a second set of cells as a guide.</p>
     
 
-    <pre class="usage"><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='no'>rows</span>, <span class='no'>cols</span>, <span class='kw'>cross</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>justify</span>(<span class='no'>header_cells</span>, <span class='no'>corner_cells</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cells</th>
-      <td><p>Data frame, the cells among which the anchor will be sought</p></td>
+      <th>header_cells</th>
+      <td><p>Data frame of data cells with at least the columns 'row'
+and 'column', which are <code>numeric</code> or <code>integer</code>.</p></td>
     </tr>
     <tr>
-      <th>rows</th>
-      <td><p>Numeric, the rows of the intended cells</p></td>
-    </tr>
-    <tr>
-      <th>cols</th>
-      <td><p>Numeric, the columns of the intended cell</p></td>
-    </tr>
-    <tr>
-      <th>cross</th>
-      <td><p>Logical, whether to 'cross' the given rows and columns to
-generate all combinations. Unless this is TRUE, <code>rows</code> and <code>cols</code>
-must be the same length.  TRUE by default.</p></td>
+      <th>corner_cells</th>
+      <td><p>Data frame of header cells with at least the columns
+'row' and 'column', which are numeric/integer vectors.  The same length as
+<code>header_cells</code>.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>purpose</span>$<span class='no'>`NNW WNW`</span>)</div><span class='co'># NOT RUN {</span>
-  <span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
-  <span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>:<span class='fl'>2</span>)
-<span class='co'># }</span><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;     row   col data_type chr  
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;
-#&gt; 1     1     1 chr       &lt;NA&gt; </div><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>1</span>, <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>cross</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 4
-#&gt;     row   col data_type chr  
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;
-#&gt; 1     1     1 chr       &lt;NA&gt; 
-#&gt; 2     1     2 chr       &lt;NA&gt; </div><div class='input'><span class='fu'>anchor</span>(<span class='no'>cells</span>, <span class='fl'>100</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;     row   col data_type chr  
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;
-#&gt; 1   100     1 &lt;NA&gt;      &lt;NA&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='no'>header_cells</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(<span class='kw'>row</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>),
+                               <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3L</span>, <span class='fl'>5L</span>, <span class='fl'>8L</span>, <span class='fl'>10L</span>),
+                               <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])
+<span class='no'>corner_cells</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(<span class='kw'>row</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>),
+                               <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>4L</span>, <span class='fl'>6L</span>, <span class='fl'>9L</span>))
+<span class='fu'>justify</span>(<span class='no'>header_cells</span>, <span class='no'>corner_cells</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
+#&gt;     row   col value
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1     2     1 A    
+#&gt; 2     2     4 B    
+#&gt; 3     2     6 C    
+#&gt; 4     2     9 D    </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -142,13 +142,13 @@ the value of the cell is represented in a different column, depending on the
 data type.</p>
     
 
-    <pre class="usage"><span class='fu'>spatter</span>(<span class='no'>.data</span>, <span class='no'>key</span>, <span class='no'>...</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>)</pre>
+    <pre class="usage"><span class='fu'>spatter</span>(<span class='no'>cells</span>, <span class='no'>key</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>, <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
+      <th>cells</th>
       <td><p>A data frame where each row represents a cell, with columns
 <code>row</code> and <code>col</code>, usually a column <code>data_type</code>, and additional columns of
 cell values.</p></td>
@@ -158,20 +158,21 @@ cell values.</p></td>
       <td><p>The name of the column whose values will become column names</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>functions for formatting particular data types, named by the data
-type (the name of the column of <code>.data</code> that contains the cell value.</p></td>
-    </tr>
-    <tr>
       <th>values</th>
-      <td><p>Optional. The column of <code>.data</code> to use as the value of each
+      <td><p>Optional. The column of <code>cells</code> to use as the value of each
 cell.  Given as a bare variable name.  If omitted (the default), the <code>type</code>
 argument will be used instead.</p></td>
     </tr>
     <tr>
       <th>types</th>
-      <td><p>Optional. The column that names, for each row of <code>.data</code>, which
+      <td><p>Optional. The column that names, for each row of <code>cells</code>, which
 column contains the cell value.  Defaults to <code>data_type</code>.</p></td>
+    </tr>
+    <tr>
+      <th>formatters</th>
+      <td><p>A named list of functions for formatting particular data
+types, named by the data type (the name of the column of <code>cells</code> that
+contains the cell value.</p></td>
     </tr>
     </table>
     
@@ -203,7 +204,7 @@ column contains the cell value.  Defaults to <code>data_type</code>.</p></td>
 #&gt; 3         3 Nicholas 3     
 #&gt; 4         4 Olivia   5     </div><div class='input'>
 <span class='co'># How it looks after treating the cells in row 1 as headers</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='behead.html'>behead</a></span>(<span class='no'>x</span>, <span class='no'>N</span>, <span class='no'>header</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='behead.html'>behead</a></span>(<span class='no'>x</span>, <span class='st'>"N"</span>, <span class='no'>header</span>)
 <span class='no'>y</span>$<span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span> <span class='co'># Drop the 'col' column</span>
 <span class='no'>y</span></div><div class='output co'>#&gt; # A tibble: 6 x 5
 #&gt;     row data_type character numeric header
@@ -310,7 +311,8 @@ column contains the cell value.  Defaults to <code>data_type</code>.</p></td>
 <span class='co'># by the data type of the cells they are to convert (look at the `data_type`</span>
 <span class='co'># column).  If your custom functions aren't sufficient to avoid the need for</span>
 <span class='co'># coercion, then they will be overridden.</span>
-<span class='fu'>spatter</span>(<span class='no'>y</span>, <span class='no'>header</span>, <span class='kw'>character</span> <span class='kw'>=</span> ~ <span class='fu'>toupper</span>(<span class='no'>.</span>), <span class='kw'>numeric</span> <span class='kw'>=</span> <span class='no'>as.complex</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 4
+<span class='fu'>spatter</span>(<span class='no'>y</span>, <span class='no'>header</span>,
+        <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>character</span> <span class='kw'>=</span> ~ <span class='fu'>toupper</span>(<span class='no'>.</span>), <span class='kw'>numeric</span> <span class='kw'>=</span> <span class='no'>as.complex</span>))</div><div class='output co'>#&gt; # A tibble: 6 x 4
 #&gt;     row extra Age   Name    
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;cpl&gt; &lt;chr&gt;   
 #&gt; 1     2    11 &lt;NA&gt;  MATILDA 
