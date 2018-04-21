@@ -21,214 +21,126 @@ knitr::opts_chunk$set(
 [![Cran Downloads](https://cranlogs.r-pkg.org/badges/unpivotr)](https://www.r-pkg.org/pkg/unpivotr)
 [![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://codecov.io/gh/nacnudus/unpivotr)
 
-[unpivotr](https://github.com/nacnudus/unpivotr) provides tools for converting
-data from complex or irregular layouts to a columnar structure.  For example,
-tables with multi-level column or row headers, or spreadsheets, or nested HTML
-tables.  Header and data cells can selected by their contents, position and
-formatting, and can be associated with one other by their relative positions.
+[unpivotr](https://github.com/nacnudus/unpivotr) deals with non-tabular data,
+especially from spreadsheets.  Use unpivotr when your source data has any of
+these 'features':
 
-Excel (.xlsx) files can be prepared for
-[unpivotr](https://github.com/nacnudus/unpivotr) via the
-[tidyxl](https://github.com/nacnudus/tidyxl) package.
+* Multi-headered hydra
+* Meaningful formatting
+* Headers anywhere but at the top of each column
+* Non-text headers e.g. dates
+* Other stuff around the table
+* Several similar tables in one sheet
+* Sentinel values
+* Superscript symbols
+* Meaningful comments
+* Nested HTML tables
 
-![](man/figures/before-after.png)
+If that list makes your blood boil, you'll enjoy the function names.
 
-## Mailing list
+* `behead()` deals with multi-headered hydra tables one layer of headers at a
+  time, working from the edge of the table inwards.  It's a bit like using
+  `header = TRUE` in `read.csv()`, but because it's a function, you can apply it
+  to as many layers of headers as you need.  You end up with all the headers in
+  columns.
+* `spatter()` is like `tidyr::spread()` but preserves mixed data types.  You get
+  into a mixed-data-type situation by delaying type coercion until *after* the
+  table is tidy (rather than before, like `read.csv()` et al).  And yes, it
+  usually follows `behead()`.
 
-For bugs and/or issues, create a new issue on
-[GitHub](https://github.com/nacnudus/tidyxl/issues) For other questions or
-comments, please subscribe to the [tidyxl-devel mailing
-list](https://groups.google.com/forum/#!forum/tidyxl-devel). You must be a
-member to post messages, but anyone can read the archived discussions.
+More positive, corrective functions:
+
+* `justify()` aligns column headers before `behead()`ing, and has deliberate
+  moral overtones.
+* `enhead()` attaches a header to the body of the data, *a la* Frankenstein.
+  The effect is the same as `behead()`, but is more powerful because you can
+  choose exactly which header cells you want, paying attention to formatting
+  (which `behead()` doesn't understand).
+* `isolate_sentinels()` separates meaningful symbols like `"N/A"` or
+  `"confidential"` from the rest of the data, giving them some time alone think
+  about what they've done.
+* `partition()` takes a sheet with several tables on it, and slashes into pieces
+  that each contain one table.  You can then unpivot each table in turn with
+  `purrr::map()` or similar.
+
+## Getting started
+
+[Spreadsheet Munging
+Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies) is a
+free, online cookbook using [tidyxl](https://github.com/nacnudus/tidyxl) and
+[unpivotr](https://github.com/nacnudus/unpivotr) (in progress).
+
+Otherwise the basic idea is:
+
+1. Read the data with a specialist tool.
+   * For spreadsheets, use [tidyxl](https://nacnudus.github.io/tidyxl).
+   * For plain text files, you might soon be able to use
+     [readr](https://readr.tidyverse.org), but for now you'll have to install a
+     pull-request on that package with
+     `devtools::install_github("tidyverse/readr#760")`.
+   * For tables in html pages, use `unpivotr::tidy_html()`
+   * For data frames, use `unpivotr::tidy_table()` -- this should be a last
+     resort, because by the time thee data is in a conventional data frame, it
+     is often too late -- formatting has been lost, and most data types have
+     been coerced to strings.
+1. Either `behead()` straight away, else `dplyr::filter()` separately for the
+   header cells and the data cells, and then recombine with `enhead()`.
+1. `spatter()` so that each column has one data type.
+
+```{r}
+library(unpivotr)
+library(tidyverse)
+x <- purpose$`NNW WNW`
+x # A pivot table in a conventional data frame.  Four levels of headers, in two
+  # rows and two columns.
+
+y <- tidy_table(x) # 'Tokenize' or 'melt' the data frame into one row per cell
+y
+
+rectify(y) # useful for reviewing the melted form as though in a spreadsheet
+
+y %>%
+  behead("NNW", "sex") %>%               # Strip headers
+  behead("N", "life-satisfication") %>%  # one
+  behead("WNW", "qualification") %>%     # by
+  behead("W", "age-band") %>%            # one.
+  select(-row, -col, -data_type, count = chr) %>% # cleanup
+  mutate(count = as.integer(count))
+```
+
+Note the compass directions in the code above, which hint to `behead()` where to
+find the header cell for each data cell.
+
+* `"NNW"` means the header (`Female`, `Male`) is positioned up and to the
+  left of the columns of data cells it describes.
+* `"N"` means the header (`0 - 6`, `7 - 10`) is positioned directly above the
+  columns of data cells it describes.
+* `"WNW"` means the header (`Bachelor's degree`, `Certificate`, etc.) is
+  positioned to the left and upwards of the rows of data cells it describes.
+* `"W"` means the header (`15 - 24`, `25 - 44`, etc.) is positioned directly to
+  the left of the rows of data cells it describes.
+
 
 ## Installation
 
 ```{r, echo = TRUE, eval = FALSE}
+# install.packages("devtools") # If you don't already have devtools
 devtools::install_github("nacnudus/unpivotr", build_vignettes = TRUE)
 ```
 
-There are several dependencies:
-
-* data.table (>= 1.9.7)
-* dplyr
-* dtplyr
-* purrr
-* tidyr
-* xml2
-
-## Example
-
-The package includes a dataset, `purpose`, which is a list of pivot tables,
-derived from a survey by Statistics New Zealand of people's sense-of-purpose.  A
-'tidy' version of the data is also included.
-
-```{r, echo = TRUE}
-library(unpivotr)
-head(purpose$Tidy) # 'Tidy' version of the data
-(pivoted <- purpose$`NNW WNW`) # The same data, pivoted
-```
-
-To unpivot this table, first get a tabular representation of each cell, its
-value and its position in the original pivot table.
-
-```{r, echo = TRUE}
-cells <- tidy_table(pivoted, col_names = FALSE)
-cells <- cells[!is.na(cells$chr), ]
-head(cells)
-```
-
-This can easily be subset for header and data cells.
-
-```{r, echo = TRUE}
-library(dplyr)
-# Select the cells containing the values
-data_cells <-
-  cells %>%
-  filter(row >= 3, col >= 3)
-head(data_cells)
-
-# Select the row headers
-row_headers <-
-  cells %>%
-  filter(col <= 2) %>%
-  select(row, col, header = chr) %>%
-  split(.$col) # Separate each column of headers
-lapply(row_headers, head)
-
-# Select the column headers
-col_headers <-
-  cells %>%
-  filter(row <= 2) %>%
-  select(row, col, header = chr) %>%
-  split(.$row) # Separate each row of headers
-col_headers
-```
-
-Using [unpivotr](https://github.com/nacnudus/unpivotr) functions, we associate
-the data cells with the headers, by proximity in given compass directions.
-
-```{r, echo = TRUE}
-# From each data cell, search for the nearest one of each of the headers
-unpivoted <-
-  data_cells %>%
-  enhead(col_headers$`1`, "NNW") %>% # Search north (up) and north-west (up-left)
-  enhead(col_headers$`2`, "N") %>% # Search directly north (up)
-  enhead(row_headers$`1`, "WNW") %>% # Search west (left) and north-west
-  enhead(row_headers$`2`, "W") # Search directly left (west)
-unpivoted
-```
-
-We can re-pivot the final data in R using `ftable()` to check that it has been
-imported correctly.
-
-```{r, echo = TRUE}
-ftable(unpivoted[3:7],
-       row.vars = 4:5,
-       col.vars = 2:3)
-```
-
-## HTML tables
-
-HTML tables can be imported in a similar way.
-
-```{r, echo = TRUE}
-urls <- system.file("extdata", "url.html", package = "unpivotr")
-htmltools::includeHTML(urls)
-
-cell_url <- function(x) {
-  if (is.na(x)) return(NA)
-  x %>%
-    xml2::read_html() %>%
-    xml2::xml_find_all("//a") %>%
-    xml2::xml_attr("href")
-}
-
-cell_text <- function(x) {
-  if (is.na(x)) return(NA)
-  x %>%
-    xml2::read_html() %>%
-    xml2::xml_find_all("//a") %>%
-    rvest::html_text()
-}
-
-urls %>%
-  xml2::read_html() %>%
-  tidy_table() %>%
-  .[[1]] %>%
-  mutate(text = purrr::map(html, cell_text),
-         url = purrr::map(html, cell_url)) %>%
-  tidyr::unnest(text, url) %>%
-  select(-html)
-```
-
-## Compass directions
-
-The concept of compass directions is compactly expressed by this triptych.
-
-![](vignettes/compass-compact.png)
-
-The most useful ones are more fully explained here.
-
-![](vignettes/compass-common.png)
-
-A complete explanation is in 'poster' form
-[here](inst/extdata/compass-complete.svg).
-
-## Philosophy
-
-Information in in many spreadsheets cannot be easily imported into R.  Why?
-
-Most R packages that import spreadsheets have difficulty unless the layout of
-the spreadsheet conforms to a strict definition of a 'table', e.g.:
-
-* observations in rows
-* variables in columns
-* a single header row
-* all information represented by characters, whether textual, logical, or
-  numeric
-
-These rules are designed to eliminate ambiguity in the interpretation of the
-information.  But most spreadsheeting software relaxes these rules in a trade of
-ambiguity for expression via other media:
-
-* proximity (other than headers, i.e. other than being the first value at the
-  top of a column)
-* formatting (colours and borders)
-
-Humans can usually resolve the ambiguities with contextual knowledge, but
-computers are limited by their ignorance.  Programmers are hampered by:
-
-* their language's expressiveness
-* loss of information in transfer from spreadsheet to programming library
-
-Information is lost when software discards it in order to force the data into
-tabular form.  Sometimes date formatting is retained, but mostly formatting
-and comments are lost, and position has to be inferred.
+Don't use the CRAN version -- it has none of the fun in this README, and the
+development version breaks everything.  Please let me know if this is a problem
+for you --- as far as I know, nobody really used the old version, but it's
+hard to tell.
 
 ## Similar projects
 
 [unpivotr](https://github.com/nacnudus/unpivotr) is inspired by the United
 Kingdom Office of National Statistics
 [ONSdatabaker](https://github.com/ONS-OpenData/ONSdatabaker), which is
-implemented in Python.  [unpivotr](https://github.com/nacnudus/unpivotr) differs
-already by using compass directions and searching for headers between
-boundaries.
+implemented in Python.  [unpivotr](https://github.com/nacnudus/unpivotr).
 
-The [rsheets](https://github.com/rsheets) project of several R packages is in
-the early stages of importing spreadsheet information from Excel and Google
-Sheets into R, manipulating it, and potentially parsing and processing formulas
-and writing out to spreadsheet files.  In particular,
 [jailbreaker](https://github.com/rsheets/jailbreakr) attempts to extract
 non-tabular data from spreadsheets into tabular structures automatically via
-some clever algorithms.
-
-[unpivotr](https://github.com/nacnudus/unpivotr) differs from
-[jailbreaker](https://github.com/rsheets/jailbreakr) in that it provides tools
-for unpivoting complex and non-tabular data layouts using I not AI
-(intelligence, not artificial intelligence).
-
-## Roadmap
-
-As common unpivoting idioms emerge, they will be generalised and added to the
-package. E.g. combining long header titles that are spelled out across cells,
-rather than being in one cell merged across others.
+some clever algorithms.  [unpivotr](https://github.com/nacnudus/unpivotr)
+differs by being less magic, and equipping you to express what you want to do.
