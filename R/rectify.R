@@ -120,6 +120,7 @@ rectify.data.frame <- function(cells, values = NULL, types = data_type,
 #' @param x The output of [rectify()]
 #' @param display One of `"terminal"` (default), `"browser"`, `"rstudio"`.  To
 #' display in the browser you must have the `DT` package installed.
+#' @param ... Arguments passed on to [print()]
 #' @export
 #' @examples
 #' #

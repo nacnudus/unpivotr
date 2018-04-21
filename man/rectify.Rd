@@ -27,6 +27,8 @@ named according to the column that the cell value is in.}
 
 \item{display}{One of \code{"terminal"} (default), \code{"browser"}, \code{"rstudio"}.  To
 display in the browser you must have the \code{DT} package installed.}
+
+\item{...}{Arguments passed on to \code{\link[=print]{print()}}}
 }
 \description{
 Takes the 'melted' output of \code{tidy_table()} or
