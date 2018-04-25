@@ -146,22 +146,47 @@ WSW <- SSW
 
 corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   check_header(header_cells)
-  headers <-
-    partition(header_cells,
-              header_cells,
-              corner,
-              ".partition",
-              nest = FALSE,
-              strict = FALSE) %>%
-    dplyr::select(-row, -col)
+  if (length(unique(header_cells$row)) == 1L) {
+    col_bound <- (if(corner %in% c("top_left", "bottom_left")) "upper" else "lower")
+    if (col_bound == "upper") {
+      headers <-
+        header_cells %>%
+        dplyr::arrange(row, col) %>%
+        dplyr::mutate(.partition = row_number())
+    } else {
+      headers <-
+        header_cells %>%
+        dplyr::arrange(-row, -col) %>%
+        dplyr::mutate(.partition = row_number())
+    }
+    datas <- dplyr::mutate(data_cells,
+                           .partition = partition_dim(data_cells$col,
+                                                      headers$col,
+                                                      col_bound))
+  } else {
+    row_bound <- (if(corner %in% c("top_left", "top_right")) "upper" else "lower")
+    if (row_bound == "upper") {
+      headers <-
+        header_cells %>%
+        dplyr::arrange(row, col) %>%
+        dplyr::mutate(.partition = row_number())
+    } else {
+      headers <-
+        header_cells %>%
+        dplyr::arrange(-row, -col) %>%
+        dplyr::mutate(.partition = row_number())
+    }
+    datas <- dplyr::mutate(data_cells,
+                           .partition = partition_dim(data_cells$row,
+                                                      headers$row,
+                                                      row_bound))
+  }
+  datas <- dplyr::filter(datas, .partition >= 1L)
+  headers <- dplyr::select(headers, -row, -col)
   out <-
-    partition(data_cells,
-              header_cells,
-              corner,
-              ".partition",
-              nest = FALSE,
-              strict = FALSE) %>%
-    dplyr::inner_join(headers, by = ".partition", suffix = c("", ".y")) %>%
+    dplyr::inner_join(datas, headers,
+                      by = ".partition",
+                      suffix = c("", ".y")) %>%
     dplyr::select(-.partition)
   if (!drop) {
     remainder <- dplyr::anti_join(data_cells, out, by = c("row", "col"))

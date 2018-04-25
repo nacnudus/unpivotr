@@ -27,10 +27,11 @@ test_that("the `drop_na` argument of behead() works", {
     behead("N", "Sense of purpose") %>%
     behead("WNW", "Highest qualification") %>%
     behead("W", "Age group (Life-stages)") %>%
-    dplyr::select(-row, -col, -data_type, -chr)
+    # dplyr::select(-row, -col, -data_type, -chr)
+    dplyr::select(-row, -col, -data_type)
   # Check against the provided 'tidy' version of the data.
   expect_equal(nrow(tidy), 80)
-  expect_equal(tidy$Sex, rep(rep(c("Female", NA, "Male", NA), each = 4), 5))
+  expect_equal(tidy$Sex, rep(c("Female", NA, "Male", NA), each = 20))
 })
 
 test_that("``\"ABOVE\"`` etc. don't work", {
