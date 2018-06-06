@@ -152,12 +152,12 @@ corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
       headers <-
         header_cells %>%
         dplyr::arrange(row, col) %>%
-        dplyr::mutate(.partition = row_number())
+        dplyr::mutate(.partition = dplyr::row_number())
     } else {
       headers <-
         header_cells %>%
         dplyr::arrange(-row, -col) %>%
-        dplyr::mutate(.partition = row_number())
+        dplyr::mutate(.partition = dplyr::row_number())
     }
     datas <- dplyr::mutate(data_cells,
                            .partition = partition_dim(data_cells$col,
@@ -169,12 +169,12 @@ corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
       headers <-
         header_cells %>%
         dplyr::arrange(row, col) %>%
-        dplyr::mutate(.partition = row_number())
+        dplyr::mutate(.partition = dplyr::row_number())
     } else {
       headers <-
         header_cells %>%
         dplyr::arrange(-row, -col) %>%
-        dplyr::mutate(.partition = row_number())
+        dplyr::mutate(.partition = dplyr::row_number())
     }
     datas <- dplyr::mutate(data_cells,
                            .partition = partition_dim(data_cells$row,
