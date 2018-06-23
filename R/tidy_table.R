@@ -17,7 +17,8 @@
 #' string that can be further parsed with tools such as the rvest package.  This
 #' is particularly useful when an HTML cell itself contains an HTML table, or
 #' contains both text and a URL.  If the HTML itself is poorly formatted, try
-#' passing it through the htmltidy package first.
+#' passing it through the
+#' [htmltidy](https://CRAN.R-project.org/packagee=htmltidy) package first.
 #'
 #' This is an S3 generic.
 #'
