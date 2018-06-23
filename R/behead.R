@@ -4,10 +4,10 @@
 #' makes it part of the data.  Think of it like [tidyr::gather()], except that
 #' it works when there is more than one row of headers (or more than one column
 #' of row-headers), and it only works on tables that have first come through
-#' [tidy_table()] or [tidyxl::xlsx_cells()].
+#' [as_cells()] or [tidyxl::xlsx_cells()].
 #'
 #' @param cells Data frame. The cells of a pivot table, usually the output of
-#'   [tidy_table()] or [tidyxl::xlsx_cells()], or of a subsequent operation on
+#'   [as_cells()] or [tidyxl::xlsx_cells()], or of a subsequent operation on
 #'   those outputs.
 #' @param direction The direction between a data cell and its header, one of
 #' `"N"`, `"E"`, `"S"`, `"W"`, `"NNW"`, `"NNE"`, `"ENE"`, `"ESE"`, `"SSE"`,
@@ -43,7 +43,7 @@
 #' (x <- data.frame(a = 1:2, b = 3:4))
 #'
 #' # Make a tidy representation of each cell
-#' (cells <- tidy_table(x, col_names = TRUE))
+#' (cells <- as_cells(x, col_names = TRUE))
 #'
 #' # Strip the cells in row 1 (the original headers) and use them as data
 #' behead(cells, "N", foo)
@@ -52,7 +52,7 @@
 #' (x <- purpose$`NNW WNW`)
 #'
 #' # Make a tidy representation
-#' cells <- tidy_table(x)
+#' cells <- as_cells(x)
 #' head(cells)
 #' tail(cells)
 #'

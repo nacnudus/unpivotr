@@ -73,7 +73,7 @@
 #'
 #' # The same data, represented by one row per cell, with integer values in the
 #' # `int` column and character values in the `chr` column.
-#' x <- tidy_table(w)
+#' x <- as_cells(w)
 #' x
 #'
 #' # pack() and unpack() are complements

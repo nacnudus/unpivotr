@@ -1,6 +1,6 @@
 #' Display cells as though in a spreadsheet
 #'
-#' @description Takes the 'melted' output of `tidy_table()` or
+#' @description Takes the 'melted' output of `as_cells()` or
 #' `tidyxl::xlsx_cells()` (each row represents one cell) and projects the cells
 #' into their original positions.  By default this prints to the
 #' terminal/console, but with `display = "browser"` or `display = "rstudio"` it
@@ -51,7 +51,7 @@
 #'
 #' # This is the 'tidy' arrangement that is difficult for humans to read (but
 #' # easy for computers)
-#' y <- tidy_table(x, col_names = TRUE)
+#' y <- as_cells(x, col_names = TRUE)
 #' y
 #'
 #' # rectify() projects the cells as a spreadsheet again, for humans to read.

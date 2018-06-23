@@ -55,7 +55,7 @@ library(dplyr)
 # Load some pivoted data
 (x <- purpose$`NNW WNW`)
 # Make a tidy representation
-cells <- tidy_table(x)
+cells <- as_cells(x)
 cells <- cells[!is.na(cells$chr), ]
 head(cells)
 # Select the cells containing the values

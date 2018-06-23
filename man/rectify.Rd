@@ -31,7 +31,7 @@ display in the browser you must have the \code{DT} package installed.}
 \item{...}{Arguments passed on to \code{\link[=print]{print()}}}
 }
 \description{
-Takes the 'melted' output of \code{tidy_table()} or
+Takes the 'melted' output of \code{as_cells()} or
 \code{tidyxl::xlsx_cells()} (each row represents one cell) and projects the cells
 into their original positions.  By default this prints to the
 terminal/console, but with \code{display = "browser"} or \code{display = "rstudio"} it
@@ -70,7 +70,7 @@ x
 
 # This is the 'tidy' arrangement that is difficult for humans to read (but
 # easy for computers)
-y <- tidy_table(x, col_names = TRUE)
+y <- as_cells(x, col_names = TRUE)
 y
 
 # rectify() projects the cells as a spreadsheet again, for humans to read.
