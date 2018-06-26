@@ -2,7 +2,7 @@
 #'
 #' @details
 #' When cells are represented by rows of a data frame, the values of the cells
-#' will be in different columns accordding to their data type.  For example, the
+#' will be in different columns according to their data type.  For example, the
 #' value of a cell containing text will be in a column called `chr` (or
 #' `character` if it came via tidyxl).  A column called `data_type` names, for
 #' each cell, which column its value is in.

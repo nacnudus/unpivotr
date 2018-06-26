@@ -6,7 +6,7 @@
 #' data that uses several different sentinel values.
 #'
 #' The best way to learn unpivotr is the free online book [Spreadsheet Munging
-#' Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies/).
+#'  Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies/).
 #'
 #' Header and data cells can selected by their contents, position, data type and
 #' formatting, and can be associated with one other by their relative positions.

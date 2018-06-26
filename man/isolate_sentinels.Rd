@@ -13,7 +13,7 @@ isolate_sentinels(.data, col, sentinels, into = "sentinel")
 
 \item{sentinels}{A vector of sentinel values to be removed.}
 
-\item{into}{A name to give the new column of sentinal values.}
+\item{into}{A name to give the new column of sentinel values.}
 }
 \description{
 A sentinel value, takes the place of a value that isn't

@@ -38,7 +38,7 @@ Pack cell values from separate columns per data type into one list-column
 }
 \details{
 When cells are represented by rows of a data frame, the values of the cells
-will be in different columns accordding to their data type.  For example, the
+will be in different columns according to their data type.  For example, the
 value of a cell containing text will be in a column called \code{chr} (or
 \code{character} if it came via tidyxl).  A column called \code{data_type} names, for
 each cell, which column its value is in.

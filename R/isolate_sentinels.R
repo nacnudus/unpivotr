@@ -8,7 +8,7 @@
 #' @param .data A data frame.
 #' @param col The name of the column of data containing sentinel values.
 #' @param sentinels A vector of sentinel values to be removed.
-#' @param into A name to give the new column of sentinal values.
+#' @param into A name to give the new column of sentinel values.
 #'
 #' @export
 #' @examples

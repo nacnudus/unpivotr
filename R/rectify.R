@@ -37,8 +37,8 @@
 #' @param types The column of `cells` that names, for each cell, which column to
 #' use for the value of the cell.  E.g.  a cell with a character value will have
 #' `"character"` in this column.
-#' @param formatters A named list of functions to format cell values for diplay,
-#'   named according to the column that the cell value is in.
+#' @param formatters A named list of functions to format cell values for
+#' display, named according to the column that the cell value is in.
 #'
 #' @export
 #' @examples

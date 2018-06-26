@@ -20,8 +20,8 @@ argument will be used instead.}
 use for the value of the cell.  E.g.  a cell with a character value will have
 \code{"character"} in this column.}
 
-\item{formatters}{A named list of functions to format cell values for diplay,
-named according to the column that the cell value is in.}
+\item{formatters}{A named list of functions to format cell values for
+display, named according to the column that the cell value is in.}
 
 \item{x}{The output of \code{\link[=rectify]{rectify()}}}
 
