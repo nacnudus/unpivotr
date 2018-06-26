@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Function reference" />
 
 
@@ -37,16 +40,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-45097885-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-45097885-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-45097885-5');
 </script>
 
   </head>
@@ -64,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
@@ -95,9 +96,6 @@
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
     </li>
-    <li>
-      <a href="../articles/worked-examples.html">Unpivoting Worked Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -113,6 +111,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -120,97 +119,101 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
       <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="behead.html">behead()</a></code> </p>
-          </td>
-          <td><p>Strip a level of headers from a pivot table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="enhead.html">enhead()</a></code> </p>
-          </td>
-          <td><p>Join data cells to headers</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="isolate_sentinels.html">isolate_sentinels()</a></code> </p>
-          </td>
-          <td><p>Move sentinel values into a separate column leaving NA behind</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="justify.html">justify()</a></code> </p>
-          </td>
-          <td><p>Align one set of cells with another set</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="pack.html">pack()</a></code> <code><a href="pack.html">unpack()</a></code> </p>
-          </td>
-          <td><p>Pack cell values from separate columns per data type into one list-column</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="partition.html">partition()</a></code> <code><a href="partition.html">partition_dim()</a></code> </p>
-          </td>
-          <td><p>Divide a grid of cells into partitions containing individual tables</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="purpose.html">purpose</a></code> </p>
-          </td>
-          <td><p>Sense-of-purpose in the 2014 New Zealand General Social Survey</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="rectify.html">rectify()</a></code> <code><a href="rectify.html">print(<i>&lt;cell_grid&gt;</i>)</a></code> </p>
-          </td>
-          <td><p>Display cells as though in a spreadsheet</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="spatter.html">spatter()</a></code> </p>
-          </td>
-          <td><p>Spread key-value pairs of mixed types across multiple columns</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tidy_table.html">tidy_table()</a></code> </p>
-          </td>
-          <td><p>Tokenize data frames into a tidy 'melted' structure</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="unpivotr-package.html">unpivotr-package</a></code> </p>
-          </td>
-          <td><p>Un-pivot complex and irregular data layouts.</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="as_cells.html">as_cells()</a></code> </p>
+        </td>
+        <td><p>Tokenize data frames into a tidy 'melted' structure</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="behead.html">behead()</a></code> </p>
+        </td>
+        <td><p>Strip a level of headers from a pivot table</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="enhead.html">enhead()</a></code> </p>
+        </td>
+        <td><p>Join data cells to headers</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="isolate_sentinels.html">isolate_sentinels()</a></code> </p>
+        </td>
+        <td><p>Move sentinel values into a separate column leaving NA behind</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="justify.html">justify()</a></code> </p>
+        </td>
+        <td><p>Align one set of cells with another set</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="pack.html">pack()</a></code> <code><a href="pack.html">unpack()</a></code> </p>
+        </td>
+        <td><p>Pack cell values from separate columns per data type into one list-column</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="partition.html">partition()</a></code> <code><a href="partition.html">partition_dim()</a></code> </p>
+        </td>
+        <td><p>Divide a grid of cells into partitions containing individual tables</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="purpose.html">purpose</a></code> </p>
+        </td>
+        <td><p>Sense-of-purpose in the 2014 New Zealand General Social Survey</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="rectify.html">rectify()</a></code> <code><a href="rectify.html">print(<i>&lt;cell_grid&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Display cells as though in a spreadsheet</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="spatter.html">spatter()</a></code> </p>
+        </td>
+        <td><p>Spread key-value pairs of mixed types across multiple columns</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="tidy_table.html">tidy_table()</a></code> </p>
+        </td>
+        <td><p>Tokenize data frames into a tidy 'melted' structure</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="unpivotr-package.html">unpivotr-package</a></code> </p>
+        </td>
+        <td><p>Un-pivot complex and irregular data layouts.</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -232,6 +235,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

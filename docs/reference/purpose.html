@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Sense-of-purpose in the 2014 New Zealand General Social Survey — purpose" />
 
 <meta property="og:description" content="A dataset containing the self-rated sense-of-purpose of respondents to the
@@ -41,16 +44,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-45097885-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-45097885-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-45097885-5');
 </script>
 
   </head>
@@ -68,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
@@ -99,9 +100,6 @@
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
     </li>
-    <li>
-      <a href="../articles/worked-examples.html">Unpivoting Worked Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -117,6 +115,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -124,17 +123,20 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Sense-of-purpose in the 2014 New Zealand General Social Survey</h1>
-    <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/purpose.R'><code>R/purpose.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/purpose.R'><code>R/purpose.R</code></a></small>
+    <div class="hidden name"><code>purpose.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>A dataset containing the self-rated sense-of-purpose of respondents to the
 2014 New Zealand General Social Survey.</p>
     
+    </div>
 
     <pre class="usage"><span class='no'>purpose</span></pre>
         
@@ -214,6 +216,8 @@ Statistics NZ Methodological Standard for Reporting of Data Quality."</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

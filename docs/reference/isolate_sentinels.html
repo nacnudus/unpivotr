@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Move sentinel values into a separate column leaving NA behind — isolate_sentinels" />
 
 <meta property="og:description" content="A sentinel value, takes the place of a value that isn't
@@ -43,16 +46,14 @@ behind into an appropriate data type." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-45097885-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-45097885-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-45097885-5');
 </script>
 
   </head>
@@ -70,7 +71,7 @@ behind into an appropriate data type." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
@@ -101,9 +102,6 @@ behind into an appropriate data type." />
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
     </li>
-    <li>
-      <a href="../articles/worked-examples.html">Unpivoting Worked Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -119,6 +117,7 @@ behind into an appropriate data type." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -126,19 +125,22 @@ behind into an appropriate data type." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Move sentinel values into a separate column leaving NA behind</h1>
-    <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/isolate_sentinels.R'><code>R/isolate_sentinels.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/isolate_sentinels.R'><code>R/isolate_sentinels.R</code></a></small>
+    <div class="hidden name"><code>isolate_sentinels.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>A sentinel value, takes the place of a value that isn't
 available for some reason.  <code>isolate_sentinels()</code> removes these values from a
 column of data into a separate column, and optionally converts the data left
 behind into an appropriate data type.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>isolate_sentinels</span>(<span class='no'>.data</span>, <span class='no'>col</span>, <span class='no'>sentinels</span>, <span class='kw'>into</span> <span class='kw'>=</span> <span class='st'>"sentinel"</span>)</pre>
     
@@ -204,6 +206,8 @@ behind into an appropriate data type.</p>
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

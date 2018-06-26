@@ -25,9 +25,12 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Display cells as though in a spreadsheet — rectify" />
 
-<meta property="og:description" content="Takes the 'melted' output of tidy_table() or
+<meta property="og:description" content="Takes the 'melted' output of as_cells() or
 tidyxl::xlsx_cells() (each row represents one cell) and projects the cells
 into their original positions.  By default this prints to the
 terminal/console, but with display = "browser" or display = "rstudio" it
@@ -60,16 +63,14 @@ spreadsheet application." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-45097885-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-45097885-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-45097885-5');
 </script>
 
   </head>
@@ -87,7 +88,7 @@ spreadsheet application." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
@@ -118,9 +119,6 @@ spreadsheet application." />
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
     </li>
-    <li>
-      <a href="../articles/worked-examples.html">Unpivoting Worked Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -136,6 +134,7 @@ spreadsheet application." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -143,15 +142,17 @@ spreadsheet application." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Display cells as though in a spreadsheet</h1>
-    <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/rectify.R'><code>R/rectify.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/R/rectify.R'><code>R/rectify.R</code></a></small>
+    <div class="hidden name"><code>rectify.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>Takes the 'melted' output of <code><a href='tidy_table.html'>tidy_table()</a></code> or
+    <p>Takes the 'melted' output of <code><a href='as_cells.html'>as_cells()</a></code> or
 <code><a href='http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells'>tidyxl::xlsx_cells()</a></code> (each row represents one cell) and projects the cells
 into their original positions.  By default this prints to the
 terminal/console, but with <code>display = "browser"</code> or <code>display = "rstudio"</code> it
@@ -173,6 +174,7 @@ functions.</p>
     <p>The letters in the column names are for comparing this view with a
 spreadsheet application.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>rectify</span>(<span class='no'>cells</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>, <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>())
 
@@ -236,7 +238,7 @@ display in the browser you must have the <code>DT</code> package installed.</p><
 #&gt; 2 Nicholas    10</div><div class='input'>
 <span class='co'># This is the 'tidy' arrangement that is difficult for humans to read (but</span>
 <span class='co'># easy for computers)</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tidy_table.html'>tidy_table</a></span>(<span class='no'>x</span>, <span class='kw'>col_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_cells.html'>as_cells</a></span>(<span class='no'>x</span>, <span class='kw'>col_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>y</span></div><div class='output co'>#&gt; # A tibble: 6 x 5
 #&gt;     row   col data_type chr        int
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;
@@ -285,16 +287,16 @@ display in the browser you must have the <code>DT</code> package installed.</p><
 <span class='fu'>rectify</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt;   `row/col` `6(F)`   `7(G)`
 #&gt;       &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; 
-#&gt; 1        6. name     score 
-#&gt; 2        7. Matilda  14    
-#&gt; 3        8. Nicholas 10    </div><div class='input'>
+#&gt; 1         6 name     score 
+#&gt; 2         7 Matilda  14    
+#&gt; 3         8 Nicholas 10    </div><div class='input'>
 <span class='co'># Supply named functions to format cell values for display.</span>
 <span class='fu'>rectify</span>(<span class='no'>y</span>, <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>chr</span> <span class='kw'>=</span> <span class='no'>toupper</span>, <span class='kw'>int</span> <span class='kw'>=</span> ~ <span class='no'>.</span> * <span class='fl'>10</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt;   `row/col` `6(F)`   `7(G)`
 #&gt;       &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; 
-#&gt; 1        6. NAME     SCORE 
-#&gt; 2        7. MATILDA  140   
-#&gt; 3        8. NICHOLAS 100   </div><div class='input'>#
+#&gt; 1         6 NAME     SCORE 
+#&gt; 2         7 MATILDA  140   
+#&gt; 3         8 NICHOLAS 100   </div><div class='input'>#
 # Print in the browser or in the RStudio viewer pane
 </div><span class='co'># NOT RUN {</span>
   <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>rectify</span>(<span class='no'>y</span>)
@@ -326,6 +328,8 @@ display in the browser you must have the <code>DT</code> package installed.</p><
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

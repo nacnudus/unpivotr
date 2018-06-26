@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Changelog" />
 
 
@@ -37,16 +40,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-45097885-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-45097885-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-45097885-5');
 </script>
 
   </head>
@@ -64,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
       </span>
     </div>
 
@@ -95,9 +96,6 @@
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
     </li>
-    <li>
-      <a href="../articles/worked-examples.html">Unpivoting Worked Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -113,6 +111,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -120,22 +119,34 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="contents">
-    <div id="unpivotr-0-3-1-9000" class="section level1">
+    <div id="unpivotr-0-4-0" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-3-1-9000" class="anchor"></a>unpivotr 0.3.1.9000<small> Unreleased </small>
+<a href="#unpivotr-0-4-0" class="anchor"></a>unpivotr 0.4.0<small> Unreleased </small>
 </h1>
+<p>This version makes some big breaking changes for the sake of a more intuitive grammar. It comes with much more documentation in the online book <a href="https://nacnudus.github.io/spreadsheet-munging-strategies/">Spreadsheet Munging Strategies</a>.</p>
+<p>The main new workhorses:</p>
+<ul>
+<li>
+<code><a href="../reference/behead.html">behead()</a></code> takes one level of headers from a pivot table and make it part of the data. Chain this function to gradually strip every level of header away until you have tidy data.</li>
+<li>
+<code><a href="../reference/spatter.html">spatter()</a></code> is a data-type aware version of <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">tidyr::spread()</a></code> and is a common final step.</li>
+<li>
+<code><a href="../reference/partition.html">partition()</a></code> breaks up small-multiples on a single sheet, so you can handle them individually.</li>
+<li>
+<code><a href="../reference/rectify.html">rectify()</a></code> visualises the cells in the console as they would look in a spreadsheet.</li>
+</ul>
 <div id="breaking-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<p>The previous version can be installed as follows.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_version">install_version</a></span>(<span class="st">"unpivotr"</span>, <span class="dt">version =</span> <span class="st">"0.3.1"</span>, <span class="dt">repos =</span> <span class="st">"http://cran.us.r-project.org"</span>)</a></code></pre></div>
 <ul>
 <li>The family of functions <code>NNW()</code> etc. has been removed in favour of the verbose <code>join_header()</code>, which has itself been renamed to <code><a href="../reference/enhead.html">enhead()</a></code> to suggest its similarity to <code><a href="../reference/behead.html">behead()</a></code> (though they are <em>not</em> complements).</li>
 <li>
@@ -153,7 +164,7 @@
 <li>
 <code><a href="../reference/rectify.html">rectify()</a></code> displays cells as though in a spreadsheet, rather than in the ‘melted’ form of <code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code>) and <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>. This is useful for understanding the structure of a pivot table as a human, when planning how to unpivot it. A print method is available to render large datasets in the browser or the RStudio viewer pane.</li>
 <li>
-<code><a href="../reference/partition.html">partition()</a></code> divides a grid of cells into partitions containing individual tables. Give it the corner cells of each table on a spreadsheet, and it returns all the cells of the spreadsheet with a <code>partition</code> column that identifies which cells belong to which table.</li>
+<code><a href="../reference/partition.html">partition()</a></code> divides a grid of cells into partitions containing individual tables. Give it the corner cells of each table on a spreadsheet.</li>
 <li>
 <code><a href="../reference/pack.html">pack()</a></code> packs cells values from separate columns per data type into one list-column. <code><a href="../reference/pack.html">unpack()</a></code> is the complement.</li>
 <li>
@@ -254,14 +265,13 @@
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#unpivotr-0-3-1-9000">0.3.1.9000</a></li>
+        <li><a href="#unpivotr-0-4-0">0.4.0</a></li>
         <li><a href="#unpivotr-0-3-1">0.3.1</a></li>
         <li><a href="#unpivotr-0-3-0">0.3.0</a></li>
         <li><a href="#unpivotr-0-2-1">0.2.1</a></li>
@@ -286,6 +296,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>
