@@ -46,7 +46,7 @@ string that can be further parsed with tools such as the rvest package.  This
 is particularly useful when an HTML cell itself contains an HTML table, or
 contains both text and a URL.  If the HTML itself is poorly formatted, try
 passing it through the
-\href{https://CRAN.R-project.org/packagee=htmltidy}{htmltidy} package first.
+\href{https://CRAN.R-project.org/package=htmltidy}{htmltidy} package first.
 
 This is an S3 generic.
 }
