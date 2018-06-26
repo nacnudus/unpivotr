@@ -117,7 +117,7 @@ contains_corner <- function(.data, corners) {
 #'
 #' # Given a set of cells in columns 1 to 10, partition them at the 3rd, 5th and
 #' # 7th column.  This example is exactly the same as the previous one, to show
-#' that the function works the same way on columns as rows.
+#' # that the function works the same way on columns as rows.
 #' partition_dim(1:10, c(3, 5, 7))
 #'
 #' # Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and
