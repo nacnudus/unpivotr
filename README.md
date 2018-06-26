@@ -199,10 +199,12 @@ version, but it’s hard to tell.
 
 ## Similar projects
 
-[unpivotr](https://github.com/nacnudus/unpivotr) is inspired by the
-United Kingdom Office of National Statistics
-[ONSdatabaker](https://github.com/ONS-OpenData/ONSdatabaker), which is
-implemented in Python. [unpivotr](https://github.com/nacnudus/unpivotr).
+[unpivotr](https://github.com/nacnudus/unpivotr) is inspired by
+[Databaker](https://github.com/sensiblecodeio/databaker), a
+collaboration between the [United Kingdom Office of National
+Statistics](http://ons.gov.uk) and [The Sensible Code
+Company](https://sensiblecode.io/).
+[unpivotr](https://github.com/nacnudus/unpivotr).
 
 [jailbreaker](https://github.com/rsheets/jailbreakr) attempts to extract
 non-tabular data from spreadsheets into tabular structures automatically
