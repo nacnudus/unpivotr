@@ -12,7 +12,7 @@ partition_dim(positions, cutpoints, bound = "upper")
 }
 \arguments{
 \item{cells}{Data frame or tbl, the cells to be partitioned, from
-\code{\link[=tidy_table]{tidy_table()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}.}
+\code{\link[=as_cells]{as_cells()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}.}
 
 \item{corners}{a subset of \code{cells}, being the corners of individual tables.}
 

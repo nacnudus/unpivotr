@@ -9,7 +9,7 @@ behead(cells, direction, name, values = NULL, types = data_type,
 }
 \arguments{
 \item{cells}{Data frame. The cells of a pivot table, usually the output of
-\code{\link[=tidy_table]{tidy_table()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}, or of a subsequent operation on
+\code{\link[=as_cells]{as_cells()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}, or of a subsequent operation on
 those outputs.}
 
 \item{direction}{The direction between a data cell and its header, one of
@@ -51,14 +51,14 @@ A data frame
 makes it part of the data.  Think of it like \code{\link[tidyr:gather]{tidyr::gather()}}, except that
 it works when there is more than one row of headers (or more than one column
 of row-headers), and it only works on tables that have first come through
-\code{\link[=tidy_table]{tidy_table()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}.
+\code{\link[=as_cells]{as_cells()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}.
 }
 \examples{
 # A simple table with a row of headers
 (x <- data.frame(a = 1:2, b = 3:4))
 
 # Make a tidy representation of each cell
-(cells <- tidy_table(x, col_names = TRUE))
+(cells <- as_cells(x, col_names = TRUE))
 
 # Strip the cells in row 1 (the original headers) and use them as data
 behead(cells, "N", foo)
@@ -67,7 +67,7 @@ behead(cells, "N", foo)
 (x <- purpose$`NNW WNW`)
 
 # Make a tidy representation
-cells <- tidy_table(x)
+cells <- as_cells(x)
 head(cells)
 tail(cells)
 

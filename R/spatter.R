@@ -2,7 +2,7 @@
 #'
 #' @description
 #' [spatter()] is like [tidyr::spread()] but for when different columns have
-#' different data types.  It works on data that has come via [tidy_table()] or
+#' different data types.  It works on data that has come via [as_cells()] or
 #' [tidyxl::xlsx_cells()], where each row represents one cell of a table, and
 #' the value of the cell is represented in a different column, depending on the
 #' data type.

@@ -8,7 +8,6 @@ magrittr::`%>%`
 #' @importFrom utils View installed.packages
 
 # Spurious imports to satisfy R CMD check
-#' @importFrom dtplyr tbl_dt
 #' @importFrom purrr map
 
 NULL

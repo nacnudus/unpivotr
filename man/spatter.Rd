@@ -26,7 +26,7 @@ contains the cell value.}
 }
 \description{
 \code{\link[=spatter]{spatter()}} is like \code{\link[tidyr:spread]{tidyr::spread()}} but for when different columns have
-different data types.  It works on data that has come via \code{\link[=tidy_table]{tidy_table()}} or
+different data types.  It works on data that has come via \code{\link[=as_cells]{as_cells()}} or
 \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}, where each row represents one cell of a table, and
 the value of the cell is represented in a different column, depending on the
 data type.

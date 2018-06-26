@@ -14,7 +14,7 @@
 #' `partition_dim()` partitions along one dimension at a time.
 #'
 #' @param cells Data frame or tbl, the cells to be partitioned, from
-#'   [tidy_table()] or [tidyxl::xlsx_cells()].
+#'   [as_cells()] or [tidyxl::xlsx_cells()].
 #' @param corners a subset of `cells`, being the corners of individual tables.
 #' @param partition_name Character vector length 1, what to call the new column
 #'   that will be created to identify the partitions.  Default: `"partition"`.

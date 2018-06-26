@@ -5,6 +5,9 @@
 #' or row headers, or spreadsheets of several tables, nested HTML tables, and
 #' data that uses several different sentinel values.
 #'
+#' The best way to learn unpivotr is the free online book [Spreadsheet Munging
+#' Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies/).
+#'
 #' Header and data cells can selected by their contents, position, data type and
 #' formatting, and can be associated with one other by their relative positions.
 #'
@@ -15,7 +18,7 @@
 #' they are not actually required for any of the given functions.
 #'
 #' Data frames and HTML tables can be converted into a format meeting these
-#' requirements by using the [tidy_table()] function.  Excel (.xlsx)
+#' requirements by using the [as_cells()] function.  Excel (.xlsx)
 #' files can be imported directly into the required format with the 'tidyxl'
 #' package, available at <https://github.com/nacnudus/tidyxl>, which has the
 #' advantage that it retains cell formatting and comments.
