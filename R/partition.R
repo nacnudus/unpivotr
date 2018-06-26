@@ -2,22 +2,17 @@
 #'
 #' @description
 #' Given the positions of corner cells that mark individual tables in a single
-#' spreadsheet, `partion()` works out which cells belong to which tables, and
-#' gives them an ID.  This can be used with `dplyr::group_by()` or
-#' `tidyr::nest()` to operate on each single table within a spreadsheet of
-#' several tables.
-#'
-#' Corners must all be in the top-left, or bottom-left, or top-right, or
-#' bottom-right of each table.
+#' spreadsheet, `partion()` works out which table cells belong to which corner
+#' cells.  The individual tables can then be worked on independently.
 #'
 #' `partition()` partitions along both dimensions (rows and columns) at once.
 #' `partition_dim()` partitions along one dimension at a time.
 #'
 #' @param cells Data frame or tbl, the cells to be partitioned, from
 #'   [as_cells()] or [tidyxl::xlsx_cells()].
-#' @param corners a subset of `cells`, being the corners of individual tables.
-#' @param partition_name Character vector length 1, what to call the new column
-#'   that will be created to identify the partitions.  Default: `"partition"`.
+#' @param corners usually a subset of `cells`, being the corners of individual
+#'   tables.  Can also be cells that aren't among `cells`, in which case see the
+#'   `strict` argument.
 #' @param align Character, the position of the corner cells relative to their
 #'   tables, one of `"top-left"` (default), `"top-right"`, `"bottom-left"`,
 #'   `"bottom-right"`.
@@ -73,26 +68,25 @@
 #' partition(multiples, bl_corners, align = "bottom_left")
 #' partition(multiples, bl_corners, align = "bottom_left", strict = FALSE)
 partition <- function(cells, corners, align = "top_left",
-                     partition_name = "partition", nest = TRUE, strict = TRUE) {
+                     nest = TRUE, strict = TRUE) {
   check_distinct(cells)
   if (!(align %in% c("top_left", "top_right",
                        "bottom_left", "bottom_right"))) {
     stop("`align` must be one of:
          \"top_left\", \"top_right\", \"bottom_left\", \"bottom_right\"")
   }
-  partition_name <- rlang::ensym(partition_name)
   row_bound <- (if(align %in% c("top_left", "top_right")) "upper" else "lower")
   col_bound <- (if(align %in% c("top_left", "bottom_left")) "upper" else "lower")
-  row_groups <- partition_dim(cells$row, unique(corners$row), row_bound)
-  col_groups <- partition_dim(cells$col, unique(corners$col), col_bound)
+  row_groups <- partition_dim(cells$row, sort(unique(corners$row)), row_bound)
+  col_groups <- partition_dim(cells$col, sort(unique(corners$col)), col_bound)
+  join_names <- c("row", "col")
+  names(join_names) <- c("corner_row", "corner_col")
   out <-
     cells %>%
-    dplyr::mutate(!! partition_name := paste(row_groups,
-                                             col_groups,
-                                             sep = ",")) %>%
-    dplyr::filter(row_groups >= 1, col_groups >= 1) %>%
-    dplyr::mutate(!! partition_name := as.integer(factor(!! partition_name))) %>%
-    tidyr::nest(-(!! partition_name), .key = "cells")
+    dplyr::mutate(corner_row = row_groups,
+                  corner_col = col_groups) %>%
+    tidyr::nest(-corner_row, -corner_col, .key = "cells") %>%
+    dplyr::inner_join(corners, by = join_names)
   if (strict) {
     out <- dplyr::filter(out, purrr::map_lgl(cells, contains_corner, corners))
   }
@@ -118,40 +112,32 @@ contains_corner <- function(.data, corners) {
 #' @export
 #' @examples
 #' # Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and 7th
-#' # rows. Row 3 is the top row of group 1.
+#' # rows.
 #' partition_dim(1:10, c(3, 5, 7))
 #'
 #' # Given a set of cells in columns 1 to 10, partition them at the 3rd, 5th and
-#' # 7th column. Column 3 is the left-most column of group 1.
-#' # This example is exactly the same as the previous one, to show that the
-#' # function works the same way on columns as rows.
+#' # 7th column.  This example is exactly the same as the previous one, to show
+#' # that the function works the same way on columns as rows.
 #' partition_dim(1:10, c(3, 5, 7))
 #'
 #' # Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and
-#' # 7th rows. Row 7 is the bottom row of group 1
+#' # 7th rows, aligned to the bottom of the group.
 #' partition_dim(1:10, c(3, 5, 7), bound = "lower")
 #'
-#' # When the first row of cells is on the first cutpoint, there is no group 0.
-#' partition_dim(1:10, c(1, 10))
-#' partition_dim(1:10, c(1, 10), bound = "lower")
-#'
 #' # Non-integer row/column numbers and cutpoints can be used, even though they
-#' # make no sense in the context of partioning grids of cells.
+#' # make no sense in the context of partioning grids of cells.  They are
+#' # rounded towards zero first.
 #' partition_dim(1:10 - .5, c(3, 5, 7))
 #' partition_dim(1:10, c(3, 5, 7) + 1.5)
 partition_dim <- function(positions, cutpoints, bound = "upper") {
   if (!(bound %in% c("upper", "lower"))) {
     stop("`bound` must be one of \"upper\", \"lower\"")
   }
-  cutpoints <- c(-Inf, sort(cutpoints, decreasing = bound == "lower"), Inf)
-  labels <-
-    if(length(cutpoints) == 0) {
-    } else {
-      sort(seq_along(cutpoints[-1]) - 1, decreasing = bound == "lower")
-    }
-  cut(positions, cutpoints, right = bound == "lower", labels = labels) %>%
-    as.character() %>%
-    as.integer()
+  cutpoints <- sort(c(-Inf, cutpoints, Inf), decreasing = bound == "lower")
+  labels <- trunc(sort(cutpoints[-length(cutpoints)]))
+  labels[is.infinite(labels)] <- NA
+  out <- cut(positions, cutpoints, right = bound == "lower", labels = FALSE)
+  labels[out]
 }
 
 # Other names that were considered for 'partition()'

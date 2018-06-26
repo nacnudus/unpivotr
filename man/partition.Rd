@@ -5,8 +5,7 @@
 \alias{partition_dim}
 \title{Divide a grid of cells into partitions containing individual tables}
 \usage{
-partition(cells, corners, align = "top_left", partition_name = "partition",
-  nest = TRUE, strict = TRUE)
+partition(cells, corners, align = "top_left", nest = TRUE, strict = TRUE)
 
 partition_dim(positions, cutpoints, bound = "upper")
 }
@@ -14,14 +13,13 @@ partition_dim(positions, cutpoints, bound = "upper")
 \item{cells}{Data frame or tbl, the cells to be partitioned, from
 \code{\link[=as_cells]{as_cells()}} or \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}}.}
 
-\item{corners}{a subset of \code{cells}, being the corners of individual tables.}
+\item{corners}{usually a subset of \code{cells}, being the corners of individual
+tables.  Can also be cells that aren't among \code{cells}, in which case see the
+\code{strict} argument.}
 
 \item{align}{Character, the position of the corner cells relative to their
 tables, one of \code{"top-left"} (default), \code{"top-right"}, \code{"bottom-left"},
 \code{"bottom-right"}.}
-
-\item{partition_name}{Character vector length 1, what to call the new column
-that will be created to identify the partitions.  Default: \code{"partition"}.}
 
 \item{nest}{Logical, whether to nest the partitions in a list-column of data
 frames.}
@@ -59,13 +57,8 @@ grid of cells into chunks along both dimensions
 }
 \description{
 Given the positions of corner cells that mark individual tables in a single
-spreadsheet, \code{partion()} works out which cells belong to which tables, and
-gives them an ID.  This can be used with \code{dplyr::group_by()} or
-\code{tidyr::nest()} to operate on each single table within a spreadsheet of
-several tables.
-
-Corners must all be in the top-left, or bottom-left, or top-right, or
-bottom-right of each table.
+spreadsheet, \code{partion()} works out which table cells belong to which corner
+cells.  The individual tables can then be worked on independently.
 
 \code{partition()} partitions along both dimensions (rows and columns) at once.
 \code{partition_dim()} partitions along one dimension at a time.
@@ -101,25 +94,21 @@ bl_corners <- bl_corners[-1, ]
 partition(multiples, bl_corners, align = "bottom_left")
 partition(multiples, bl_corners, align = "bottom_left", strict = FALSE)
 # Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and 7th
-# rows. Row 3 is the top row of group 1.
+# rows.
 partition_dim(1:10, c(3, 5, 7))
 
 # Given a set of cells in columns 1 to 10, partition them at the 3rd, 5th and
-# 7th column. Column 3 is the left-most column of group 1.
-# This example is exactly the same as the previous one, to show that the
-# function works the same way on columns as rows.
+# 7th column.  This example is exactly the same as the previous one, to show
+# that the function works the same way on columns as rows.
 partition_dim(1:10, c(3, 5, 7))
 
 # Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and
-# 7th rows. Row 7 is the bottom row of group 1
+# 7th rows, aligned to the bottom of the group.
 partition_dim(1:10, c(3, 5, 7), bound = "lower")
 
-# When the first row of cells is on the first cutpoint, there is no group 0.
-partition_dim(1:10, c(1, 10))
-partition_dim(1:10, c(1, 10), bound = "lower")
-
 # Non-integer row/column numbers and cutpoints can be used, even though they
-# make no sense in the context of partioning grids of cells.
+# make no sense in the context of partioning grids of cells.  They are
+# rounded towards zero first.
 partition_dim(1:10 - .5, c(3, 5, 7))
 partition_dim(1:10, c(3, 5, 7) + 1.5)
 }

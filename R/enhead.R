@@ -146,48 +146,22 @@ WSW <- SSW
 
 corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   check_header(header_cells)
-  if (length(unique(header_cells$row)) == 1L) {
-    col_bound <- (if(corner %in% c("top_left", "bottom_left")) "upper" else "lower")
-    if (col_bound == "upper") {
-      headers <-
-        header_cells %>%
-        dplyr::arrange(row, col) %>%
-        dplyr::mutate(.partition = dplyr::row_number())
-    } else {
-      headers <-
-        header_cells %>%
-        dplyr::arrange(-row, -col) %>%
-        dplyr::mutate(.partition = dplyr::row_number())
-    }
-    datas <- dplyr::mutate(data_cells,
-                           .partition = partition_dim(data_cells$col,
-                                                      headers$col,
-                                                      col_bound))
-  } else {
-    row_bound <- (if(corner %in% c("top_left", "top_right")) "upper" else "lower")
-    if (row_bound == "upper") {
-      headers <-
-        header_cells %>%
-        dplyr::arrange(row, col) %>%
-        dplyr::mutate(.partition = dplyr::row_number())
-    } else {
-      headers <-
-        header_cells %>%
-        dplyr::arrange(-row, -col) %>%
-        dplyr::mutate(.partition = dplyr::row_number())
-    }
-    datas <- dplyr::mutate(data_cells,
-                           .partition = partition_dim(data_cells$row,
-                                                      headers$row,
-                                                      row_bound))
-  }
-  datas <- dplyr::filter(datas, .partition >= 1L)
-  headers <- dplyr::select(headers, -row, -col)
+  headers <-
+    header_cells %>%
+    partition(dplyr::distinct(header_cells, row, col),
+              corner,
+              nest = FALSE) %>%
+    dplyr::select(-row, -col)
+  datas <- partition(data_cells,
+                     dplyr::distinct(header_cells, row, col),
+                     corner,
+                     nest = FALSE,
+                     strict = FALSE)
   out <-
     dplyr::inner_join(datas, headers,
-                      by = ".partition",
+                      by = c("corner_row", "corner_col"),
                       suffix = c("", ".y")) %>%
-    dplyr::select(-.partition)
+    dplyr::select(-corner_row, -corner_col)
   if (!drop) {
     remainder <- dplyr::anti_join(data_cells, out, by = c("row", "col"))
     out <- dplyr::bind_rows(out, remainder)

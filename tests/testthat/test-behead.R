@@ -20,18 +20,26 @@ test_that("behead() works", {
 })
 
 test_that("the `drop_na` argument of behead() works", {
-  # Strip the headers and make them into data
   tidy <-
     cells %>%
-    behead("N", "Sex", drop_na = FALSE) %>%
+    behead("NNW", "Sex", drop_na = TRUE) %>%
     behead("N", "Sense of purpose") %>%
     behead("WNW", "Highest qualification") %>%
     behead("W", "Age group (Life-stages)") %>%
-    # dplyr::select(-row, -col, -data_type, -chr)
-    dplyr::select(-row, -col, -data_type)
+    dplyr::select(-row, -col, -data_type, -chr)
   # Check against the provided 'tidy' version of the data.
   expect_equal(nrow(tidy), 80)
-  expect_equal(tidy$Sex, rep(c("Female", NA, "Male", NA), each = 20))
+  expect_equal(tidy$Sex, rep(rep(c("Female", "Male"), each = 8), 5))
+  tidy <-
+    cells %>%
+    behead("NNW", "Sex", drop_na = FALSE) %>%
+    behead("N", "Sense of purpose") %>%
+    behead("WNW", "Highest qualification") %>%
+    behead("W", "Age group (Life-stages)") %>%
+    dplyr::select(-row, -col, -data_type, -chr)
+  # Check against the provided 'tidy' version of the data.
+  expect_equal(nrow(tidy), 80)
+  expect_equal(tidy$Sex, rep(rep(c("Female", NA, "Male", NA), each = 4), 5))
 })
 
 test_that("``\"ABOVE\"`` etc. don't work", {
