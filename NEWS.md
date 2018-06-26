@@ -1,6 +1,28 @@
-# unpivotr 0.3.1.9000
+# unpivotr 0.4.0
+
+This version makes some big breaking changes for the sake of a more intuitive
+grammar.  It comes with much more documentation in the online book [Spreadsheet
+Munging Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies/).
+
+The main new workhorses:
+
+* `behead()` takes one level of headers from a pivot table and make it part of
+    the data.  Chain this function to gradually strip every level of header away
+    until you have tidy data.
+* `spatter()` is a data-type aware version of `tidyr::spread()` and is a
+    common final step.
+* `partition()` breaks up small-multiples on a single sheet, so you can handle
+    them individually.
+* `rectify()` visualises the cells in the console as they would look in a
+    spreadsheet.
 
 ## Breaking changes
+
+The previous version can be installed as follows.
+
+```r
+devtools::install_version("unpivotr", version = "0.3.1", repos = "http://cran.us.r-project.org")
+```
 
 * The family of functions `NNW()` etc. has been removed in favour of the verbose
     `join_header()`, which has itself been renamed to `enhead()` to suggest its
@@ -24,9 +46,7 @@
     available to render large datasets in the browser or the RStudio viewer
     pane.
 * `partition()` divides a grid of cells into partitions containing individual
-    tables.  Give it the corner cells of each table on a spreadsheet, and it
-    returns all the cells of the spreadsheet with a `partition` column that
-    identifies which cells belong to which table.
+    tables.  Give it the corner cells of each table on a spreadsheet.
 * `pack()` packs cells values from separate columns per data type into one
     list-column.  `unpack()` is the complement.
 * `isolate_sentinels()` move sentinel values into a separate column, leaving
