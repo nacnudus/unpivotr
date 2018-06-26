@@ -8,7 +8,7 @@ Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://trav
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr)
 [![Cran
-Status](http://www.r-pkg.org/badges/version/unpivotr)](https://cran.r-project.org/web/packages/unpivotr/index.html)
+Status](http://www.r-pkg.org/badges/version/unpivotr)](https://CRAN.R-project.org/package=unpivotr)
 [![Cran
 Downloads](https://cranlogs.r-pkg.org/badges/unpivotr)](https://www.r-pkg.org/pkg/unpivotr)
 [![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://codecov.io/gh/nacnudus/unpivotr)
@@ -116,6 +116,7 @@ x # A pivot table in a conventional data frame.  Four levels of headers, in two
   # rows and two columns.
 
 y <- tidy_table(x) # 'Tokenize' or 'melt' the data frame into one row per cell
+#> tidy_table() will be deprecated.  Use as_cells() instead.
 y
 #> # A tibble: 132 x 4
 #>      row   col data_type chr              
