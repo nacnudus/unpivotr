@@ -192,10 +192,13 @@ where to find the header cell for each data cell.
 devtools::install_github("nacnudus/unpivotr", build_vignettes = TRUE)
 ```
 
-Don’t use the CRAN version – it has none of the fun in this README, and
-the development version breaks everything. Please let me know if this is
-a problem for you — as far as I know, nobody really used the old
-version, but it’s hard to tell.
+The version 0.4.0 release had somee breaking changes. See `NEWS.md` for
+details. The previous version can be installed as
+follow:
+
+``` r
+devtools::install_version("unpivotr", version = "0.3.1", repos = "http://cran.us.r-project.org")
+```
 
 ## Similar projects
 
