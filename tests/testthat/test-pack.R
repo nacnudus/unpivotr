@@ -11,7 +11,7 @@ w <- tibble::tibble(lgl = c(TRUE, FALSE),
                     fct = factor(c("c", "d")),
                     ord = factor(c("e", "f"), ordered = TRUE),
                     list = list(1:2, letters[1:2]))
-x <- tidy_table(w)
+x <- as_cells(w)
 
 test_that("pack() works on common data types", {
   y <- pack(x)

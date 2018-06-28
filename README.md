@@ -74,7 +74,7 @@ Otherwise the basic idea is:
         install a pull-request on that package with
         `devtools::install_github("tidyverse/readr#760")`.
       - For tables in html pages, use `unpivotr::tidy_html()`
-      - For data frames, use `unpivotr::tidy_table()` – this should be a
+      - For data frames, use `unpivotr::as_cells()` – this should be a
         last resort, because by the time thee data is in a conventional
         data frame, it is often too late – formatting has been lost, and
         most data types have been coerced to strings.
@@ -88,6 +88,14 @@ Otherwise the basic idea is:
 ``` r
 library(unpivotr)
 library(tidyverse)
+#> ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
+#> ✔ ggplot2 2.2.1.9000     ✔ purrr   0.2.5     
+#> ✔ tibble  1.4.2          ✔ dplyr   0.7.5     
+#> ✔ tidyr   0.8.1          ✔ stringr 1.3.1     
+#> ✔ readr   1.2.0          ✔ forcats 0.3.0
+#> ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+#> ✖ dplyr::filter() masks stats::filter()
+#> ✖ dplyr::lag()    masks stats::lag()
 x <- purpose$`NNW WNW`
 x # A pivot table in a conventional data frame.  Four levels of headers, in two
 #>                            X2      X3     X4     X5    X6     X7
@@ -115,8 +123,7 @@ x # A pivot table in a conventional data frame.  Four levels of headers, in two
 #> 22                       <NA>     65+   <NA>  13000  <NA>  18000
   # rows and two columns.
 
-y <- tidy_table(x) # 'Tokenize' or 'melt' the data frame into one row per cell
-#> tidy_table() will be deprecated.  Use as_cells() instead.
+y <- as_cells(x) # 'Tokenize' or 'melt' the data frame into one row per cell
 y
 #> # A tibble: 132 x 4
 #>      row   col data_type chr              

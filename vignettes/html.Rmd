@@ -26,10 +26,10 @@ library(unpivotr)
 
 ## Rowspan and colspan examples
 
-If a table has cells merged across rows or columns (or both), then `tidy_table`
+If a table has cells merged across rows or columns (or both), then `as_cells()`
 does not attempt to fill the cell contents across the rows or columns.  This is
 different from other packages, e.g. `rvest`.  However, if merged cells cause a
-table not to be square, then `tidy_table` pads the missing cells with blanks.
+table not to be square, then `as_cells()` pads the missing cells with blanks.
 
 ### Rowspan
 
@@ -45,7 +45,7 @@ rowspan %>%
 # unpivotr
 rowspan %>%
   read_html() %>%
-  tidy_table()
+  as_cells()
 ```
 
 ### Colspan
@@ -62,7 +62,7 @@ colspan %>%
 # unpivotr
 colspan %>%
   read_html() %>%
-  tidy_table()
+  as_cells()
 ```
 
 ### Both rowspan and colspan: non-square
@@ -81,12 +81,12 @@ rowandcolspan %>%
 # unpivotr
 rowandcolspan %>%
   read_html() %>%
-  tidy_table()
+  as_cells()
 ```
 
 ## Nested example
 
-`tidy_table` never descends into cells.  If there is a table inside a cell, then
+`as_cells()` never descends into cells.  If there is a table inside a cell, then
 to parse that table use `html_table` again on that cell.
 
 ```{r, echo = TRUE}
@@ -102,26 +102,26 @@ nested %>%
 x <-
   nested %>%
   read_html() %>%
-  tidy_table() %>%
+  as_cells() %>%
   .[[1]]
 x
 
 # The html of the table inside a cell
 cell <-
   x %>%
-  filter(row == 2, col == 2) %>%
+  dplyr::filter(row == 2, col == 2) %>%
   .$html
 cell
 
 # Parsing the table inside the cell
 cell %>%
   read_html() %>%
-  tidy_table()
+  as_cells()
 ```
 
 ## URL example
 
-A motivation for using `unpivotr::tidy_table()` is that it extracts more than
+A motivation for using `unpivotr::as_cells()` is that it extracts more than
 just text -- it can extract whatever part of the HTML you need.
 
 Here, we extract URLs.
@@ -148,7 +148,7 @@ cell_text <- function(x) {
 
 urls %>%
   read_html() %>%
-  tidy_table() %>%
+  as_cells() %>%
   .[[1]] %>%
   mutate(text = purrr::map(html, cell_text),
          url = purrr::map(html, cell_url)) %>%

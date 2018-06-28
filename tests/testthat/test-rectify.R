@@ -131,7 +131,7 @@ test_that("Blank columns amongst the data are retained", {
 })
 
 test_that("rectify() handles zero-row data frames", {
-  expect_error(rectify(dplyr::slice(tidy_table(mtcars, col_names = TRUE), 0L)),
+  expect_error(rectify(dplyr::slice(as_cells(mtcars, col_names = TRUE), 0L)),
                NA)
 })
 
@@ -157,7 +157,7 @@ test_that("rectify() works on common data types", {
                    fct = factor(c("c", "d")),
                    list = list(1:2, letters[1:2]))
   y <-
-    tidy_table(x) %>%
+    as_cells(x) %>%
     rectify() %>%
     dplyr::select(-1)
   expect(all(purrr::map2_lgl(y, x, identical)))

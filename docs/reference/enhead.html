@@ -233,7 +233,15 @@ first to align header cells to the corner of the data cells they describe.</p>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>, <span class='no'>col</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'>as.integer</span>(<span class='no'>chr</span>))</div><div class='output co'>#&gt; <span class='error'>Error: Multiple definitions found for filter. Please pick one:</span>
 #&gt; <span class='error'> * dplyr::filter</span>
-#&gt; <span class='error'> * stats::filter</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>data_cells</span>)</div><div class='output co'>#&gt; <span class='error'>Error in head(data_cells): object 'data_cells' not found</span></div><div class='input'><span class='co'># Select the headers</span>
+#&gt; <span class='error'> * stats::filter</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>data_cells</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 7
+#&gt;     row   col value header.data header.header header.data.data header.header.h…
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;           
+#&gt; 1     4     4  7000 0 - 6       15 - 24       Female           Bachelor's degr…
+#&gt; 2     4     5 12000 0 - 6       25 - 44       Female           Bachelor's degr…
+#&gt; 3     4     6 10000 0 - 6       45 - 64       Female           Bachelor's degr…
+#&gt; 4     5     4 29000 0 - 6       15 - 24       Female           Certificate     
+#&gt; 5     5     5 34000 0 - 6       25 - 44       Female           Certificate     
+#&gt; 6     5     6 30000 0 - 6       45 - 64       Female           Certificate     </div><div class='input'><span class='co'># Select the headers</span>
 <span class='no'>qualification</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>qualification</span> <span class='kw'>=</span> <span class='no'>chr</span>)</div><div class='output co'>#&gt; <span class='error'>Error: Multiple definitions found for filter. Please pick one:</span>
@@ -256,11 +264,11 @@ first to align header cells to the corner of the data cells they describe.</p>
   <span class='fu'>enhead</span>(<span class='no'>satisfaction</span>, <span class='st'>"N"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>enhead</span>(<span class='no'>qualification</span>, <span class='st'>"WNW"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>enhead</span>(<span class='no'>age</span>, <span class='st'>"W"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>row</span>, -<span class='no'>col</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(lhs, parent, parent): object 'data_cells' not found</span></div><div class='input'>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>row</span>, -<span class='no'>col</span>)</div><div class='output co'>#&gt; <span class='error'>Error in unique(header_cells$row): object 'gender' not found</span></div><div class='input'>
 <span class='co'># The `drop` argument controls what happens when for some cells there is no</span>
 <span class='co'># header in the given direction. When `drop = TRUE` (the default), cells that</span>
 <span class='co'># can't be joined to a header are dropped.  Otherwise they are kept.</span>
-<span class='fu'>enhead</span>(<span class='no'>data_cells</span>, <span class='no'>gender</span>, <span class='st'>"N"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in enhead(data_cells, gender, "N"): object 'data_cells' not found</span></div><div class='input'><span class='fu'>enhead</span>(<span class='no'>data_cells</span>, <span class='no'>gender</span>, <span class='st'>"N"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in enhead(data_cells, gender, "N", drop = FALSE): object 'data_cells' not found</span></div></pre>
+<span class='fu'>enhead</span>(<span class='no'>data_cells</span>, <span class='no'>gender</span>, <span class='st'>"N"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in unique(header_cells$row): object 'gender' not found</span></div><div class='input'><span class='fu'>enhead</span>(<span class='no'>data_cells</span>, <span class='no'>gender</span>, <span class='st'>"N"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in unique(header_cells$row): object 'gender' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

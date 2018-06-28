@@ -78,7 +78,7 @@ Otherwise the basic idea is:
      pull-request on that package with
      `devtools::install_github("tidyverse/readr#760")`.
    * For tables in html pages, use `unpivotr::tidy_html()`
-   * For data frames, use `unpivotr::tidy_table()` -- this should be a last
+   * For data frames, use `unpivotr::as_cells()` -- this should be a last
      resort, because by the time thee data is in a conventional data frame, it
      is often too late -- formatting has been lost, and most data types have
      been coerced to strings.
@@ -93,7 +93,7 @@ x <- purpose$`NNW WNW`
 x # A pivot table in a conventional data frame.  Four levels of headers, in two
   # rows and two columns.
 
-y <- tidy_table(x) # 'Tokenize' or 'melt' the data frame into one row per cell
+y <- as_cells(x) # 'Tokenize' or 'melt' the data frame into one row per cell
 y
 
 rectify(y) # useful for reviewing the melted form as though in a spreadsheet

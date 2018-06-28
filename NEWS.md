@@ -52,7 +52,7 @@ devtools::install_version("unpivotr", version = "0.3.1", repos = "http://cran.us
 * `isolate_sentinels()` move sentinel values into a separate column, leaving
     `NA` behind (or `NULL` for list-columns).
 * `spatter()` is like `tidyr::spread()`, but preserves mixed data types.
-* `enhead()` (formerly `tidy_table()`) now returns a `data_type` column that
+* `enhead()` (formerly `join_header()`) now returns a `data_type` column that
     names the column that contains the value of a cell, similar to
     `tidyxl::xlsx_cells()`.
 * `enhead()` (formerly `join_header()` now follows the tidyverse convention of

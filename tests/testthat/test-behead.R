@@ -1,7 +1,7 @@
 context("test-behead.R")
 
 x <- purpose$`NNW WNW`
-cells <- tidy_table(x)
+cells <- as_cells(x)
 
 test_that("behead() works", {
   # Strip the headers and make them into data
@@ -61,7 +61,7 @@ test_that("behead() works with all common datatypes", {
                       fct = factor(c("c", "d")),
                       ord = factor(c("e", "f"), ordered = TRUE),
                       list = list(1:2, letters[1:2]))
-  x <- tidy_table(w, col_names = TRUE)
+  x <- as_cells(w, col_names = TRUE)
   y <- behead(x, "N", header)
   expect_equal(nrow(y), 20L)
   expect_equal(y$header, rep(colnames(w), each = 2L))
@@ -118,7 +118,7 @@ test_that("behead() handles headers of factor and ordered-factor data types", {
 
 test_that("behead() supports custom formatters", {
   x <-
-    tidy_table(BOD, FALSE, TRUE) %>%
+    as_cells(BOD, FALSE, TRUE) %>%
     behead("N", header, formatters = list(chr = ~ paste(.x, "foo"))) %>%
     behead("W", rowheader, formatters = list(dbl = as.complex))
   expect_equal(x$header[1], "demand foo")
@@ -126,7 +126,7 @@ test_that("behead() supports custom formatters", {
 })
 
 test_that("behead() can use row, col and data_type as headers", {
-  x <- tidy_table(BOD, FALSE, TRUE)
+  x <- as_cells(BOD, FALSE, TRUE)
   y <- behead(x, "N", header, values = row)
   expect_equal(y$header, rep(1L, 12L))
   expect_equal(colnames(y), c(colnames(x), "header"))

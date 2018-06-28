@@ -111,7 +111,7 @@ c("Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
 )
 
 test_that("Compass directions N, NNW, W, and WNW work", {
-  cells <- tidy_table(purpose$`NNW WNW`)
+  cells <- as_cells(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
     dplyr::filter(row <= 2, !is.na(chr)) %>%
@@ -139,7 +139,7 @@ test_that("Compass directions N, NNW, W, and WNW work", {
 })
 
 test_that("Compass directions NNE and WSW work", {
-  cells <- tidy_table(purpose$`NNE WSW`)
+  cells <- as_cells(purpose$`NNE WSW`)
   row_headers <-
     cells %>%
     dplyr::filter(col <= 2, !is.na(chr)) %>%
@@ -163,7 +163,7 @@ test_that("Compass directions NNE and WSW work", {
 })
 
 test_that("Compass directions S, SSE , E and ESE work", {
-  cells <- tidy_table(purpose$`SSE ESE`)
+  cells <- as_cells(purpose$`SSE ESE`)
   row_headers <-
     cells %>%
     dplyr::filter(col >= 5, !is.na(chr)) %>%
@@ -191,7 +191,7 @@ test_that("Compass directions S, SSE , E and ESE work", {
 })
 
 test_that("Compass directions SSW and ENE work", {
-  cells <- tidy_table(purpose$`SSW ENE`)
+  cells <- as_cells(purpose$`SSW ENE`)
   row_headers <-
     cells %>%
     dplyr::filter(col >= 5, !is.na(chr)) %>%
@@ -215,7 +215,7 @@ test_that("Compass directions SSW and ENE work", {
 })
 
 test_that("Compass directions ABOVE and LEFT work", {
-  cells <- tidy_table(purpose$`ABOVE LEFT`)
+  cells <- as_cells(purpose$`ABOVE LEFT`)
   row_headers <-
     cells %>%
     dplyr::filter(col <= 2, !is.na(chr)) %>%
@@ -241,7 +241,7 @@ test_that("Compass directions ABOVE and LEFT work", {
 })
 
 test_that("Compass directions BELOW and RIGHT work", {
-  cells <- tidy_table(purpose$`BELOW RIGHT`)
+  cells <- as_cells(purpose$`BELOW RIGHT`)
   row_headers <-
     cells %>%
     dplyr::filter(col >= 7, !is.na(chr)) %>%
@@ -265,7 +265,7 @@ test_that("Compass directions BELOW and RIGHT work", {
 })
 
 test_that("enhead() works", {
-  cells <- tidy_table(purpose$`NNW WNW`)
+  cells <- as_cells(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
     dplyr::filter(row <= 2, !is.na(chr)) %>%
@@ -324,7 +324,7 @@ test_that("the `drop` argument works", {
 })
 
 test_that("enhead() stops on non-distinct cells", {
-  cells <- tidy_table(purpose$`NNW WNW`)
+  cells <- as_cells(purpose$`NNW WNW`)
   col_headers <-
     cells %>%
     dplyr::filter(row <= 2, !is.na(chr)) %>%

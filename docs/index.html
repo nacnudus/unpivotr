@@ -147,7 +147,7 @@
 <li>For plain text files, you might soon be able to use <a href="https://readr.tidyverse.org">readr</a>, but for now you’ll have to install a pull-request on that package with <code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">devtools::install_github("tidyverse/readr#760")</a></code>.</li>
 <li>For tables in html pages, use <code>unpivotr::tidy_html()</code>
 </li>
-<li>For data frames, use <code><a href="reference/tidy_table.html">unpivotr::tidy_table()</a></code> – this should be a last resort, because by the time thee data is in a conventional data frame, it is often too late – formatting has been lost, and most data types have been coerced to strings.</li>
+<li>For data frames, use <code><a href="reference/as_cells.html">unpivotr::as_cells()</a></code> – this should be a last resort, because by the time thee data is in a conventional data frame, it is often too late – formatting has been lost, and most data types have been coerced to strings.</li>
 </ul>
 </li>
 <li>Either <code><a href="reference/behead.html">behead()</a></code> straight away, else <code><a href="http://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> separately for the header cells and the data cells, and then recombine with <code><a href="reference/enhead.html">enhead()</a></code>.</li>
@@ -191,61 +191,60 @@
 <a class="sourceLine" id="cb1-35" data-line-number="35"><span class="co">#&gt; 22                       &lt;NA&gt;     65+   &lt;NA&gt;  13000  &lt;NA&gt;  18000</span></a>
 <a class="sourceLine" id="cb1-36" data-line-number="36">  <span class="co"># rows and two columns.</span></a>
 <a class="sourceLine" id="cb1-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb1-38" data-line-number="38">y &lt;-<span class="st"> </span><span class="kw"><a href="reference/tidy_table.html">tidy_table</a></span>(x) <span class="co"># 'Tokenize' or 'melt' the data frame into one row per cell</span></a>
-<a class="sourceLine" id="cb1-39" data-line-number="39"><span class="co">#&gt; tidy_table() will be deprecated.  Use as_cells() instead.</span></a>
-<a class="sourceLine" id="cb1-40" data-line-number="40">y</a>
-<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="co">#&gt; # A tibble: 132 x 4</span></a>
-<a class="sourceLine" id="cb1-42" data-line-number="42"><span class="co">#&gt;      row   col data_type chr              </span></a>
-<a class="sourceLine" id="cb1-43" data-line-number="43"><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;            </span></a>
-<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="co">#&gt;  1     1     1 chr       &lt;NA&gt;             </span></a>
-<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="co">#&gt;  2     2     1 chr       &lt;NA&gt;             </span></a>
-<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="co">#&gt;  3     3     1 chr       Bachelor's degree</span></a>
-<a class="sourceLine" id="cb1-47" data-line-number="47"><span class="co">#&gt;  4     4     1 chr       &lt;NA&gt;             </span></a>
-<a class="sourceLine" id="cb1-48" data-line-number="48"><span class="co">#&gt;  5     5     1 chr       &lt;NA&gt;             </span></a>
-<a class="sourceLine" id="cb1-49" data-line-number="49"><span class="co">#&gt;  6     6     1 chr       &lt;NA&gt;             </span></a>
-<a class="sourceLine" id="cb1-50" data-line-number="50"><span class="co">#&gt;  7     7     1 chr       Certificate      </span></a>
-<a class="sourceLine" id="cb1-51" data-line-number="51"><span class="co">#&gt;  8     8     1 chr       &lt;NA&gt;             </span></a>
-<a class="sourceLine" id="cb1-52" data-line-number="52"><span class="co">#&gt;  9     9     1 chr       &lt;NA&gt;             </span></a>
-<a class="sourceLine" id="cb1-53" data-line-number="53"><span class="co">#&gt; 10    10     1 chr       &lt;NA&gt;             </span></a>
-<a class="sourceLine" id="cb1-54" data-line-number="54"><span class="co">#&gt; # ... with 122 more rows</span></a>
-<a class="sourceLine" id="cb1-55" data-line-number="55"></a>
-<a class="sourceLine" id="cb1-56" data-line-number="56"><span class="kw"><a href="reference/rectify.html">rectify</a></span>(y) <span class="co"># useful for reviewing the melted form as though in a spreadsheet</span></a>
-<a class="sourceLine" id="cb1-57" data-line-number="57"><span class="co">#&gt; # A tibble: 22 x 7</span></a>
-<a class="sourceLine" id="cb1-58" data-line-number="58"><span class="co">#&gt;    `row/col` `1(A)`            `2(B)`  `3(C)` `4(D)` `5(E)` `6(F)`</span></a>
-<a class="sourceLine" id="cb1-59" data-line-number="59"><span class="co">#&gt;        &lt;int&gt; &lt;chr&gt;             &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; </span></a>
-<a class="sourceLine" id="cb1-60" data-line-number="60"><span class="co">#&gt;  1         1 &lt;NA&gt;              &lt;NA&gt;    Female &lt;NA&gt;   Male   &lt;NA&gt;  </span></a>
-<a class="sourceLine" id="cb1-61" data-line-number="61"><span class="co">#&gt;  2         2 &lt;NA&gt;              &lt;NA&gt;    0 - 6  7 - 10 0 - 6  7 - 10</span></a>
-<a class="sourceLine" id="cb1-62" data-line-number="62"><span class="co">#&gt;  3         3 Bachelor's degree 15 - 24 7000   27000  &lt;NA&gt;   13000 </span></a>
-<a class="sourceLine" id="cb1-63" data-line-number="63"><span class="co">#&gt;  4         4 &lt;NA&gt;              25 - 44 12000  137000 9000   81000 </span></a>
-<a class="sourceLine" id="cb1-64" data-line-number="64"><span class="co">#&gt;  5         5 &lt;NA&gt;              45 - 64 10000  64000  7000   66000 </span></a>
-<a class="sourceLine" id="cb1-65" data-line-number="65"><span class="co">#&gt;  6         6 &lt;NA&gt;              65+     &lt;NA&gt;   18000  7000   17000 </span></a>
-<a class="sourceLine" id="cb1-66" data-line-number="66"><span class="co">#&gt;  7         7 Certificate       15 - 24 29000  161000 30000  190000</span></a>
-<a class="sourceLine" id="cb1-67" data-line-number="67"><span class="co">#&gt;  8         8 &lt;NA&gt;              25 - 44 34000  179000 31000  219000</span></a>
-<a class="sourceLine" id="cb1-68" data-line-number="68"><span class="co">#&gt;  9         9 &lt;NA&gt;              45 - 64 30000  210000 23000  199000</span></a>
-<a class="sourceLine" id="cb1-69" data-line-number="69"><span class="co">#&gt; 10        10 &lt;NA&gt;              65+     12000  77000  8000   107000</span></a>
-<a class="sourceLine" id="cb1-70" data-line-number="70"><span class="co">#&gt; # ... with 12 more rows</span></a>
-<a class="sourceLine" id="cb1-71" data-line-number="71"></a>
-<a class="sourceLine" id="cb1-72" data-line-number="72">y <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-73" data-line-number="73"><span class="st">  </span><span class="kw"><a href="reference/behead.html">behead</a></span>(<span class="st">"NNW"</span>, <span class="st">"sex"</span>) <span class="op">%&gt;%</span><span class="st">               </span><span class="co"># Strip headers</span></a>
-<a class="sourceLine" id="cb1-74" data-line-number="74"><span class="st">  </span><span class="kw"><a href="reference/behead.html">behead</a></span>(<span class="st">"N"</span>, <span class="st">"life-satisfication"</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># one</span></a>
-<a class="sourceLine" id="cb1-75" data-line-number="75"><span class="st">  </span><span class="kw"><a href="reference/behead.html">behead</a></span>(<span class="st">"WNW"</span>, <span class="st">"qualification"</span>) <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># by</span></a>
-<a class="sourceLine" id="cb1-76" data-line-number="76"><span class="st">  </span><span class="kw"><a href="reference/behead.html">behead</a></span>(<span class="st">"W"</span>, <span class="st">"age-band"</span>) <span class="op">%&gt;%</span><span class="st">            </span><span class="co"># one.</span></a>
-<a class="sourceLine" id="cb1-77" data-line-number="77"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>row, <span class="op">-</span>col, <span class="op">-</span>data_type, <span class="dt">count =</span> chr) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># cleanup</span></a>
-<a class="sourceLine" id="cb1-78" data-line-number="78"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count =</span> <span class="kw">as.integer</span>(count))</a>
-<a class="sourceLine" id="cb1-79" data-line-number="79"><span class="co">#&gt; # A tibble: 80 x 5</span></a>
-<a class="sourceLine" id="cb1-80" data-line-number="80"><span class="co">#&gt;     count sex    `life-satisfication` qualification     `age-band`</span></a>
-<a class="sourceLine" id="cb1-81" data-line-number="81"><span class="co">#&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;                &lt;chr&gt;             &lt;chr&gt;     </span></a>
-<a class="sourceLine" id="cb1-82" data-line-number="82"><span class="co">#&gt;  1   7000 Female 0 - 6                Bachelor's degree 15 - 24   </span></a>
-<a class="sourceLine" id="cb1-83" data-line-number="83"><span class="co">#&gt;  2  12000 Female 0 - 6                Bachelor's degree 25 - 44   </span></a>
-<a class="sourceLine" id="cb1-84" data-line-number="84"><span class="co">#&gt;  3  10000 Female 0 - 6                Bachelor's degree 45 - 64   </span></a>
-<a class="sourceLine" id="cb1-85" data-line-number="85"><span class="co">#&gt;  4     NA Female 0 - 6                Bachelor's degree 65+       </span></a>
-<a class="sourceLine" id="cb1-86" data-line-number="86"><span class="co">#&gt;  5  27000 Female 7 - 10               Bachelor's degree 15 - 24   </span></a>
-<a class="sourceLine" id="cb1-87" data-line-number="87"><span class="co">#&gt;  6 137000 Female 7 - 10               Bachelor's degree 25 - 44   </span></a>
-<a class="sourceLine" id="cb1-88" data-line-number="88"><span class="co">#&gt;  7  64000 Female 7 - 10               Bachelor's degree 45 - 64   </span></a>
-<a class="sourceLine" id="cb1-89" data-line-number="89"><span class="co">#&gt;  8  18000 Female 7 - 10               Bachelor's degree 65+       </span></a>
-<a class="sourceLine" id="cb1-90" data-line-number="90"><span class="co">#&gt;  9     NA Male   0 - 6                Bachelor's degree 15 - 24   </span></a>
-<a class="sourceLine" id="cb1-91" data-line-number="91"><span class="co">#&gt; 10   9000 Male   0 - 6                Bachelor's degree 25 - 44   </span></a>
-<a class="sourceLine" id="cb1-92" data-line-number="92"><span class="co">#&gt; # ... with 70 more rows</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-38" data-line-number="38">y &lt;-<span class="st"> </span><span class="kw"><a href="reference/as_cells.html">as_cells</a></span>(x) <span class="co"># 'Tokenize' or 'melt' the data frame into one row per cell</span></a>
+<a class="sourceLine" id="cb1-39" data-line-number="39">y</a>
+<a class="sourceLine" id="cb1-40" data-line-number="40"><span class="co">#&gt; # A tibble: 132 x 4</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="co">#&gt;      row   col data_type chr              </span></a>
+<a class="sourceLine" id="cb1-42" data-line-number="42"><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;            </span></a>
+<a class="sourceLine" id="cb1-43" data-line-number="43"><span class="co">#&gt;  1     1     1 chr       &lt;NA&gt;             </span></a>
+<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="co">#&gt;  2     2     1 chr       &lt;NA&gt;             </span></a>
+<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="co">#&gt;  3     3     1 chr       Bachelor's degree</span></a>
+<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="co">#&gt;  4     4     1 chr       &lt;NA&gt;             </span></a>
+<a class="sourceLine" id="cb1-47" data-line-number="47"><span class="co">#&gt;  5     5     1 chr       &lt;NA&gt;             </span></a>
+<a class="sourceLine" id="cb1-48" data-line-number="48"><span class="co">#&gt;  6     6     1 chr       &lt;NA&gt;             </span></a>
+<a class="sourceLine" id="cb1-49" data-line-number="49"><span class="co">#&gt;  7     7     1 chr       Certificate      </span></a>
+<a class="sourceLine" id="cb1-50" data-line-number="50"><span class="co">#&gt;  8     8     1 chr       &lt;NA&gt;             </span></a>
+<a class="sourceLine" id="cb1-51" data-line-number="51"><span class="co">#&gt;  9     9     1 chr       &lt;NA&gt;             </span></a>
+<a class="sourceLine" id="cb1-52" data-line-number="52"><span class="co">#&gt; 10    10     1 chr       &lt;NA&gt;             </span></a>
+<a class="sourceLine" id="cb1-53" data-line-number="53"><span class="co">#&gt; # ... with 122 more rows</span></a>
+<a class="sourceLine" id="cb1-54" data-line-number="54"></a>
+<a class="sourceLine" id="cb1-55" data-line-number="55"><span class="kw"><a href="reference/rectify.html">rectify</a></span>(y) <span class="co"># useful for reviewing the melted form as though in a spreadsheet</span></a>
+<a class="sourceLine" id="cb1-56" data-line-number="56"><span class="co">#&gt; # A tibble: 22 x 7</span></a>
+<a class="sourceLine" id="cb1-57" data-line-number="57"><span class="co">#&gt;    `row/col` `1(A)`            `2(B)`  `3(C)` `4(D)` `5(E)` `6(F)`</span></a>
+<a class="sourceLine" id="cb1-58" data-line-number="58"><span class="co">#&gt;        &lt;int&gt; &lt;chr&gt;             &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; </span></a>
+<a class="sourceLine" id="cb1-59" data-line-number="59"><span class="co">#&gt;  1         1 &lt;NA&gt;              &lt;NA&gt;    Female &lt;NA&gt;   Male   &lt;NA&gt;  </span></a>
+<a class="sourceLine" id="cb1-60" data-line-number="60"><span class="co">#&gt;  2         2 &lt;NA&gt;              &lt;NA&gt;    0 - 6  7 - 10 0 - 6  7 - 10</span></a>
+<a class="sourceLine" id="cb1-61" data-line-number="61"><span class="co">#&gt;  3         3 Bachelor's degree 15 - 24 7000   27000  &lt;NA&gt;   13000 </span></a>
+<a class="sourceLine" id="cb1-62" data-line-number="62"><span class="co">#&gt;  4         4 &lt;NA&gt;              25 - 44 12000  137000 9000   81000 </span></a>
+<a class="sourceLine" id="cb1-63" data-line-number="63"><span class="co">#&gt;  5         5 &lt;NA&gt;              45 - 64 10000  64000  7000   66000 </span></a>
+<a class="sourceLine" id="cb1-64" data-line-number="64"><span class="co">#&gt;  6         6 &lt;NA&gt;              65+     &lt;NA&gt;   18000  7000   17000 </span></a>
+<a class="sourceLine" id="cb1-65" data-line-number="65"><span class="co">#&gt;  7         7 Certificate       15 - 24 29000  161000 30000  190000</span></a>
+<a class="sourceLine" id="cb1-66" data-line-number="66"><span class="co">#&gt;  8         8 &lt;NA&gt;              25 - 44 34000  179000 31000  219000</span></a>
+<a class="sourceLine" id="cb1-67" data-line-number="67"><span class="co">#&gt;  9         9 &lt;NA&gt;              45 - 64 30000  210000 23000  199000</span></a>
+<a class="sourceLine" id="cb1-68" data-line-number="68"><span class="co">#&gt; 10        10 &lt;NA&gt;              65+     12000  77000  8000   107000</span></a>
+<a class="sourceLine" id="cb1-69" data-line-number="69"><span class="co">#&gt; # ... with 12 more rows</span></a>
+<a class="sourceLine" id="cb1-70" data-line-number="70"></a>
+<a class="sourceLine" id="cb1-71" data-line-number="71">y <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-72" data-line-number="72"><span class="st">  </span><span class="kw"><a href="reference/behead.html">behead</a></span>(<span class="st">"NNW"</span>, <span class="st">"sex"</span>) <span class="op">%&gt;%</span><span class="st">               </span><span class="co"># Strip headers</span></a>
+<a class="sourceLine" id="cb1-73" data-line-number="73"><span class="st">  </span><span class="kw"><a href="reference/behead.html">behead</a></span>(<span class="st">"N"</span>, <span class="st">"life-satisfication"</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># one</span></a>
+<a class="sourceLine" id="cb1-74" data-line-number="74"><span class="st">  </span><span class="kw"><a href="reference/behead.html">behead</a></span>(<span class="st">"WNW"</span>, <span class="st">"qualification"</span>) <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># by</span></a>
+<a class="sourceLine" id="cb1-75" data-line-number="75"><span class="st">  </span><span class="kw"><a href="reference/behead.html">behead</a></span>(<span class="st">"W"</span>, <span class="st">"age-band"</span>) <span class="op">%&gt;%</span><span class="st">            </span><span class="co"># one.</span></a>
+<a class="sourceLine" id="cb1-76" data-line-number="76"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>row, <span class="op">-</span>col, <span class="op">-</span>data_type, <span class="dt">count =</span> chr) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># cleanup</span></a>
+<a class="sourceLine" id="cb1-77" data-line-number="77"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count =</span> <span class="kw">as.integer</span>(count))</a>
+<a class="sourceLine" id="cb1-78" data-line-number="78"><span class="co">#&gt; # A tibble: 80 x 5</span></a>
+<a class="sourceLine" id="cb1-79" data-line-number="79"><span class="co">#&gt;     count sex    `life-satisfication` qualification     `age-band`</span></a>
+<a class="sourceLine" id="cb1-80" data-line-number="80"><span class="co">#&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;                &lt;chr&gt;             &lt;chr&gt;     </span></a>
+<a class="sourceLine" id="cb1-81" data-line-number="81"><span class="co">#&gt;  1   7000 Female 0 - 6                Bachelor's degree 15 - 24   </span></a>
+<a class="sourceLine" id="cb1-82" data-line-number="82"><span class="co">#&gt;  2  12000 Female 0 - 6                Bachelor's degree 25 - 44   </span></a>
+<a class="sourceLine" id="cb1-83" data-line-number="83"><span class="co">#&gt;  3  10000 Female 0 - 6                Bachelor's degree 45 - 64   </span></a>
+<a class="sourceLine" id="cb1-84" data-line-number="84"><span class="co">#&gt;  4     NA Female 0 - 6                Bachelor's degree 65+       </span></a>
+<a class="sourceLine" id="cb1-85" data-line-number="85"><span class="co">#&gt;  5  27000 Female 7 - 10               Bachelor's degree 15 - 24   </span></a>
+<a class="sourceLine" id="cb1-86" data-line-number="86"><span class="co">#&gt;  6 137000 Female 7 - 10               Bachelor's degree 25 - 44   </span></a>
+<a class="sourceLine" id="cb1-87" data-line-number="87"><span class="co">#&gt;  7  64000 Female 7 - 10               Bachelor's degree 45 - 64   </span></a>
+<a class="sourceLine" id="cb1-88" data-line-number="88"><span class="co">#&gt;  8  18000 Female 7 - 10               Bachelor's degree 65+       </span></a>
+<a class="sourceLine" id="cb1-89" data-line-number="89"><span class="co">#&gt;  9     NA Male   0 - 6                Bachelor's degree 15 - 24   </span></a>
+<a class="sourceLine" id="cb1-90" data-line-number="90"><span class="co">#&gt; 10   9000 Male   0 - 6                Bachelor's degree 25 - 44   </span></a>
+<a class="sourceLine" id="cb1-91" data-line-number="91"><span class="co">#&gt; # ... with 70 more rows</span></a></code></pre></div>
 <p>Note the compass directions in the code above, which hint to <code><a href="reference/behead.html">behead()</a></code> where to find the header cell for each data cell.</p>
 <ul>
 <li>
@@ -263,7 +262,8 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># install.packages("devtools") # If you don't already have devtools</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"nacnudus/unpivotr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p>Don’t use the CRAN version – it has none of the fun in this README, and the development version breaks everything. Please let me know if this is a problem for you — as far as I know, nobody really used the old version, but it’s hard to tell.</p>
+<p>The version 0.4.0 release had somee breaking changes. See <code>NEWS.md</code> for details. The previous version can be installed as follow:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_version">install_version</a></span>(<span class="st">"unpivotr"</span>, <span class="dt">version =</span> <span class="st">"0.3.1"</span>, <span class="dt">repos =</span> <span class="st">"http://cran.us.r-project.org"</span>)</a></code></pre></div>
 </div>
 <div id="similar-projects" class="section level2">
 <h2 class="hasAnchor">
