@@ -1,5 +1,9 @@
 # unpivotr 0.4.0.9000
 
+* `behead()`, `enhead()`, `partition()` and `rectify()` give a more informative
+    error message for non-distinct cells, for example when trying to pass cells
+    from more than one sheet to these functions (@gregrs-uk, #15).
+
 # unpivotr 0.4.0
 
 This version makes some big breaking changes for the sake of a more intuitive

@@ -340,7 +340,9 @@ test_that("enhead() stops on non-distinct cells", {
     dplyr::filter(row >= 3, col >= 3, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
     dplyr::select(row, col, value)
-  expect_error(enhead(dplyr::bind_rows(cells, cells), col_headers[[1]], "NNW"),
-               "dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells) is not TRUE",
-               fixed = TRUE)
+  expect_error(
+    enhead(dplyr::bind_rows(cells, cells), col_headers[[1]], "NNW"),
+    "Row and column numbers must be distinct.\n  Perhaps you meant to use a single sheet.",
+    fixed = TRUE
+  )
 })

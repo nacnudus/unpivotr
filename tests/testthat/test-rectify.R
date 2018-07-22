@@ -141,9 +141,11 @@ test_that("rectify() stops on non-distinct cells", {
                   data_type = rep("chr", 4),
                   chr = c("a", "b", "c", "d"),
                   stringsAsFactors = FALSE)
-  expect_error(rectify(dplyr::bind_rows(x, x), values = row),
-               "dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells) is not TRUE",
-               fixed = TRUE)
+  expect_error(
+    rectify(dplyr::bind_rows(x, x), values = row),
+    "Row and column numbers must be distinct.\n  Perhaps you meant to use a single sheet.",
+    fixed = TRUE
+  )
 })
 
 test_that("rectify() works on common data types", {
