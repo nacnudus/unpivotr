@@ -242,5 +242,9 @@ check_direction_enhead <- function(direction_string) {
 }
 
 check_distinct <- function(cells) {
-  stopifnot(dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells))
+  if (dplyr::n_distinct(dplyr::select(cells, row, col)) != nrow(cells)) {
+    stop("Row and column numbers must be distinct.",
+         "\n  Perhaps you meant to use a single sheet.",
+         call. = FALSE)
+  }
 }
