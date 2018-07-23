@@ -139,8 +139,10 @@ test_that("behead() can use row, col and data_type as headers", {
 })
 
 test_that("behead() stops on non-distinct cells", {
-  expect_error(behead(dplyr::bind_rows(cells, cells), "NNW"),
-               "dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells) is not TRUE",
-               fixed = TRUE)
+  expect_error(
+    behead(dplyr::bind_rows(cells, cells), "NNW"),
+    "Row and column numbers must be distinct.\n  Perhaps you meant to use a single sheet.",
+    fixed = TRUE
+  )
 })
 

@@ -78,9 +78,9 @@ test_that("partition() stops on non-distinct cells", {
     dplyr::filter(multiples,
                   !is.na(character),
                   !(character %in% c("Sex", "Value", "Female", "Male")))
-  expect_error(partition(dplyr::bind_rows(multiples, multiples),
-                         tl_corners,
-                         nest = FALSE),
-               "dplyr::n_distinct(dplyr::select(cells, row, col)) == nrow(cells) is not TRUE",
-               fixed = TRUE)
+  expect_error(
+    partition(dplyr::bind_rows(multiples, multiples), tl_corners, nest = FALSE),
+    "Row and column numbers must be distinct.\n  Perhaps you meant to use a single sheet.",
+    fixed = TRUE
+  )
 })
