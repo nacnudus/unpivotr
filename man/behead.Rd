@@ -5,7 +5,8 @@
 \title{Strip a level of headers from a pivot table}
 \usage{
 behead(cells, direction, name, values = NULL, types = data_type,
-  formatters = list(), drop_na = TRUE)
+  formatters = list(), drop_na = TRUE, .predicate = NULL,
+  .args = list())
 }
 \arguments{
 \item{cells}{Data frame. The cells of a pivot table, usually the output of
@@ -42,6 +43,16 @@ others are characters.  These can be given as \code{character = toupper} or
 \code{value} column.  Default: \code{TRUE}.  This can happen with the output of
 \code{tidyxl::xlsx_cells()}, when an empty cell exists because it has formatting
 applied to it, but should be ignored.}
+
+\item{.predicate}{function, when levels of header cells are mixed in the same
+column or row, but can be distinguished by some feature.  E.g. bold headers
+and plain subheaders.  The \code{.predicate} function will be used to filter for
+the cells to be used as headers.  It must accept the arguments \code{cells} and
+\code{...}.  Pass additional arguments into the dots with \code{.args}
+parameter.}
+
+\item{.args}{named list of arguments to pass into the dots of the
+\code{.predicate} function.}
 }
 \value{
 A data frame

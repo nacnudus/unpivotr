@@ -34,6 +34,14 @@
 #'   `value` column.  Default: `TRUE`.  This can happen with the output of
 #'   `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
 #'   applied to it, but should be ignored.
+#' @param .predicate function, when levels of header cells are mixed in the same
+#'   column or row, but can be distinguished by some feature.  E.g. bold headers
+#'   and plain subheaders.  The `.predicate` function will be used to filter for
+#'   the cells to be used as headers.  It must accept the arguments `cells` and
+#'   `...`.  Pass additional arguments into the dots with `.args`
+#'   parameter.
+#' @param .args named list of arguments to pass into the dots of the
+#' `.predicate` function.
 #'
 #' @return A data frame
 #'
@@ -74,14 +82,16 @@
 #' # postgraduate qualification and a sense of purpose between 0 and 6.  That
 #' # seems to have been an oversight by Statistics New Zealand.
 behead <- function(cells, direction, name, values = NULL, types = data_type,
-                   formatters = list(), drop_na = TRUE) {
+                   formatters = list(), drop_na = TRUE, .predicate = NULL,
+                   .args = list()) {
   UseMethod("behead")
 }
 
 #' @export
-behead.data.frame <- function(cells, direction, name, values = NULL,
+behead.data.frame <- function(cells, direction = NULL, name, values = NULL,
                               types = data_type, formatters = list(),
-                              drop_na = TRUE) {
+                              drop_na = TRUE,
+                              .predicate = NULL, .args = list()) {
   check_direction_behead(direction)
   check_distinct(cells)
   name <- rlang::ensym(name)
@@ -100,8 +110,12 @@ behead.data.frame <- function(cells, direction, name, values = NULL,
       dplyr::mutate(!! types := ".value")
   }
   type_names <- unique(dplyr::pull(cells, !! types))
-  filter_expr <- direction_filter(direction)
-  is_header <- rlang::eval_tidy(filter_expr, cells)
+  is_header <- rlang::exec(direction_filter,
+                           !!! list(cells = cells, direction = direction))
+  if (!is.null(.predicate)) {
+    is_header <-
+      is_header & rlang::exec(.predicate, !!! rlang::list2(cells = cells, !!! .args))
+  }
   headers <-
     cells %>%
     dplyr::filter(is_header) %>%
@@ -119,13 +133,15 @@ behead.data.frame <- function(cells, direction, name, values = NULL,
   out
 }
 
-# Construct a filter expression for stripping a header from a pivot table
-direction_filter <- function(direction) {
+direction_filter <- function(cells, direction, ...) {
+  if (is.null(direction)) {
+    stop("'direction' must be specified for `direction_filter()`")
+  }
   direction <- substr(direction, 1L, 1L)
-  dplyr::case_when(direction == "N" ~ rlang::expr(.data$row == min(.data$row)),
-                   direction == "E" ~ rlang::expr(.data$col == max(.data$col)),
-                   direction == "S" ~ rlang::expr(.data$row == max(.data$row)),
-                   direction == "W" ~ rlang::expr(.data$col == min(.data$col)))
+  dplyr::case_when(direction == "N" ~ cells$row == min(cells$row),
+                   direction == "E" ~ cells$col == max(cells$col),
+                   direction == "S" ~ cells$row == max(cells$row),
+                   direction == "W" ~ cells$col == min(cells$col))
 }
 
 # Check that a given direction is a supported compass direction
