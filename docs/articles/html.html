@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1>HTML Tables</h1>
                         <h4 class="author">Duncan Garmonsway</h4>
             
-            <h4 class="date">2018-06-28</h4>
+            <h4 class="date">2018-09-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/nacnudus/unpivotr/blob/master/vignettes/html.Rmd"><code>vignettes/html.Rmd</code></a></small>
       <div class="hidden name"><code>html.Rmd</code></div>
@@ -432,16 +432,16 @@
 <a class="sourceLine" id="cb33-22" data-line-number="22">         <span class="dt">url =</span> purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(html, cell_url)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb33-23" data-line-number="23"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/unnest">unnest</a></span>(text, url)</a></code></pre></div>
 <pre><code>## # A tibble: 8 x 6
-##     row   col data_type html                              text   url      
-##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;                             &lt;chr&gt;  &lt;chr&gt;    
-## 1     1     1 html      "&lt;td colspan=\"2\"&gt;\n&lt;a href=\"e… Scrap… example1…
-## 2     1     1 html      "&lt;td colspan=\"2\"&gt;\n&lt;a href=\"e… HTML.  example2…
-## 3     2     1 html      "&lt;td&gt;&lt;a href=\"example3.co.nz\"&gt;… Sweet  example3…
-## 4     1     2 html      &lt;NA&gt;                              &lt;NA&gt;   &lt;NA&gt;     
-## 5     2     2 html      "&lt;td&gt;&lt;a href=\"example4.co.nz\"&gt;… as?    example4…
-## 6     1     3 html      &lt;NA&gt;                              &lt;NA&gt;   &lt;NA&gt;     
-## 7     2     3 html      "&lt;td&gt;\n&lt;a href=\"example5.co.nz\… Yeah,  example5…
-## 8     2     3 html      "&lt;td&gt;\n&lt;a href=\"example5.co.nz\… right. http://w…</code></pre>
+##     row   col data_type html                            text   url        
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;                           &lt;chr&gt;  &lt;chr&gt;      
+## 1     1     1 html      "&lt;td colspan=\"2\"&gt;\n&lt;a href=\… Scrap… example1.c…
+## 2     1     1 html      "&lt;td colspan=\"2\"&gt;\n&lt;a href=\… HTML.  example2.c…
+## 3     2     1 html      "&lt;td&gt;&lt;a href=\"example3.co.nz\… Sweet  example3.c…
+## 4     1     2 html      &lt;NA&gt;                            &lt;NA&gt;   &lt;NA&gt;       
+## 5     2     2 html      "&lt;td&gt;&lt;a href=\"example4.co.nz\… as?    example4.c…
+## 6     1     3 html      &lt;NA&gt;                            &lt;NA&gt;   &lt;NA&gt;       
+## 7     2     3 html      "&lt;td&gt;\n&lt;a href=\"example5.co.n… Yeah,  example5.c…
+## 8     2     3 html      "&lt;td&gt;\n&lt;a href=\"example5.co.n… right. http://www…</code></pre>
 </div>
   </div>
 

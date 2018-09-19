@@ -72,7 +72,7 @@ as_cells() or tidyxl::xlsx_cells()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
       </span>
     </div>
 
@@ -282,19 +282,19 @@ applied to it, but should be ignored.</p></td>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'>as.integer</span>(<span class='no'>chr</span>)) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>row</span>, -<span class='no'>col</span>, -<span class='no'>data_type</span>, -<span class='no'>chr</span>)
 <span class='fu'>head</span>(<span class='no'>tidy</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
-#&gt;   Sex    `Sense of purpose` `Highest qualification` `Age group (Life-st…  count
-#&gt;   &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt;                   &lt;chr&gt;                 &lt;int&gt;
-#&gt; 1 Female 0 - 6              Bachelor's degree       15 - 24                7000
-#&gt; 2 Female 0 - 6              Bachelor's degree       25 - 44               12000
-#&gt; 3 Female 0 - 6              Bachelor's degree       45 - 64               10000
-#&gt; 4 Female 0 - 6              Bachelor's degree       65+                      NA
-#&gt; 5 Female 7 - 10             Bachelor's degree       15 - 24               27000
-#&gt; 6 Female 7 - 10             Bachelor's degree       25 - 44              137000</div><div class='input'>
+#&gt;   Sex    `Sense of purpose` `Highest qualificati… `Age group (Life-stag…  count
+#&gt;   &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt;                 &lt;chr&gt;                   &lt;int&gt;
+#&gt; 1 Female 0 - 6              Bachelor's degree     15 - 24                  7000
+#&gt; 2 Female 0 - 6              Bachelor's degree     25 - 44                 12000
+#&gt; 3 Female 0 - 6              Bachelor's degree     45 - 64                 10000
+#&gt; 4 Female 0 - 6              Bachelor's degree     65+                        NA
+#&gt; 5 Female 7 - 10             Bachelor's degree     15 - 24                 27000
+#&gt; 6 Female 7 - 10             Bachelor's degree     25 - 44                137000</div><div class='input'>
 <span class='co'># Check against the provided 'tidy' version of the data.</span>
 <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>anti_join</a></span>(<span class='no'>tidy</span>, <span class='no'>purpose</span>$<span class='no'>Tidy</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("Sex", "Sense of purpose", "Highest qualification", "Age group (Life-stages)")</span></div><div class='output co'>#&gt; # A tibble: 1 x 5
-#&gt;   Sex   `Sense of purpose` `Highest qualification`    `Age group (Life-s… count
-#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;chr&gt;                      &lt;chr&gt;               &lt;int&gt;
-#&gt; 1 Male  0 - 6              Postgraduate qualification 15 - 24                NA</div><div class='input'>
+#&gt;   Sex   `Sense of purpose` `Highest qualification` `Age group (Life-stag… count
+#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;chr&gt;                   &lt;chr&gt;                  &lt;int&gt;
+#&gt; 1 Male  0 - 6              Postgraduate qualifica… 15 - 24                   NA</div><div class='input'>
 # The provided 'tidy' data is missing a row for Male 15-24-year-olds with a
 # postgraduate qualification and a sense of purpose between 0 and 6.  That
 # seems to have been an oversight by Statistics New Zealand.

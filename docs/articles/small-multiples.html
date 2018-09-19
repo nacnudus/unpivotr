@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1>Small Multiples</h1>
                         <h4 class="author">Duncan Garmonsway</h4>
             
-            <h4 class="date">2018-06-28</h4>
+            <h4 class="date">2018-09-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/nacnudus/unpivotr/blob/master/vignettes/small-multiples.Rmd"><code>vignettes/small-multiples.Rmd</code></a></small>
       <div class="hidden name"><code>small-multiples.Rmd</code></div>
@@ -233,18 +233,18 @@
 <a class="sourceLine" id="cb16-15" data-line-number="15">unpivoted &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(unpivoted, row_headers, <span class="dt">by =</span> <span class="st">"row"</span>)</a>
 <a class="sourceLine" id="cb16-16" data-line-number="16">unpivoted</a></code></pre></div>
 <pre><code>## # A tibble: 240 x 7
-##      row   col numeric title                   price  bid_offer row_header
-##    &lt;int&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                   &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;     
-##  1    17    17    1.89 IF NWPL Rocky Mountains Fixed… BID       Cash      
-##  2    17    18    1.91 IF NWPL Rocky Mountains Fixed… OFFER     Cash      
-##  3    18    17    2.06 IF NWPL Rocky Mountains Fixed… BID       ROM       
-##  4    18    18    2.08 IF NWPL Rocky Mountains Fixed… OFFER     ROM       
-##  5    19    17    2.40 IF NWPL Rocky Mountains Fixed… BID       Dec-01    
-##  6    19    18    2.42 IF NWPL Rocky Mountains Fixed… OFFER     Dec-01    
-##  7    20    17    2.59 IF NWPL Rocky Mountains Fixed… BID       Dec-01 to…
-##  8    20    18    2.61 IF NWPL Rocky Mountains Fixed… OFFER     Dec-01 to…
-##  9    21    17    2.58 IF NWPL Rocky Mountains Fixed… BID       Apr-02 to…
-## 10    21    18    2.60 IF NWPL Rocky Mountains Fixed… OFFER     Apr-02 to…
+##      row   col numeric title             price     bid_offer row_header   
+##    &lt;int&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;        
+##  1    17    17    1.89 IF NWPL Rocky Mo… Fixed Pr… BID       Cash         
+##  2    17    18    1.91 IF NWPL Rocky Mo… Fixed Pr… OFFER     Cash         
+##  3    18    17    2.06 IF NWPL Rocky Mo… Fixed Pr… BID       ROM          
+##  4    18    18    2.08 IF NWPL Rocky Mo… Fixed Pr… OFFER     ROM          
+##  5    19    17    2.40 IF NWPL Rocky Mo… Fixed Pr… BID       Dec-01       
+##  6    19    18    2.42 IF NWPL Rocky Mo… Fixed Pr… OFFER     Dec-01       
+##  7    20    17    2.59 IF NWPL Rocky Mo… Fixed Pr… BID       Dec-01 to Ma…
+##  8    20    18    2.61 IF NWPL Rocky Mo… Fixed Pr… OFFER     Dec-01 to Ma…
+##  9    21    17    2.58 IF NWPL Rocky Mo… Fixed Pr… BID       Apr-02 to Oc…
+## 10    21    18    2.60 IF NWPL Rocky Mo… Fixed Pr… OFFER     Apr-02 to Oc…
 ## # ... with 230 more rows</code></pre>
 </div>
 </div>
