@@ -56,7 +56,22 @@ More positive, corrective functions:
     into pieces that each contain one table. You can then unpivot each
     table in turn with `purrr::map()` or similar.
 
-## Getting started
+## Make cells tidy
+
+Unpivotr uses data where each cells is represented by one row in a
+dataframe. Like this.
+
+![Gif of tidyxl converting cells into a tidy representation of one row
+per cell](./vignettes/tidy_xlsx.gif)
+
+What can you do with tidy cells? The best place to start is [Spreadsheet
+Munging
+Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies),
+a free, online cookbook using
+[tidyxl](https://github.com/nacnudus/tidyxl) and
+[unpivotr](https://github.com/nacnudus/unpivotr).
+
+Otherwise see examples below.
 
 [Spreadsheet Munging
 Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies)
@@ -88,14 +103,6 @@ Otherwise the basic idea is:
 ``` r
 library(unpivotr)
 library(tidyverse)
-#> ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
-#> ✔ ggplot2 2.2.1.9000     ✔ purrr   0.2.5     
-#> ✔ tibble  1.4.2          ✔ dplyr   0.7.5     
-#> ✔ tidyr   0.8.1          ✔ stringr 1.3.1     
-#> ✔ readr   1.2.0          ✔ forcats 0.3.0
-#> ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
-#> ✖ dplyr::filter() masks stats::filter()
-#> ✖ dplyr::lag()    masks stats::lag()
 x <- purpose$`NNW WNW`
 x # A pivot table in a conventional data frame.  Four levels of headers, in two
 #>                            X2      X3     X4     X5    X6     X7
