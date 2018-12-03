@@ -79,9 +79,10 @@ behead <- function(cells, direction, name, values = NULL, types = data_type,
 }
 
 #' @export
-behead.data.frame <- function(cells, direction, name, values = NULL,
+behead.data.frame <- function(cells, ..., direction, name, values = NULL,
                               types = data_type, formatters = list(),
                               drop_na = TRUE) {
+  dots <- rlang::enquos(...)
   check_direction_behead(direction)
   check_distinct(cells)
   name <- rlang::ensym(name)
@@ -104,7 +105,7 @@ behead.data.frame <- function(cells, direction, name, values = NULL,
   is_header <- rlang::eval_tidy(filter_expr, cells)
   headers <-
     cells %>%
-    dplyr::filter(is_header) %>%
+    dplyr::filter(is_header, !!! dots) %>%
     pack(types = !! types) %>%
     dplyr::mutate(is_na = is.na(value),
                   !! name := purrr::imap(value,
