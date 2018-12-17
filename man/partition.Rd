@@ -5,7 +5,8 @@
 \alias{partition_dim}
 \title{Divide a grid of cells into partitions containing individual tables}
 \usage{
-partition(cells, corners, align = "top_left", nest = TRUE, strict = TRUE)
+partition(cells, corners, align = "top_left", nest = TRUE,
+  strict = TRUE)
 
 partition_dim(positions, cutpoints, bound = "upper")
 }

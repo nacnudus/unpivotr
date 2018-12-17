@@ -67,8 +67,8 @@ But what if you don't know in advance that the data types you need are
 \code{error}.
 
 Instead, \code{\link[=pack]{pack()}} all the data types into a single column, select it, and
-then unpack.\preformatted{pack(cells) %>%
-  select(row, col, value) %>%
+then unpack.\preformatted{pack(cells) \%>\%
+  select(row, col, value) \%>\%
   unpack()
 }
 }

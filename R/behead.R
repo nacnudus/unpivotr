@@ -34,6 +34,7 @@
 #'   `value` column.  Default: `TRUE`.  This can happen with the output of
 #'   `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
 #'   applied to it, but should be ignored.
+#' @inheritParams dplyr::filter ...
 #'
 #' @return A data frame
 #'
@@ -79,9 +80,27 @@ behead <- function(cells, direction, name, values = NULL, types = data_type,
 }
 
 #' @export
-behead.data.frame <- function(cells, ..., direction, name, values = NULL,
+behead.data.frame <- function(cells, direction, name, values = NULL,
                               types = data_type, formatters = list(),
                               drop_na = TRUE) {
+  behead_if.data.frame(cells, direction = direction,
+                       name = !! rlang::ensym(name),
+                       values = !! rlang::enexpr(values),
+                       types = !! rlang::ensym(types),
+                       formatters = formatters, drop_na = drop_na)
+}
+
+#' @rdname behead
+#' @export
+behead_if <- function(cells, ..., direction, name, values = NULL, types =
+                      data_type, formatters = list(), drop_na = TRUE) {
+  UseMethod("behead_if")
+}
+
+#' @export
+behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
+                                 types = data_type, formatters = list(),
+                                 drop_na = TRUE) {
   dots <- rlang::enquos(...)
   check_direction_behead(direction)
   check_distinct(cells)

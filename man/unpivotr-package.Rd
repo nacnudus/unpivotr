@@ -12,7 +12,7 @@ or row headers, or spreadsheets of several tables, nested HTML tables, and
 data that uses several different sentinel values.
 }
 \details{
-The best way to learn unpivotr is the free online book \href{https://nacnudus.github.io/spreadsheet-munging-strategies/}{Spreadsheet MungingStrategies}.
+The best way to learn unpivotr is the free online book \href{https://nacnudus.github.io/spreadsheet-munging-strategies/}{Spreadsheet Munging Strategies}.
 
 Header and data cells can selected by their contents, position, data type and
 formatting, and can be associated with one other by their relative positions.

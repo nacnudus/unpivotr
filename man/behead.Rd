@@ -2,10 +2,14 @@
 % Please edit documentation in R/behead.R
 \name{behead}
 \alias{behead}
+\alias{behead_if}
 \title{Strip a level of headers from a pivot table}
 \usage{
 behead(cells, direction, name, values = NULL, types = data_type,
   formatters = list(), drop_na = TRUE)
+
+behead_if(cells, ..., direction, name, values = NULL,
+  types = data_type, formatters = list(), drop_na = TRUE)
 }
 \arguments{
 \item{cells}{Data frame. The cells of a pivot table, usually the output of
