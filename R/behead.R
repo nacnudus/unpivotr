@@ -34,7 +34,14 @@
 #'   `value` column.  Default: `TRUE`.  This can happen with the output of
 #'   `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
 #'   applied to it, but should be ignored.
-#' @inheritParams dplyr::filter ...
+#' @param ... Passed to [dplyr::filter]. logical predicates defined in terms of
+#'   the variables in `.data`.  Multiple conditions are combined with `&`. Only
+#'   rows where the condition evaluates to `TRUE` are kept.
+#'
+#'   The arguments in `...` are automatically [quoted][rlang::quo] and
+#'   [evaluated][rlang::eval_tidy] in the context of the data frame. They
+#'   support [unquoting][rlang::quasiquotation] and splicing. See the dplyr
+#'   `vignette("programming")` for an introduction to these concepts.
 #'
 #' @return A data frame
 #'
