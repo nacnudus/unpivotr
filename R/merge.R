@@ -9,7 +9,7 @@
 #' [merge_rows()] keeps the top cell, and [merge_cols()] keeps the left-most
 #' cell.  When there are several columns of headers, [merge_rows()] aligns the
 #' output cells so that they are all in the same row, and similarly
-#' [merge_columns()] aligns to the same column.
+#' [merge_cols()] aligns to the same column.
 #'
 #' These functions apply only to cells with character values because it doesn't
 #' make sense to concatenate non-character values.  Convert cell values to
@@ -25,7 +25,7 @@
 #'
 #' @return A data frame
 #'
-#' @export
+#' @name merge_cells
 #' @examples
 #'  x <- tibble::tribble(
 #' ~row, ~col, ~data_type,     ~chr,
@@ -49,6 +49,9 @@
 #' rectify(y)
 #' z <- merge_cols(x, 1:2, chr)
 #' rectify(z)
+NULL
+
+#' @rdname merge_cells
 #' @export
 merge_rows <- function(cells, rows, values, collapse = " ") {
   UseMethod("merge_rows")
@@ -78,6 +81,7 @@ merge_rows.data.frame <- function(cells, rows, values, collapse = " ") {
   dplyr::bind_rows(merged_cells, other_cells)
 }
 
+#' @rdname merge_cells
 #' @export
 merge_cols <- function(cells, cols, values, collapse = " ") {
   UseMethod("merge_cols")
