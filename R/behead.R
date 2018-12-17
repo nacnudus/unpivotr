@@ -97,7 +97,7 @@
 #'   behead_if(chr == toupper(chr), direction = "WNW", name = "species") %>%
 #'   behead("W", "sex") %>%
 #'   behead("N", "age") %>%
-#'   select(species, sex, age, population = dbl)
+#'   dplyr::select(species, sex, age, population = dbl)
 behead <- function(cells, direction, name, values = NULL, types = data_type,
                    formatters = list(), drop_na = TRUE) {
   UseMethod("behead")
