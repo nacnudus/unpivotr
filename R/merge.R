@@ -4,7 +4,7 @@
 #' cells with [merge_rows()] or [merge_cols()].  E.g. if a column header "Mean
 #' GDP" is split over two cells, where the top cell has the value "Mean" and the
 #' bottom cell has the value "GDP", then [merge_rows()] will combine them into a
-#' single cells with the value "Mean GDP".
+#' single cell with the value "Mean GDP".
 #'
 #' [merge_rows()] keeps the top cell, and [merge_cols()] keeps the left-most
 #' cell.  When there are several columns of headers, [merge_rows()] aligns the

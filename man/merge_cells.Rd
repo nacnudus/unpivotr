@@ -32,7 +32,7 @@ When a single column header is split across cells, merge the
 cells with \code{\link[=merge_rows]{merge_rows()}} or \code{\link[=merge_cols]{merge_cols()}}.  E.g. if a column header "Mean
 GDP" is split over two cells, where the top cell has the value "Mean" and the
 bottom cell has the value "GDP", then \code{\link[=merge_rows]{merge_rows()}} will combine them into a
-single cells with the value "Mean GDP".
+single cell with the value "Mean GDP".
 
 \code{\link[=merge_rows]{merge_rows()}} keeps the top cell, and \code{\link[=merge_cols]{merge_cols()}} keeps the left-most
 cell.  When there are several columns of headers, \code{\link[=merge_rows]{merge_rows()}} aligns the
