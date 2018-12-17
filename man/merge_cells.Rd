@@ -20,6 +20,8 @@ those outputs.}
 \item{values}{The column of \code{cells} to use as the values of each cell to be
 merged.  Given as a bare variable name.}
 
+\item{collapse}{A character string to separate the values of each cell.}
+
 \item{cols}{The numbers of the columns to be merged.}
 }
 \value{

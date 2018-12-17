@@ -22,6 +22,7 @@
 #' @param cols The numbers of the columns to be merged.
 #' @param values The column of `cells` to use as the values of each cell to be
 #'   merged.  Given as a bare variable name.
+#' @param collapse A character string to separate the values of each cell.
 #'
 #' @return A data frame
 #'
