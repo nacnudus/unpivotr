@@ -90,12 +90,6 @@ as_cells <- function(x, row_names = FALSE, col_names = FALSE) {
 
 #' @export
 as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
-  if (!row_names) {
-    row.names(x) <- NULL
-  }
-  if (!col_names) {
-    colnames(x) <- NULL
-  }
   values <- do.call(c, purrr::map(x, as.list))
   nrows <- nrow(x)
   ncols <- ncol(x)
