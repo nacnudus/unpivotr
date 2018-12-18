@@ -2,10 +2,14 @@
 % Please edit documentation in R/behead.R
 \name{behead}
 \alias{behead}
+\alias{behead_if}
 \title{Strip a level of headers from a pivot table}
 \usage{
 behead(cells, direction, name, values = NULL, types = data_type,
   formatters = list(), drop_na = TRUE)
+
+behead_if(cells, ..., direction, name, values = NULL,
+  types = data_type, formatters = list(), drop_na = TRUE)
 }
 \arguments{
 \item{cells}{Data frame. The cells of a pivot table, usually the output of
@@ -42,6 +46,15 @@ others are characters.  These can be given as \code{character = toupper} or
 \code{value} column.  Default: \code{TRUE}.  This can happen with the output of
 \code{tidyxl::xlsx_cells()}, when an empty cell exists because it has formatting
 applied to it, but should be ignored.}
+
+\item{...}{Passed to \link[dplyr:filter]{dplyr::filter}. logical predicates defined in terms of
+the variables in \code{.data}.  Multiple conditions are combined with \code{&}. Only
+rows where the condition evaluates to \code{TRUE} are kept.
+
+The arguments in \code{...} are automatically \link[rlang:quo]{quoted} and
+\link[rlang:eval_tidy]{evaluated} in the context of the data frame. They
+support \link[rlang:quasiquotation]{unquoting} and splicing. See the dplyr
+\code{vignette("programming")} for an introduction to these concepts.}
 }
 \value{
 A data frame
@@ -88,4 +101,21 @@ dplyr::anti_join(tidy, purpose$Tidy)
 # The provided 'tidy' data is missing a row for Male 15-24-year-olds with a
 # postgraduate qualification and a sense of purpose between 0 and 6.  That
 # seems to have been an oversight by Statistics New Zealand.
+
+cells <- tibble::tribble(
+       ~X1, ~adult, ~juvenile,
+    "LION",    855,       677,
+    "male",    496,       322,
+  "female",    359,       355,
+   "TIGER",    690,       324,
+    "male",    381,       222,
+  "female",    309,       102
+  )
+cells <- as_cells(cells, col_names = TRUE)
+
+cells \%>\%
+  behead_if(chr == toupper(chr), direction = "WNW", name = "species") \%>\%
+  behead("W", "sex") \%>\%
+  behead("N", "age") \%>\%
+  dplyr::select(species, sex, age, population = dbl)
 }

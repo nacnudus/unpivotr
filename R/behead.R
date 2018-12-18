@@ -34,6 +34,14 @@
 #'   `value` column.  Default: `TRUE`.  This can happen with the output of
 #'   `tidyxl::xlsx_cells()`, when an empty cell exists because it has formatting
 #'   applied to it, but should be ignored.
+#' @param ... Passed to [dplyr::filter]. logical predicates defined in terms of
+#'   the variables in `.data`.  Multiple conditions are combined with `&`. Only
+#'   rows where the condition evaluates to `TRUE` are kept.
+#'
+#'   The arguments in `...` are automatically [quoted][rlang::quo] and
+#'   [evaluated][rlang::eval_tidy] in the context of the data frame. They
+#'   support [unquoting][rlang::quasiquotation] and splicing. See the dplyr
+#'   `vignette("programming")` for an introduction to these concepts.
 #'
 #' @return A data frame
 #'
@@ -73,6 +81,23 @@
 #' # The provided 'tidy' data is missing a row for Male 15-24-year-olds with a
 #' # postgraduate qualification and a sense of purpose between 0 and 6.  That
 #' # seems to have been an oversight by Statistics New Zealand.
+#'
+#' cells <- tibble::tribble(
+#'        ~X1, ~adult, ~juvenile,
+#'     "LION",    855,       677,
+#'     "male",    496,       322,
+#'   "female",    359,       355,
+#'    "TIGER",    690,       324,
+#'     "male",    381,       222,
+#'   "female",    309,       102
+#'   )
+#' cells <- as_cells(cells, col_names = TRUE)
+#'
+#' cells %>%
+#'   behead_if(chr == toupper(chr), direction = "WNW", name = "species") %>%
+#'   behead("W", "sex") %>%
+#'   behead("N", "age") %>%
+#'   dplyr::select(species, sex, age, population = dbl)
 behead <- function(cells, direction, name, values = NULL, types = data_type,
                    formatters = list(), drop_na = TRUE) {
   UseMethod("behead")
@@ -82,6 +107,25 @@ behead <- function(cells, direction, name, values = NULL, types = data_type,
 behead.data.frame <- function(cells, direction, name, values = NULL,
                               types = data_type, formatters = list(),
                               drop_na = TRUE) {
+  behead_if.data.frame(cells, direction = direction,
+                       name = !! rlang::ensym(name),
+                       values = !! rlang::enexpr(values),
+                       types = !! rlang::ensym(types),
+                       formatters = formatters, drop_na = drop_na)
+}
+
+#' @rdname behead
+#' @export
+behead_if <- function(cells, ..., direction, name, values = NULL, types =
+                      data_type, formatters = list(), drop_na = TRUE) {
+  UseMethod("behead_if")
+}
+
+#' @export
+behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
+                                 types = data_type, formatters = list(),
+                                 drop_na = TRUE) {
+  dots <- rlang::enquos(...)
   check_direction_behead(direction)
   check_distinct(cells)
   name <- rlang::ensym(name)
@@ -104,7 +148,7 @@ behead.data.frame <- function(cells, direction, name, values = NULL,
   is_header <- rlang::eval_tidy(filter_expr, cells)
   headers <-
     cells %>%
-    dplyr::filter(is_header) %>%
+    dplyr::filter(is_header, !!! dots) %>%
     pack(types = !! types) %>%
     dplyr::mutate(is_na = is.na(value),
                   !! name := purrr::imap(value,
@@ -113,7 +157,14 @@ behead.data.frame <- function(cells, direction, name, values = NULL,
                   !! name := concatenate(!! name)) %>%
     dplyr::filter(!(drop_na & is_na)) %>%
     dplyr::select(row, col, !! name)
-  data_cells <- dplyr::filter(cells, !is_header)
+  if (length(dots) == 0) {
+    # no predicate filters, so discard all cells in the row/col of the headers
+    data_cells <- dplyr::filter(cells, !is_header)
+  } else {
+    # predicate filters, so keep all non-header cells in the row/col of the
+    # headers
+    data_cells <- dplyr::anti_join(cells, headers, by = c("row", "col"))
+  }
   out <- enhead(data_cells, headers, direction, drop = FALSE)
   if(!values_was_null) out <- dplyr::select(out, -.value, -.data_type)
   out

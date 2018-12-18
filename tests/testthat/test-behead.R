@@ -146,3 +146,37 @@ test_that("behead() stops on non-distinct cells", {
   )
 })
 
+test_that("behead_if() works", {
+  cells <- tibble::tribble(
+         ~X1, ~adult, ~juvenile,
+      "LION",    855,       677,
+      "male",    496,       322,
+    "female",    359,       355,
+     "TIGER",    690,       324,
+      "male",    381,       222,
+    "female",    309,       102
+    )
+  cells <- as_cells(cells, col_names = TRUE)
+  x <-
+    cells %>%
+    behead_if(chr == toupper(chr), direction = "WNW", name = "species") %>%
+    behead("W", "sex") %>%
+    behead("N", "age") %>%
+    dplyr::select(species, sex, age, population = dbl)
+  y <- tibble::tribble(
+    ~species,     ~sex,       ~age, ~population,
+      "LION",       NA,    "adult",         855,
+      "LION",   "male",    "adult",         496,
+      "LION", "female",    "adult",         359,
+      "LION",       NA, "juvenile",         677,
+      "LION",   "male", "juvenile",         322,
+      "LION", "female", "juvenile",         355,
+     "TIGER",       NA,    "adult",         690,
+     "TIGER",   "male",    "adult",         381,
+     "TIGER", "female",    "adult",         309,
+     "TIGER",       NA, "juvenile",         324,
+     "TIGER",   "male", "juvenile",         222,
+     "TIGER", "female", "juvenile",         102
+    )
+  expect_equal(x, y)
+})
