@@ -4,7 +4,8 @@
 \alias{spatter}
 \title{Spread key-value pairs of mixed types across multiple columns}
 \usage{
-spatter(cells, key, values = NULL, types = data_type, formatters = list())
+spatter(cells, key, values = NULL, types = data_type,
+  formatters = list())
 }
 \arguments{
 \item{cells}{A data frame where each row represents a cell, with columns
