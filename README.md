@@ -64,20 +64,16 @@ dataframe. Like this.
 ![Gif of tidyxl converting cells into a tidy representation of one row
 per cell](./vignettes/tidy_xlsx.gif)
 
-What can you do with tidy cells? The best place to start is [Spreadsheet
-Munging
-Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies),
-a free, online cookbook using
-[tidyxl](https://github.com/nacnudus/tidyxl) and
-[unpivotr](https://github.com/nacnudus/unpivotr).
+What can you do with tidy cells? The best places to start are:
 
-Otherwise see examples below.
-
-[Spreadsheet Munging
-Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies)
-is a free, online cookbook using
-[tidyxl](https://github.com/nacnudus/tidyxl) and
-[unpivotr](https://github.com/nacnudus/unpivotr) (in progress).
+  - [Spreadsheet Munging
+    Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies),
+    a free, online cookbook using
+    [tidyxl](https://github.com/nacnudus/tidyxl) and
+    [unpivotr](https://github.com/nacnudus/unpivotr)
+  - [Screencasts](https://www.youtube.com/watch?v=1sinC7wsS5U) on
+    YouTube.
+  - [Worked examples](https://github.com/nacnudus/ukfarm) on GitHub.
 
 Otherwise the basic idea is:
 
@@ -145,7 +141,7 @@ y
 #>  8     8     1 chr       <NA>             
 #>  9     9     1 chr       <NA>             
 #> 10    10     1 chr       <NA>             
-#> # ... with 122 more rows
+#> # … with 122 more rows
 
 rectify(y) # useful for reviewing the melted form as though in a spreadsheet
 #> # A tibble: 22 x 7
@@ -161,7 +157,7 @@ rectify(y) # useful for reviewing the melted form as though in a spreadsheet
 #>  8         8 <NA>              25 - 44 34000  179000 31000  219000
 #>  9         9 <NA>              45 - 64 30000  210000 23000  199000
 #> 10        10 <NA>              65+     12000  77000  8000   107000
-#> # ... with 12 more rows
+#> # … with 12 more rows
 
 y %>%
   behead("NNW", "sex") %>%               # Strip headers
@@ -183,7 +179,7 @@ y %>%
 #>  8  18000 Female 7 - 10               Bachelor's degree 65+       
 #>  9     NA Male   0 - 6                Bachelor's degree 15 - 24   
 #> 10   9000 Male   0 - 6                Bachelor's degree 25 - 44   
-#> # ... with 70 more rows
+#> # … with 70 more rows
 ```
 
 Note the compass directions in the code above, which hint to `behead()`
