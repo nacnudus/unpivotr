@@ -30,7 +30,8 @@ Imports:
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 6.1.1
-Suggests: knitr,
+Suggests: 
+    knitr,
     rmarkdown,
     readr,
     tidyxl,
@@ -40,6 +41,7 @@ Suggests: knitr,
     rvest,
     selectr,
     DT,
-    testthat
+    testthat,
+    covr
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
