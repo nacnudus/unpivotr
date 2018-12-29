@@ -88,7 +88,7 @@ Otherwise the basic idea is:
      `devtools::install_github("tidyverse/readr#760")`.
    * For tables in html pages, use `unpivotr::tidy_html()`
    * For data frames, use `unpivotr::as_cells()` -- this should be a last
-     resort, because by the time thee data is in a conventional data frame, it
+     resort, because by the time the data is in a conventional data frame, it
      is often too late -- formatting has been lost, and most data types have
      been coerced to strings.
 1. Either `behead()` straight away, else `dplyr::filter()` separately for the

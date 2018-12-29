@@ -86,7 +86,7 @@ Otherwise the basic idea is:
         `devtools::install_github("tidyverse/readr#760")`.
       - For tables in html pages, use `unpivotr::tidy_html()`
       - For data frames, use `unpivotr::as_cells()` – this should be a
-        last resort, because by the time thee data is in a conventional
+        last resort, because by the time the data is in a conventional
         data frame, it is often too late – formatting has been lost, and
         most data types have been coerced to strings.
 2.  Either `behead()` straight away, else `dplyr::filter()` separately
@@ -99,6 +99,14 @@ Otherwise the basic idea is:
 ``` r
 library(unpivotr)
 library(tidyverse)
+#> ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
+#> ✔ ggplot2 3.1.0           ✔ purrr   0.2.5.9000 
+#> ✔ tibble  1.4.99.9006     ✔ dplyr   0.7.8      
+#> ✔ tidyr   0.8.2           ✔ stringr 1.3.1      
+#> ✔ readr   1.2.1.9000      ✔ forcats 0.3.0
+#> ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+#> ✖ dplyr::filter() masks stats::filter()
+#> ✖ dplyr::lag()    masks stats::lag()
 x <- purpose$`NNW WNW`
 x # A pivot table in a conventional data frame.  Four levels of headers, in two
 #>                            X2      X3     X4     X5    X6     X7
