@@ -1,9 +1,16 @@
 # unpivotr 0.4.0.9000
 
+## New features
+
 * `behead_if()` is for tiered headers within the same row or column.  It takes
     filter functions similarly to `dplyr::filter()` to decide which cells to
     treat as headers, and can be applied more than once to the same row or
     column of headers until every tier has been dealt with.
+* `merge_rows()` and `merge_cols()` combines header text when it is split over
+    multiple cells.
+
+## Other changes
+
 * `behead()`, `enhead()`, `partition()` and `rectify()` give a more informative
     error message for non-distinct cells, for example when trying to pass cells
     from more than one sheet to these functions (@gregrs-uk, #15).
