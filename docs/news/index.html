@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
       </span>
     </div>
 
@@ -126,18 +126,32 @@
       <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="unpivotr-0-4-0-9000" class="section level1">
+    <div id="unpivotr-050" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-4-0-9000" class="anchor"></a>unpivotr 0.4.0.9000<small> Unreleased </small>
+<a href="#unpivotr-050" class="anchor"></a>unpivotr 0.5.0<small> 2019-01-02 </small>
 </h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code><a href="../reference/behead.html">behead_if()</a></code> is for tiered headers within the same row or column. It takes filter functions similarly to <code><a href="http://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> to decide which cells to treat as headers, and can be applied more than once to the same row or column of headers until every tier has been dealt with.</li>
+<li>
+<code><a href="../reference/merge_cells.html">merge_rows()</a></code> and <code><a href="../reference/merge_cells.html">merge_cols()</a></code> combines header text when it is split over multiple cells.</li>
+</ul>
+</div>
+<div id="other-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-changes" class="anchor"></a>Other changes</h2>
 <ul>
 <li>
 <code><a href="../reference/behead.html">behead()</a></code>, <code><a href="../reference/enhead.html">enhead()</a></code>, <code><a href="../reference/partition.html">partition()</a></code> and <code><a href="../reference/rectify.html">rectify()</a></code> give a more informative error message for non-distinct cells, for example when trying to pass cells from more than one sheet to these functions (<a href='http://github.com/gregrs'>@gregrs</a>-uk, <a href='https://github.com/nacnudus/unpivotr/issues/15'>#15</a>).</li>
 </ul>
 </div>
-    <div id="unpivotr-0-4-0" class="section level1">
+</div>
+    <div id="unpivotr-040" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-4-0" class="anchor"></a>unpivotr 0.4.0<small> 2018-06-26 </small>
+<a href="#unpivotr-040" class="anchor"></a>unpivotr 0.4.0<small> 2018-06-26 </small>
 </h1>
 <p>This version makes some big breaking changes for the sake of a more intuitive grammar. It comes with much more documentation in the online book <a href="https://nacnudus.github.io/spreadsheet-munging-strategies/">Spreadsheet Munging Strategies</a>.</p>
 <p>The main new workhorses:</p>
@@ -145,7 +159,7 @@
 <li>
 <code><a href="../reference/behead.html">behead()</a></code> takes one level of headers from a pivot table and make it part of the data. Chain this function to gradually strip every level of header away until you have tidy data.</li>
 <li>
-<code><a href="../reference/spatter.html">spatter()</a></code> is a data-type aware version of <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">tidyr::spread()</a></code> and is a common final step.</li>
+<code><a href="../reference/spatter.html">spatter()</a></code> is a data-type aware version of <code><a href="https://tidyr.tidyverse.org/reference/spread.html">tidyr::spread()</a></code> and is a common final step.</li>
 <li>
 <code><a href="../reference/partition.html">partition()</a></code> breaks up small-multiples on a single sheet, so you can handle them individually.</li>
 <li>
@@ -155,7 +169,7 @@
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <p>The previous version can be installed as follows.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_version">install_version</a></span>(<span class="st">"unpivotr"</span>, <span class="dt">version =</span> <span class="st">"0.3.1"</span>, <span class="dt">repos =</span> <span class="st">"http://cran.us.r-project.org"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/reexports">install_version</a></span>(<span class="st">"unpivotr"</span>, <span class="dt">version =</span> <span class="st">"0.3.1"</span>, <span class="dt">repos =</span> <span class="st">"http://cran.us.r-project.org"</span>)</a></code></pre></div>
 <ul>
 <li>The family of functions <code>NNW()</code> etc. has been removed in favour of the verbose <code>join_header()</code>, which has itself been renamed to <code><a href="../reference/enhead.html">enhead()</a></code> to suggest its similarity to <code><a href="../reference/behead.html">behead()</a></code> (though they are <em>not</em> complements).</li>
 <li>
@@ -164,12 +178,12 @@
 <code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code>) now uses <code>col_names</code> and <code>row_names</code> as arguments instead of <code>colnames</code> and <code>rownames</code>, for consistency with tidyr.</li>
 </ul>
 </div>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
+<a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
 <li>
-<code><a href="../reference/behead.html">behead()</a></code> is takes one level of headers from a pivot table and make it part of the data. Think of it like <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">tidyr::gather()</a></code>, except that it works when there is more than one row of headers (or more than one column of row-headers), and it only works on tables that have first come through <code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code> or <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
+<code><a href="../reference/behead.html">behead()</a></code> is takes one level of headers from a pivot table and make it part of the data. Think of it like <code><a href="https://tidyr.tidyverse.org/reference/gather.html">tidyr::gather()</a></code>, except that it works when there is more than one row of headers (or more than one column of row-headers), and it only works on tables that have first come through <code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code> or <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
 <li>
 <code><a href="../reference/rectify.html">rectify()</a></code> displays cells as though in a spreadsheet, rather than in the ‘melted’ form of <code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code>) and <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>. This is useful for understanding the structure of a pivot table as a human, when planning how to unpivot it. A print method is available to render large datasets in the browser or the RStudio viewer pane.</li>
 <li>
@@ -179,7 +193,7 @@
 <li>
 <code><a href="../reference/isolate_sentinels.html">isolate_sentinels()</a></code> move sentinel values into a separate column, leaving <code>NA</code> behind (or <code>NULL</code> for list-columns).</li>
 <li>
-<code><a href="../reference/spatter.html">spatter()</a></code> is like <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">tidyr::spread()</a></code>, but preserves mixed data types.</li>
+<code><a href="../reference/spatter.html">spatter()</a></code> is like <code><a href="https://tidyr.tidyverse.org/reference/spread.html">tidyr::spread()</a></code>, but preserves mixed data types.</li>
 <li>
 <code><a href="../reference/enhead.html">enhead()</a></code> (formerly <code>join_header()</code>) now returns a <code>data_type</code> column that names the column that contains the value of a cell, similar to <code><a href="http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells">tidyxl::xlsx_cells()</a></code>.</li>
 <li>
@@ -206,27 +220,27 @@
 <a href="#many-other-tweaks-especially-to-documentation" class="anchor"></a>Many other tweaks especially to documentation</h2>
 </div>
 </div>
-    <div id="unpivotr-0-3-1" class="section level1">
+    <div id="unpivotr-031" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-3-1" class="anchor"></a>unpivotr 0.3.1<small> 2018-01-20 </small>
+<a href="#unpivotr-031" class="anchor"></a>unpivotr 0.3.1<small> 2018-01-20 </small>
 </h1>
 <ul>
 <li>Performance improvements to <code><a href="../reference/tidy_table.html">tidy_table()</a></code>.</li>
 <li>Fixed a CRAN test on some platforms.</li>
 </ul>
 </div>
-    <div id="unpivotr-0-3-0" class="section level1">
+    <div id="unpivotr-030" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-3-0" class="anchor"></a>unpivotr 0.3.0<small> 2017-12-03 </small>
+<a href="#unpivotr-030" class="anchor"></a>unpivotr 0.3.0<small> 2017-12-03 </small>
 </h1>
 <ul>
 <li>Made compatible with tidyxl version 1.0.0 (avoids <code><a href="http://dplyr.tidyverse.org/reference/distinct.html">dplyr::distinct()</a></code>, which doesn’t handle list columns).</li>
 <li>Updated to use the new <code>dplyr</code>/<code>rlang</code> combination instead of the old <code>dplyr</code>/<code>lazyeval</code> one.</li>
 </ul>
 </div>
-    <div id="unpivotr-0-2-1" class="section level1">
+    <div id="unpivotr-021" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-2-1" class="anchor"></a>unpivotr 0.2.1<small> 2017-07-02 </small>
+<a href="#unpivotr-021" class="anchor"></a>unpivotr 0.2.1<small> 2017-07-02 </small>
 </h1>
 <p>This release overhauls the <code><a href="../reference/tidy_table.html">tidy_table()</a></code> function of unpivotr to preserve the original data types of table cells and to support HTML tables.</p>
 <ul>
@@ -241,34 +255,34 @@
 <li>Some error messages are more helpful.</li>
 </ul>
 </div>
-    <div id="unpivotr-0-1-1" class="section level1">
+    <div id="unpivotr-011" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-1-1" class="anchor"></a>unpivotr 0.1.1<small> 2017-04-23 </small>
+<a href="#unpivotr-011" class="anchor"></a>unpivotr 0.1.1<small> 2017-04-23 </small>
 </h1>
 <ul>
 <li>Fixed breakages introduced by dplyr 0.6.</li>
 </ul>
 </div>
-    <div id="unpivotr-0-1-0" class="section level1">
+    <div id="unpivotr-010" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-1-0" class="anchor"></a>unpivotr 0.1.0<small> 2017-01-31 </small>
+<a href="#unpivotr-010" class="anchor"></a>unpivotr 0.1.0<small> 2017-01-31 </small>
 </h1>
 <ul>
 <li>Moved images from <code>inst/extdata</code> to <code>vignettes</code>.</li>
 </ul>
 </div>
-    <div id="unpivotr-0-1-0-1" class="section level1">
+    <div id="unpivotr-010-1" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-1-0-1" class="anchor"></a>unpivotr 0.1.0<small> 2017-01-31 </small>
+<a href="#unpivotr-010-1" class="anchor"></a>unpivotr 0.1.0<small> 2017-01-31 </small>
 </h1>
 <ul>
 <li>Bumped version to match tidyxl, which is now more mature.</li>
 <li>Updated README and vignettes to use the new tidyxl api.</li>
 </ul>
 </div>
-    <div id="unpivotr-0-0-0-9000" class="section level1">
+    <div id="unpivotr-0009000" class="section level1">
 <h1 class="page-header">
-<a href="#unpivotr-0-0-0-9000" class="anchor"></a>unpivotr 0.0.0.9000<small> Unreleased </small>
+<a href="#unpivotr-0009000" class="anchor"></a>unpivotr 0.0.0.9000<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
@@ -280,15 +294,15 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#unpivotr-0-4-0-9000">0.4.0.9000</a></li>
-        <li><a href="#unpivotr-0-4-0">0.4.0</a></li>
-        <li><a href="#unpivotr-0-3-1">0.3.1</a></li>
-        <li><a href="#unpivotr-0-3-0">0.3.0</a></li>
-        <li><a href="#unpivotr-0-2-1">0.2.1</a></li>
-        <li><a href="#unpivotr-0-1-1">0.1.1</a></li>
-        <li><a href="#unpivotr-0-1-0">0.1.0</a></li>
-        <li><a href="#unpivotr-0-1-0-1">0.1.0</a></li>
-        <li><a href="#unpivotr-0-0-0-9000">0.0.0.9000</a></li>
+        <li><a href="#unpivotr-050">0.5.0</a></li>
+        <li><a href="#unpivotr-040">0.4.0</a></li>
+        <li><a href="#unpivotr-031">0.3.1</a></li>
+        <li><a href="#unpivotr-030">0.3.0</a></li>
+        <li><a href="#unpivotr-021">0.2.1</a></li>
+        <li><a href="#unpivotr-011">0.1.1</a></li>
+        <li><a href="#unpivotr-010">0.1.0</a></li>
+        <li><a href="#unpivotr-010-1">0.1.0</a></li>
+        <li><a href="#unpivotr-0009000">0.0.0.9000</a></li>
       </ul>
     </div>
   </div>

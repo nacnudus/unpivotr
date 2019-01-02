@@ -72,7 +72,7 @@ as_cells() or tidyxl::xlsx_cells()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@ as_cells() or tidyxl::xlsx_cells()." />
     <div class="ref-description">
     
     <p><code>behead()</code> takes one level of headers from a pivot table and
-makes it part of the data.  Think of it like <code><a href='http://www.rdocumentation.org/packages/tidyr/topics/gather'>tidyr::gather()</a></code>, except that
+makes it part of the data.  Think of it like <code><a href='https://tidyr.tidyverse.org/reference/gather.html'>tidyr::gather()</a></code>, except that
 it works when there is more than one row of headers (or more than one column
 of row-headers), and it only works on tables that have first come through
 <code><a href='as_cells.html'>as_cells()</a></code> or <code><a href='http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells'>tidyxl::xlsx_cells()</a></code>.</p>
@@ -145,7 +145,10 @@ of row-headers), and it only works on tables that have first come through
     </div>
 
     <pre class="usage"><span class='fu'>behead</span>(<span class='no'>cells</span>, <span class='no'>direction</span>, <span class='no'>name</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>,
-  <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>drop_na</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>drop_na</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>behead_if</span>(<span class='no'>cells</span>, <span class='no'>...</span>, <span class='no'>direction</span>, <span class='no'>name</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>, <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>drop_na</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,7 +193,7 @@ object.</p></td>
       <td><p>A named list of functions for formatting each data type in
 a set of headers of mixed data types, e.g. when some headers are dates and
 others are characters.  These can be given as <code>character = toupper</code> or
-<code>character = ~ toupper(.x)</code>, similar to <a href='http://www.rdocumentation.org/packages/purrr/topics/map'>purrr::map</a>.</p></td>
+<code>character = ~ toupper(.x)</code>, similar to <a href='https://purrr.tidyverse.org/reference/map.html'>purrr::map</a>.</p></td>
     </tr>
     <tr>
       <th>drop_na</th>
@@ -198,6 +201,16 @@ others are characters.  These can be given as <code>character = toupper</code> o
 <code>value</code> column.  Default: <code>TRUE</code>.  This can happen with the output of
 <code><a href='http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells'>tidyxl::xlsx_cells()</a></code>, when an empty cell exists because it has formatting
 applied to it, but should be ignored.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Passed to <a href='http://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter</a>. logical predicates defined in terms of
+the variables in <code>.data</code>.  Multiple conditions are combined with <code>&amp;</code>. Only
+rows where the condition evaluates to <code>TRUE</code> are kept.</p>
+<p>The arguments in <code>...</code> are automatically <a href='https://rlang.r-lib.org/reference/quotation.html'>quoted</a> and
+<a href='https://rlang.r-lib.org/reference/eval_tidy.html'>evaluated</a> in the context of the data frame. They
+support <a href='https://rlang.r-lib.org/reference/quasiquotation.html'>unquoting</a> and splicing. See the dplyr
+<code>vignette("programming")</code> for an introduction to these concepts.</p></td>
     </tr>
     </table>
     
@@ -282,23 +295,53 @@ applied to it, but should be ignored.</p></td>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'>as.integer</span>(<span class='no'>chr</span>)) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>row</span>, -<span class='no'>col</span>, -<span class='no'>data_type</span>, -<span class='no'>chr</span>)
 <span class='fu'>head</span>(<span class='no'>tidy</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
-#&gt;   Sex    `Sense of purpose` `Highest qualificati… `Age group (Life-stag…  count
-#&gt;   &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt;                 &lt;chr&gt;                   &lt;int&gt;
-#&gt; 1 Female 0 - 6              Bachelor's degree     15 - 24                  7000
-#&gt; 2 Female 0 - 6              Bachelor's degree     25 - 44                 12000
-#&gt; 3 Female 0 - 6              Bachelor's degree     45 - 64                 10000
-#&gt; 4 Female 0 - 6              Bachelor's degree     65+                        NA
-#&gt; 5 Female 7 - 10             Bachelor's degree     15 - 24                 27000
-#&gt; 6 Female 7 - 10             Bachelor's degree     25 - 44                137000</div><div class='input'>
+#&gt;   Sex    `Sense of purpose` `Highest qualificati… `Age group (Life-stage…  count
+#&gt;   &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt;                 &lt;chr&gt;                    &lt;int&gt;
+#&gt; 1 Female 0 - 6              Bachelor's degree     15 - 24                   7000
+#&gt; 2 Female 0 - 6              Bachelor's degree     25 - 44                  12000
+#&gt; 3 Female 0 - 6              Bachelor's degree     45 - 64                  10000
+#&gt; 4 Female 0 - 6              Bachelor's degree     65+                         NA
+#&gt; 5 Female 7 - 10             Bachelor's degree     15 - 24                  27000
+#&gt; 6 Female 7 - 10             Bachelor's degree     25 - 44                 137000</div><div class='input'>
 <span class='co'># Check against the provided 'tidy' version of the data.</span>
 <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>anti_join</a></span>(<span class='no'>tidy</span>, <span class='no'>purpose</span>$<span class='no'>Tidy</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("Sex", "Sense of purpose", "Highest qualification", "Age group (Life-stages)")</span></div><div class='output co'>#&gt; # A tibble: 1 x 5
-#&gt;   Sex   `Sense of purpose` `Highest qualification` `Age group (Life-stag… count
-#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;chr&gt;                   &lt;chr&gt;                  &lt;int&gt;
-#&gt; 1 Male  0 - 6              Postgraduate qualifica… 15 - 24                   NA</div><div class='input'>
-# The provided 'tidy' data is missing a row for Male 15-24-year-olds with a
-# postgraduate qualification and a sense of purpose between 0 and 6.  That
-# seems to have been an oversight by Statistics New Zealand.
-</div></pre>
+#&gt;   Sex   `Sense of purpose` `Highest qualification`  `Age group (Life-stag… count
+#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;chr&gt;                    &lt;chr&gt;                  &lt;int&gt;
+#&gt; 1 Male  0 - 6              Postgraduate qualificat… 15 - 24                   NA</div><div class='input'>
+<span class='co'># The provided 'tidy' data is missing a row for Male 15-24-year-olds with a</span>
+<span class='co'># postgraduate qualification and a sense of purpose between 0 and 6.  That</span>
+<span class='co'># seems to have been an oversight by Statistics New Zealand.</span>
+
+<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span>(
+       ~<span class='no'>X1</span>, ~<span class='no'>adult</span>, ~<span class='no'>juvenile</span>,
+    <span class='st'>"LION"</span>,    <span class='fl'>855</span>,       <span class='fl'>677</span>,
+    <span class='st'>"male"</span>,    <span class='fl'>496</span>,       <span class='fl'>322</span>,
+  <span class='st'>"female"</span>,    <span class='fl'>359</span>,       <span class='fl'>355</span>,
+   <span class='st'>"TIGER"</span>,    <span class='fl'>690</span>,       <span class='fl'>324</span>,
+    <span class='st'>"male"</span>,    <span class='fl'>381</span>,       <span class='fl'>222</span>,
+  <span class='st'>"female"</span>,    <span class='fl'>309</span>,       <span class='fl'>102</span>
+  )
+<span class='no'>cells</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_cells.html'>as_cells</a></span>(<span class='no'>cells</span>, <span class='kw'>col_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='no'>cells</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>behead_if</span>(<span class='no'>chr</span> <span class='kw'>==</span> <span class='fu'>toupper</span>(<span class='no'>chr</span>), <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"WNW"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"species"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>behead</span>(<span class='st'>"W"</span>, <span class='st'>"sex"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>behead</span>(<span class='st'>"N"</span>, <span class='st'>"age"</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>species</span>, <span class='no'>sex</span>, <span class='no'>age</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='no'>dbl</span>)</div><div class='output co'>#&gt; # A tibble: 12 x 4
+#&gt;    species sex    age      population
+#&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;
+#&gt;  1 LION    &lt;NA&gt;   adult           855
+#&gt;  2 LION    male   adult           496
+#&gt;  3 LION    female adult           359
+#&gt;  4 LION    &lt;NA&gt;   juvenile        677
+#&gt;  5 LION    male   juvenile        322
+#&gt;  6 LION    female juvenile        355
+#&gt;  7 TIGER   &lt;NA&gt;   adult           690
+#&gt;  8 TIGER   male   adult           381
+#&gt;  9 TIGER   female adult           309
+#&gt; 10 TIGER   &lt;NA&gt;   juvenile        324
+#&gt; 11 TIGER   male   juvenile        222
+#&gt; 12 TIGER   female juvenile        102</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

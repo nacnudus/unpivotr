@@ -72,7 +72,7 @@ data type." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@ data type." />
 
     <div class="ref-description">
     
-    <p><code>spatter()</code> is like <code><a href='http://www.rdocumentation.org/packages/tidyr/topics/spread'>tidyr::spread()</a></code> but for when different columns have
+    <p><code>spatter()</code> is like <code><a href='https://tidyr.tidyverse.org/reference/spread.html'>tidyr::spread()</a></code> but for when different columns have
 different data types.  It works on data that has come via <code><a href='as_cells.html'>as_cells()</a></code> or
 <code><a href='http://www.rdocumentation.org/packages/tidyxl/topics/xlsx_cells'>tidyxl::xlsx_cells()</a></code>, where each row represents one cell of a table, and
 the value of the cell is represented in a different column, depending on the
@@ -144,7 +144,8 @@ data type.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>spatter</span>(<span class='no'>cells</span>, <span class='no'>key</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>, <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>())</pre>
+    <pre class="usage"><span class='fu'>spatter</span>(<span class='no'>cells</span>, <span class='no'>key</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>,
+  <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -219,7 +220,7 @@ contains the cell value.</p></td>
 #&gt; 6     4 numeric   &lt;NA&gt;            5 Age   </div><div class='input'>
 <span class='co'># At this point you might want to do tidyr::spread(), but it won't work because</span>
 <span class='co'># you want to use both the `character` and `numeric` columns as the values.</span>
-<span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tidyr/topics/spread'>spread</a></span>(<span class='no'>y</span>, <span class='no'>header</span>, <span class='no'>numeric</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
+<span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span>(<span class='no'>y</span>, <span class='no'>header</span>, <span class='no'>numeric</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
 #&gt;     row data_type character   Age  Name
 #&gt;   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;
 #&gt; 1     2 character Matilda      NA    NA
@@ -227,7 +228,7 @@ contains the cell value.</p></td>
 #&gt; 3     3 character Nicholas     NA    NA
 #&gt; 4     3 numeric   &lt;NA&gt;          3    NA
 #&gt; 5     4 character Olivia       NA    NA
-#&gt; 6     4 numeric   &lt;NA&gt;          5    NA</div><div class='input'><span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tidyr/topics/spread'>spread</a></span>(<span class='no'>y</span>, <span class='no'>header</span>, <span class='no'>character</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
+#&gt; 6     4 numeric   &lt;NA&gt;          5    NA</div><div class='input'><span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span>(<span class='no'>y</span>, <span class='no'>header</span>, <span class='no'>character</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
 #&gt;     row data_type numeric Age   Name    
 #&gt;   &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   
 #&gt; 1     2 character      NA &lt;NA&gt;  Matilda 
@@ -315,14 +316,14 @@ contains the cell value.</p></td>
 <span class='co'># coercion, then they will be overridden.</span>
 <span class='fu'>spatter</span>(<span class='no'>y</span>, <span class='no'>header</span>,
         <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>character</span> <span class='kw'>=</span> ~ <span class='fu'>toupper</span>(<span class='no'>.</span>), <span class='kw'>numeric</span> <span class='kw'>=</span> <span class='no'>as.complex</span>))</div><div class='output co'>#&gt; # A tibble: 6 x 4
-#&gt;     row extra Age    Name    
-#&gt;   &lt;int&gt; &lt;int&gt; &lt;cpl&gt;  &lt;chr&gt;   
-#&gt; 1     2    11 "  NA" MATILDA 
-#&gt; 2     2    12 1+0i   &lt;NA&gt;    
-#&gt; 3     3    13 "  NA" NICHOLAS
-#&gt; 4     3    14 3+0i   &lt;NA&gt;    
-#&gt; 5     4    15 "  NA" OLIVIA  
-#&gt; 6     4    16 5+0i   &lt;NA&gt;    </div></pre>
+#&gt;     row extra Age   Name    
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;cpl&gt; &lt;chr&gt;   
+#&gt; 1     2    11   NA  MATILDA 
+#&gt; 2     2    12 1+0i  &lt;NA&gt;    
+#&gt; 3     3    13   NA  NICHOLAS
+#&gt; 4     3    14 3+0i  &lt;NA&gt;    
+#&gt; 5     4    15   NA  OLIVIA  
+#&gt; 6     4    16 5+0i  &lt;NA&gt;    </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
