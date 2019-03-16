@@ -198,7 +198,7 @@ as_cells.xml_node <- function(x, row_names = FALSE, col_names = FALSE) {
   out <- purrr::transpose(out)
   out <- purrr::map(out, purrr::flatten_chr)
   out <- tibble::set_tidy_names(out, quiet = TRUE)
-  out <- tibble::as_data_frame(out)
+  out <- tibble::as_tibble(out, .name_repair = "minimal")
   out <- as_cells(out, row_names = FALSE, col_names = FALSE)
   out[, c("double", "integer", "logical")] <- NULL
   colnames(out) <- c("row", "col", "data_type", "html")
