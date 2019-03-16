@@ -109,7 +109,7 @@ pack <- function(cells, types = data_type, name = "value", drop_types = TRUE,
   type_values <- unique(dplyr::pull(cells, !! types))
   patterns <-
     map(type_values,
-        ~ rlang::expr(!! types == !!.x ~ as.list(!!!rlang::ensym(.x))))
+        ~ rlang::expr(!! types == !!.x ~ as.list(!! rlang::ensym(.x))))
   out <- dplyr::mutate(cells, !! name := dplyr::case_when(!!! patterns))
   # Name the elements of the packed value column by their types
   names(out[[rlang::expr_text(name)]]) <- dplyr::pull(cells, !! types)
