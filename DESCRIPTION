@@ -24,7 +24,7 @@ Imports:
     purrr,
     tidyr,
     pillar,
-    tibble,
+    tibble (>= 2.1.1),
     cellranger,
     xml2
 URL: https://github.com/nacnudus/unpivotr
