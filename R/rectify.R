@@ -95,12 +95,12 @@ rectify.data.frame <- function(cells, values = NULL, types = data_type,
       unpack() %>%
       spatter(col, types = data_type, formatters = formatters)
   } else {
-    cells <- dplyr::select(cells, row, col, !! values)
+    cells <- dplyr::select(cells, row, col, !!values)
     if (rlang::expr_text(values) == "row") {
       cells$.row <- cells$row
       values <- rlang::sym(".row")
     }
-    out <- spatter(cells, col, values = !! values, types = !! types)
+    out <- spatter(cells, col, values = !!values, types = !!types)
   }
   # Amend the headers
   minrow <- min(cells$row)
@@ -138,13 +138,18 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
       "You need to install the 'DT' package to view this in the browser."
     }
     DT::datatable(x,
-                  extensions = c("FixedHeader",
-                                 "KeyTable",
-                                 "Scroller"),
-                  options = list(paging = FALSE,
-                                 fixedHeader = TRUE,
-                                 keys = TRUE),
-                  rownames = FALSE)
+      extensions = c(
+        "FixedHeader",
+        "KeyTable",
+        "Scroller"
+      ),
+      options = list(
+        paging = FALSE,
+        fixedHeader = TRUE,
+        keys = TRUE
+      ),
+      rownames = FALSE
+    )
   } else if (display == "rstudio") {
     View(x)
   } else {
@@ -153,7 +158,9 @@ print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
 } # nocov end
 
 pad <- function(cells, rows = cells$row, cols = cells$col) {
-  padding <- tidyr::crossing(row = tidyr::full_seq(c(cells$row, rows), 1L),
-                             col = tidyr::full_seq(c(cells$col, cols), 1L))
+  padding <- tidyr::crossing(
+    row = tidyr::full_seq(c(cells$row, rows), 1L),
+    col = tidyr::full_seq(c(cells$col, cols), 1L)
+  )
   dplyr::full_join(padding, cells, by = c("row", "col"))
 }

@@ -107,17 +107,19 @@ behead <- function(cells, direction, name, values = NULL, types = data_type,
 behead.data.frame <- function(cells, direction, name, values = NULL,
                               types = data_type, formatters = list(),
                               drop_na = TRUE) {
-  behead_if.data.frame(cells, direction = direction,
-                       name = !! rlang::ensym(name),
-                       values = !! rlang::enexpr(values),
-                       types = !! rlang::ensym(types),
-                       formatters = formatters, drop_na = drop_na)
+  behead_if.data.frame(cells,
+    direction = direction,
+    name = !!rlang::ensym(name),
+    values = !!rlang::enexpr(values),
+    types = !!rlang::ensym(types),
+    formatters = formatters, drop_na = drop_na
+  )
 }
 
 #' @rdname behead
 #' @export
 behead_if <- function(cells, ..., direction, name, values = NULL, types =
-                      data_type, formatters = list(), drop_na = TRUE) {
+                        data_type, formatters = list(), drop_na = TRUE) {
   UseMethod("behead_if")
 }
 
@@ -131,7 +133,7 @@ behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
   name <- rlang::ensym(name)
   functions <- purrr::map(formatters, purrr::as_mapper)
   values <- rlang::enexpr(values)
-  if(is.null(values)) {
+  if (is.null(values)) {
     values_was_null <- TRUE
     types <- rlang::ensym(types)
   } else {
@@ -140,23 +142,27 @@ behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
     types <- rlang::sym(".data_type")
     cells <-
       cells %>%
-      dplyr::mutate(.value = !! values) %>%
-      dplyr::mutate(!! types := ".value")
+      dplyr::mutate(.value = !!values) %>%
+      dplyr::mutate(!!types := ".value")
   }
-  type_names <- unique(dplyr::pull(cells, !! types))
+  type_names <- unique(dplyr::pull(cells, !!types))
   filter_expr <- direction_filter(direction)
   is_header <- rlang::eval_tidy(filter_expr, cells)
   headers <-
     cells %>%
-    dplyr::filter(is_header, !!! dots) %>%
-    pack(types = !! types) %>%
-    dplyr::mutate(is_na = is.na(value),
-                  !! name := purrr::imap(value,
-                                         maybe_format_list_element,
-                                         functions),
-                  !! name := concatenate(!! name)) %>%
+    dplyr::filter(is_header, !!!dots) %>%
+    pack(types = !!types) %>%
+    dplyr::mutate(
+      is_na = is.na(value),
+      !!name := purrr::imap(
+        value,
+        maybe_format_list_element,
+        functions
+      ),
+      !!name := concatenate(!!name)
+    ) %>%
     dplyr::filter(!(drop_na & is_na)) %>%
-    dplyr::select(row, col, !! name)
+    dplyr::select(row, col, !!name)
   if (length(dots) == 0) {
     # no predicate filters, so discard all cells in the row/col of the headers
     data_cells <- dplyr::filter(cells, !is_header)
@@ -166,36 +172,44 @@ behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
     data_cells <- dplyr::anti_join(cells, headers, by = c("row", "col"))
   }
   out <- enhead(data_cells, headers, direction, drop = FALSE)
-  if(!values_was_null) out <- dplyr::select(out, -.value, -.data_type)
+  if (!values_was_null) out <- dplyr::select(out, -.value, -.data_type)
   out
 }
 
 # Construct a filter expression for stripping a header from a pivot table
 direction_filter <- function(direction) {
   direction <- substr(direction, 1L, 1L)
-  dplyr::case_when(direction == "N" ~ rlang::expr(.data$row == min(.data$row)),
-                   direction == "E" ~ rlang::expr(.data$col == max(.data$col)),
-                   direction == "S" ~ rlang::expr(.data$row == max(.data$row)),
-                   direction == "W" ~ rlang::expr(.data$col == min(.data$col)))
+  dplyr::case_when(
+    direction == "N" ~ rlang::expr(.data$row == min(.data$row)),
+    direction == "E" ~ rlang::expr(.data$col == max(.data$col)),
+    direction == "S" ~ rlang::expr(.data$row == max(.data$row)),
+    direction == "W" ~ rlang::expr(.data$col == min(.data$col))
+  )
 }
 
 # Check that a given direction is a supported compass direction
 check_direction_behead <- function(direction_string) {
-  directions <- c("NNW", "N", "NNE",
-                  "ENE", "E", "ESE",
-                  "SSE", "S", "SSW",
-                  "WSW", "W", "WNW")
+  directions <- c(
+    "NNW", "N", "NNE",
+    "ENE", "E", "ESE",
+    "SSE", "S", "SSW",
+    "WSW", "W", "WNW"
+  )
   other_directions <- c("ABOVE", "LEFT", "RIGHT", "BELOW")
   if (direction_string %in% other_directions) {
-    stop("`direction` must be one of \"",
-         paste(directions, collapse = "\", \""),
-         "\".  To use the directions \"",
-         paste(other_directions, collapse = "\", \""),
-         "\" look at `?enhead`.")
+    stop(
+      "`direction` must be one of \"",
+      paste(directions, collapse = "\", \""),
+      "\".  To use the directions \"",
+      paste(other_directions, collapse = "\", \""),
+      "\" look at `?enhead`."
+    )
   }
   if (!(direction_string %in% directions)) {
-    stop("`direction` must be one of \"",
-         paste(directions, collapse = "\", \""),
-         "\"")
+    stop(
+      "`direction` must be one of \"",
+      paste(directions, collapse = "\", \""),
+      "\""
+    )
   }
 }

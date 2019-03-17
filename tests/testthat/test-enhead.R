@@ -1,114 +1,129 @@
 context("join_header()")
 
 expect_purpose <-
-c("0 - 6", "7 - 10", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
-"0 - 6", "7 - 10", "0 - 6", "7 - 10", "7 - 10", "0 - 6", "7 - 10",
-"0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6",
-"7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
-"0 - 6", "7 - 10", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
-"0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6",
-"7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
-"0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6",
-"7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "7 - 10", "0 - 6",
-"7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
-"7 - 10", "7 - 10")
+  c(
+    "0 - 6", "7 - 10", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
+    "0 - 6", "7 - 10", "0 - 6", "7 - 10", "7 - 10", "0 - 6", "7 - 10",
+    "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6",
+    "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
+    "0 - 6", "7 - 10", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
+    "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6",
+    "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
+    "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6",
+    "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "7 - 10", "0 - 6",
+    "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10", "0 - 6", "7 - 10",
+    "7 - 10", "7 - 10"
+  )
 
 expect_sex <-
-c("Female", "Female", "Male", "Female", "Female", "Male", "Male",
-"Female", "Female", "Male", "Male", "Female", "Male", "Male",
-"Female", "Female", "Male", "Male", "Female", "Female", "Male",
-"Male", "Female", "Female", "Male", "Male", "Female", "Female",
-"Male", "Male", "Female", "Male", "Male", "Female", "Female",
-"Male", "Male", "Female", "Female", "Male", "Male", "Female",
-"Female", "Male", "Male", "Female", "Female", "Male", "Male",
-"Female", "Female", "Male", "Male", "Female", "Female", "Male",
-"Male", "Female", "Female", "Male", "Male", "Female", "Female",
-"Female", "Male", "Male", "Female", "Female", "Male", "Male",
-"Female", "Male")
+  c(
+    "Female", "Female", "Male", "Female", "Female", "Male", "Male",
+    "Female", "Female", "Male", "Male", "Female", "Male", "Male",
+    "Female", "Female", "Male", "Male", "Female", "Female", "Male",
+    "Male", "Female", "Female", "Male", "Male", "Female", "Female",
+    "Male", "Male", "Female", "Male", "Male", "Female", "Female",
+    "Male", "Male", "Female", "Female", "Male", "Male", "Female",
+    "Female", "Male", "Male", "Female", "Female", "Male", "Male",
+    "Female", "Female", "Male", "Male", "Female", "Female", "Male",
+    "Male", "Female", "Female", "Male", "Male", "Female", "Female",
+    "Female", "Male", "Male", "Female", "Female", "Male", "Male",
+    "Female", "Male"
+  )
 
 expect_age <-
-c("15 - 24", "15 - 24", "15 - 24", "25 - 44", "25 - 44", "25 - 44",
-"25 - 44", "45 - 64", "45 - 64", "45 - 64", "45 - 64", "65+",
-"65+", "65+", "15 - 24", "15 - 24", "15 - 24", "15 - 24", "25 - 44",
-"25 - 44", "25 - 44", "25 - 44", "45 - 64", "45 - 64", "45 - 64",
-"45 - 64", "65+", "65+", "65+", "65+", "15 - 24", "15 - 24",
-"15 - 24", "25 - 44", "25 - 44", "25 - 44", "25 - 44", "45 - 64",
-"45 - 64", "45 - 64", "45 - 64", "65+", "65+", "65+", "65+",
-"15 - 24", "15 - 24", "15 - 24", "15 - 24", "25 - 44", "25 - 44",
-"25 - 44", "25 - 44", "45 - 64", "45 - 64", "45 - 64", "45 - 64",
-"65+", "65+", "65+", "65+", "15 - 24", "25 - 44", "25 - 44",
-"25 - 44", "25 - 44", "45 - 64", "45 - 64", "45 - 64", "45 - 64",
-"65+", "65+")
+  c(
+    "15 - 24", "15 - 24", "15 - 24", "25 - 44", "25 - 44", "25 - 44",
+    "25 - 44", "45 - 64", "45 - 64", "45 - 64", "45 - 64", "65+",
+    "65+", "65+", "15 - 24", "15 - 24", "15 - 24", "15 - 24", "25 - 44",
+    "25 - 44", "25 - 44", "25 - 44", "45 - 64", "45 - 64", "45 - 64",
+    "45 - 64", "65+", "65+", "65+", "65+", "15 - 24", "15 - 24",
+    "15 - 24", "25 - 44", "25 - 44", "25 - 44", "25 - 44", "45 - 64",
+    "45 - 64", "45 - 64", "45 - 64", "65+", "65+", "65+", "65+",
+    "15 - 24", "15 - 24", "15 - 24", "15 - 24", "25 - 44", "25 - 44",
+    "25 - 44", "25 - 44", "45 - 64", "45 - 64", "45 - 64", "45 - 64",
+    "65+", "65+", "65+", "65+", "15 - 24", "25 - 44", "25 - 44",
+    "25 - 44", "25 - 44", "45 - 64", "45 - 64", "45 - 64", "45 - 64",
+    "65+", "65+"
+  )
 
 expect_education <-
-c("Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
-"Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
-"Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
-"Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
-"Bachelor's degree", "Bachelor's degree", "Certificate", "Certificate",
-"Certificate", "Certificate", "Certificate", "Certificate", "Certificate",
-"Certificate", "Certificate", "Certificate", "Certificate", "Certificate",
-"Certificate", "Certificate", "Certificate", "Certificate", "Diploma",
-"Diploma", "Diploma", "Diploma", "Diploma", "Diploma", "Diploma",
-"Diploma", "Diploma", "Diploma", "Diploma", "Diploma", "Diploma",
-"Diploma", "Diploma", "No Qualification", "No Qualification",
-"No Qualification", "No Qualification", "No Qualification", "No Qualification",
-"No Qualification", "No Qualification", "No Qualification", "No Qualification",
-"No Qualification", "No Qualification", "No Qualification", "No Qualification",
-"No Qualification", "No Qualification", "Postgraduate qualification",
-"Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification",
-"Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification",
-"Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification",
-"Postgraduate qualification")
+  c(
+    "Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
+    "Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
+    "Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
+    "Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
+    "Bachelor's degree", "Bachelor's degree", "Certificate", "Certificate",
+    "Certificate", "Certificate", "Certificate", "Certificate", "Certificate",
+    "Certificate", "Certificate", "Certificate", "Certificate", "Certificate",
+    "Certificate", "Certificate", "Certificate", "Certificate", "Diploma",
+    "Diploma", "Diploma", "Diploma", "Diploma", "Diploma", "Diploma",
+    "Diploma", "Diploma", "Diploma", "Diploma", "Diploma", "Diploma",
+    "Diploma", "Diploma", "No Qualification", "No Qualification",
+    "No Qualification", "No Qualification", "No Qualification", "No Qualification",
+    "No Qualification", "No Qualification", "No Qualification", "No Qualification",
+    "No Qualification", "No Qualification", "No Qualification", "No Qualification",
+    "No Qualification", "No Qualification", "Postgraduate qualification",
+    "Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification",
+    "Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification",
+    "Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification",
+    "Postgraduate qualification"
+  )
 
 expect_purpose_short <-
-c("0 - 6", "0 - 6", "0 - 6", "7 - 10", "7 - 10", "7 - 10", "0 - 6",
-"0 - 6", "0 - 6", "7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6",
-"7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6", "0 - 6", "7 - 10",
-"7 - 10", "7 - 10", "0 - 6", "0 - 6", "7 - 10", "7 - 10", "7 - 10",
-"0 - 6", "0 - 6", "7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6",
-"0 - 6", "7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6", "0 - 6",
-"7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6", "0 - 6", "7 - 10",
-"7 - 10", "7 - 10", "0 - 6", "0 - 6", "7 - 10", "7 - 10")
+  c(
+    "0 - 6", "0 - 6", "0 - 6", "7 - 10", "7 - 10", "7 - 10", "0 - 6",
+    "0 - 6", "0 - 6", "7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6",
+    "7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6", "0 - 6", "7 - 10",
+    "7 - 10", "7 - 10", "0 - 6", "0 - 6", "7 - 10", "7 - 10", "7 - 10",
+    "0 - 6", "0 - 6", "7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6",
+    "0 - 6", "7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6", "0 - 6",
+    "7 - 10", "7 - 10", "7 - 10", "0 - 6", "0 - 6", "0 - 6", "7 - 10",
+    "7 - 10", "7 - 10", "0 - 6", "0 - 6", "7 - 10", "7 - 10"
+  )
 
 expect_sex_short <-
-c("Female", "Female", "Female", "Female", "Female", "Female",
-"Female", "Female", "Female", "Female", "Female", "Female", "Female",
-"Female", "Female", "Female", "Female", "Female", "Female", "Female",
-"Female", "Female", "Female", "Female", "Female", "Female", "Female",
-"Female", "Male", "Male", "Male", "Male", "Male", "Male", "Male",
-"Male", "Male", "Male", "Male", "Male", "Male", "Male", "Male",
-"Male", "Male", "Male", "Male", "Male", "Male", "Male", "Male",
-"Male", "Male", "Male", "Male")
+  c(
+    "Female", "Female", "Female", "Female", "Female", "Female",
+    "Female", "Female", "Female", "Female", "Female", "Female", "Female",
+    "Female", "Female", "Female", "Female", "Female", "Female", "Female",
+    "Female", "Female", "Female", "Female", "Female", "Female", "Female",
+    "Female", "Male", "Male", "Male", "Male", "Male", "Male", "Male",
+    "Male", "Male", "Male", "Male", "Male", "Male", "Male", "Male",
+    "Male", "Male", "Male", "Male", "Male", "Male", "Male", "Male",
+    "Male", "Male", "Male", "Male"
+  )
 
 expect_age_short <-
-c("15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
-"15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
-"25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64", "15 - 24",
-"25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64", "25 - 44",
-"45 - 64", "15 - 24", "25 - 44", "45 - 64", "25 - 44", "45 - 64",
-"15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
-"15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
-"15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
-"15 - 24", "25 - 44", "45 - 64", "25 - 44", "45 - 64", "25 - 44",
-"45 - 64")
+  c(
+    "15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
+    "15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
+    "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64", "15 - 24",
+    "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64", "25 - 44",
+    "45 - 64", "15 - 24", "25 - 44", "45 - 64", "25 - 44", "45 - 64",
+    "15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
+    "15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
+    "15 - 24", "25 - 44", "45 - 64", "15 - 24", "25 - 44", "45 - 64",
+    "15 - 24", "25 - 44", "45 - 64", "25 - 44", "45 - 64", "25 - 44",
+    "45 - 64"
+  )
 
 expect_education_short <-
-c("Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
-"Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
-"Certificate", "Certificate", "Certificate", "Certificate", "Certificate",
-"Certificate", "Diploma", "Diploma", "Diploma", "Diploma", "Diploma",
-"No Qualification", "No Qualification", "No Qualification", "No Qualification",
-"No Qualification", "No Qualification", "Postgraduate qualification",
-"Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification",
-"Postgraduate qualification", "Bachelor's degree", "Bachelor's degree",
-"Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
-"Certificate", "Certificate", "Certificate", "Certificate", "Certificate",
-"Certificate", "Diploma", "Diploma", "Diploma", "Diploma", "Diploma",
-"Diploma", "No Qualification", "No Qualification", "No Qualification",
-"No Qualification", "No Qualification", "No Qualification", "Postgraduate qualification",
-"Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification"
-)
+  c(
+    "Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
+    "Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
+    "Certificate", "Certificate", "Certificate", "Certificate", "Certificate",
+    "Certificate", "Diploma", "Diploma", "Diploma", "Diploma", "Diploma",
+    "No Qualification", "No Qualification", "No Qualification", "No Qualification",
+    "No Qualification", "No Qualification", "Postgraduate qualification",
+    "Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification",
+    "Postgraduate qualification", "Bachelor's degree", "Bachelor's degree",
+    "Bachelor's degree", "Bachelor's degree", "Bachelor's degree",
+    "Certificate", "Certificate", "Certificate", "Certificate", "Certificate",
+    "Certificate", "Diploma", "Diploma", "Diploma", "Diploma", "Diploma",
+    "Diploma", "No Qualification", "No Qualification", "No Qualification",
+    "No Qualification", "No Qualification", "No Qualification", "Postgraduate qualification",
+    "Postgraduate qualification", "Postgraduate qualification", "Postgraduate qualification"
+  )
 
 test_that("Compass directions N, NNW, W, and WNW work", {
   cells <- as_cells(purpose$`NNW WNW`)
@@ -174,7 +189,7 @@ test_that("Compass directions S, SSE , E and ESE work", {
     dplyr::filter(row >= 21, !is.na(chr)) %>%
     dplyr::select(row, col, header = chr) %>%
     split(.$row)
-    data_cells <-
+  data_cells <-
     cells %>%
     dplyr::filter(row <= 20, col <= 4, !is.na(chr)) %>%
     dplyr::mutate(value = as.integer(chr)) %>%
@@ -280,10 +295,14 @@ test_that("enhead() works", {
     cells %>%
     dplyr::filter(row %in% 1:2, !is.na(chr)) %>%
     dplyr::select(row, col, header = chr)
-  expect_error(enhead(data_cells, col_headers[[1]], "NORTH"),
-               "`direction` must be one of \"NNW\", \"N\", \"NNE\", \"ENE\", \"E\", \"ESE\", \"SSE\", \"S\", \"SSW\", \"WSW\", \"W\", \"WNW\", \"ABOVE\", \"LEFT\", \"RIGHT\", \"BELOW\"")
-  expect_error(enhead(data_cells, multirow_header, "W"),
-               "Multiple lines of headers are not supported in this way*")
+  expect_error(
+    enhead(data_cells, col_headers[[1]], "NORTH"),
+    "`direction` must be one of \"NNW\", \"N\", \"NNE\", \"ENE\", \"E\", \"ESE\", \"SSE\", \"S\", \"SSW\", \"WSW\", \"W\", \"WNW\", \"ABOVE\", \"LEFT\", \"RIGHT\", \"BELOW\""
+  )
+  expect_error(
+    enhead(data_cells, multirow_header, "W"),
+    "Multiple lines of headers are not supported in this way*"
+  )
 })
 
 test_that("the `drop` argument works", {

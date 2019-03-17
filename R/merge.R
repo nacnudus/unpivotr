@@ -62,10 +62,14 @@ merge_rows <- function(cells, rows, values, collapse = " ") {
 merge_rows.data.frame <- function(cells, rows, values, collapse = " ") {
   # Prepare to take the first value of all other columns in the summarise() step
   values <- rlang::ensym(values)
-  non_values <- setdiff(names(cells),
-                        c(rlang::expr_text(rlang::enexpr(values)), "col"))
-  summaries <- purrr::map(paste0("dplyr::first(", non_values, ")"),
-                          rlang::parse_expr)
+  non_values <- setdiff(
+    names(cells),
+    c(rlang::expr_text(rlang::enexpr(values)), "col")
+  )
+  summaries <- purrr::map(
+    paste0("dplyr::first(", non_values, ")"),
+    rlang::parse_expr
+  )
   names(summaries) <- non_values
   # Merge the rows
   merged_cells <-
@@ -73,8 +77,10 @@ merge_rows.data.frame <- function(cells, rows, values, collapse = " ") {
     dplyr::mutate(row = min(row)) %>%
     dplyr::arrange(col, row) %>%
     dplyr::group_by(col) %>%
-    dplyr::summarise(!!! summaries,
-                     !! values := paste(!! values, collapse = collapse))
+    dplyr::summarise(
+      !!!summaries,
+      !!values := paste(!!values, collapse = collapse)
+    )
   # Prepend to the rest of the cells and return
   other_cells <-
     cells %>%
@@ -92,10 +98,14 @@ merge_cols <- function(cells, cols, values, collapse = " ") {
 merge_cols.data.frame <- function(cells, cols, values, collapse = " ") {
   # Prepare to take the first value of all other columns in the summarise() step
   values <- rlang::ensym(values)
-  non_values <- setdiff(names(cells),
-                        c(rlang::expr_text(rlang::enexpr(values)), "row"))
-  summaries <- purrr::map(paste0("dplyr::first(", non_values, ")"),
-                          rlang::parse_expr)
+  non_values <- setdiff(
+    names(cells),
+    c(rlang::expr_text(rlang::enexpr(values)), "row")
+  )
+  summaries <- purrr::map(
+    paste0("dplyr::first(", non_values, ")"),
+    rlang::parse_expr
+  )
   names(summaries) <- non_values
   # Merge the rows
   merged_cells <-
@@ -103,8 +113,10 @@ merge_cols.data.frame <- function(cells, cols, values, collapse = " ") {
     dplyr::mutate(col = min(col)) %>%
     dplyr::arrange(row, col) %>%
     dplyr::group_by(row) %>%
-    dplyr::summarise(!!! summaries,
-                     !! values := paste(!! values, collapse = collapse))
+    dplyr::summarise(
+      !!!summaries,
+      !!values := paste(!!values, collapse = collapse)
+    )
   # Prepend to the rest of the cells and return
   other_cells <-
     cells %>%

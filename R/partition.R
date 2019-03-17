@@ -68,23 +68,27 @@
 #' partition(multiples, bl_corners, align = "bottom_left")
 #' partition(multiples, bl_corners, align = "bottom_left", strict = FALSE)
 partition <- function(cells, corners, align = "top_left",
-                     nest = TRUE, strict = TRUE) {
+                      nest = TRUE, strict = TRUE) {
   check_distinct(cells)
-  if (!(align %in% c("top_left", "top_right",
-                       "bottom_left", "bottom_right"))) {
+  if (!(align %in% c(
+    "top_left", "top_right",
+    "bottom_left", "bottom_right"
+  ))) {
     stop("`align` must be one of:
          \"top_left\", \"top_right\", \"bottom_left\", \"bottom_right\"")
   }
-  row_bound <- (if(align %in% c("top_left", "top_right")) "upper" else "lower")
-  col_bound <- (if(align %in% c("top_left", "bottom_left")) "upper" else "lower")
+  row_bound <- (if (align %in% c("top_left", "top_right")) "upper" else "lower")
+  col_bound <- (if (align %in% c("top_left", "bottom_left")) "upper" else "lower")
   row_groups <- partition_dim(cells$row, sort(unique(corners$row)), row_bound)
   col_groups <- partition_dim(cells$col, sort(unique(corners$col)), col_bound)
   join_names <- c("row", "col")
   names(join_names) <- c("corner_row", "corner_col")
   out <-
     cells %>%
-    dplyr::mutate(corner_row = row_groups,
-                  corner_col = col_groups) %>%
+    dplyr::mutate(
+      corner_row = row_groups,
+      corner_col = col_groups
+    ) %>%
     tidyr::nest(-corner_row, -corner_col, .key = "cells") %>%
     dplyr::inner_join(corners, by = join_names)
   if (strict) {

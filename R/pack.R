@@ -93,32 +93,38 @@ pack <- function(cells, types = data_type, name = "value", drop_types = TRUE,
                  drop_type_cols = TRUE) {
   types <- rlang::ensym(types)
   name <- rlang::ensym(name)
-  type_colnames <- format(unique(dplyr::pull(cells, !! types)),
-                          justify = "none",
-                          trim = TRUE)
+  type_colnames <- format(unique(dplyr::pull(cells, !!types)),
+    justify = "none",
+    trim = TRUE
+  )
   # Default any types without corresponding value columns to NA
   missing_types <- setdiff(type_colnames, colnames(cells))
   new_cols <- rep_len(NA, length(missing_types))
   names(new_cols) <- missing_types
-  cells <- dplyr::mutate(cells,
-                         !!! new_cols,
-                         !! types := format(!! types,
-                                            justify = "none",
-                                            trim = TRUE))
+  cells <- dplyr::mutate(
+    cells,
+    !!!new_cols,
+    !!types := format(!!types,
+      justify = "none",
+      trim = TRUE
+    )
+  )
   # Create the packed value column
-  type_values <- unique(dplyr::pull(cells, !! types))
+  type_values <- unique(dplyr::pull(cells, !!types))
   patterns <-
-    map(type_values,
-        ~ rlang::expr(!! types == !!.x ~ as.list(!! rlang::ensym(.x))))
-  out <- dplyr::mutate(cells, !! name := dplyr::case_when(!!! patterns))
+    map(
+      type_values,
+      ~ rlang::expr(!!types == !!.x ~ as.list(!!rlang::ensym(.x)))
+    )
+  out <- dplyr::mutate(cells, !!name := dplyr::case_when(!!!patterns))
   # Name the elements of the packed value column by their types
-  names(out[[rlang::expr_text(name)]]) <- dplyr::pull(cells, !! types)
-  if(drop_types && rlang::expr_text(types) != rlang::expr_text(name)) {
-    out <- dplyr::select(out, - !! types)
+  names(out[[rlang::expr_text(name)]]) <- dplyr::pull(cells, !!types)
+  if (drop_types && rlang::expr_text(types) != rlang::expr_text(name)) {
+    out <- dplyr::select(out, -!!types)
   }
-  if(drop_type_cols) {
+  if (drop_type_cols) {
     type_colnames <- setdiff(type_colnames, rlang::expr_text(name))
-    out <- dplyr::select(out, - dplyr::one_of(type_colnames))
+    out <- dplyr::select(out, -dplyr::one_of(type_colnames))
   }
   out
 }
@@ -129,22 +135,26 @@ unpack <- function(cells, values = value, name = "data_type",
                    drop_packed = TRUE) {
   values <- rlang::ensym(values)
   name <- rlang::ensym(name)
-  types <- names(dplyr::pull(cells, !! values))
+  types <- names(dplyr::pull(cells, !!values))
   type_names <- format(unique(types), justify = "none", trim = TRUE)
-  assignments <- purrr::map(type_names,
-                            ~ rlang::expr(ifelse(types == !! .x,
-                                                 !! values,
-                                                 !! list(NULL))))
+  assignments <- purrr::map(
+    type_names,
+    ~ rlang::expr(ifelse(types == !!.x,
+      !!values,
+      !!list(NULL)
+    ))
+  )
   names(assignments) <- type_names
   out <-
-    dplyr::mutate(cells, !! name := types, !!! assignments) %>%
+    dplyr::mutate(cells, !!name := types, !!!assignments) %>%
     dplyr::mutate_at(type_names,
-                     concatenate,
-                     combine_factors = FALSE,
-                     fill_factor_na = FALSE)
+      concatenate,
+      combine_factors = FALSE,
+      fill_factor_na = FALSE
+    )
   first_colnames <- setdiff(colnames(out), type_names)
   last_colnames <- sort(type_names)
   out <- dplyr::select(out, first_colnames, last_colnames)
-  if(drop_packed) out <- dplyr::select(out, - !! values)
+  if (drop_packed) out <- dplyr::select(out, -!!values)
   out
 }

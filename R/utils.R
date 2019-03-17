@@ -12,32 +12,34 @@ magrittr::`%>%`
 
 NULL
 
-globalVariables(c(".",
-                  "inner_join",
-                  "mutate",
-                  "select",
-                  "rename",
-                  "quo",
-                  "UQ",
-                  "quo_name",
-                  "from_row",
-                  "from_col",
-                  "to_row",
-                  "to_col",
-                  "type",
-                  "value",
-                  "everything",
-                  "data_type",
-                  "is_na",
-                  ".value",
-                  ".data_type",
-                  "n",
-                  ":=",
-                  ".partition",
-                  "ns_env",
-                  "corner_row",
-                  "corner_col",
-                  ".boundary"))
+globalVariables(c(
+  ".",
+  "inner_join",
+  "mutate",
+  "select",
+  "rename",
+  "quo",
+  "UQ",
+  "quo_name",
+  "from_row",
+  "from_col",
+  "to_row",
+  "to_col",
+  "type",
+  "value",
+  "everything",
+  "data_type",
+  "is_na",
+  ".value",
+  ".data_type",
+  "n",
+  ":=",
+  ".partition",
+  "ns_env",
+  "corner_row",
+  "corner_col",
+  ".boundary"
+))
 
 # Concatenate lists into vectors, handling factors and NULLs, and coercing data
 # types only when necessary
@@ -48,31 +50,32 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
   dots <- (...)
   dots_is_null <- purrr::map_lgl(dots, rlang::is_null)
   # If all elements are NULL, return as-is
-  if(all(dots_is_null)) {
+  if (all(dots_is_null)) {
     return(dots)
   }
   # If any non-NULL elements aren't scalars, return as-is
   dots_is_scalar_vector <- purrr::map_lgl(dots, rlang::is_scalar_vector)
-  if(any(!dots_is_scalar_vector[!dots_is_null])) {
+  if (any(!dots_is_scalar_vector[!dots_is_null])) {
     return(dots)
   }
   classes <- purrr::map(dots, class)
   # It might be safe to use c() if all non-NA/NULLs are the same class.
-  if(length(unique(classes[!dots_is_null])) == 1L) {
+  if (length(unique(classes[!dots_is_null])) == 1L) {
     # The first element of each class is the telling one
     all_classes <- classes[!dots_is_null][[1]]
     first_class <- all_classes[1]
     # If it's a factor, then forcats::fct_c() could combine the levels if so
     # desired.
-    if(first_class %in% c("factor", "ordered")) {
+    if (first_class %in% c("factor", "ordered")) {
       # If combining_factors then forcats::fct_c() needs all elements to be
       # factors, so replace them each with an NA factor. Or even if you're not
       # combining factors but still want some kind of consistency.
-      if(combine_factors || fill_factor_na) {
+      if (combine_factors || fill_factor_na) {
         dots[dots_is_null] <- list(factor(NA_character_))
       }
-      if(combine_factors) {
-        return(forcats::fct_c(rlang::splice(dots))) }
+      if (combine_factors) {
+        return(forcats::fct_c(rlang::splice(dots)))
+      }
       else {
         return(dots)
       }
@@ -103,17 +106,19 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
 }
 
 # Return an NA of the same type as the given vector
-na_types <- list(logical = NA,
-                 integer = NA_integer_,
-                 double = NA_real_,
-                 character = NA_character_,
-                 complex = NA_complex_)
+na_types <- list(
+  logical = NA,
+  integer = NA_integer_,
+  double = NA_real_,
+  character = NA_character_,
+  complex = NA_complex_
+)
 na_of_type <- function(x) structure(na_types[[typeof(x)]], class = class(x))
 
 # Apply custom functions to list-elements of a list-column created by pack()
 # whose type matches the custom function.
 maybe_format_list_element <- function(x, name, functions) {
   func <- functions[[name]]
-  if(is.null(func)) func <- identity
+  if (is.null(func)) func <- identity
   func(x)
 }

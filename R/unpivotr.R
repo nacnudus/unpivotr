@@ -24,4 +24,4 @@
 #' advantage that it retains cell formatting and comments.
 #'
 "_PACKAGE"
-#> [1] "_PACKAGE"
+# > [1] "_PACKAGE"

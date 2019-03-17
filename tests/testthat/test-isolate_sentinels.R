@@ -1,16 +1,20 @@
 context("test-isolate_sentinels.R")
 
-x <- tibble::tibble(lgl = c(TRUE, FALSE),
-                    int = c(1L, 2L),
-                    dbl = c(1, 2),
-                    cpl = c(1i, 2i),
-                    date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
-                    dttm = c(as.POSIXct("2001-01-01 01:01:01"),
-                             as.POSIXct("2001-01-01 01:01:02")),
-                    chr = c("a", "b"),
-                    fct = factor(c("c", "d")),
-                    ord = factor(c("e", "f"), ordered = TRUE),
-                    list = list(1:2, letters[1:2]))
+x <- tibble::tibble(
+  lgl = c(TRUE, FALSE),
+  int = c(1L, 2L),
+  dbl = c(1, 2),
+  cpl = c(1i, 2i),
+  date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+  dttm = c(
+    as.POSIXct("2001-01-01 01:01:01"),
+    as.POSIXct("2001-01-01 01:01:02")
+  ),
+  chr = c("a", "b"),
+  fct = factor(c("c", "d")),
+  ord = factor(c("e", "f"), ordered = TRUE),
+  list = list(1:2, letters[1:2])
+)
 
 test_that("isolate_sentinels() works on common data types", {
   y <- isolate_sentinels(x, lgl, TRUE)
