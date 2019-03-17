@@ -121,10 +121,11 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
   }
   # Convert non-list-columns to vectors
   out <- dplyr::mutate_at(out,
-                          dplyr::select_vars(names(out), dplyr::everything(),
-                                             exclude = c("row",
-                                                         "col",
-                                                         "data_type")),
+                          tidyselect::vars_select(
+                            names(out),
+                            dplyr::everything(),
+                            .exclude = c("row", "col", "data_type")
+                          ),
                           concatenate,
                           combine_factors = FALSE,
                           fill_factor_na = FALSE)
