@@ -26,7 +26,8 @@ Imports:
     pillar,
     tibble (>= 2.1.1),
     cellranger,
-    xml2
+    xml2,
+    tidyselect
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 6.1.1
