@@ -1,6 +1,7 @@
 # unpivotr 0.5.1
 
-* Patch for tibble `.name_repair` compatibility (#21 @krlmlr)
+* Patch for tibble `.name_repair` compatibility (#2144 @krlmlr)
+* Patch to switch to `tidyselect` from `dplyr` functions.
 
 # unpivotr 0.5.0
 
