@@ -95,29 +95,29 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
   ncols <- ncol(x)
   types <- purrr::map_chr(x, pillar::type_sum)
   # Spread cells into different columns by data type
-  out <- tibble::data_frame(row = rep.int(seq_len(nrow(x)), ncols),
-                            col = rep(seq_len(ncol(x)), each = nrows),
-                            value = values,
-                            type = rep(types, each = nrows),
-                            data_type = type)
+  out <- tibble::tibble(row = rep.int(seq_len(nrow(x)), ncols),
+                        col = rep(seq_len(ncol(x)), each = nrows),
+                        value = values,
+                        type = rep(types, each = nrows),
+                        data_type = type)
   out <- tidyr::spread(out, type, value)
   if (row_names) {
     rnames <- row.names(x)
     out$col <- out$col + 1L
     out <- dplyr::bind_rows(out,
-                            tibble::data_frame(col = 1L,
-                                               row = seq_along(rnames),
-                                               chr = rlang::as_list(rnames),
-                                               data_type = "chr"))
+                            tibble::tibble(col = 1L,
+                                           row = seq_along(rnames),
+                                           chr = rlang::as_list(rnames),
+                                           data_type = "chr"))
   }
   if (col_names) {
     cnames <- colnames(x)
     out$row <- out$row + 1L
     out <- dplyr::bind_rows(out,
-                            tibble::data_frame(row = 1L,
-                                               col = seq_along(cnames) + row_names,
-                                               chr = rlang::as_list(cnames),
-                                               data_type = "chr"))
+                            tibble::tibble(row = 1L,
+                                           col = seq_along(cnames) + row_names,
+                                           chr = rlang::as_list(cnames),
+                                           data_type = "chr"))
   }
   # Convert non-list-columns to vectors
   out <- dplyr::mutate_at(out,
@@ -198,7 +198,7 @@ as_cells.xml_node <- function(x, row_names = FALSE, col_names = FALSE) {
   out <- purrr::transpose(out)
   out <- purrr::map(out, purrr::flatten_chr)
   out <- tibble::set_tidy_names(out, quiet = TRUE)
-  out <- tibble::as_data_frame(out)
+  out <- tibble::as_tibble(out, .name_repair = "minimal")
   out <- as_cells(out, row_names = FALSE, col_names = FALSE)
   out[, c("double", "integer", "logical")] <- NULL
   colnames(out) <- c("row", "col", "data_type", "html")
