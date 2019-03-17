@@ -72,7 +72,7 @@ partition_dim() partitions along one dimension at a time." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
       </span>
     </div>
 
@@ -286,80 +286,44 @@ grid of cells into chunks along both dimensions</p>
 #&gt; 40  14   2   numeric                       &lt;NA&gt;  287000</div><div class='input'>
 <span class='co'># First, find the cells that mark a corner of each table</span>
 <span class='no'>corners</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>multiples</span>,
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>multiples</span>,
                 !<span class='fu'>is.na</span>(<span class='no'>character</span>),
                 !(<span class='no'>character</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"Sex"</span>, <span class='st'>"Value"</span>, <span class='st'>"Female"</span>, <span class='st'>"Male"</span>)))
 
 <span class='co'># Then find out which cells fall into which partition</span>
-<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>corners</span>)</div><div class='output co'>#&gt;   corner_row corner_col
-#&gt; 1          1          1
-#&gt; 2          1          4
-#&gt; 3          6          1
-#&gt; 4          6          4
-#&gt; 5         11          1
-#&gt;                                                                                                                                                                                                                                      cells
-#&gt; 1 1, 1, 2, 2, 3, 3, 4, 4, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, Postgraduate qualification, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 171000, NA, 159000
-#&gt; 2           1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 4, 5, 4, 5, 4, 5, character, blank, character, character, character, numeric, character, numeric, Bachelor's degree, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 275000, NA, 2e+05
-#&gt; 3                    6, 6, 7, 7, 8, 8, 9, 9, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, Diploma, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 210000, NA, 173000
-#&gt; 4                6, 6, 7, 7, 8, 8, 9, 9, 4, 5, 4, 5, 4, 5, 4, 5, character, blank, character, character, character, numeric, character, numeric, Certificate, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 732000, NA, 807000
-#&gt; 5   11, 11, 12, 12, 13, 13, 14, 14, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, No Qualification, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 344000, NA, 287000
-#&gt;   data_type                  character numeric
-#&gt; 1 character Postgraduate qualification      NA
-#&gt; 2 character          Bachelor's degree      NA
-#&gt; 3 character                    Diploma      NA
-#&gt; 4 character                Certificate      NA
-#&gt; 5 character           No Qualification      NA</div><div class='input'>
+<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>corners</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 6
+#&gt;   corner_row corner_col cells           data_type character              numeric
+#&gt;        &lt;dbl&gt;      &lt;dbl&gt; &lt;list&gt;          &lt;chr&gt;     &lt;chr&gt;                    &lt;dbl&gt;
+#&gt; 1          1          1 &lt;tibble [8 × 5… character Postgraduate qualific…      NA
+#&gt; 2          1          4 &lt;tibble [8 × 5… character Bachelor's degree           NA
+#&gt; 3          6          1 &lt;tibble [8 × 5… character Diploma                     NA
+#&gt; 4          6          4 &lt;tibble [8 × 5… character Certificate                 NA
+#&gt; 5         11          1 &lt;tibble [8 × 5… character No Qualification            NA</div><div class='input'>
 <span class='co'># You can also use bottom-left corners (or top-right or bottom-right)</span>
-<span class='no'>bl_corners</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>multiples</span>, <span class='no'>character</span> <span class='kw'>==</span> <span class='st'>"Male"</span>)
-<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>)</div><div class='output co'>#&gt;   corner_row corner_col
-#&gt; 1          4          1
-#&gt; 2          4          4
-#&gt; 3          9          1
-#&gt; 4          9          4
-#&gt; 5         14          1
-#&gt;                                                                                                                                                                                                                                      cells
-#&gt; 1 1, 1, 2, 2, 3, 3, 4, 4, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, Postgraduate qualification, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 171000, NA, 159000
-#&gt; 2           1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 4, 5, 4, 5, 4, 5, character, blank, character, character, character, numeric, character, numeric, Bachelor's degree, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 275000, NA, 2e+05
-#&gt; 3                    6, 6, 7, 7, 8, 8, 9, 9, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, Diploma, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 210000, NA, 173000
-#&gt; 4                6, 6, 7, 7, 8, 8, 9, 9, 4, 5, 4, 5, 4, 5, 4, 5, character, blank, character, character, character, numeric, character, numeric, Certificate, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 732000, NA, 807000
-#&gt; 5   11, 11, 12, 12, 13, 13, 14, 14, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, No Qualification, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 344000, NA, 287000
-#&gt;   data_type character numeric
-#&gt; 1 character      Male      NA
-#&gt; 2 character      Male      NA
-#&gt; 3 character      Male      NA
-#&gt; 4 character      Male      NA
-#&gt; 5 character      Male      NA</div><div class='input'>
+<span class='no'>bl_corners</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>multiples</span>, <span class='no'>character</span> <span class='kw'>==</span> <span class='st'>"Male"</span>)
+<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 6
+#&gt;   corner_row corner_col cells            data_type character numeric
+#&gt;        &lt;dbl&gt;      &lt;dbl&gt; &lt;list&gt;           &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1          4          1 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 2          4          4 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 3          9          1 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 4          9          4 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 5         14          1 &lt;tibble [8 × 5]&gt; character Male           NA</div><div class='input'>
 <span class='co'># To complete the grid even when not all corners are supplied, use `strict`</span>
 <span class='no'>bl_corners</span> <span class='kw'>&lt;-</span> <span class='no'>bl_corners</span>[-<span class='fl'>1</span>, ]
-<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>)</div><div class='output co'>#&gt;   corner_row corner_col
-#&gt; 1          4          4
-#&gt; 2          9          1
-#&gt; 3          9          4
-#&gt; 4         14          1
-#&gt;                                                                                                                                                                                                                                    cells
-#&gt; 1         1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 4, 5, 4, 5, 4, 5, character, blank, character, character, character, numeric, character, numeric, Bachelor's degree, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 275000, NA, 2e+05
-#&gt; 2                  6, 6, 7, 7, 8, 8, 9, 9, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, Diploma, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 210000, NA, 173000
-#&gt; 3              6, 6, 7, 7, 8, 8, 9, 9, 4, 5, 4, 5, 4, 5, 4, 5, character, blank, character, character, character, numeric, character, numeric, Certificate, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 732000, NA, 807000
-#&gt; 4 11, 11, 12, 12, 13, 13, 14, 14, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, No Qualification, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 344000, NA, 287000
-#&gt;   data_type character numeric
-#&gt; 1 character      Male      NA
-#&gt; 2 character      Male      NA
-#&gt; 3 character      Male      NA
-#&gt; 4 character      Male      NA</div><div class='input'><span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;   corner_row corner_col
-#&gt; 1          4          4
-#&gt; 2          9          1
-#&gt; 3          9          4
-#&gt; 4         14          1
-#&gt;                                                                                                                                                                                                                                    cells
-#&gt; 1         1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 4, 5, 4, 5, 4, 5, character, blank, character, character, character, numeric, character, numeric, Bachelor's degree, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 275000, NA, 2e+05
-#&gt; 2                  6, 6, 7, 7, 8, 8, 9, 9, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, Diploma, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 210000, NA, 173000
-#&gt; 3              6, 6, 7, 7, 8, 8, 9, 9, 4, 5, 4, 5, 4, 5, 4, 5, character, blank, character, character, character, numeric, character, numeric, Certificate, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 732000, NA, 807000
-#&gt; 4 11, 11, 12, 12, 13, 13, 14, 14, 1, 2, 1, 2, 1, 2, 1, 2, character, blank, character, character, character, numeric, character, numeric, No Qualification, NA, Sex, Value, Female, NA, Male, NA, NA, NA, NA, NA, NA, 344000, NA, 287000
-#&gt;   data_type character numeric
-#&gt; 1 character      Male      NA
-#&gt; 2 character      Male      NA
-#&gt; 3 character      Male      NA
-#&gt; 4 character      Male      NA</div><div class='input'><span class='co'># Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and 7th</span>
+<span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 6
+#&gt;   corner_row corner_col cells            data_type character numeric
+#&gt;        &lt;dbl&gt;      &lt;dbl&gt; &lt;list&gt;           &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1          4          4 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 2          9          1 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 3          9          4 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 4         14          1 &lt;tibble [8 × 5]&gt; character Male           NA</div><div class='input'><span class='fu'>partition</span>(<span class='no'>multiples</span>, <span class='no'>bl_corners</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"bottom_left"</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 6
+#&gt;   corner_row corner_col cells            data_type character numeric
+#&gt;        &lt;dbl&gt;      &lt;dbl&gt; &lt;list&gt;           &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1          4          4 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 2          9          1 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 3          9          4 &lt;tibble [8 × 5]&gt; character Male           NA
+#&gt; 4         14          1 &lt;tibble [8 × 5]&gt; character Male           NA</div><div class='input'><span class='co'># Given a set of cells in rows 1 to 10, partition them at the 3rd, 5th and 7th</span>
 <span class='co'># rows.</span>
 <span class='fu'>partition_dim</span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>7</span>))</div><div class='output co'>#&gt;  [1] NA NA  3  3  5  5  7  7  7  7</div><div class='input'>
 <span class='co'># Given a set of cells in columns 1 to 10, partition them at the 3rd, 5th and</span>

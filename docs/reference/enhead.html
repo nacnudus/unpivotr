@@ -70,7 +70,7 @@ choosing the nearest header cells in the given direction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
       </span>
     </div>
 
@@ -236,8 +236,8 @@ first to align header cells to the corner of the data cells they describe.</p>
 #&gt; 5    19     1 chr       Postgraduate qualification
 #&gt; 6     3     2 chr       15 - 24                   </div><div class='input'><span class='co'># Select the cells containing the values</span>
 <span class='no'>data_cells</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>, <span class='no'>col</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'>as.integer</span>(<span class='no'>chr</span>))
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>, <span class='no'>col</span> <span class='kw'>&gt;=</span> <span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>transmute</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'>as.integer</span>(<span class='no'>chr</span>))
 <span class='fu'>head</span>(<span class='no'>data_cells</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
 #&gt;     row   col count
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -248,24 +248,24 @@ first to align header cells to the corner of the data cells they describe.</p>
 #&gt; 5     8     3 34000
 #&gt; 6     9     3 30000</div><div class='input'><span class='co'># Select the headers</span>
 <span class='no'>qualification</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>qualification</span> <span class='kw'>=</span> <span class='no'>chr</span>)
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>qualification</span> <span class='kw'>=</span> <span class='no'>chr</span>)
 <span class='no'>age</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='no'>chr</span>)
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>col</span> <span class='kw'>==</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='no'>chr</span>)
 <span class='no'>gender</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>gender</span> <span class='kw'>=</span> <span class='no'>chr</span>)
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>gender</span> <span class='kw'>=</span> <span class='no'>chr</span>)
 <span class='no'>satisfaction</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>satisfaction</span> <span class='kw'>=</span> <span class='no'>chr</span>)
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>cells</span>, <span class='no'>row</span> <span class='kw'>==</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='kw'>satisfaction</span> <span class='kw'>=</span> <span class='no'>chr</span>)
 <span class='co'># From each data cell, search for the nearest one of each of the headers</span>
 <span class='no'>data_cells</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>enhead</span>(<span class='no'>gender</span>, <span class='st'>"NNW"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>enhead</span>(<span class='no'>satisfaction</span>, <span class='st'>"N"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>enhead</span>(<span class='no'>qualification</span>, <span class='st'>"WNW"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>enhead</span>(<span class='no'>age</span>, <span class='st'>"W"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>row</span>, -<span class='no'>col</span>)</div><div class='output co'>#&gt; # A tibble: 72 x 5
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>row</span>, -<span class='no'>col</span>)</div><div class='output co'>#&gt; # A tibble: 72 x 5
 #&gt;     count gender satisfaction qualification     age    
 #&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;             &lt;chr&gt;  
 #&gt;  1   7000 Female 0 - 6        Bachelor's degree 15 - 24

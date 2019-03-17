@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1>Compass Directions</h1>
                         <h4 class="author">Duncan Garmonsway</h4>
             
-            <h4 class="date">2019-01-02</h4>
+            <h4 class="date">2019-03-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/nacnudus/unpivotr/blob/master/vignettes/compass-directions.Rmd"><code>vignettes/compass-directions.Rmd</code></a></small>
       <div class="hidden name"><code>compass-directions.Rmd</code></div>
@@ -158,8 +158,8 @@
 <a href="#headers" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Select all rows of headers at once</span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Select all rows of headers at once</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col) <span class="co"># Return each row of headers in its own element of a list</span></a>
 <a class="sourceLine" id="cb10-6" title="6">row_headers</a></code></pre></div>
 <pre><code>## $`1`
@@ -198,8 +198,8 @@
 ## 20    22     2 65+</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">col_headers &lt;-</a>
 <a class="sourceLine" id="cb12-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row)</a>
 <a class="sourceLine" id="cb12-6" title="6">col_headers</a></code></pre></div>
 <pre><code>## $`1`
@@ -223,9 +223,9 @@
 <a href="#data" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">data_cells &lt;-</a>
 <a class="sourceLine" id="cb14-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
 <a class="sourceLine" id="cb14-6" title="6"><span class="kw">head</span>(data_cells)</a></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##     row   col value
@@ -397,7 +397,7 @@
 ## 70              25 - 44
 ## 71              45 - 64
 ## 72                  65+</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">NNW_WNW &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">NNW_WNW &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
 </div>
 </div>
 <div id="nne-wsw-example" class="section level2">
@@ -409,8 +409,8 @@
 <a href="#headers-same-as-nnw-wnw" class="anchor"></a>Headers (same as NNW WNW)</h3>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb21-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb21-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col)</a>
 <a class="sourceLine" id="cb21-6" title="6">row_headers</a></code></pre></div>
 <pre><code>## $`1`
@@ -449,8 +449,8 @@
 ## 20    22     2 65+</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">col_headers &lt;-</a>
 <a class="sourceLine" id="cb23-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb23-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row)</a>
 <a class="sourceLine" id="cb23-6" title="6">col_headers</a></code></pre></div>
 <pre><code>## $`1`
@@ -474,9 +474,9 @@
 <a href="#data-same-as-nnw-wnw" class="anchor"></a>Data (same as NNW WNW)</h3>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">data_cells &lt;-</a>
 <a class="sourceLine" id="cb25-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb25-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb25-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb25-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
 <a class="sourceLine" id="cb25-6" title="6">data_cells</a></code></pre></div>
 <pre><code>## # A tibble: 72 x 3
 ##      row   col value
@@ -653,7 +653,7 @@
 ## 70              25 - 44
 ## 71              45 - 64
 ## 72                  65+</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">NNE_WSW &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">NNE_WSW &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
 </div>
 </div>
 <div id="sse-ese-example" class="section level2">
@@ -665,8 +665,8 @@
 <a href="#headers-1" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb32-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb32-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col)</a>
 <a class="sourceLine" id="cb32-6" title="6">row_headers</a></code></pre></div>
 <pre><code>## $`5`
@@ -705,8 +705,8 @@
 ## 5    20     6 Postgraduate qualification</code></pre>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">col_headers &lt;-</a>
 <a class="sourceLine" id="cb34-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">21</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">21</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb34-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row)</a>
 <a class="sourceLine" id="cb34-6" title="6">col_headers</a></code></pre></div>
 <pre><code>## $`21`
@@ -730,9 +730,9 @@
 <a href="#data-1" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">data_cells &lt;-</a>
 <a class="sourceLine" id="cb36-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
 <a class="sourceLine" id="cb36-6" title="6">data_cells</a></code></pre></div>
 <pre><code>## # A tibble: 72 x 3
 ##      row   col value
@@ -909,7 +909,7 @@
 ## 70              25 - 44
 ## 71              45 - 64
 ## 72                  65+</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">SSE_ESE &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">SSE_ESE &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
 </div>
 </div>
 <div id="ssw-ene-example" class="section level2">
@@ -921,8 +921,8 @@
 <a href="#headers-same-as-sse-ese" class="anchor"></a>Headers (same as SSE ESE)</h3>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb43-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb43-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb43-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb43-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col)</a>
 <a class="sourceLine" id="cb43-6" title="6">row_headers</a></code></pre></div>
 <pre><code>## $`5`
@@ -961,8 +961,8 @@
 ## 5    17     6 Postgraduate qualification</code></pre>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">col_headers &lt;-</a>
 <a class="sourceLine" id="cb45-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">21</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb45-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">21</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb45-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb45-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row)</a>
 <a class="sourceLine" id="cb45-6" title="6">col_headers</a></code></pre></div>
 <pre><code>## $`21`
@@ -986,9 +986,9 @@
 <a href="#data-same-as-sse-ese" class="anchor"></a>Data (same as SSE ESE)</h3>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">data_cells &lt;-</a>
 <a class="sourceLine" id="cb47-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb47-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
+<a class="sourceLine" id="cb47-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
 <a class="sourceLine" id="cb47-6" title="6">data_cells</a></code></pre></div>
 <pre><code>## # A tibble: 72 x 3
 ##      row   col value
@@ -1165,7 +1165,7 @@
 ## 70              25 - 44
 ## 71              45 - 64
 ## 72                  65+</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1">SSW_ENE &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1">SSW_ENE &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
 </div>
 </div>
 <div id="check-that-all-sheets-are-parsed-correctly" class="section level2">
@@ -1187,8 +1187,8 @@
 <a href="#headers-2" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb60-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb60-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb60-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb60-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col)</a>
 <a class="sourceLine" id="cb60-6" title="6">row_headers</a></code></pre></div>
 <pre><code>## $`1`
@@ -1214,8 +1214,8 @@
 ## 10    12     2 Postgraduate qualification</code></pre>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1">col_headers &lt;-</a>
 <a class="sourceLine" id="cb62-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb62-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb62-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb62-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb62-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb62-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row)</a>
 <a class="sourceLine" id="cb62-6" title="6">col_headers</a></code></pre></div>
 <pre><code>## $`1`
@@ -1241,9 +1241,9 @@
 <a href="#data-2" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1">data_cells &lt;-</a>
 <a class="sourceLine" id="cb64-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
+<a class="sourceLine" id="cb64-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb64-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb64-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
 <a class="sourceLine" id="cb64-6" title="6">data_cells</a></code></pre></div>
 <pre><code>## # A tibble: 55 x 3
 ##      row   col value
@@ -1386,7 +1386,7 @@
 ## 53                    Diploma
 ## 54           No Qualification
 ## 55 Postgraduate qualification</code></pre>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1">ABOVE_LEFT &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1">ABOVE_LEFT &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
 </div>
 </div>
 <div id="below-right-example" class="section level2">
@@ -1398,8 +1398,8 @@
 <a href="#headers-3" class="anchor"></a>Headers</h3>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1">row_headers &lt;-</a>
 <a class="sourceLine" id="cb71-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb71-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">7</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb71-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb71-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">7</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb71-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb71-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col)</a>
 <a class="sourceLine" id="cb71-6" title="6">row_headers</a></code></pre></div>
 <pre><code>## $`7`
@@ -1425,8 +1425,8 @@
 ## 2     8     8 Male</code></pre>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1">col_headers &lt;-</a>
 <a class="sourceLine" id="cb73-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb73-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">11</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb73-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb73-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">11</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb73-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> chr) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb73-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row)</a>
 <a class="sourceLine" id="cb73-6" title="6">col_headers</a></code></pre></div>
 <pre><code>## $`11`
@@ -1452,9 +1452,9 @@
 <a href="#data-3" class="anchor"></a>Data</h3>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" title="1">data_cells &lt;-</a>
 <a class="sourceLine" id="cb75-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb75-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb75-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb75-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
+<a class="sourceLine" id="cb75-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>, <span class="op">!</span><span class="kw">is.na</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb75-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(chr)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb75-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
 <a class="sourceLine" id="cb75-6" title="6">data_cells</a></code></pre></div>
 <pre><code>## # A tibble: 55 x 3
 ##      row   col value
@@ -1597,7 +1597,7 @@
 ## 53                    Diploma
 ## 54           No Qualification
 ## 55 Postgraduate qualification</code></pre>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1">BELOW_RIGHT &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1">BELOW_RIGHT &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
 </div>
 </div>
 <div id="check-that-all-sheets-are-parsed-correctly-1" class="section level2">
@@ -1619,8 +1619,8 @@
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" title="1"><span class="co"># Same as ABOVE LEFT without borders</span></a>
 <a class="sourceLine" id="cb85-2" title="2">row_headers &lt;-</a>
 <a class="sourceLine" id="cb85-3" title="3"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb85-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb85-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> character) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb85-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb85-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> character) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb85-6" title="6"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col)</a>
 <a class="sourceLine" id="cb85-7" title="7">row_headers</a></code></pre></div>
 <pre><code>## $`2`
@@ -1646,8 +1646,8 @@
 ## 10    13     3 Postgraduate qualification</code></pre>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1">col_headers &lt;-</a>
 <a class="sourceLine" id="cb87-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb87-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb87-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> character) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb87-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb87-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> character) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb87-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row)</a>
 <a class="sourceLine" id="cb87-6" title="6">col_headers</a></code></pre></div>
 <pre><code>## $`2`
@@ -1674,10 +1674,10 @@
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" title="1"><span class="co"># Same as ABOVE LEFT without borders</span></a>
 <a class="sourceLine" id="cb89-2" title="2">data_cells &lt;-</a>
 <a class="sourceLine" id="cb89-3" title="3"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb89-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb89-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">content =</span> <span class="kw">ifelse</span>(<span class="kw">is.na</span>(character), numeric, <span class="ot">NA</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb89-6" title="6"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(content)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb89-7" title="7"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
+<a class="sourceLine" id="cb89-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span>, col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb89-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">content =</span> <span class="kw">ifelse</span>(<span class="kw">is.na</span>(character), numeric, <span class="ot">NA</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb89-6" title="6"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(content)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb89-7" title="7"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
 <a class="sourceLine" id="cb89-8" title="8">data_cells</a></code></pre></div>
 <pre><code>## # A tibble: 55 x 3
 ##      row   col  value
@@ -1707,12 +1707,12 @@
 <a class="sourceLine" id="cb93-3" title="3"></a>
 <a class="sourceLine" id="cb93-4" title="4">left_border_cells &lt;-</a>
 <a class="sourceLine" id="cb93-5" title="5"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb93-6" title="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>left_borders) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb93-7" title="7"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a>
+<a class="sourceLine" id="cb93-6" title="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>left_borders) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb93-7" title="7"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a>
 <a class="sourceLine" id="cb93-8" title="8">top_border_cells &lt;-</a>
 <a class="sourceLine" id="cb93-9" title="9"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb93-10" title="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>top_borders) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb93-11" title="11"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a></code></pre></div>
+<a class="sourceLine" id="cb93-10" title="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>top_borders) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb93-11" title="11"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a></code></pre></div>
 </div>
 <div id="join-headers-to-data-5" class="section level3">
 <h3 class="hasAnchor">
@@ -1840,7 +1840,7 @@
 ## 53           No Qualification
 ## 54 Postgraduate qualification
 ## 55 Postgraduate qualification</code></pre>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" title="1">ABOVE_LEFT_borders &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" title="1">ABOVE_LEFT_borders &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
 </div>
 </div>
 <div id="below-right-border-example" class="section level2">
@@ -1855,8 +1855,8 @@
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" title="1"><span class="co"># Same as BELOW RIGHT without borders</span></a>
 <a class="sourceLine" id="cb100-2" title="2">row_headers &lt;-</a>
 <a class="sourceLine" id="cb100-3" title="3"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb100-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb100-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> character) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb100-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb100-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> character) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb100-6" title="6"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>col)</a>
 <a class="sourceLine" id="cb100-7" title="7">row_headers</a></code></pre></div>
 <pre><code>## $`10`
@@ -1882,8 +1882,8 @@
 ## 2    10    11 Male</code></pre>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" title="1">col_headers &lt;-</a>
 <a class="sourceLine" id="cb102-2" title="2"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb102-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">14</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb102-4" title="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> character) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb102-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&gt;=</span><span class="st"> </span><span class="dv">14</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb102-4" title="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, <span class="dt">header =</span> character) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb102-5" title="5"><span class="st">  </span><span class="kw">split</span>(.<span class="op">$</span>row)</a>
 <a class="sourceLine" id="cb102-6" title="6">col_headers</a></code></pre></div>
 <pre><code>## $`14`
@@ -1910,10 +1910,10 @@
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" title="1"><span class="co"># Same as BELOW RIGHT without borders</span></a>
 <a class="sourceLine" id="cb104-2" title="2">data_cells &lt;-</a>
 <a class="sourceLine" id="cb104-3" title="3"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb104-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">13</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">9</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb104-5" title="5"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">content =</span> <span class="kw">ifelse</span>(<span class="kw">is.na</span>(character), numeric, <span class="ot">NA</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb104-6" title="6"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(content)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb104-7" title="7"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
+<a class="sourceLine" id="cb104-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">13</span>, col <span class="op">&lt;=</span><span class="st"> </span><span class="dv">9</span>, <span class="op">!</span>is_blank) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb104-5" title="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">content =</span> <span class="kw">ifelse</span>(<span class="kw">is.na</span>(character), numeric, <span class="ot">NA</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb104-6" title="6"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">value =</span> <span class="kw">as.integer</span>(content)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb104-7" title="7"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col, value)</a>
 <a class="sourceLine" id="cb104-8" title="8">data_cells</a></code></pre></div>
 <pre><code>## # A tibble: 55 x 3
 ##      row   col  value
@@ -1943,12 +1943,12 @@
 <a class="sourceLine" id="cb108-3" title="3"></a>
 <a class="sourceLine" id="cb108-4" title="4">left_border_cells &lt;-</a>
 <a class="sourceLine" id="cb108-5" title="5"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb108-6" title="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">==</span><span class="st"> </span><span class="dv">15</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>left_borders) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb108-7" title="7"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a>
+<a class="sourceLine" id="cb108-6" title="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">==</span><span class="st"> </span><span class="dv">15</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>left_borders) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb108-7" title="7"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a>
 <a class="sourceLine" id="cb108-8" title="8">top_border_cells &lt;-</a>
 <a class="sourceLine" id="cb108-9" title="9"><span class="st">  </span>cells <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb108-10" title="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">==</span><span class="st"> </span><span class="dv">11</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>top_borders) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb108-11" title="11"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a></code></pre></div>
+<a class="sourceLine" id="cb108-10" title="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(col <span class="op">==</span><span class="st"> </span><span class="dv">11</span>, local_format_id <span class="op">%in%</span><span class="st"> </span>top_borders) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb108-11" title="11"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(row, col)</a></code></pre></div>
 </div>
 <div id="join-headers-to-data-6" class="section level3">
 <h3 class="hasAnchor">
@@ -2076,7 +2076,7 @@
 ## 53           No Qualification
 ## 54 Postgraduate qualification
 ## 55 Postgraduate qualification</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" title="1">BELOW_RIGHT_borders &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" title="1">BELOW_RIGHT_borders &lt;-<span class="st"> </span>data_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(row, col)</a></code></pre></div>
 </div>
 </div>
 <div id="check-that-all-sheets-are-parsed-correctly-2" class="section level2">

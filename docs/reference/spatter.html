@@ -72,7 +72,7 @@ data type." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
       </span>
     </div>
 
@@ -247,8 +247,8 @@ contains the cell value.</p></td>
 <span class='co'># default, it looks at the `data_type` column to decide, but you can change</span>
 <span class='co'># that with the `types` argument.</span>
 <span class='no'>y</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>data_type</span>, -<span class='no'>numeric</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>data_type_2</span> <span class='kw'>=</span> <span class='st'>"character"</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>data_type</span>, -<span class='no'>numeric</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>data_type_2</span> <span class='kw'>=</span> <span class='st'>"character"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>spatter</span>(<span class='no'>header</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type_2</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt;     row Age   Name    
 #&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   
@@ -257,8 +257,8 @@ contains the cell value.</p></td>
 #&gt; 3     4 &lt;NA&gt;  Olivia  </div><div class='input'>
 <span class='co'># Alternatively you can name one specific column to use for the cell values.</span>
 <span class='no'>y</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>6</span>]) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>header</span>, <span class='no'>row</span>, <span class='no'>foo</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>6</span>]) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>header</span>, <span class='no'>row</span>, <span class='no'>foo</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>spatter</span>(<span class='no'>header</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='no'>foo</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt;     row Age   Name 
 #&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
@@ -269,8 +269,8 @@ contains the cell value.</p></td>
 <span class='co'># it's necessary for demarking the rows, then make a copy of it first,</span>
 <span class='co'># otherwise you'll get an error like "Duplicate identifiers for rows ..."</span>
 <span class='no'>y</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>row2</span> <span class='kw'>=</span> <span class='no'>row</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>header</span>, <span class='no'>row2</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>row2</span> <span class='kw'>=</span> <span class='no'>row</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>header</span>, <span class='no'>row2</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>spatter</span>(<span class='no'>header</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='no'>row2</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt;     row   Age  Name
 #&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -296,7 +296,7 @@ contains the cell value.</p></td>
 <span class='no'>x</span>$<span class='no'>extra</span> <span class='kw'>&lt;-</span> <span class='fl'>11</span>:<span class='fl'>18</span>
 <span class='no'>x</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pack.html'>pack</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='no'>value</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='no'>value</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pack.html'>unpack</a></span>()</div><div class='output co'>#&gt;   row col data_type character numeric
 #&gt; 1   1   1 character      Name      NA
 #&gt; 2   1   2 character       Age      NA
