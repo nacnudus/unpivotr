@@ -1,5 +1,7 @@
 # unpivotr 0.5.1
 
+* Patch for tibble `.name_repair` compatibility (#21 @krlmlr)
+
 # unpivotr 0.5.0
 
 ## New features
