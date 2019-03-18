@@ -29,7 +29,7 @@ justify.data.frame <- function(header_cells, corner_cells) {
   stopifnot(nrow(header_cells) == nrow(corner_cells))
   header_cells <- dplyr::arrange(header_cells, row, col)
   corner_cells <- dplyr::arrange(corner_cells, row, col)
-  header_cells$row = corner_cells$row
-  header_cells$col = corner_cells$col
+  header_cells$row <- corner_cells$row
+  header_cells$col <- corner_cells$col
   header_cells
 }

@@ -50,17 +50,21 @@ test_that("``\"ABOVE\"`` etc. don't work", {
 })
 
 test_that("behead() works with all common datatypes", {
-  w <- tibble::tibble(lgl = c(TRUE, FALSE),
-                      int = c(1L, 2L),
-                      dbl = c(1, 2),
-                      cpl = c(1i, 2i),
-                      date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
-                      dttm = c(as.POSIXct("2001-01-01 01:01:01"),
-                               as.POSIXct("2001-01-01 01:01:02")),
-                      chr = c("a", "b"),
-                      fct = factor(c("c", "d")),
-                      ord = factor(c("e", "f"), ordered = TRUE),
-                      list = list(1:2, letters[1:2]))
+  w <- tibble::tibble(
+    lgl = c(TRUE, FALSE),
+    int = c(1L, 2L),
+    dbl = c(1, 2),
+    cpl = c(1i, 2i),
+    date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+    dttm = c(
+      as.POSIXct("2001-01-01 01:01:01"),
+      as.POSIXct("2001-01-01 01:01:02")
+    ),
+    chr = c("a", "b"),
+    fct = factor(c("c", "d")),
+    ord = factor(c("e", "f"), ordered = TRUE),
+    list = list(1:2, letters[1:2])
+  )
   x <- as_cells(w, col_names = TRUE)
   y <- behead(x, "N", header)
   expect_equal(nrow(y), 20L)
@@ -68,7 +72,7 @@ test_that("behead() works with all common datatypes", {
   expect_equal(y$chr[12], NA_character_)
   expect_equal(y$chr[13], "a")
   expect_equal(y$cpl[6], NA_complex_)
-  expect_equal(y$cpl[7], 0+1i)
+  expect_equal(y$cpl[7], 0 + 1i)
   expect_equal(y$date[8], as.Date(NA))
   expect_equal(y$date[9], as.Date("2001-01-01"))
   expect_equal(y$dbl[4], NA_real_)
@@ -89,29 +93,35 @@ test_that("behead() works with all common datatypes", {
 })
 
 test_that("behead() handles headers of mixed data types including dates", {
-  x <- data.frame(row = c(1L, 1L, 2L, 2L, 3L, 3L),
-                  col = c(1L, 2L, 1L, 2L, 1L, 2L),
-                  data_type = c("dttm", "date", "chr", "dbl", "chr", "dbl"),
-                  chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
-                  date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
-                  dttm = as.POSIXct(c("2001-01-01 11:00:00", rep(NA, 5))),
-                  dbl = c(NA, NA, NA, 11, NA, 12),
-                  stringsAsFactors = FALSE)
+  x <- data.frame(
+    row = c(1L, 1L, 2L, 2L, 3L, 3L),
+    col = c(1L, 2L, 1L, 2L, 1L, 2L),
+    data_type = c("dttm", "date", "chr", "dbl", "chr", "dbl"),
+    chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
+    date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
+    dttm = as.POSIXct(c("2001-01-01 11:00:00", rep(NA, 5))),
+    dbl = c(NA, NA, NA, 11, NA, 12),
+    stringsAsFactors = FALSE
+  )
   y <- behead(x, "N", header)
   expect_equal(y$header, rep(c("2001-01-01 11:00:00", "2000-01-01"), 2))
 })
 
 test_that("behead() handles headers of factor and ordered-factor data types", {
   x <-
-    tibble::tibble(row = c(1L, 1L, 2L, 2L, 3L, 3L),
-                   col = c(1L, 2L, 1L, 2L, 1L, 2L),
-                   data_type = c("fct", "ord", "chr", "dbl", "chr", "dbl"),
-                   chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
-                   fct = list(factor("name"), NULL, NULL, NULL, NULL, NULL),
-                   ord = list(NULL, factor("score", ordered = TRUE),
-                              NULL, NULL, NULL, NULL),
-                   date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
-                   dbl = c(NA, NA, NA, 11, NA, 12))
+    tibble::tibble(
+      row = c(1L, 1L, 2L, 2L, 3L, 3L),
+      col = c(1L, 2L, 1L, 2L, 1L, 2L),
+      data_type = c("fct", "ord", "chr", "dbl", "chr", "dbl"),
+      chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
+      fct = list(factor("name"), NULL, NULL, NULL, NULL, NULL),
+      ord = list(
+        NULL, factor("score", ordered = TRUE),
+        NULL, NULL, NULL, NULL
+      ),
+      date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
+      dbl = c(NA, NA, NA, 11, NA, 12)
+    )
   y <- behead(x, "N", header)
   expect_equal(y$header, rep(c("name", "score"), 2))
 })
@@ -122,7 +132,7 @@ test_that("behead() supports custom formatters", {
     behead("N", header, formatters = list(chr = ~ paste(.x, "foo"))) %>%
     behead("W", rowheader, formatters = list(dbl = as.complex))
   expect_equal(x$header[1], "demand foo")
-  expect_equal(x$rowheader[1], 1+0i)
+  expect_equal(x$rowheader[1], 1 + 0i)
 })
 
 test_that("behead() can use row, col and data_type as headers", {
@@ -148,13 +158,13 @@ test_that("behead() stops on non-distinct cells", {
 
 test_that("behead_if() works", {
   cells <- tibble::tribble(
-         ~X1, ~adult, ~juvenile,
-      "LION",    855,       677,
-      "male",    496,       322,
-    "female",    359,       355,
-     "TIGER",    690,       324,
-      "male",    381,       222,
-    "female",    309,       102
+        ~ X1, ~ adult, ~ juvenile,
+      "LION",     855,        677,
+      "male",     496,        322,
+    "female",     359,        355,
+     "TIGER",     690,        324,
+      "male",     381,        222,
+    "female",     309,        102
     )
   cells <- as_cells(cells, col_names = TRUE)
   x <-
@@ -164,19 +174,19 @@ test_that("behead_if() works", {
     behead("N", "age") %>%
     dplyr::select(species, sex, age, population = dbl)
   y <- tibble::tribble(
-    ~species,     ~sex,       ~age, ~population,
-      "LION",       NA,    "adult",         855,
-      "LION",   "male",    "adult",         496,
-      "LION", "female",    "adult",         359,
-      "LION",       NA, "juvenile",         677,
-      "LION",   "male", "juvenile",         322,
-      "LION", "female", "juvenile",         355,
-     "TIGER",       NA,    "adult",         690,
-     "TIGER",   "male",    "adult",         381,
-     "TIGER", "female",    "adult",         309,
-     "TIGER",       NA, "juvenile",         324,
-     "TIGER",   "male", "juvenile",         222,
-     "TIGER", "female", "juvenile",         102
+    ~ species,     ~ sex,       ~ age, ~ population,
+       "LION",        NA,     "adult",          855,
+       "LION",    "male",     "adult",          496,
+       "LION",  "female",     "adult",          359,
+       "LION",        NA,  "juvenile",          677,
+       "LION",    "male",  "juvenile",          322,
+       "LION",  "female",  "juvenile",          355,
+      "TIGER",        NA,     "adult",          690,
+      "TIGER",    "male",     "adult",          381,
+      "TIGER",  "female",     "adult",          309,
+      "TIGER",        NA,  "juvenile",          324,
+      "TIGER",    "male",  "juvenile",          222,
+      "TIGER",  "female",  "juvenile",          102
     )
   expect_equal(x, y)
 })

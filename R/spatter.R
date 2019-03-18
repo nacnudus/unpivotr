@@ -104,10 +104,11 @@ spatter.data.frame <- function(cells, key, values = NULL, types = data_type,
   key <- rlang::ensym(key)
   functions <- purrr::map(formatters, purrr::as_mapper)
   values <- rlang::enexpr(values)
-  new_colnames <- format(sort(unique(dplyr::pull(cells, !! key))),
-                         justify = "none",
-                         trim = TRUE)
-  if(is.null(values)) {
+  new_colnames <- format(sort(unique(dplyr::pull(cells, !!key))),
+    justify = "none",
+    trim = TRUE
+  )
+  if (is.null(values)) {
     types <- rlang::ensym(types)
     original_types <- NULL
   } else {
@@ -115,33 +116,37 @@ spatter.data.frame <- function(cells, key, values = NULL, types = data_type,
     types <- rlang::sym(".data_type")
     cells <-
       cells %>%
-      dplyr::mutate(.value = !! values) %>%
-      dplyr::mutate(!! types := ".value")
-    if(!(rlang::expr_text(values) %in% c(rlang::expr_text(key)))) {
-        cells <- dplyr::select(cells, - !! values)
+      dplyr::mutate(.value = !!values) %>%
+      dplyr::mutate(!!types := ".value")
+    if (!(rlang::expr_text(values) %in% c(rlang::expr_text(key)))) {
+      cells <- dplyr::select(cells, -!!values)
     }
   }
-  if(is.null(values)) {
+  if (is.null(values)) {
     drop_types <- rlang::expr_text(types) != rlang::expr_text(key)
   } else {
-    drop_types <- !(c(".data_type") %in% c(rlang::expr_text(key),
-                                           rlang::expr_text(values)))
+    drop_types <- !(c(".data_type") %in% c(
+      rlang::expr_text(key),
+      rlang::expr_text(values)
+    ))
   }
-  out <- pack(cells, types = !! types, name = ".value", drop_types = drop_types)
+  out <- pack(cells, types = !!types, name = ".value", drop_types = drop_types)
   # Calculate the positions of cols to be created by spread()
-  n_keys <- length(unique(dplyr::pull(cells, !! key)))
+  n_keys <- length(unique(dplyr::pull(cells, !!key)))
   n_cols <- ncol(out) - 2 + n_keys
   new_col_positions <- seq_len(n_keys) + (n_cols - n_keys)
   out <-
     out %>%
-    dplyr::mutate(.value = purrr::imap(.value,
-                                       maybe_format_list_element,
-                                       functions)) %>%
-    tidyr::spread(!! key, .value) %>%
+    dplyr::mutate(.value = purrr::imap(
+      .value,
+      maybe_format_list_element,
+      functions
+    )) %>%
+    tidyr::spread(!!key, .value) %>%
     dplyr::mutate_at(new_col_positions, concatenate)
-  if(!is.null(original_types) &&
-     rlang::expr_text(original_types) %in% colnames(out)) {
-    out <- dplyr::select(out, - !! original_types)
+  if (!is.null(original_types) &&
+    rlang::expr_text(original_types) %in% colnames(out)) {
+    out <- dplyr::select(out, -!!original_types)
   }
   first_colnames <- setdiff(colnames(out), new_colnames)
   last_colnames <- new_colnames

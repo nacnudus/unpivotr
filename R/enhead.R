@@ -94,11 +94,13 @@ enhead.data.frame <- function(data_cells, header_cells, direction,
   check_distinct(header_cells)
   if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
     do.call(direction, list(data_cells, header_cells))
-  } else if (direction %in% c("N", "E", "S", "W",
-                             "NNW", "NNE",
-                             "ENE", "ESE",
-                             "SSE", "SSW",
-                             "WSW", "WNW")) {
+  } else if (direction %in% c(
+    "N", "E", "S", "W",
+    "NNW", "NNE",
+    "ENE", "ESE",
+    "SSE", "SSW",
+    "WSW", "WNW"
+  )) {
     do.call(direction, list(data_cells, header_cells, drop))
   }
 }
@@ -107,16 +109,19 @@ N <- function(data_cells, header_cells, drop = TRUE) {
   check_header(header_cells)
   join <- ifelse(drop, dplyr::inner_join, dplyr::left_join)
   out <- join(data_cells, dplyr::select(header_cells, -row),
-                    by = "col",
-                    suffix = c(".data", ".header"))
+    by = "col",
+    suffix = c(".data", ".header")
+  )
   tibble::as_tibble(out)
 }
 
 E <- function(data_cells, header_cells, drop = TRUE) {
   check_header(header_cells)
   join <- ifelse(drop, dplyr::inner_join, dplyr::left_join)
-  out <- join(data_cells, dplyr::select(header_cells, -col), by = "row",
-                    suffix = c(".data", ".header"))
+  out <- join(data_cells, dplyr::select(header_cells, -col),
+    by = "row",
+    suffix = c(".data", ".header")
+  )
   tibble::as_tibble(out)
 }
 
@@ -149,18 +154,21 @@ corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   headers <-
     header_cells %>%
     partition(dplyr::distinct(header_cells, row, col),
-              corner,
-              nest = FALSE) %>%
+      corner,
+      nest = FALSE
+    ) %>%
     dplyr::select(-row, -col)
   datas <- partition(data_cells,
-                     dplyr::distinct(header_cells, row, col),
-                     corner,
-                     nest = FALSE,
-                     strict = FALSE)
+    dplyr::distinct(header_cells, row, col),
+    corner,
+    nest = FALSE,
+    strict = FALSE
+  )
   out <-
     dplyr::inner_join(datas, headers,
-                      by = c("corner_row", "corner_col"),
-                      suffix = c("", ".y")) %>%
+      by = c("corner_row", "corner_col"),
+      suffix = c("", ".y")
+    ) %>%
     dplyr::select(-corner_row, -corner_col)
   if (!drop) {
     remainder <- dplyr::anti_join(data_cells, out, by = c("row", "col"))
@@ -194,20 +202,26 @@ side_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   }
   # The domain of each header is up to (but not including) half-way between it
   # and the previous header
-  header_cells <- dplyr::mutate(header_cells,
-                                !! pos := corner_pos(!! pos, corner))
+  header_cells <- dplyr::mutate(
+    header_cells,
+    !!pos := corner_pos(!!pos, corner)
+  )
   rlang::as_function(corner)(data_cells, header_cells, drop = drop)
 }
 
 corner_pos <- function(cells, corner) {
   corner_names <- c("NNW", "NNE", "ENE", "ESE", "SSE", "SSW", "WSW", "WNW")
   corner_poss <- rep(c("col", "col", "row", "row"), 2L)
-  corner_looks <- c(rep(c(dplyr::lag, dplyr::lead), 2L),
-                    rep(c(dplyr::lead, dplyr::lag), 2L))
+  corner_looks <- c(
+    rep(c(dplyr::lag, dplyr::lead), 2L),
+    rep(c(dplyr::lead, dplyr::lag), 2L)
+  )
   corner_defaults <- c(1L, 16384L, 1L, 1048576L, 16384L, 1L, 1048576L, 1L)
   corner_coefs <- c(2L, -2L, 2L, -2L, -2L, 2L, -2L, 2L)
-  corner_extremes <- c(rep(c(floor, ceiling), 2L),
-                       rep(c(ceiling, floor), 2L))
+  corner_extremes <- c(
+    rep(c(floor, ceiling), 2L),
+    rep(c(ceiling, floor), 2L)
+  )
   corner_i <- match(corner, corner_names)
   pos <- rlang::sym(corner_poss[corner_i])
   look <- rlang::as_function(corner_looks[[corner_i]], ns_env("dplyr"))
@@ -221,30 +235,37 @@ corner_pos <- function(cells, corner) {
 
 check_header <- function(header_cells) {
   if (length(unique(header_cells$row)) > 1 & length(unique(header_cells$col)) > 1) {
-    stop("Multiple lines of headers are not supported in this way.",
-         "\n  Perhaps you meant to concatenate them together first,",
-         "\n  Or look at ?partition")
+    stop(
+      "Multiple lines of headers are not supported in this way.",
+      "\n  Perhaps you meant to concatenate them together first,",
+      "\n  Or look at ?partition"
+    )
   }
 }
 
 # Check that a given direction is a supported compass direction
 check_direction_enhead <- function(direction_string) {
-  directions <- c("NNW", "N", "NNE",
-                  "ENE", "E", "ESE",
-                  "SSE", "S", "SSW",
-                  "WSW", "W", "WNW",
-                  "ABOVE", "LEFT", "RIGHT", "BELOW")
+  directions <- c(
+    "NNW", "N", "NNE",
+    "ENE", "E", "ESE",
+    "SSE", "S", "SSW",
+    "WSW", "W", "WNW",
+    "ABOVE", "LEFT", "RIGHT", "BELOW"
+  )
   if (!(direction_string %in% directions)) {
-    stop("`direction` must be one of \"",
-         paste(directions, collapse = "\", \""),
-         "\"")
+    stop(
+      "`direction` must be one of \"",
+      paste(directions, collapse = "\", \""),
+      "\""
+    )
   }
 }
 
 check_distinct <- function(cells) {
   if (dplyr::n_distinct(dplyr::select(cells, row, col)) != nrow(cells)) {
     stop("Row and column numbers must be distinct.",
-         "\n  Perhaps you meant to use a single sheet.",
-         call. = FALSE)
+      "\n  Perhaps you meant to use a single sheet.",
+      call. = FALSE
+    )
   }
 }

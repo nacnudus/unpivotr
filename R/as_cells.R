@@ -95,40 +95,51 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
   ncols <- ncol(x)
   types <- purrr::map_chr(x, pillar::type_sum)
   # Spread cells into different columns by data type
-  out <- tibble::tibble(row = rep.int(seq_len(nrow(x)), ncols),
-                        col = rep(seq_len(ncol(x)), each = nrows),
-                        value = values,
-                        type = rep(types, each = nrows),
-                        data_type = type)
+  out <- tibble::tibble(
+    row = rep.int(seq_len(nrow(x)), ncols),
+    col = rep(seq_len(ncol(x)), each = nrows),
+    value = values,
+    type = rep(types, each = nrows),
+    data_type = type
+  )
   out <- tidyr::spread(out, type, value)
   if (row_names) {
     rnames <- row.names(x)
     out$col <- out$col + 1L
-    out <- dplyr::bind_rows(out,
-                            tibble::tibble(col = 1L,
-                                           row = seq_along(rnames),
-                                           chr = rlang::as_list(rnames),
-                                           data_type = "chr"))
+    out <- dplyr::bind_rows(
+      out,
+      tibble::tibble(
+        col = 1L,
+        row = seq_along(rnames),
+        chr = rlang::as_list(rnames),
+        data_type = "chr"
+      )
+    )
   }
   if (col_names) {
     cnames <- colnames(x)
     out$row <- out$row + 1L
-    out <- dplyr::bind_rows(out,
-                            tibble::tibble(row = 1L,
-                                           col = seq_along(cnames) + row_names,
-                                           chr = rlang::as_list(cnames),
-                                           data_type = "chr"))
+    out <- dplyr::bind_rows(
+      out,
+      tibble::tibble(
+        row = 1L,
+        col = seq_along(cnames) + row_names,
+        chr = rlang::as_list(cnames),
+        data_type = "chr"
+      )
+    )
   }
   # Convert non-list-columns to vectors
   out <- dplyr::mutate_at(out,
-                          tidyselect::vars_select(
-                            names(out),
-                            dplyr::everything(),
-                            .exclude = c("row", "col", "data_type")
-                          ),
-                          concatenate,
-                          combine_factors = FALSE,
-                          fill_factor_na = FALSE)
+    tidyselect::vars_select(
+      names(out),
+      dplyr::everything(),
+      .exclude = c("row", "col", "data_type")
+    ),
+    concatenate,
+    combine_factors = FALSE,
+    fill_factor_na = FALSE
+  )
   # Append row and column names
   out <- dplyr::select(out, row, col, data_type, sort(colnames(out)))
   dplyr::arrange(out, col, row)
@@ -140,11 +151,14 @@ grow_matrix <- function(x, i, j, value) {
   if (any(grow)) {
     new_i <- if (grow[1]) dim_x[1] * 2 else dim_x[1]
     new_j <- if (grow[2]) dim_x[2] * 2 else dim_x[2]
-    x <- do.call(what = `[<-`,
-                 args = list(matrix(value, new_i, new_j),
-                             i = seq_len(dim_x[1]),
-                             j = seq_len(dim_x[2]),
-                             value = x))
+    x <- do.call(
+      what = `[<-`,
+      args = list(matrix(value, new_i, new_j),
+        i = seq_len(dim_x[1]),
+        j = seq_len(dim_x[2]),
+        value = x
+      )
+    )
     return(grow_matrix(x, i, j, value))
   }
   x
@@ -168,7 +182,8 @@ as_cells.xml_node <- function(x, row_names = FALSE, col_names = FALSE) {
     if (is.null(out[i][[1]])) out[i][[1]] <- vector(mode = "character") # Create a row
     j <- 0
     cells <- xml2::xml_find_all(row_i,
-                               xpath = ".//*[(name()='th' or name()='td') and not(ancestor::th|ancestor::td)]")
+      xpath = ".//*[(name()='th' or name()='td') and not(ancestor::th|ancestor::td)]"
+    )
     for (cell in cells) {
       j <- j + 1
       rowspan <- xml2::xml_attr(cell, "rowspan")
@@ -185,16 +200,21 @@ as_cells.xml_node <- function(x, row_names = FALSE, col_names = FALSE) {
       # Assign the html of the cell
       out[[i]][j] <- as.character(cell)
       # Mark all used cells, including all parts of merged cells
-        scratch[seq(i, length.out = rowspan),
-                seq(j, length.out = colspan)] <- TRUE
+      scratch[
+        seq(i, length.out = rowspan),
+        seq(j, length.out = colspan)
+      ] <- TRUE
     }
   }
   # Give all rows the same number of columns
   maxcols <- max(purrr::map_int(out, length))
-  out <- purrr::map(out,
-                  function(.x) {
-                    length(.x) <- maxcols
-                    .x})
+  out <- purrr::map(
+    out,
+    function(.x) {
+      length(.x) <- maxcols
+      .x
+    }
+  )
   # Convert to a tibble, and then cells
   out <- purrr::transpose(out)
   out <- purrr::map(out, purrr::flatten_chr)
@@ -208,7 +228,7 @@ as_cells.xml_node <- function(x, row_names = FALSE, col_names = FALSE) {
 }
 
 #' @export
-as_cells.xml_document <- function (x, row_names = FALSE, col_names = FALSE) {
+as_cells.xml_document <- function(x, row_names = FALSE, col_names = FALSE) {
   tables <- xml2::xml_find_all(x, xpath = "//table[not(ancestor::table)]")
   lapply(tables, as_cells)
 }
