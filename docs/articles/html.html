@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1>HTML Tables</h1>
                         <h4 class="author">Duncan Garmonsway</h4>
             
-            <h4 class="date">2019-01-02</h4>
+            <h4 class="date">2019-03-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/nacnudus/unpivotr/blob/master/vignettes/html.Rmd"><code>vignettes/html.Rmd</code></a></small>
       <div class="hidden name"><code>html.Rmd</code></div>
@@ -357,7 +357,7 @@
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># The html of the table inside a cell</span></a>
 <a class="sourceLine" id="cb28-2" title="2">cell &lt;-</a>
 <a class="sourceLine" id="cb28-3" title="3"><span class="st">  </span>x <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb28-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, col <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(row <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, col <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb28-5" title="5"><span class="st">  </span>.<span class="op">$</span>html</a>
 <a class="sourceLine" id="cb28-6" title="6">cell</a></code></pre></div>
 <pre><code>## [1] "&lt;td&gt;\n          &lt;table&gt;\n&lt;tr&gt;\n&lt;th&gt;Header (2, 2)(1, 1)&lt;/th&gt;\n              &lt;th&gt;Header (2, 2)(1, 2)&lt;/th&gt;\n            &lt;/tr&gt;\n&lt;tr&gt;\n&lt;td&gt;cell (2, 2)(2, 1)&lt;/td&gt;\n              &lt;td&gt;cell (2, 2)(2, 1)&lt;/td&gt;\n            &lt;/tr&gt;\n&lt;/table&gt;\n&lt;/td&gt;"</code></pre>
@@ -428,7 +428,7 @@
 <a class="sourceLine" id="cb33-18" title="18"><span class="st">  </span><span class="kw">read_html</span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb33-19" title="19"><span class="st">  </span><span class="kw"><a href="../reference/as_cells.html">as_cells</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb33-20" title="20"><span class="st">  </span>.[[<span class="dv">1</span>]] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb33-21" title="21"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">text =</span> purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(html, cell_text),</a>
+<a class="sourceLine" id="cb33-21" title="21"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">text =</span> purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(html, cell_text),</a>
 <a class="sourceLine" id="cb33-22" title="22">         <span class="dt">url =</span> purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(html, cell_url)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb33-23" title="23"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/unnest.html">unnest</a></span>(text, url)</a></code></pre></div>
 <pre><code>## # A tibble: 8 x 6

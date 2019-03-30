@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.5.1</span>
       </span>
     </div>
 
@@ -126,6 +126,15 @@
       <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="unpivotr-051" class="section level1">
+<h1 class="page-header">
+<a href="#unpivotr-051" class="anchor"></a>unpivotr 0.5.1<small> Unreleased </small>
+</h1>
+<ul>
+<li>Patch for tibble <code>.name_repair</code> compatibility (<a href='https://github.com/nacnudus/unpivotr/issues/2144'>#2144</a> <a href='http://github.com/krlmlr'>@krlmlr</a>)</li>
+<li>Patch to switch to <code>tidyselect</code> from <code>dplyr</code> functions.</li>
+</ul>
+</div>
     <div id="unpivotr-050" class="section level1">
 <h1 class="page-header">
 <a href="#unpivotr-050" class="anchor"></a>unpivotr 0.5.0<small> 2019-01-02 </small>
@@ -135,7 +144,7 @@
 <a href="#new-features" class="anchor"></a>New features</h2>
 <ul>
 <li>
-<code><a href="../reference/behead.html">behead_if()</a></code> is for tiered headers within the same row or column. It takes filter functions similarly to <code><a href="http://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> to decide which cells to treat as headers, and can be applied more than once to the same row or column of headers until every tier has been dealt with.</li>
+<code><a href="../reference/behead.html">behead_if()</a></code> is for tiered headers within the same row or column. It takes filter functions similarly to <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code> to decide which cells to treat as headers, and can be applied more than once to the same row or column of headers until every tier has been dealt with.</li>
 <li>
 <code><a href="../reference/merge_cells.html">merge_rows()</a></code> and <code><a href="../reference/merge_cells.html">merge_cols()</a></code> combines header text when it is split over multiple cells.</li>
 </ul>
@@ -234,7 +243,7 @@
 <a href="#unpivotr-030" class="anchor"></a>unpivotr 0.3.0<small> 2017-12-03 </small>
 </h1>
 <ul>
-<li>Made compatible with tidyxl version 1.0.0 (avoids <code><a href="http://dplyr.tidyverse.org/reference/distinct.html">dplyr::distinct()</a></code>, which doesn’t handle list columns).</li>
+<li>Made compatible with tidyxl version 1.0.0 (avoids <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">dplyr::distinct()</a></code>, which doesn’t handle list columns).</li>
 <li>Updated to use the new <code>dplyr</code>/<code>rlang</code> combination instead of the old <code>dplyr</code>/<code>lazyeval</code> one.</li>
 </ul>
 </div>
@@ -249,7 +258,7 @@
 <li>There is a new <code><a href="../reference/tidy_table.html">tidy_table()</a></code> method and vignette for HTML.</li>
 <li>There is no <code><a href="../reference/tidy_table.html">tidy_table()</a></code> method for matrices. Convert matrices to data.frames first, choosing what to do with row and column names.</li>
 <li>
-<code><a href="../reference/tidy_table.html">tidy_table()</a></code> returns only relevant columns, according to the data types of the columns in the given data frame. It uses <code><a href="http://www.rdocumentation.org/packages/tibble/topics/reexports">tibble::type_sum()</a></code> to determine the column type and to name the columns, so whereas characters used to be returned in a column called <code>character</code>, they are now returned in a column called <code>chr</code>. The full list of column names is in <code><a href="../reference/tidy_table.html">?tidy_table</a></code> and is <code>chr</code>, <code>cplx</code>, <code>cplx</code>, <code>dbl</code>, <code>fctr</code>, <code>int</code>, <code>lgl</code>, <code>list</code>. The columns <code>fctr</code> and <code>list</code> are list-columns, where each element is itself a list. This means that factors with different levels are kept separate. For HTML tables, an <code>html</code> column is returned containing the standalone HTML of each cell.</li>
+<code><a href="../reference/tidy_table.html">tidy_table()</a></code> returns only relevant columns, according to the data types of the columns in the given data frame. It uses <code><a href="https://tibble.tidyverse.org/reference/reexports.html">tibble::type_sum()</a></code> to determine the column type and to name the columns, so whereas characters used to be returned in a column called <code>character</code>, they are now returned in a column called <code>chr</code>. The full list of column names is in <code><a href="../reference/tidy_table.html">?tidy_table</a></code> and is <code>chr</code>, <code>cplx</code>, <code>cplx</code>, <code>dbl</code>, <code>fctr</code>, <code>int</code>, <code>lgl</code>, <code>list</code>. The columns <code>fctr</code> and <code>list</code> are list-columns, where each element is itself a list. This means that factors with different levels are kept separate. For HTML tables, an <code>html</code> column is returned containing the standalone HTML of each cell.</li>
 <li>Both <code>rowname</code> and <code>colname</code> arguments to <code><a href="../reference/tidy_table.html">tidy_table()</a></code> now default to <code>FALSE</code>.</li>
 <li>All functions consistently return a <code>tibble</code>.</li>
 <li>Some error messages are more helpful.</li>
@@ -294,6 +303,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#unpivotr-051">0.5.1</a></li>
         <li><a href="#unpivotr-050">0.5.0</a></li>
         <li><a href="#unpivotr-040">0.4.0</a></li>
         <li><a href="#unpivotr-031">0.3.1</a></li>
