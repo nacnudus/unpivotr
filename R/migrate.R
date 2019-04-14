@@ -8,12 +8,12 @@
 #'
 #' @name migrate
 #' @export
-#' @examples
 
 migrate <- function(orientated_df){
 
   orientated_df_nested <-
     orientated_df %>%
+    filter(!is.na(.orientation)) %>% 
     group_by(.orientation, .header_group) %>%
     mutate(value = coalesce(character,as.character(numeric))) %>%
     select(row,col,value,.orientation,.header_group) %>%
@@ -47,7 +47,6 @@ migrate <- function(orientated_df){
 #' @param values the central values of the table
 #'
 #' @name enhead_tabledata
-#' @examples
 
 
 enhead_tabledata <- function(header_data, direction,

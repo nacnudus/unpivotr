@@ -11,7 +11,6 @@
 #'
 #' @name orientate
 #' @export
-#' @examples
 
 orientate <- function(tidyxl_df, orientations){
   orientations_df <-

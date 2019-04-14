@@ -6,7 +6,6 @@
 #' @param range  a string representing a range in standard excel format. For example, "A4:Z15"
 #'
 #' @name get_range_df
-#' @examples
 
 get_range_df <- function(range){
 
@@ -34,7 +33,6 @@ get_range_df <- function(range){
 #' @param range  a string representing a range in standard excel format. For example, "A4:B15, C11:G22"
 #'
 #' @name get_range_dfs
-#' @examples
 
 get_range_dfs <- function(range){
 
