@@ -16,7 +16,7 @@ migrate <- function(orientated_df){
     filter(!is.na(.orientation)) %>% 
     group_by(.orientation, .header_group) %>%
     mutate(value = coalesce(character,as.character(numeric))) %>%
-    select(row,col,value,.orientation,.header_group) %>%
+    select(row,col,.value,.orientation,.header_group) %>%
     nest()
   
   data_row_index <- which(orientated_df_nested$.orientation == "data")
@@ -27,7 +27,7 @@ migrate <- function(orientated_df){
   header_dfs <- 
     map2(header_dfs,header_names, function(header_df, header_name){
       header_df %>% 
-        rename(!!sym(header_name) := value)
+        rename(!!sym(header_name) := .value)
     })
   
   list(
@@ -36,7 +36,7 @@ migrate <- function(orientated_df){
     pmap(function(x,y){
       enhead_tabledata(header_data = x, direction = y,
                        values = orientated_df_nested$data[[data_row_index]])} ) %>%
-    reduce(full_join,by = c("row", "col","value")) 
+    reduce(full_join,by = c("row", "col",".value")) 
   
 
   

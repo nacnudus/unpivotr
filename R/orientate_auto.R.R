@@ -89,7 +89,7 @@ orientate_auto <-
     if(length(col_groups) > 0){df_list_to_row_bind <- df_list_to_row_bind %>% append(list(col_groups))}
     if(length(row_groups) > 0){df_list_to_row_bind <- df_list_to_row_bind %>% append(list(row_groups))}
 
-    to_join <- df_list_to_row_bind  %>% append(list(tabledata)) %>% bind_rows() %>% select(-comment, -value)
+    to_join <- df_list_to_row_bind  %>% append(list(tabledata)) %>% bind_rows() %>% select(-comment) %>% rename(.value = value)
 
     sheet %>% left_join(to_join)
 

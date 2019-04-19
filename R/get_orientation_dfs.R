@@ -44,5 +44,5 @@ get_orientations_df <- function(orientations){
     mutate(.header_group_name = paste(.header_group,str_pad(row_number(),width = 2,side = "left",pad = "0" ), sep = "_" )) %>%
     ungroup %>%
     select(data, .header_group = .header_group_name) %>%
-    unnest()
+    unnest() 
 }

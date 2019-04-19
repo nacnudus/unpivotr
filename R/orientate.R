@@ -13,12 +13,19 @@
 #' @export
 
 orientate <- function(tidyxl_df, orientations){
+
   orientations_df <-
     orientations %>%
-    get_orientations_df()
-
+    get_orientations_df() 
+  
   tidyxl_df %>%
-    left_join(orientations_df, by = c("row", "col"))
-
+    left_join(orientations_df, by = c("row", "col")) %>% 
+    mutate(.value = coalesce(
+      as.character(numeric),
+      as.character(character),
+      as.character(logical),
+      as.character(date)
+    )) 
+  
 }
 

@@ -282,8 +282,6 @@ E <- function(data_cells, header_cells, drop = TRUE) {
   tibble::as_tibble(out)
 }
 
-S <- N
-W <- E
 
 NNW <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "top_left", drop)
@@ -301,10 +299,6 @@ SSW <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "bottom_left", drop)
 }
 
-WNW <- NNW
-ENE <- NNE
-ESE <- SSE
-WSW <- SSW
 
 corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   check_header(header_cells)
@@ -423,7 +417,6 @@ check_distinct <- function(cells) {
     )
   }
 }
-
 
 
 fill_in_blanks <- function(sheet) {
@@ -625,7 +618,7 @@ get_orientation_df <- function(orientation){
 
 
 get_orientations_df <- function(orientations){
-
+ 
   o_length <- length(orientations)
 
   tibble(.header_group_num = c(1:o_length)) %>%
@@ -933,7 +926,7 @@ merge_cols.data.frame <- function(cells, cols, values, collapse = " ") {
 }
 
 migrate <- function(orientated_df){
-  
+
   orientated_df_nested <-
     orientated_df %>%
     filter(!is.na(.orientation)) %>% 
@@ -941,12 +934,12 @@ migrate <- function(orientated_df){
     mutate(value = coalesce(character,as.character(numeric))) %>%
     select(row,col,value,.orientation,.header_group) %>%
     nest()
-  
+
   data_row_index <- which(orientated_df_nested$.orientation == "data")
   header_dfs   <- orientated_df_nested$data[orientated_df_nested$.orientation != "data"]
   orientations <- orientated_df_nested$.orientation[orientated_df_nested$.orientation != "data"]
   header_names <- orientated_df_nested$.header_group[orientated_df_nested$.orientation != "data"]
-  
+
   header_dfs <- 
     map2(header_dfs,header_names, function(header_df, header_name){
       header_df %>% 
@@ -960,11 +953,12 @@ migrate <- function(orientated_df){
       enhead_tabledata(header_data = x, direction = y,
                        values = orientated_df_nested$data[[data_row_index]])} ) %>%
     reduce(full_join,by = c("row", "col")) 
+
+  enhead_tabledata(header_data = x, direction = y,header_label = z,
+                   values = orientated_df_nested$data[[data_row_index]])
   
 
-  
 }
-
 
 
 
@@ -974,7 +968,6 @@ enhead_tabledata <- function(header_data, direction, values = tabledata) {
     header_cells = header_data,
     direction = direction) 
 }
-
 
 
 orientate_auto <-
@@ -1053,7 +1046,7 @@ orientate_auto <-
     if(length(col_groups) > 0){df_list_to_row_bind <- df_list_to_row_bind %>% append(list(col_groups))}
     if(length(row_groups) > 0){df_list_to_row_bind <- df_list_to_row_bind %>% append(list(row_groups))}
 
-    to_join <- df_list_to_row_bind  %>% append(list(tabledata)) %>% bind_rows() %>% select(-comment, -value)
+    to_join <- df_list_to_row_bind  %>% append(list(tabledata)) %>% bind_rows() %>% select(-comment) %>% rename(.value = value)
 
     sheet %>% left_join(to_join)
 
@@ -1329,12 +1322,6 @@ unpivotr_example <- function(path = NULL) {
   }
 }
 
-
-
-
-
-"_PACKAGE"
-magrittr::`%>%`
 
 
 
