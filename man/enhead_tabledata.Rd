@@ -4,18 +4,18 @@
 \alias{enhead_tabledata}
 \title{A wrapper to enhead.}
 \usage{
-enhead_tabledata(header_data, direction, header_label,
-  values = tabledata)
+enhead_tabledata(header_data, direction, values = tabledata)
 }
 \arguments{
 \item{header_data}{a list of data frames that are header subsets from the original data frame produced by tidyxl.}
 
 \item{direction}{a vector of orientations}
 
-\item{header_label}{a vector of names for variables associated with each header group.}
-
 \item{values}{the central values of the table}
+
+\item{header_label}{a vector of names for variables associated with each header group.}
 }
 \description{
 This function is used by \link[unpivotr:migrate]{unpivotr::migrate} to create a tidy data frame using a \code{pmap} style workflow.
+d
 }
