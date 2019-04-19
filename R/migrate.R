@@ -36,7 +36,7 @@ migrate <- function(orientated_df){
     pmap(function(x,y){
       enhead_tabledata(header_data = x, direction = y,
                        values = orientated_df_nested$data[[data_row_index]])} ) %>%
-    reduce(full_join,by = c("row", "col",".value")) 
+    reduce(full_join,by = c("row", "col",".value"))  
   
 
   
