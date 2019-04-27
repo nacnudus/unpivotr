@@ -19,7 +19,6 @@ get_tabledata <- function(sheet, value_ref) {
       col <= value_ref$max_col,
       col >= value_ref$min_col
     ) %>%
-    filter(is.na(merged)) %>%
     mutate(value = coalesce(as.character(numeric), as.character(character), as.character(logical), as.character(date))) %>%
     select(row, col, value, comment)
 }

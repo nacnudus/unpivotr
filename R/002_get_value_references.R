@@ -29,6 +29,6 @@ get_value_references <- function(sheet, manual_value_references) {
       gather(key, value, -dimension) %>%
       unite(label, key, dimension, sep = "_") %>%
       spread(label, value )
-
+    
   }
 }

@@ -9,7 +9,7 @@
 #' @name migrate
 #' @export
 
-migrate <- function(orientated_df){
+migrate <- function(orientated_df, numeric_value = FALSE){
   
   orientated_df_nested <-
     orientated_df %>%
@@ -30,6 +30,8 @@ migrate <- function(orientated_df){
         rename(!!sym(header_name) := .value)
     })
   
+  
+  tidy_df <- 
   list(
     x = header_dfs,
     y = orientations) %>%
@@ -37,6 +39,15 @@ migrate <- function(orientated_df){
       enhead_tabledata(header_data = x, direction = y,
                        values = orientated_df_nested$data[[data_row_index]])} ) %>%
     reduce(full_join,by = c("row", "col",".value"))  
+  
+  if(numeric_value){
+    tidy_df <- 
+    tidy_df %>% 
+      mutate(.value = as.numeric(.value))
+    
+  }
+  
+  tidy_df
   
 
   
