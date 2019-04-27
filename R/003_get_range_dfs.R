@@ -35,7 +35,7 @@ get_range_df <- function(range){
 #' @name get_range_dfs
 
 get_range_dfs <- function(range){
-
+  
   range %>%
     str_split(",") %>%
     unlist %>%

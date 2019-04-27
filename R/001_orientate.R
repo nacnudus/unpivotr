@@ -13,7 +13,7 @@
 #' @export
 
 orientate <- function(tidyxl_df, orientations){
-
+  
   orientations_df <-
     orientations %>%
     get_orientations_df() 

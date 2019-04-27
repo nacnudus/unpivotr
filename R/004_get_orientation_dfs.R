@@ -15,7 +15,7 @@ get_orientation_df <- function(orientation){
   names(orientation) %>%
     get_range_dfs() %>%
     mutate(.orientation = orientation)
-
+  
 }
 
 
@@ -32,9 +32,9 @@ get_orientation_df <- function(orientation){
 #'
 #'
 get_orientations_df <- function(orientations){
-
+  
   o_length <- length(orientations)
-
+  
   tibble(.header_group_num = c(1:o_length)) %>%
     mutate(data = .header_group_num %>%
              map({ ~ orientations[.x] %>% get_orientation_df})) %>%

@@ -20,7 +20,7 @@ get_meta_df <- function(sheet, value_ref, col_groups, formats) {
   # formats <- master_df_01$formats[[100]]
   # col_groups <- master_df_01$col_groups[[100]]
   # Get cells
-  meta_df <-
+  header_df <-
     sheet %>%
     filter(
       !is_blank,
@@ -29,66 +29,61 @@ get_meta_df <- function(sheet, value_ref, col_groups, formats) {
     )
 
 
-  # Get cell format information
-  meta_df <-
-    meta_df %>%
+  # Get format information ----
+  
+  header_df <-
+    header_df %>%
     mutate(col_temp = col) %>%
-    mutate(row_temp = row) %>%
-    mutate(indent = local_format_id %>%
-      map_int(possibly({
-        ~ formats$local$alignment[["indent"]][[.x]]
-      }, 0L)) %>%
-      unlist()) %>%
-    mutate(bold = local_format_id %>%
-      map_lgl(possibly({
-        ~ formats$local$font[["bold"]][[.x]]
-      }, F)) %>%
-      unlist()) %>%
-    mutate(italic = local_format_id %>%
-      map_lgl(possibly({
-        ~ formats$local$font[["italic"]][[.x]]
-      }, F)) %>%
-      unlist())
+    mutate(row_temp = row)
 
 
   # Name columns
-  meta_df <-
-    meta_df %>%
-    group_by(col_temp, row_temp, indent, bold, italic) %>%
-    nest() %>%
-    ungroup() %>%
-    mutate(col_no_name = col_temp - min(col_temp) + 1) %>%
-    mutate(row_no_name = row_temp - min(row_temp) + 1) %>%
-    mutate(header_name = paste0(
-      "row_", str_pad(row_no_name, 2, "left", "0"),
-      "_col_", str_pad(col_no_name, 2, "left", "0"),
-      "_in", indent,
-      "_b", as.integer(bold),
-      "_it", as.integer(italic)
-    )) %>%
-    mutate(meta_data = paste0("meta_data_", str_pad(row_number(), 2, side = "left", "0"))) %>%
-    mutate(data = map2(
-      data, meta_data,
-      function(data, meta_data) {
-        temp_df <- data %>% select(row, col, character)
-        temp_df[[meta_data]] <- temp_df$character
-        temp_df %>% select(-character)
-      }
-    ))
+header_df <-
+  header_df %>% 
+  filter(!(is_blank & is.na(character))) %>% 
+  group_by(col_temp,row_temp) %>% 
+  nest() %>%
+  ungroup()  
 
+header_df <-
+  header_df %>% 
+  mutate(row_no_name = row_temp - min(row_temp) + 1) %>%
+  mutate(header_label = paste0("header_meta_", 
+                               str_pad(row_number(), 2, side = "left", "0")))
+
+# Create and name headers ----
+header_df <-
+  header_df %>%
+  mutate(data = map2(
+    data, header_label,
+    function(data, header_label) {
+      temp_df <- data %>%
+        mutate(value = coalesce(
+          as.character(numeric),
+          as.character(character),
+          as.character(logical),
+          as.character(date)
+        )) %>%
+        select(row, col, value)
+      temp_df[[header_label]] <- temp_df$value
+      temp_df %>% select(-value)
+    }
+  ))      
+         
+         
 
   # Set direction
-  meta_df <-
-    meta_df %>%
+header_df <-
+    header_df %>%
     mutate(direction = "WNW")
 
-    # Add information
-    meta_df %>%
-    dplyr::select(meta_data, direction, data, indent, bold, italic) %>%
-    mutate(data_summary = data %>%
-      map(~ .x %>% summarise(
-        min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
-        min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
-      ))) %>%
-    unnest(data_summary)
+
+# Add information to output df ----
+header_df %>%
+  mutate(data_summary = data %>%
+           map(~ .x %>% summarise(
+             min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
+             min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
+           ))) %>%
+  unnest(data_summary) 
 }

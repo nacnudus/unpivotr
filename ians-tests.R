@@ -294,11 +294,12 @@ sheet_name <- "pivot-header-within-data"
 testsheet_df <-  xlsx_cells(path = workbook_path,sheets = sheet_name)
 formats <-  xlsx_formats(workbook_path)
 
+
 get_table <- function(x){orientate_auto(sheet = testsheet_df, formats = formats,
                                         table_range = x,col_header_fill = "style") %>%  migrate}
 
 "B2:E7,B8:E13,B14:E19,B20:E25" %>% strsplit(",") %>% unlist %>% 
-  map_dfr(get_table )  %>% View
+  map_dfr(get_table )  
 
 
 #----------------------------------------------------------------------
@@ -318,8 +319,8 @@ data_ranges = "B3:C4,F3:G4,B8:C9,F8:G9" %>% strsplit(",") %>% unlist
 
 get_table <- function(table, values){
   orientate_auto(sheet = testsheet_df, formats = formats,
-                 table_range = table,manual_value_references = values) %>%  
-    migrate  
+                 table_range = table,manual_value_references = values,
+                 keep_meta_data = TRUE) %>%  migrate  
 }
 
 map2_dfr(table_ranges,data_ranges,get_table)

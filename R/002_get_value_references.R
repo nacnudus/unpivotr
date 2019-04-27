@@ -20,9 +20,9 @@ get_value_references <- function(sheet, manual_value_references) {
       )
   } else {
     # Use manual values
-
+    
     cell_ref_df <- as_tibble(cellranger::as.cell_limits(manual_value_references))
-
+    
     cell_ref_df[,1:2] %>%
       set_names(c("min","max")) %>%
       mutate(dimension = c("row","col")) %>%

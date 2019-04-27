@@ -22,7 +22,8 @@ orientate_auto <-
            col_header_fill = "local_format_id",
            row_header_fill = "none",
            default_col_header_direction = "N",
-           default_row_header_direction = "W") {
+           default_row_header_direction = "W",
+           keep_meta_data = FALSE) {
     
     
 
@@ -150,6 +151,17 @@ orientate_auto <-
     vars_to_combine <- names(row_groups)[!names(row_groups) %in% c(".header_group",".orientation","col","row")]
     row_groups <- row_groups %>% mutate(value = coalesce(!!!syms(vars_to_combine))) %>% select(-vars_to_combine)
     }
+    
+    # Prepare meta groups for joining ----
+    
+    if(nrow(meta_df) > 0){
+      meta_df <- meta_df %>% rename(.orientation = direction, .header_group = header_label) %>% select(.header_group,.orientation,data) %>% unnest()
+      vars_to_combine <- names(meta_df)[!names(meta_df) %in% c(".header_group",".orientation","col","row")]
+      meta_df <- meta_df %>% mutate(value = coalesce(!!!syms(vars_to_combine))) %>% select(-vars_to_combine)
+    }
+    
+    
+    
     # Prepare tabledata for joining ----
     tabledata <- tabledata %>% mutate(.header_group = "data", .orientation = "data")
     # Prepare join list ----
@@ -157,6 +169,7 @@ orientate_auto <-
 
     if(length(col_groups) > 0){df_list_to_row_bind <- df_list_to_row_bind %>% append(list(col_groups))}
     if(length(row_groups) > 0){df_list_to_row_bind <- df_list_to_row_bind %>% append(list(row_groups))}
+    if(length(meta_df) > 0 & keep_meta_data){df_list_to_row_bind <- df_list_to_row_bind %>% append(list(meta_df))}
 
     to_join <- df_list_to_row_bind  %>% append(list(tabledata)) %>% bind_rows() %>% select(-comment) %>% rename(.value = value)
 
