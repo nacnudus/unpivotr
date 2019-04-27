@@ -4,7 +4,7 @@
 \alias{migrate}
 \title{Transform a tidyxl data frame with orientations to a tidy data frame that has a column for each header label.}
 \usage{
-migrate(orientated_df)
+migrate(orientated_df, numeric_value = FALSE)
 }
 \arguments{
 \item{orientated_df}{a tidyxl data frame with a \code{.orientation} and \code{.header.group} columns}

@@ -5,8 +5,8 @@
 \title{Get Rowname DF}
 \usage{
 get_row_groups(sheet, value_ref, col_groups, formats, added_row_groups,
-  ignore_bolding = FALSE, ignore_indenting = FALSE,
-  ignore_italics = FALSE)
+  group_row_headers_by = c("bolding", "italics", "indenting"),
+  row_header_fill = "none", default_row_header_direction = "W")
 }
 \arguments{
 \item{sheet}{sheet object read in by \code{tidyxl::xlsx_cells}}

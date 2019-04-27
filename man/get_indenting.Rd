@@ -5,7 +5,7 @@
 \title{Get formats
 Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.}
 \usage{
-get_indenting(format_id, sheet_format)
+get_indenting(format_id = local_format_id, sheet_format = formats)
 }
 \arguments{
 \item{path}{path to .xlsx file}

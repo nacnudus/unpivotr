@@ -4,8 +4,10 @@
 \alias{get_col_groups}
 \title{Get column groups}
 \usage{
-get_col_groups(sheet, value_ref, formats, ignore_bolding = FALSE,
-  ignore_indenting = FALSE, ignore_italics = FALSE)
+get_col_groups(sheet, value_ref, formats,
+  group_col_headers_by = c("bolding"),
+  col_header_fill = "local_format_id",
+  default_col_header_direction = default_col_header_direction)
 }
 \arguments{
 \item{sheet}{sheet object read in by \code{tidyxl::xlsx_cells}}
