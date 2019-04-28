@@ -17,18 +17,17 @@ options(width=100)
 
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
+library(devtools)
+
+install_github("nacnudus/unpivotr",ref = "ian")
+library(unpivotr)
+
 library(magick)
-library("devtools")
-library("roxygen2")
-library("testthat")
 library(magrittr)
 library(tidyverse)
-library(cellranger)
-library(rlang)
-library("tidyxl")
+library(tidyxl)
 library(stringr)
 
-devtools::load_all("C:/Users/Ian/Data/r-projects/unpivotr-dev/unpivotr")
 ```
 
 ### New functions
