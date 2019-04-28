@@ -1,0 +1,351 @@
+---
+title: "Examples"
+author: "Ian Moran"
+date: "28/04/2019"
+output:   
+  html_document:
+    keep_html: true
+---
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(tibble.print_min = 100, tibble.print_max = 100)
+options(width=100)
+```
+
+#### Setup packages 
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(magick)
+library("devtools")
+library("roxygen2")
+library("testthat")
+library(magrittr)
+library(tidyverse)
+library(cellranger)
+library(rlang)
+library("tidyxl")
+library(stringr)
+
+devtools::load_all("C:/Users/Ian/Data/r-projects/unpivotr-dev/unpivotr")
+```
+
+## Spreadsheets from worked-examples.xlsx
+
+#### clean
+
+
+```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+magick::image_read("https://unpivotr.s3.amazonaws.com/worked-examples_clean.png")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+workbook_path <- unpivotr_example("worked-examples.xlsx")
+sheet_name <- "clean"
+
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+formats <- xlsx_formats(workbook_path)
+
+orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+
+
+#### notes
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "notes"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df, formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### highlights
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "highlights"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### annotations
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "annotations"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### combined-highlights
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "combined-highlights"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### highlight-hierarchy
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "highlight-hierarchy"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <-
+  orientate_auto(
+    sheet = testsheet_df, formats = formats,
+    group_row_headers_by = "none"
+  )
+
+orientated_df_auto %>% migrate()
+```
+
+#### sentinels
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "sentinels"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <-
+  orientate_auto(
+    sheet = testsheet_df, formats = formats,
+    manual_value_references = "C2:C5"
+  )
+
+orientated_df_auto %>% migrate()
+```
+
+#### transposed
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "transposed"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### pivot-annotations
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "pivot-annotations"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <-
+  orientate_auto(
+    sheet = testsheet_df,formats = formats,
+    col_header_fill = "style",row_header_fill = "style"
+  )
+
+orientated_df_auto %>% migrate()
+
+```
+
+#### pivot-centre-aligned
+
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "pivot-centre-aligned"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+
+orientated_df_auto <-
+  orientate_auto(
+    sheet = testsheet_df,formats = formats,
+    col_header_fill = "border",row_header_fill = "border"
+  )
+
+orientated_df_auto %>% migrate()
+```
+
+#### pivot-notes
+**Note: Add option to ignore specified cells.**
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "pivot-notes"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <-
+  orientate_auto(
+    sheet = testsheet_df,formats = formats, 
+    col_header_fill = "style"
+  )
+
+orientated_df_auto %>% migrate()
+```
+
+#### pivot-hierarchy
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "pivot-hierarchy"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### pivot-repeated-headers
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "pivot-repeated-headers"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+get_table <- function(range) {
+  orientate_auto(
+    sheet = testsheet_df, formats = formats,
+    table_range = range, row_header_fill = "style"
+  ) %>% migrate()
+}
+
+c("B2:F6", "B7:F11", "B12:F16", "B17:F21") %>%  map_dfr(get_table) 
+```
+
+
+#### pivot-header-within-data
+
+```{r message=FALSE, warning=FALSE}
+
+sheet_name <- "pivot-header-within-data"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+get_table <- function(x) {
+  orientate_auto(
+    sheet = testsheet_df, formats = formats,
+    table_range = x, col_header_fill = "style"
+  ) %>% migrate()
+}
+
+c("B2:E7", "B8:E13", "B14:E19", "B20:E25") %>% map_dfr(get_table)
+```
+
+#### small-multiples
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "small-multiples"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+table_ranges <- "A1:C4,E1:G4,A6:C9,E6:G9" %>% strsplit(",") %>% unlist()
+data_ranges <- "B3:C4,F3:G4,B8:C9,F8:G9" %>% strsplit(",") %>% unlist()
+
+get_table <- function(table_ref, values_ref) {
+  orientate_auto(
+    sheet = testsheet_df, formats = formats,
+    table_range = table_ref, manual_value_references = values_ref,
+    keep_meta_data = TRUE
+  ) %>% migrate()
+}
+
+map2_dfr(table_ranges, data_ranges, get_table)
+```
+
+#### humanities
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "humanities"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### performance
+
+```{r message=FALSE, warning=FALSE}
+
+sheet_name <- "performance"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+
+```
+
+#### worked-examples
+
+```{r message=FALSE, warning=FALSE}
+
+workbook_path <- unpivotr_example("worked-examples.xlsx")
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### male
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "male"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### implied-multiples
+
+```{r message=FALSE, warning=FALSE}
+sheet_name <- "implied-multiples"
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+
+orientated_df_auto <-
+  orientate_auto(
+    sheet = testsheet_df,formats = formats,
+    col_header_fill = "style", default_col_header_direction = "NNW"
+  )
+
+orientated_df_auto %>% migrate()
+
+```
+
+## ABS Spreadsheets 
+
+#### australian-industry
+
+```{r message=FALSE, warning=FALSE}
+workbook_path <- unpivotr_example("australian-industry.xlsx")
+sheet_name <- "Table_1"
+
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+formats <- xlsx_formats(workbook_path)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+
+orientated_df_auto %>% migrate()
+```
+
+#### consumer-price-index
+
+
+```{r message=FALSE, warning=FALSE}
+
+workbook_path <- unpivotr_example("consumer-price-index.xlsx")
+sheet_name <- "Data1"
+
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+formats <- xlsx_formats(workbook_path)
+
+orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats) 
+
+orientated_df_auto %>% migrate()
+```
+
+
