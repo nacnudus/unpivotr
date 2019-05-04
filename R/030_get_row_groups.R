@@ -50,6 +50,7 @@ get_row_groups <- function(sheet, value_ref, col_groups, formats, added_row_grou
     }
     
   }
+  
   if(row_header_fill ==  "local_format_id"){
     
     continue <- TRUE
@@ -62,6 +63,7 @@ get_row_groups <- function(sheet, value_ref, col_groups, formats, added_row_grou
     }
     
   }
+  
   if(row_header_fill ==  "borders"){
     
 
@@ -83,36 +85,35 @@ get_row_groups <- function(sheet, value_ref, col_groups, formats, added_row_grou
   }
   
 
-  # Get row name cell format information
-
-  # 
-  # if(group_row_headers_by[1] == "none"){
-  #   
-  #   format_funcs <- syms(c("ones","twos"))  
-  #   
-  # }else{
-  #   format_funcs <- syms(c("ones","twos",group_row_headers_by))  
-  #   
-  # }
+group_row_headers_by <- group_row_headers_by %>% append(~ 1)
   
   
-
 types <- group_row_headers_by %>% map_chr(type_of)
-closures <- group_row_headers_by[types == "closure"]
 
-openenv <- environment()
+# Add formatting information from fmt_* formulas 
+if(sum(types == "closure") > 0){
+  
+  closures <- group_row_headers_by[types == "closure"]
+  
+  openenv <- environment()
+  
+  seq_along(closures) %>% 
+    map(~ assign(paste0("closureno_", str_pad(as.character(.x),width = 2,side = "left",pad = 0)),
+                 closures[[.x]],envir = openenv))
+  
+  closure_list <- syms(ls()[str_detect(ls(),"closureno_")])
+  
+  header_df <- 
+    header_df %>% 
+    mutate_at(.vars = "local_format_id",
+              .funs = funs(!!!closure_list))
+  
+}
 
-seq_along(closures) %>% 
-  map(~ assign(paste0("closureno_", str_pad(as.character(.x),width = 2,side = "left",pad = 0)),
-        closures[[.x]],envir = openenv))
 
-closure_list <- syms(ls()[str_detect(ls(),"closureno_")])
+# Add formatting information from formulas ( ~ *)
 
-header_df <- 
-header_df %>% 
-  mutate_at(.vars = "local_format_id",
-            .funs = funs(!!!closure_list))
-
+if(sum(types == "formula") > 0){
 
 fmt_forms <- group_row_headers_by[types == "formula"]
 
@@ -127,18 +128,24 @@ reduce_mutated <- function(df, form_list){
   
   df %>% 
     mutate(!!var_name_sym:= !!current_quosure)
-} 
+}  
+  header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)  
+  
 
-header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)  
+}
+
+
 
 
 grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"closureno_|formulano_|ones|twos")])
+
 
 
   # Nest row groups
   header_df <-
     header_df %>%
     mutate(col_temp = col) %>% 
+    filter(coalesce(as.character(logical),as.character(numeric),as.character(date),as.character(character) ) != "") %>%  
     group_by(col_temp,!!!grouping_vars) %>%
     nest() %>%
     ungroup()
