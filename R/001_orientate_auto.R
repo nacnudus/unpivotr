@@ -57,12 +57,17 @@ orientate_auto <-
       
     }
 
-    
-    
+
     # Get manual value_references ----     
     manual_value_references_temp <- manual_value_references
     value_ref <- sheet %>% get_value_references(manual_value_references = manual_value_references_temp)
+
+    # Get table data ----
+    tabledata <- get_tabledata(sheet = sheet, value_ref = value_ref)
+    
     # Get col groups ----
+    
+    value_ref
     
     col_header_fill_choice <-   match.arg(arg = col_header_fill, choices = c("local_format_id","style","borders","none"))  
     
@@ -77,7 +82,6 @@ orientate_auto <-
     
     
     
-    
     # Get rows groups ----
     
     row_header_fill_choice <-   match.arg(arg = row_header_fill, choices = c("local_format_id","style","borders","none"))  
@@ -85,15 +89,16 @@ orientate_auto <-
     added_row_groups_temp <- added_row_groups
     
     default_row_header_direction_temp <-default_row_header_direction
-      
-      
-      
+    
+    
+    
     row_groups <- get_row_groups(
          sheet = sheet, value_ref = value_ref, col_groups = col_groups, 
          formats = formats, added_row_groups = added_row_groups_temp, 
          group_row_headers_by = group_row_headers_by_temp, 
          row_header_fill = row_header_fill_choice,
-         default_row_header_direction = default_row_header_direction_temp)
+         default_row_header_direction = default_row_header_direction_temp,
+         table_data = tabledata )
 
 
     
@@ -101,8 +106,6 @@ orientate_auto <-
     # Get metadata ----
     meta_df <- get_meta_df(sheet = sheet, value_ref = value_ref, formats = formats, col_groups = col_groups)
     
-    # Get table data ----
-    tabledata <- get_tabledata(sheet = sheet, value_ref = value_ref)
     
     # Check that meta and col headers are unique ----
     # Get unique header groups ----

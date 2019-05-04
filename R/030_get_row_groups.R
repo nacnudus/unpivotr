@@ -15,7 +15,9 @@
 
 get_row_groups <- function(sheet, value_ref, col_groups, formats, added_row_groups, 
                            group_row_headers_by = c("bolding","italics","indenting"), 
-                           row_header_fill = "none", default_row_header_direction = "W") {
+                           row_header_fill = "none", default_row_header_direction = "W",
+                           table_data = tabledata ) {
+
 
 
   # Get row name cells
@@ -83,26 +85,61 @@ get_row_groups <- function(sheet, value_ref, col_groups, formats, added_row_grou
 
   # Get row name cell format information
 
+  # 
+  # if(group_row_headers_by[1] == "none"){
+  #   
+  #   format_funcs <- syms(c("ones","twos"))  
+  #   
+  # }else{
+  #   format_funcs <- syms(c("ones","twos",group_row_headers_by))  
+  #   
+  # }
   
-  if(group_row_headers_by[1] == "none"){
-    
-    format_funcs <- syms(c("ones","twos"))  
-    
-  }else{
-    format_funcs <- syms(c("ones","twos",group_row_headers_by))  
-    
-  }
   
-  header_df <- 
-    header_df %>% 
-    mutate_at(.vars = "local_format_id",
-              .funs = funs(!!!format_funcs))    
+
+types <- group_row_headers_by %>% map_chr(type_of)
+closures <- group_row_headers_by[types == "closure"]
+
+openenv <- environment()
+
+seq_along(closures) %>% 
+  map(~ assign(paste0("closureno_", str_pad(as.character(.x),width = 2,side = "left",pad = 0)),
+        closures[[.x]],envir = openenv))
+
+closure_list <- syms(ls()[str_detect(ls(),"closureno_")])
+
+header_df <- 
+header_df %>% 
+  mutate_at(.vars = "local_format_id",
+            .funs = funs(!!!closure_list))
+
+
+fmt_forms <- group_row_headers_by[types == "formula"]
+
+form_list <- seq_along(fmt_forms) %>% 
+  map(~list(fmt_forms[.x],
+           paste0("formulano_", str_pad(as.character(.x),width = 2,side = "left",pad = 0)) ))
+
+reduce_mutated <- function(df, form_list){
   
+  current_quosure <-  as_quosure(form_list[[1]][[1]])
+  var_name_sym <-  sym(form_list[[2]])
+  
+  df %>% 
+    mutate(!!var_name_sym:= !!current_quosure)
+} 
+
+header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)  
+
+
+grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"closureno_|formulano_|ones|twos")])
+
+
   # Nest row groups
   header_df <-
     header_df %>%
     mutate(col_temp = col) %>% 
-    group_by(col_temp,!!!format_funcs) %>%
+    group_by(col_temp,!!!grouping_vars) %>%
     nest() %>%
     ungroup()
   
@@ -134,15 +171,38 @@ get_row_groups <- function(sheet, value_ref, col_groups, formats, added_row_grou
     ))
   
   # check whether there are values in the rows
-  header_df <-
-    header_df %>%
-    mutate(row_sum = map_dbl(data, ~ get_row_sum(data = .x, sheet = sheet)))
   
-  # Set directions
+  
+  
+  empty_row_df <- 
+  table_data %>% 
+    select(-comment) %>% 
+    group_by(row) %>% 
+    summarise(empty_share = sum(value == "")/n())
+  
+  row_range <- c(min(empty_row_df$row):max(empty_row_df$row))
+  
+  missing_rows_from_headers <- row_range[!row_range %in% empty_row_df$row]
+  
+  empty_row_df <-
+  bind_rows(empty_row_df,
+            tibble(row = missing_rows_from_headers, 
+                   empty_share = 1))
+  
+  # 
+  # header_df <-
+  #   header_df %>%
+  #   mutate(row_sum = map_dbl(data, ~ get_row_sum(data = .x, sheet = sheet)))
+  
+  wnw_vector <- 
+  header_df$data %>% map(~.$row)  %>% 
+    map_lgl( ~ sum(.x %in% empty_row_df$row[empty_row_df$empty_share==1]) > 0)
+    
+    # Set directions
   header_df <-
     header_df %>%
-    mutate(direction = ifelse(row_sum == 0, "WNW", default_row_header_direction)) %>%
-    dplyr::select(row_group, direction, data, !!!format_funcs)
+    mutate(direction = ifelse(wnw_vector, "WNW", default_row_header_direction)) %>%
+    dplyr::select(row_group, direction, data, !!!grouping_vars)
 
 
 
