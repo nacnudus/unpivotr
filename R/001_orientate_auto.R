@@ -21,18 +21,13 @@ orientate_auto <-
            group_row_headers_by = list(fmt_alignment_indent, fmt_font_bold, ~data_type),
            col_header_fill = "local_format_id",
            row_header_fill = "none",
+           filter_col_headers_by = NULL,
+           filter_row_headers_by = NULL,
            default_col_header_direction = "N",
            default_row_header_direction = "W",
            keep_meta_data = FALSE) {
     
     
-
-    # Check  that manual value references are a range ----
-      if (!is.null(manual_value_references)) {
-        if (!tidyxl::is_range(manual_value_references)) {
-          stop("manual_value_references must be a range")
-        }
-      }
 
     
     # Limit to table Range ----
@@ -87,11 +82,13 @@ orientate_auto <-
     group_col_headers_by_temp <- group_col_headers_by
     
     default_col_header_direction_temp <- default_col_header_direction
+    filter_col_headers_by_temp <- filter_col_headers_by 
     
     col_groups <- get_col_groups(sheet = sheet, value_ref = value_ref, formats = formats, 
                                  group_col_headers_by = group_col_headers_by_temp, 
                                   col_header_fill = col_header_fill_choice,
-                                 default_col_header_direction = default_col_header_direction_temp)
+                                 default_col_header_direction = default_col_header_direction_temp,
+                                 filter_col_headers_by = filter_col_headers_by_temp)
     
     
     
@@ -102,7 +99,7 @@ orientate_auto <-
     added_row_groups_temp <- added_row_groups
     
     default_row_header_direction_temp <-default_row_header_direction
-    
+    filter_row_headers_by_temp <- filter_row_headers_by
     
     
     row_groups <- get_row_groups(
@@ -111,7 +108,8 @@ orientate_auto <-
          group_row_headers_by = group_row_headers_by_temp, 
          row_header_fill = row_header_fill_choice,
          default_row_header_direction = default_row_header_direction_temp,
-         table_data = tabledata )
+         table_data = tabledata,
+         filter_row_headers_by = filter_row_headers_by_temp)
 
 
     

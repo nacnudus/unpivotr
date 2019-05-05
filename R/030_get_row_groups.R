@@ -18,9 +18,23 @@ get_row_groups <- function(sheet, value_ref, col_groups, formats,
                            group_row_headers_by = list(fmt_alignment_indent, fmt_font_bold, ~data_type), 
                            row_header_fill = "none", 
                            default_row_header_direction = "W",
-                           table_data = tabledata ) {
+                           table_data = tabledata,
+                           filter_row_headers_by = filter_row_headers_by_temp) {
 
-
+  
+  
+  
+  
+  if (is_formula(filter_row_headers_by)) {
+    
+    current_quosure <-  as_quosure(filter_row_headers_by)
+    
+    header_df <- 
+      sheet %>% 
+      filter(!!current_quosure)
+    
+  }else{
+    
 
   # Get row name cells
   header_df <-
@@ -30,6 +44,9 @@ get_row_groups <- function(sheet, value_ref, col_groups, formats,
       row > max(col_groups$max_row),
       col < value_ref$min_col
     )
+  }
+  
+  
   
   if(nrow(header_df) == 0){
     warning("No row groups have been detected. If you haven't already, try using the 'manual_value_references` argument")

@@ -17,18 +17,35 @@ get_col_groups <- function(sheet, value_ref, formats,
                            group_col_headers_by = list(), 
                            col_header_fill = "local_format_id",
                            default_col_header_direction = default_col_header_direction,
-                           table_data = tabledata ) {
+                           table_data = tabledata,
+                           filter_col_headers_by = filter_col_headers_by_temp) {
   
   
-  # Get header cells ----
+  
+  
+  
+  if (is_formula(filter_col_headers_by)) {
+    
+    current_quosure <-  as_quosure(filter_col_headers_by)
+    
+    header_df <- 
+      sheet %>% 
+      filter(!!current_quosure)
+    
+  }else{  # Get header cells ----
 
   header_df <-
     sheet %>%
       filter(col <= value_ref$max_col) %>%
       filter(col >= value_ref$min_col) %>%
-      filter(row < value_ref$min_row) %>%
-      mutate(row_temp = row)
-    
+      filter(row < value_ref$min_row) 
+  }
+  
+  header_df <- 
+    header_df %>% mutate(row_temp = row)
+  
+  
+  
   
   if(nrow(header_df) == 0){
       warning("No header groups have been detected. If you haven't already, try using the 'manual_value_references` argument")
@@ -84,9 +101,7 @@ get_col_groups <- function(sheet, value_ref, formats,
 
   }
   
-  
-  
-  group_col_headers_by <- group_col_headers_by %>% append(~ 1)
+    group_col_headers_by <- group_col_headers_by %>% append(~ 1)
   
   types <- group_col_headers_by %>% map_chr(type_of)
   

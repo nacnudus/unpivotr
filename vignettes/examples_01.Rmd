@@ -16,6 +16,8 @@ options(width=100)
 ```
 
 ```{r}
+
+rm(list = ls())
 setwd("C:/Users/Ian/Data/r-projects/unpivotr-dev/unpivotr/vignettes")
 home_dir <- rprojroot::find_package_root_file()
 setwd(home_dir)
@@ -39,6 +41,9 @@ library(tidyverse)
 library(tidyxl)
 library(stringr)
 library(rlang)
+library(lubridate)
+library(hrbrthemes)
+library(scales)
 ```
 
 ## Spreadsheets from worked-examples.xlsx
@@ -53,25 +58,58 @@ magick::image_read("https://unpivotr.s3.amazonaws.com/worked-examples_clean.png"
 ```{r message=FALSE, warning=FALSE}
 devtools::load_all(home_dir)
 
-unpivotr_example()
-
 workbook_path <- unpivotr_example("newresconst.xlsx")
 sheet_name <- "Table 1 - Permits"
 
 testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 formats <- xlsx_formats(workbook_path)
 
+
+
+# orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
+#                                       manual_value_references =  "B8:M23",
+#                                       group_row_headers_by = list(fmt_alignment_indent, ~data_type),
+#                                       group_col_headers_by = list(),
+#                                       col_header_fill = "style")
+
+
 orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
-                                      manual_value_references = "B9:M23",
-                                      group_row_headers_by = list(fmt_alignment_indent, fmt_font_bold, ~data_type),
+                                      manual_value_references = ~ data_type == "numeric" & col >1 & row < 24,
+                                      group_row_headers_by = list(fmt_alignment_indent, ~data_type),
                                       group_col_headers_by = list(),
                                       col_header_fill = "style")
 
 orientated_df_auto %>% plot_orientations()
 
-list(fmt_alignment_indent, fmt_font_bold, ~data_type)
 
-orientated_df_auto %>% migrate() %>% View
+orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
+                                      manual_value_references = ~ data_type == "numeric" & fmt_font_italic(local_format_id,formats) == "TRUE" & row < 31,
+                                      group_row_headers_by = list(fmt_alignment_indent, ~data_type),
+                                      group_col_headers_by = list(~ row < 6),
+                                      filter_col_headers_by = ~row <7 & col > 1 & data_type == "character",
+                                      col_header_fill = "style")
+
+orientated_df_auto %>% plot_orientations()
+
+testsheet_df
+
+new_housing_df %>% View
+new_housing_df <- 
+  orientated_df_auto %>% migrate(numeric_value = T)  
+
+# Clean data 
+(new_housing_df <- 
+  new_housing_df %>% set_names(c("row","col",".value","region","units","year_var","month_var")) %>% 
+    mutate(month_var = month_var %>% str_remove_all("\\.") %>% str_trim())  %>% 
+    mutate(date_var = ymd(paste(year_var,month_var,"15",sep = "-"))) %>% 
+    group_by(region, units) %>% 
+    mutate(.value = 100*(.value / first(.value,order_by = date_var))))
+  
+
+new_housing_df %>% 
+    ggplot(aes(x = date_var , y = .value, color =units )) + 
+    geom_line() + facet_grid(region~.) + theme_bw() +
+    labs(color = "Number of units", x = "Date", y ="New Privately-Owned Housing Units Authorized in Permit-Issuing Places ('000s)" )
 
 
 ```
