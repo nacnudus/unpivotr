@@ -77,7 +77,7 @@ orientated_df_auto <-
                  group_row_headers_by = list(fmt_alignment_indent, ~data_type),
                  col_header_fill = "style")
 
-
+orientated_df_auto %>% plot_orientations()
 
 
 
