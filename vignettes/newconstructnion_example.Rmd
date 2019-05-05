@@ -14,7 +14,7 @@ editor_options:
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(tibble.print_min = 20, tibble.print_max = 20)
-options(width=100)
+options(width = 100)
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
@@ -29,7 +29,7 @@ setwd(home_dir)
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 library(devtools)
 load_all()
-install_github("nacnudus/unpivotr",ref = "ian")
+install_github("nacnudus/unpivotr", ref = "ian")
 library(unpivotr)
 library(rprojroot)
 library(magick)
@@ -57,105 +57,116 @@ magick::image_read(unpivotr_example(path = "newconst.png"))
 
 The example below provides unpivotr a hard coded range for the data cells of the table. (In examples 2 and 3, this range is identified by a few lines of code.)
 ```{r message=FALSE, warning=FALSE}
-# Load in spreadsheet and format data 
+# Load in spreadsheet and format data
 testsheet_df <- xlsx_cells(path = unpivotr_example("newresconst.xlsx"), sheets = "Table 1 - Permits")
 formats <- xlsx_formats(unpivotr_example("newresconst.xlsx"))
 
 # Add variables to indicate data cells, header groups and directions. Then migrate
-testsheet_df %>% 
-  orientate_auto(formats = formats, manual_value_references = "B8:M23",
-                 group_row_headers_by = list(~data_type),col_header_fill = "style") %>%
+testsheet_df %>%
+  orientate_auto(
+    formats = formats, manual_value_references = "B8:M23",
+    group_row_headers_by = list(~data_type), col_header_fill = "style"
+  ) %>%
   migrate()
-
 ```
 
 ### Example 2: Tidying with coded identification of table cells 
 
 ```{r message=FALSE, warning=FALSE}
-# Load in spreadsheet and format data 
+# Load in spreadsheet and format data
 testsheet_df <- xlsx_cells(path = unpivotr_example("newresconst.xlsx"), sheets = "Table 1 - Permits")
 formats <- xlsx_formats(unpivotr_example("newresconst.xlsx"))
 
 # Find the minimum row of the seasonally adjusted table
-cnr_df <- testsheet_df$character %>% str_detect("Average RSE") %>% which() %>% 
-          min() %>%  testsheet_df[.,c("row","col")]
+cnr_df <- testsheet_df$character %>%
+  str_detect("Average RSE") %>%
+  which() %>%
+  min() %>%
+  testsheet_df[., c("row", "col")]
 
 # Add variables to indicate data cells, header groups and  directions. Then migrate
-housing_df  <-  
-  orientate_auto(sheet = testsheet_df,formats = formats,
-                 manual_value_references = ~ col > cnr_df$col & row < cnr_df$row & data_type == "numeric",
-                 group_row_headers_by = list(~data_type),col_header_fill = "style") %>% 
+housing_df <-
+  orientate_auto(
+    sheet = testsheet_df, formats = formats,
+    manual_value_references = ~ col > cnr_df$col & row < cnr_df$row & data_type == "numeric",
+    group_row_headers_by = list(~data_type), col_header_fill = "style"
+  ) %>%
   migrate(numeric_value = T)
 
 housing_df
-
 ```
 
 
 ```{r}
-# Clean up 
-housing_df <- 
-  housing_df %>% set_names(c("row","col",".value","region","units","year_var","month_var")) %>% 
-    mutate(month_var = month_var %>% str_remove_all("\\.") %>% str_trim())  %>% 
-    mutate(date_var = ymd(paste(year_var,month_var,"15",sep = "-")))
+# Clean up
+housing_df <-
+  housing_df %>%
+  set_names(c("row", "col", ".value", "region", "units", "year_var", "month_var")) %>%
+  mutate(month_var = month_var %>% str_remove_all("\\.") %>% str_trim()) %>%
+  mutate(date_var = ymd(paste(year_var, month_var, "15", sep = "-")))
 
 # Plot
-housing_df %>% 
-    ggplot(aes(x = date_var , y = .value, color =units )) + 
-    geom_line() + facet_grid(region~.,scales = "free") + theme_bw() +
-    labs(color = "Number of units", x = "Date", y ="New Authorized Housing Units" )
-
+housing_df %>%
+  ggplot(aes(x = date_var, y = .value, color = units)) +
+  geom_line() + facet_grid(region ~ ., scales = "free") + theme_bw() +
+  labs(color = "Number of units", x = "Date", y = "New Authorized Housing Units")
 ```
 
 ### Example 3: Tidying all seasonaly adjusted data with coded identification of table cells 
 
 ```{r message=FALSE, warning=FALSE}
-# Turn the workflow above into a table 
-get_table <- function(sheet_name){
+# Turn the workflow above into a table
+get_table <- function(sheet_name) {
 
-# Load in spreadsheet and format data 
-testsheet_df <- xlsx_cells(path = unpivotr_example("newresconst.xlsx"), sheets =sheet_name)
-formats <- xlsx_formats(unpivotr_example("newresconst.xlsx"))
+  # Load in spreadsheet and format data
+  testsheet_df <- xlsx_cells(path = unpivotr_example("newresconst.xlsx"), sheets = sheet_name)
+  formats <- xlsx_formats(unpivotr_example("newresconst.xlsx"))
 
-# Find the minimum row of the seasonally adjusted table
-cnr_df <- testsheet_df$character %>% str_detect("Average RSE") %>% which() %>% 
-          min() %>%  testsheet_df[.,c("row","col")]
+  # Find the minimum row of the seasonally adjusted table
+  cnr_df <- testsheet_df$character %>%
+    str_detect("Average RSE") %>%
+    which() %>%
+    min() %>%
+    testsheet_df[., c("row", "col")]
 
-# Add variables to indicate data cells, header groups and  directions. Then migrate
-housing_df  <-  
-  orientate_auto(sheet = testsheet_df,formats = formats,
-                 manual_value_references = ~ col > cnr_df$col & row < cnr_df$row & data_type == "numeric",
-                 group_row_headers_by = list(~data_type),col_header_fill = "style") %>% 
-  migrate(numeric_value = T)
+  # Add variables to indicate data cells, header groups and  directions. Then migrate
+  housing_df <-
+    orientate_auto(
+      sheet = testsheet_df, formats = formats,
+      manual_value_references = ~ col > cnr_df$col & row < cnr_df$row & data_type == "numeric",
+      group_row_headers_by = list(~data_type), col_header_fill = "style"
+    ) %>%
+    migrate(numeric_value = T)
 
-housing_df <- 
-  housing_df %>% set_names(c("row","col",".value","region","units","year_var","month_var")) %>% 
-    mutate(month_var = month_var %>% str_remove_all("\\.") %>% str_trim())  %>% 
-    mutate(date_var = ymd(paste(year_var,month_var,"15",sep = "-"))) %>% 
-  mutate(sheet = sheet_name)
+  housing_df <-
+    housing_df %>%
+    set_names(c("row", "col", ".value", "region", "units", "year_var", "month_var")) %>%
+    mutate(month_var = month_var %>% str_remove_all("\\.") %>% str_trim()) %>%
+    mutate(date_var = ymd(paste(year_var, month_var, "15", sep = "-"))) %>%
+    mutate(sheet = sheet_name)
 
 
-housing_df
+  housing_df
 }
 
 
-# Get names of sheets in Table 
+# Get names of sheets in Table
 sheets <- tidyxl::xlsx_sheet_names(unpivotr_example("newresconst.xlsx"))
 
-# Apply get_table to each sheet 
+# Apply get_table to each sheet
 all_sheets_housing <- sheets %>% map_dfr(get_table)
 
 all_sheets_housing
 ```
 
 ```{r}
-# Filter and plot results 
-all_sheets_housing %>% filter(units %in% c("Total","1 unit" )) %>% 
-  ggplot(aes(x = date_var , y = .value, color =sheet )) + 
-    geom_line() + facet_grid(region~units,scales = "free") + theme_bw() +
-    labs(color = "Number of units", x = "Date", y ="Housing Units('000s)" ) +
-   scale_x_date(labels = date_format("%m-%Y"))
-
+# Filter and plot results
+all_sheets_housing %>%
+  filter(units %in% c("Total", "1 unit")) %>%
+  ggplot(aes(x = date_var, y = .value, color = sheet)) +
+  geom_line() + facet_grid(region ~ units, scales = "free") + theme_bw() +
+  labs(color = "Number of units", x = "Date", y = "Housing Units('000s)") +
+  scale_x_date(labels = date_format("%m-%Y"))
 ```
 
 
