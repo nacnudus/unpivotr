@@ -16,12 +16,10 @@ options(width=100)
 ```
 
 ```{r}
-
 rm(list = ls())
 setwd("C:/Users/Ian/Data/r-projects/unpivotr-dev/unpivotr/vignettes")
 home_dir <- rprojroot::find_package_root_file()
 setwd(home_dir)
-
 ```
 
 
@@ -46,15 +44,7 @@ library(hrbrthemes)
 library(scales)
 ```
 
-## Spreadsheets from worked-examples.xlsx
-
-#### clean
-
-```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
-magick::image_read("https://unpivotr.s3.amazonaws.com/worked-examples_clean.png")
-```
-
-
+#### Load in newresconst.xlsx
 ```{r message=FALSE, warning=FALSE}
 devtools::load_all(home_dir)
 
@@ -64,8 +54,6 @@ sheet_name <- "Table 1 - Permits"
 testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 formats <- xlsx_formats(workbook_path)
 
-
-
 # orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
 #                                       manual_value_references =  "B8:M23",
 #                                       group_row_headers_by = list(fmt_alignment_indent, ~data_type),
@@ -73,11 +61,40 @@ formats <- xlsx_formats(workbook_path)
 #                                       col_header_fill = "style")
 
 
-orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
-                                      manual_value_references = ~ data_type == "numeric" & col >1 & row < 24,
-                                      group_row_headers_by = list(fmt_alignment_indent, ~data_type),
-                                      group_col_headers_by = list(),
-                                      col_header_fill = "style")
+
+bottom_rows <- 
+  testsheet_df$row[ testsheet_df$data_type == "character" & 
+                    str_detect(testsheet_df$character,"Average RSE")]
+
+top_rows <- 
+  testsheet_df$row[ testsheet_df$data_type == "character" & 
+                    str_detect(testsheet_df$character,"^Table")]
+
+orientated_df_auto <-  
+  orientate_auto(table_range = ~ row < min(anchor_rows),
+                 sheet = testsheet_df,formats = formats,
+                 manual_value_references = ~ data_type == "numeric" &  col >1,
+                 group_row_headers_by = list(fmt_alignment_indent, ~data_type),
+                 col_header_fill = "style")
+
+
+
+
+
+orientated_df_aut <-  
+  orientate_auto(
+                range = ~row < min(anchor_rows)
+                sheet = testsheet_df,formats = formats,
+                manual_value_references = ~ data_type == "numeric" & 
+                                            col >1 & row < max(anchor_rows) & row > max(top_rows),
+                group_row_headers_by = list(fmt_alignment_indent, ~data_type),
+                filter_col_headers_by = ~ row > max(top_rows) & col ==1,
+                filter_row_headers_by = ~ row > max(anchor_rows)& row < max(anchor_rows),
+                col_header_fill = "style")
+
+orientated_df_auto_sa %>% plot_orientations()
+
+orientated_df_auto %>% migrate(numeric_value = T)
 
 orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
                                       manual_value_references = ~ data_type == "numeric" & 

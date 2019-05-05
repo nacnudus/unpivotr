@@ -70,5 +70,5 @@ get_value_references <- function(sheet, manual_value_references) {
   
   
 } 
-  
-  
+
+

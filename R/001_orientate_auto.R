@@ -31,7 +31,7 @@ orientate_auto <-
 
     
     # Limit to table Range ----
-    if (!is.null(table_range)) {
+    if (is.character(table_range)) {
       
       cell_ref_df <- as_tibble(cellranger::as.cell_limits(table_range))
       
@@ -51,8 +51,25 @@ orientate_auto <-
                col <= table_range_df$max_col[1])
       
     }
-
-
+    
+    
+    
+    
+    
+    
+    if (is_formula(table_range)) {
+      
+      current_quosure <-  as_quosure(table_range)
+      
+      sheet <- 
+        sheet %>% 
+        filter(!!current_quosure)
+      
+    } 
+    
+    
+    
+    
     # Get manual value_references ----     
     manual_value_references_temp <- manual_value_references
     value_ref <- sheet %>% get_value_references(manual_value_references = manual_value_references_temp)
