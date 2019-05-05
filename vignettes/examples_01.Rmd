@@ -18,6 +18,8 @@ options(width=100)
 ```{r}
 setwd("C:/Users/Ian/Data/r-projects/unpivotr-dev/unpivotr/vignettes")
 home_dir <- rprojroot::find_package_root_file()
+setwd(home_dir)
+
 ```
 
 
@@ -36,12 +38,12 @@ library(magrittr)
 library(tidyverse)
 library(tidyxl)
 library(stringr)
+library(rlang)
 ```
 
 ## Spreadsheets from worked-examples.xlsx
 
 #### clean
-
 
 ```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
 magick::image_read("https://unpivotr.s3.amazonaws.com/worked-examples_clean.png")
@@ -53,24 +55,24 @@ devtools::load_all(home_dir)
 
 unpivotr_example()
 
-unpivotr::fmt_font
-
-
 workbook_path <- unpivotr_example("newresconst.xlsx")
 sheet_name <- "Table 1 - Permits"
 
 testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 formats <- xlsx_formats(workbook_path)
 
-
-
 orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
-                                      manual_value_references = "B9:M30",
-                                      group_row_headers_by = 
-                                        list(fmt_alignment_indent,fmt_font_bold, ~ data_type == "numeric"),
+                                      manual_value_references = "B9:M23",
+                                      group_row_headers_by = list(fmt_alignment_indent, fmt_font_bold, ~data_type),
+                                      group_col_headers_by = list(),
                                       col_header_fill = "style")
 
 orientated_df_auto %>% plot_orientations()
+
+list(fmt_alignment_indent, fmt_font_bold, ~data_type)
+
+orientated_df_auto %>% migrate() %>% View
+
 
 ```
 

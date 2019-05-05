@@ -103,6 +103,13 @@ twos <- function(format_id_vec= local_format_id,sheet_format = formats){
 
 
 
+into_list <- function(x,y){
+  x[[y]]
+}
+
+
+
+
 
 
 fmt_numFmt_single <- 

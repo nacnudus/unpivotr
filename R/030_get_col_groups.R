@@ -11,20 +11,24 @@
 #' @export
 
 
+
+
 get_col_groups <- function(sheet, value_ref, formats, 
-                           group_col_headers_by = c("bolding"), 
+                           group_col_headers_by = list(), 
                            col_header_fill = "local_format_id",
-                           default_col_header_direction = default_col_header_direction ) {
+                           default_col_header_direction = default_col_header_direction,
+                           table_data = tabledata ) {
   
   
   # Get header cells ----
 
   header_df <-
     sheet %>%
-    filter(col <= value_ref$max_col) %>%
-    filter(col >= value_ref$min_col) %>%
-    filter(row < value_ref$min_row) %>%
-    mutate(row_temp = row)
+      filter(col <= value_ref$max_col) %>%
+      filter(col >= value_ref$min_col) %>%
+      filter(row < value_ref$min_row) %>%
+      mutate(row_temp = row)
+    
   
   if(nrow(header_df) == 0){
       warning("No header groups have been detected. If you haven't already, try using the 'manual_value_references` argument")
@@ -81,33 +85,76 @@ get_col_groups <- function(sheet, value_ref, formats,
   }
   
   
-  # Get format information ----
   
-  if(group_col_headers_by[1] == "none"){
+  group_col_headers_by <- group_col_headers_by %>% append(~ 1)
+  
+  types <- group_col_headers_by %>% map_chr(type_of)
+  
+  
+  # Add formatting information from fmt_* formulas 
+  if(sum(types == "closure") > 0){
     
-    format_funcs <- syms(c("ones","twos"))  
+    closures <- group_col_headers_by[types == "closure"]
     
-  }else{
-    format_funcs <- syms(c("ones","twos",group_col_headers_by))  
+    openenv <- environment()
+    
+    seq_along(closures) %>% 
+      map(~ assign(paste0("cls_", as.character(closures[.x]) %>% 
+                            str_extract("fmt_[a-z|_]+") %>% str_remove("_single")),
+                   closures[[.x]],envir = openenv))
+    
+    closure_list <- syms(ls()[str_detect(ls(),"cls_")])
+    
+    header_df <- 
+      header_df %>% 
+      mutate_at(.vars = "local_format_id",
+                .funs = funs(!!!closure_list))
     
   }
-
-  header_df <- 
-    header_df %>% 
-    mutate_at(.vars = "local_format_id",
-              .funs = funs(!!!format_funcs))    
+  
+  
+  # Add formatting information from formulas ( ~ *)
+  
+  if(sum(types == "formula") > 0){
     
+    fmt_forms <- group_col_headers_by[types == "formula"]
+    
+    form_list <- seq_along(fmt_forms) %>% 
+      map(~list(fmt_forms[.x],
+                paste0("frm_",
+                       fmt_forms[.x] %>% as.character() %>% make.names() %>% 
+                         str_replace_all("\\.+",".") %>% str_remove_all("(\\.$)|(^X\\.)") %>% 
+                         ifelse(str_sub(.,start = 1,1) %in% as.character(0:9),paste0("x",.),.  ))))
+    
+    reduce_mutated <- function(df, form_list){
+      
+      current_quosure <-  as_quosure(form_list[[1]][[1]])
+      var_name_sym <-  sym(form_list[[2]])
+      
+      df %>% 
+        mutate(!!var_name_sym:= !!current_quosure)
+    }  
+    header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)  
+    
+  }
+  
+  
+  grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"cls_|frm_")])
+  
+  
   
   
   # Nest header groups ----
   header_df <-
     header_df %>% 
-    group_by(row_temp,!!!format_funcs) %>% 
+    filter(coalesce(as.character(logical),as.character(numeric),
+                    as.character(date),as.character(character) ) != "") %>%  
+    group_by(row_temp,!!!grouping_vars) %>% 
     filter(!(is_blank & is.na(character))) %>% 
     nest() %>%
     ungroup()
   
-
+  # Name header groups
   header_df <-
     header_df %>%
     mutate(row_no_name = row_temp - min(row_temp) + 1) %>%
@@ -137,7 +184,7 @@ get_col_groups <- function(sheet, value_ref, formats,
   header_df <-
     header_df %>%
     mutate(direction = default_col_header_direction) %>%
-    dplyr::select(header_label, direction, data, !!!format_funcs)
+    dplyr::select(header_label, direction, data, !!!grouping_vars)
   
 
   # Add information to output df ----

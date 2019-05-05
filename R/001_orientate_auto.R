@@ -17,8 +17,8 @@ orientate_auto <-
            formats = NULL,
            table_range = NULL, manual_value_references = NULL, 
            added_row_groups = NULL,
-           group_col_headers_by = c("bolding","italics"), 
-           group_row_headers_by = c("bolding","italics","indenting"),
+           group_col_headers_by = list(), 
+           group_row_headers_by = list(fmt_alignment_indent, fmt_font_bold, ~data_type),
            col_header_fill = "local_format_id",
            row_header_fill = "none",
            default_col_header_direction = "N",
@@ -63,7 +63,20 @@ orientate_auto <-
     value_ref <- sheet %>% get_value_references(manual_value_references = manual_value_references_temp)
 
     # Get table data ----
+
+    
     tabledata <- get_tabledata(sheet = sheet, value_ref = value_ref)
+    
+    empty_row_df <- 
+      tabledata %>% 
+      select(-comment) %>% 
+      group_by(row) %>% 
+      summarise(empty_share = sum(value == "")/n()) %>% 
+      filter(empty_share == 1)
+    
+    tabledata <- 
+    tabledata %>% filter(!row %in%  empty_row_df$row)
+    
     
     # Get col groups ----
     
