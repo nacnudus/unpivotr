@@ -28,7 +28,7 @@ orientate_auto <-
            keep_meta_data = FALSE) {
     
     
-
+    
     
     # Limit to table Range ----
     if (is.character(table_range)) {
@@ -73,9 +73,9 @@ orientate_auto <-
     # Get manual value_references ----     
     manual_value_references_temp <- manual_value_references
     value_ref <- sheet %>% get_value_references(manual_value_references = manual_value_references_temp)
-
+    
     # Get table data ----
-
+    
     
     tabledata <- get_tabledata(sheet = sheet, value_ref = value_ref)
     
@@ -87,7 +87,7 @@ orientate_auto <-
       filter(empty_share == 1)
     
     tabledata <- 
-    tabledata %>% filter(!row %in%  empty_row_df$row)
+      tabledata %>% filter(!row %in%  empty_row_df$row)
     
     
     # Get col groups ----
@@ -103,7 +103,7 @@ orientate_auto <-
     
     col_groups <- get_col_groups(sheet = sheet, value_ref = value_ref, formats = formats, 
                                  group_col_headers_by = group_col_headers_by_temp, 
-                                  col_header_fill = col_header_fill_choice,
+                                 col_header_fill = col_header_fill_choice,
                                  default_col_header_direction = default_col_header_direction_temp,
                                  filter_col_headers_by = filter_col_headers_by_temp)
     
@@ -120,10 +120,10 @@ orientate_auto <-
     
     
     row_groups <- get_row_groups(
-         sheet = sheet, value_ref = value_ref, col_groups = col_groups, 
-         formats = formats, added_row_groups = added_row_groups_temp, 
-         group_row_headers_by = group_row_headers_by_temp, 
-         row_header_fill = row_header_fill_choice,
+      sheet = sheet, value_ref = value_ref, col_groups = col_groups, 
+      formats = formats, added_row_groups = added_row_groups_temp, 
+      group_row_headers_by = group_row_headers_by_temp, 
+      row_header_fill = row_header_fill_choice,
          default_row_header_direction = default_row_header_direction_temp,
          table_data = tabledata,
          filter_row_headers_by = filter_row_headers_by_temp)

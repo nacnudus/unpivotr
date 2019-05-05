@@ -50,11 +50,11 @@ get_value_references <- function(sheet, manual_value_references) {
     current_quosure <-  as_quosure(manual_value_references)
     
     sheet <- 
-    sheet %>% 
+      sheet %>% 
       filter(!!current_quosure)
     
     ref_df <- 
-    sheet %>%
+      sheet %>%
       summarise(
         min_row = min(row), max_row = max(row),
         min_col = min(col), max_col = max(col)

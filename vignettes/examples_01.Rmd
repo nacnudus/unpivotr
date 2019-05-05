@@ -28,9 +28,7 @@ setwd(home_dir)
 #### Setup packages 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 library(devtools)
-devtools::load_all(home_dir)
-
-# install_github("nacnudus/unpivotr",ref = "ian")
+install_github("nacnudus/unpivotr",ref = "ian")
 library(unpivotr)
 library(rprojroot)
 library(magick)
@@ -46,7 +44,8 @@ library(scales)
 
 #### Load in newresconst.xlsx
 ```{r message=FALSE, warning=FALSE}
-devtools::load_all(home_dir)
+
+
 
 workbook_path <- unpivotr_example("newresconst.xlsx")
 sheet_name <- "Table 1 - Permits"
@@ -54,24 +53,14 @@ sheet_name <- "Table 1 - Permits"
 testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 formats <- xlsx_formats(workbook_path)
 
-# orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
-#                                       manual_value_references =  "B8:M23",
-#                                       group_row_headers_by = list(fmt_alignment_indent, ~data_type),
-#                                       group_col_headers_by = list(),
-#                                       col_header_fill = "style")
+table_min_row <- 
+  testsheet_df$character %>% 
+    str_detect("Average RSE") %>% 
+    which() %>% min() %>% 
+    testsheet_df$row[.] 
 
-
-
-bottom_rows <- 
-  testsheet_df$row[ testsheet_df$data_type == "character" & 
-                    str_detect(testsheet_df$character,"Average RSE")]
-
-top_rows <- 
-  testsheet_df$row[ testsheet_df$data_type == "character" & 
-                    str_detect(testsheet_df$character,"^Table")]
-
-orientated_df_auto <-  
-  orientate_auto(table_range = ~ row < min(anchor_rows),
+orientated_df <-  
+  orientate_auto(table_range = ~ row < table_min_row,
                  sheet = testsheet_df,formats = formats,
                  manual_value_references = ~ data_type == "numeric" &  col >1,
                  group_row_headers_by = list(fmt_alignment_indent, ~data_type),
@@ -79,7 +68,70 @@ orientated_df_auto <-
 
 orientated_df_auto %>% plot_orientations()
 
+new_housing_df <-
+  orientated_df_auto %>% 
+  migrate(numeric_value = T)
 
+new_housing_df <- 
+  new_housing_df %>% set_names(c("row","col",".value","region","units","year_var","month_var")) %>% 
+    mutate(month_var = month_var %>% str_remove_all("\\.") %>% str_trim())  %>% 
+    mutate(date_var = ymd(paste(year_var,month_var,"15",sep = "-")))
+
+new_housing_df %>% 
+    ggplot(aes(x = date_var , y = .value, color =units )) + 
+    geom_line() + facet_grid(region~.,scales = "free") + theme_bw() +
+    labs(color = "Number of units", x = "Date", y ="New Privately-Owned Housing Units Authorized in Permit-Issuing Places ('000s)" )
+
+```
+
+
+```{r}
+
+workbook_path <- unpivotr_example("newresconst.xlsx")
+sheet_name <- "Table 1 - Permits"
+
+get_table <-  function(sheet_name){
+  
+testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
+formats <- xlsx_formats(workbook_path)
+
+table_min_row <-  testsheet_df$character %>% str_detect("Average RSE") %>% 
+                  which() %>% min() %>% testsheet_df$row[.] 
+
+migrated_df <-  
+  orientate_auto(
+    table_range = ~ row < table_min_row, sheet = testsheet_df,formats = formats,
+    manual_value_references = ~ data_type == "numeric" &  col >1,
+    group_row_headers_by = list(fmt_alignment_indent, ~data_type),
+    col_header_fill = "style")%>% 
+  migrate(numeric_value = T)
+
+  migrated_df %>% set_names(c("row","col",".value","region","units","year_var","month_var")) %>% 
+    mutate(month_var = month_var %>% str_remove_all("\\.") %>% str_trim())  %>% 
+    mutate(date_var = ymd(paste(year_var,month_var,"15",sep = "-")))
+
+}
+
+sheets <- tidyxl::xlsx_sheet_names(workbook_path)
+
+housing_df <- sheets %>% map_dfr(get_table)
+
+
+
+new_housing_df %>% 
+    ggplot(aes(x = date_var , y = .value, color =units )) + 
+    geom_line() + facet_grid(region~.,scales = "free") + theme_bw() +
+    labs(color = "Number of units", x = "Date", y ="New Privately-Owned Housing Units Authorized in Permit-Issuing Places ('000s)" )
+
+
+
+```
+
+
+
+
+
+```{r}
 
 orientated_df_aut <-  
   orientate_auto(
@@ -134,7 +186,7 @@ new_housing_df %>%
 
 
 ```{r}
-
+tidyxl::xlsx_sheet_names(workbook_path)
 
 ```
 
