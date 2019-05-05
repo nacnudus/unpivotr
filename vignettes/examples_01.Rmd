@@ -79,17 +79,18 @@ orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
                                       group_col_headers_by = list(),
                                       col_header_fill = "style")
 
-orientated_df_auto %>% plot_orientations()
-
-
 orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats,
-                                      manual_value_references = ~ data_type == "numeric" & fmt_font_italic(local_format_id,formats) == "TRUE" & row < 31,
+                                      manual_value_references = ~ data_type == "numeric" & 
+                                                                  fmt_font_italic(local_format_id,formats) == "TRUE" & 
+                                                                  row < 31 & row > 25,
                                       group_row_headers_by = list(fmt_alignment_indent, ~data_type),
                                       group_col_headers_by = list(~ row < 6),
-                                      filter_col_headers_by = ~row <7 & col > 1 & data_type == "character",
+                                      filter_col_headers_by = ~row <7 & col > 1,
+                                      filter_row_headers_by = ~row > 25 & row < 31 & col == 1,
                                       col_header_fill = "style")
 
 orientated_df_auto %>% plot_orientations()
+orientated_df_auto %>% migrate() %>% View
 
 testsheet_df
 
