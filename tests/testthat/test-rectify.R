@@ -204,5 +204,5 @@ test_that("rectify() works on common data types", {
     as_cells(x) %>%
     rectify() %>%
     dplyr::select(-1)
-  expect(all(purrr::map2_lgl(y, x, identical)))
+  expect(all(purrr::map2_lgl(y, x, identical)), "Not all data types worked")
 })
