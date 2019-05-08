@@ -23,7 +23,7 @@ Imports:
     forcats,
     purrr,
     tidyr,
-    pillar,
+    vctrs,
     tibble (>= 2.1.1),
     cellranger,
     xml2,
@@ -31,7 +31,7 @@ Imports:
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 6.1.1
-Suggests: 
+Suggests:
     knitr,
     rmarkdown,
     readr,

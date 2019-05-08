@@ -20,6 +20,9 @@
 #' passing it through the
 #' [htmltidy](https://CRAN.R-project.org/package=htmltidy) package first.
 #'
+#' Since version 0.6 an upstream package has changed the names of some data
+#' types: `"fct"` is now `"fctr"` and `"cpl"` is now `"cplx"`.
+#'
 #' This is an S3 generic.
 #'
 #' @param x A data.frame or an HTML document
@@ -30,11 +33,11 @@
 #'
 #' * `row` and `col` (integer) giving the original position of the 'cells'
 #' * any relevant columns for cell values in their original types: `chr`,
-#'   `cplx`, `cplx`, `dbl`, `fct`, `int`, `lgl`, `list`, and `ord`
+#'   `cplx`, `cplx`, `dbl`, `fctr`, `int`, `lgl`, `list`, and `ord`
 #' * `data_type` to specify for each cell which of the above columns (`chr`
 #'   etc.) the value is in.
 #'
-#' The columns `fct` and `ord` are, like `list`, list-columns (each element is
+#' The columns `fctr` and `ord` are, like `list`, list-columns (each element is
 #' independent) to avoid factor levels clashing.  For HTML tables, the column
 #' `html` gives the HTML string of the original cell.
 #'
@@ -93,7 +96,7 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
   values <- do.call(c, purrr::map(x, as.list))
   nrows <- nrow(x)
   ncols <- ncol(x)
-  types <- purrr::map_chr(x, pillar::type_sum)
+  types <- purrr::map_chr(x, vctrs::vec_ptype_abbr)
   # Spread cells into different columns by data type
   out <- tibble::tibble(
     row = rep.int(seq_len(nrow(x)), ncols),

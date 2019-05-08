@@ -81,7 +81,7 @@ test_that("tidy_table works with all common datatypes", {
     lgl = c(TRUE, FALSE),
     int = c(1L, 2L),
     dbl = c(1, 2),
-    cpl = c(1i, 2i),
+    cplx = c(1i, 2i),
     date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
     dttm = c(
       as.POSIXct("2001-01-01 01:01:01"),
@@ -97,17 +97,17 @@ test_that("tidy_table works with all common datatypes", {
   expect_equal(y_class[names(x_class)], x_class)
   # Separate test for factors, ordered factors and lists
   x <- tibble::tibble(
-    fct = factor(c("a", "b")),
+    fctr = factor(c("a", "b")),
     ord = factor(c("c", "d"), ordered = TRUE),
     list = list(1:2, list("a", "b"))
   )
   y <- tidy_table(x)
   expect_equal(colnames(y), c("row", "col", "data_type", sort(colnames(x))))
-  expect_equal(class(y$fct), "list")
+  expect_equal(class(y$fctr), "list")
   expect_equal(class(y$ord), "list")
   expect_equal(class(y$list), "list")
-  expect_equal(y$fct[[1]], factor("a", levels = c("a", "b")))
-  expect_equal(y$fct[[3]], NULL)
+  expect_equal(y$fctr[[1]], factor("a", levels = c("a", "b")))
+  expect_equal(y$fctr[[3]], NULL)
   expect_equal(y$ord[[2]], NULL)
   expect_equal(y$ord[[4]], factor("d", levels = c("c", "d"), ordered = TRUE))
   expect_equal(y$list[[4]], NULL)

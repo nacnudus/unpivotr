@@ -54,14 +54,14 @@ test_that("behead() works with all common datatypes", {
     lgl = c(TRUE, FALSE),
     int = c(1L, 2L),
     dbl = c(1, 2),
-    cpl = c(1i, 2i),
+    cplx = c(1i, 2i),
     date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
     dttm = c(
       as.POSIXct("2001-01-01 01:01:01"),
       as.POSIXct("2001-01-01 01:01:02")
     ),
     chr = c("a", "b"),
-    fct = factor(c("c", "d")),
+    fctr = factor(c("c", "d")),
     ord = factor(c("e", "f"), ordered = TRUE),
     list = list(1:2, letters[1:2])
   )
@@ -71,16 +71,16 @@ test_that("behead() works with all common datatypes", {
   expect_equal(y$header, rep(colnames(w), each = 2L))
   expect_equal(y$chr[12], NA_character_)
   expect_equal(y$chr[13], "a")
-  expect_equal(y$cpl[6], NA_complex_)
-  expect_equal(y$cpl[7], 0 + 1i)
+  expect_equal(y$cplx[6], NA_complex_)
+  expect_equal(y$cplx[7], 0 + 1i)
   expect_equal(y$date[8], as.Date(NA))
   expect_equal(y$date[9], as.Date("2001-01-01"))
   expect_equal(y$dbl[4], NA_real_)
   expect_equal(y$dbl[5], 1)
   expect_equal(y$dttm[10], as.POSIXct(NA))
   expect_equal(y$dttm[11], as.POSIXct("2001-01-01 01:01:01"))
-  expect_equal(y$fct[[16]], factor("d", levels = c("c", "d")))
-  expect_equal(y$fct[[17]], NULL)
+  expect_equal(y$fctr[[16]], factor("d", levels = c("c", "d")))
+  expect_equal(y$fctr[[17]], NULL)
   expect_equal(y$int[2], NA_integer_)
   expect_equal(y$int[3], 1L)
   expect_equal(y$lgl[2], FALSE)
@@ -112,9 +112,9 @@ test_that("behead() handles headers of factor and ordered-factor data types", {
     tibble::tibble(
       row = c(1L, 1L, 2L, 2L, 3L, 3L),
       col = c(1L, 2L, 1L, 2L, 1L, 2L),
-      data_type = c("fct", "ord", "chr", "dbl", "chr", "dbl"),
+      data_type = c("fctr", "ord", "chr", "dbl", "chr", "dbl"),
       chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
-      fct = list(factor("name"), NULL, NULL, NULL, NULL, NULL),
+      fctr = list(factor("name"), NULL, NULL, NULL, NULL, NULL),
       ord = list(
         NULL, factor("score", ordered = TRUE),
         NULL, NULL, NULL, NULL

@@ -18,12 +18,12 @@ A data.frame with the following columns:
 \itemize{
 \item \code{row} and \code{col} (integer) giving the original position of the 'cells'
 \item any relevant columns for cell values in their original types: \code{chr},
-\code{cplx}, \code{cplx}, \code{dbl}, \code{fct}, \code{int}, \code{lgl}, \code{list}, and \code{ord}
+\code{cplx}, \code{cplx}, \code{dbl}, \code{fctr}, \code{int}, \code{lgl}, \code{list}, and \code{ord}
 \item \code{data_type} to specify for each cell which of the above columns (\code{chr}
 etc.) the value is in.
 }
 
-The columns \code{fct} and \code{ord} are, like \code{list}, list-columns (each element is
+The columns \code{fctr} and \code{ord} are, like \code{list}, list-columns (each element is
 independent) to avoid factor levels clashing.  For HTML tables, the column
 \code{html} gives the HTML string of the original cell.
 
@@ -47,6 +47,9 @@ is particularly useful when an HTML cell itself contains an HTML table, or
 contains both text and a URL.  If the HTML itself is poorly formatted, try
 passing it through the
 \href{https://CRAN.R-project.org/package=htmltidy}{htmltidy} package first.
+
+Since version 0.6 an upstream package has changed the names of some data
+types: \code{"fct"} is now \code{"fctr"} and \code{"cpl"} is now \code{"cplx"}.
 
 This is an S3 generic.
 }

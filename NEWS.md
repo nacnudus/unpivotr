@@ -1,5 +1,8 @@
 # unpivotr 0.5.1.9000
 
+* Some data type columns have different names: `fct` is now `fctr` and `cpl` is
+    now `cplx`.  Some code could break.  This is due to changes upstream.
+
 # unpivotr 0.5.1
 
 * Patch for tibble `.name_repair` compatibility (#2144 @krlmlr)
