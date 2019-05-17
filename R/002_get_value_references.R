@@ -10,6 +10,7 @@
 get_value_references <- function(sheet, manual_value_references) {
 
 
+
   # Automatic producedure
   if (is.null(manual_value_references)) {
     

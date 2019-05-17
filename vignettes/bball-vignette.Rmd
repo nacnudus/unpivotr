@@ -1,0 +1,123 @@
+---
+title: "Untitled"
+author: "Ian Moran"
+date: "06/05/2019"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+rm(list = ls())
+setwd("C:/Users/Ian/Data/r-projects/unpivotr-dev/unpivotr/vignettes")
+home_dir <- rprojroot::find_package_root_file()
+setwd(home_dir)
+
+options(device = "quartz")
+```
+
+
+#### Setup packages 
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(devtools)
+load_all()
+install_github("nacnudus/unpivotr", ref = "ian")
+library(unpivotr)
+library(rprojroot)
+library(magick)
+library(magrittr)
+library(tidyverse)
+library(tidyxl)
+library(stringr)
+library(rlang)
+library(lubridate)
+library(hrbrthemes)
+library(scales)
+```
+
+
+
+### Example 1: Tidying with manual identification of table cells 
+
+The example below provides unpivotr a hard coded range for the data cells of the table. (In examples 2 and 3, this range is identified by a few lines of code.)
+```{r message=FALSE, warning=FALSE}
+# Load in spreadsheet and format data
+testsheet_df <- xlsx_cells(path = unpivotr_example("bball-examples.xlsx"), sheets = "Sheet1")
+formats <- xlsx_formats(unpivotr_example("bball-examples.xlsx"))
+
+# Add variables to indicate data cells, header groups and directions. Then migrate
+testsheet_df %>%
+  orientate_auto(formats = formats) %>% 
+  migrate(numeric_value = TRUE) %>% View
+  
+  
+
+testsheet_df %>%
+  orientate_auto(formats = formats, 
+                 group_col_headers_by = list(), 
+                 group_row_headers_by = list())  %T>% 
+  plot_orientations()  %>% 
+  migrate() %>% View
+
+
+testsheet_df %>%
+  orientate_auto(formats = formats, 
+                 group_col_headers_by = list(), 
+                 group_row_headers_by = list(fmt_font_bold)) %>% 
+    migrate() %>% View
+
+
+
+testsheet_df %>%
+  orientate_auto(formats = formats, 
+                 group_col_headers_by = list(), 
+                 group_row_headers_by = list(fmt_font_bold,fmt_alignment_indent)) %>% 
+      migrate() 
+
+unbold_rows <- 
+testsheet_df %>% 
+  filter(col == 1) %>% 
+  mutate(bold = fmt_font_bold(local_format_id,formats)) %>% 
+  filter(bold == "FALSE") %>% pull(row) 
+
+
+testsheet_df %>% 
+  filter(row %in% unbold_rows & data_type == "numeric")
+
+
+
+# Load in spreadsheet and format data
+testsheet_df <- xlsx_cells(path = unpivotr_example("bball-examples.xlsx"), sheets = "Sheet2")
+formats <- xlsx_formats(unpivotr_example("bball-examples.xlsx"))
+
+
+testsheet_df %>% 
+  filter(data_type == "numeric" & col > 1)
+
+
+orientations <- c("B3,F3,I3"="NNW","B4:J4"="N","A13:A17,A6:A10"="W",
+                  "A5,A12"="WNW","A18,A11"="W","B6:J11,B13:J18"="data")
+ 
+testsheet_df %>% 
+  orientate(orientations) %>% migrate() %>% View
+
+
+
+col_ref <- 
+testsheet_df %>% filter(str_detect(character,"Team Totals")) %>% pull(col) %>% .[1]
+
+library("plotly")
+
+testsheet_df %>%
+  orientate_auto(formats = formats, 
+                 manual_value_references = ~ data_type == "numeric" & col > col_ref,
+                 group_col_headers_by = list(), 
+                 group_row_headers_by = list(fmt_font_bold,fmt_alignment_indent)) %>% 
+  plot_orientations() %>% ggplotly()
+
+testsheet_df
+
+
+
+
+```

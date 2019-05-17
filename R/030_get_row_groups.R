@@ -104,7 +104,7 @@ get_row_groups <- function(sheet, value_ref, col_groups, formats,
   }
   
 
-group_row_headers_by <- group_row_headers_by %>% append(~ 1)
+group_row_headers_by <- group_row_headers_by %>% append(~ 1) %>% append(ones)
   
   
 types <- group_row_headers_by %>% map_chr(type_of)
