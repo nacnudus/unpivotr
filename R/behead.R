@@ -128,6 +128,7 @@ behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
                                  types = data_type, formatters = list(),
                                  drop_na = TRUE) {
   dots <- rlang::enquos(...)
+  direction <- standardise_direction(direction)
   check_direction_behead(direction)
   check_distinct(cells)
   name <- rlang::ensym(name)
@@ -180,36 +181,21 @@ behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
 direction_filter <- function(direction) {
   direction <- substr(direction, 1L, 1L)
   dplyr::case_when(
-    direction == "N" ~ rlang::expr(.data$row == min(.data$row)),
-    direction == "E" ~ rlang::expr(.data$col == max(.data$col)),
-    direction == "S" ~ rlang::expr(.data$row == max(.data$row)),
-    direction == "W" ~ rlang::expr(.data$col == min(.data$col))
+    direction == "u" ~ rlang::expr(.data$row == min(.data$row)),
+    direction == "r" ~ rlang::expr(.data$col == max(.data$col)),
+    direction == "d" ~ rlang::expr(.data$row == max(.data$row)),
+    direction == "l" ~ rlang::expr(.data$col == min(.data$col))
   )
 }
 
 # Check that a given direction is a supported compass direction
 check_direction_behead <- function(direction_string) {
-  directions <- c(
-    "NNW", "N", "NNE",
-    "ENE", "E", "ESE",
-    "SSE", "S", "SSW",
-    "WSW", "W", "WNW"
-  )
-  other_directions <- c("ABOVE", "LEFT", "RIGHT", "BELOW")
-  if (direction_string %in% other_directions) {
+  ish_directions <- c("up-ish", "right-ish", "down-ish", "left-ish")
+  if (direction_string %in% ish_directions) {
     stop(
-      "`direction` must be one of \"",
-      paste(directions, collapse = "\", \""),
-      "\".  To use the directions \"",
-      paste(other_directions, collapse = "\", \""),
+      "To use the directions \"",
+      paste(ish_directions, collapse = "\", \""),
       "\" look at `?enhead`."
-    )
-  }
-  if (!(direction_string %in% directions)) {
-    stop(
-      "`direction` must be one of \"",
-      paste(directions, collapse = "\", \""),
-      "\""
     )
   }
 }

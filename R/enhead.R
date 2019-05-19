@@ -89,23 +89,23 @@ enhead <- function(data_cells, header_cells, direction, drop = TRUE) {
 enhead.data.frame <- function(data_cells, header_cells, direction,
                               drop = TRUE) {
   check_header(header_cells)
-  check_direction_enhead(direction)
+  direction <- standardise_direction(direction)
   check_distinct(data_cells)
   check_distinct(header_cells)
-  if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
+  if (direction %in% c("up-ish", "right-ish", "down-ish", "left-ish")) {
     do.call(direction, list(data_cells, header_cells))
   } else if (direction %in% c(
-    "N", "E", "S", "W",
-    "NNW", "NNE",
-    "ENE", "ESE",
-    "SSE", "SSW",
-    "WSW", "WNW"
+    "up", "right", "down", "left",
+    "up-left", "up-right",
+    "right-up", "right-down",
+    "down-right", "down-left",
+    "left-down", "left-up"
   )) {
     do.call(direction, list(data_cells, header_cells, drop))
   }
 }
 
-N <- function(data_cells, header_cells, drop = TRUE) {
+up <- function(data_cells, header_cells, drop = TRUE) {
   check_header(header_cells)
   join <- ifelse(drop, dplyr::inner_join, dplyr::left_join)
   out <- join(data_cells, dplyr::select(header_cells, -row),
@@ -115,7 +115,7 @@ N <- function(data_cells, header_cells, drop = TRUE) {
   tibble::as_tibble(out)
 }
 
-E <- function(data_cells, header_cells, drop = TRUE) {
+right <- function(data_cells, header_cells, drop = TRUE) {
   check_header(header_cells)
   join <- ifelse(drop, dplyr::inner_join, dplyr::left_join)
   out <- join(data_cells, dplyr::select(header_cells, -col),
@@ -125,29 +125,29 @@ E <- function(data_cells, header_cells, drop = TRUE) {
   tibble::as_tibble(out)
 }
 
-S <- N
-W <- E
+down <- up
+left <- right
 
-NNW <- function(data_cells, header_cells, drop = TRUE) {
+`up-left` <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "top_left", drop)
 }
 
-NNE <- function(data_cells, header_cells, drop = TRUE) {
+`up-right` <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "top_right", drop)
 }
 
-SSE <- function(data_cells, header_cells, drop = TRUE) {
+`down-right` <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "bottom_right", drop)
 }
 
-SSW <- function(data_cells, header_cells, drop = TRUE) {
+`down-left` <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "bottom_left", drop)
 }
 
-WNW <- NNW
-ENE <- NNE
-ESE <- SSE
-WSW <- SSW
+`left-up` <- `up-left`
+`right-up` <- `up-right`
+`right-down` <- `down-right`
+`left-down` <- `down-left`
 
 corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   check_header(header_cells)
@@ -177,25 +177,25 @@ corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   out
 }
 
-ABOVE <- function(data_cells, header_cells, drop = TRUE) {
-  side_join(data_cells, header_cells, "NNW", drop)
+`up-ish` <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "up-left", drop)
 }
 
-LEFT <- function(data_cells, header_cells, drop = TRUE) {
-  side_join(data_cells, header_cells, "WNW", drop)
+`left-ish` <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "left-up", drop)
 }
 
-BELOW <- function(data_cells, header_cells, drop = TRUE) {
-  side_join(data_cells, header_cells, "SSW", drop)
+`down-ish` <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "down-left", drop)
 }
 
-RIGHT <- function(data_cells, header_cells, drop = TRUE) {
-  side_join(data_cells, header_cells, "ENE", drop)
+`right-ish` <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "right-up", drop)
 }
 
 side_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   check_header(header_cells)
-  if (corner %in% c("NNW", "NNE", "SSW", "SSE")) {
+  if (corner %in% c("up-left", "up-right", "down-left", "down-right")) {
     pos <- rlang::sym("col")
   } else {
     pos <- rlang::sym("row")
@@ -210,7 +210,9 @@ side_join <- function(data_cells, header_cells, corner, drop = TRUE) {
 }
 
 corner_pos <- function(cells, corner) {
-  corner_names <- c("NNW", "NNE", "ENE", "ESE", "SSE", "SSW", "WSW", "WNW")
+  corner_names <-
+    c("up-left", "up-right", "right-up", "right-down",
+      "down-right", "down-left", "left-down", "left-up")
   corner_poss <- rep(c("col", "col", "row", "row"), 2L)
   corner_looks <- c(
     rep(c(dplyr::lag, dplyr::lead), 2L),
@@ -239,24 +241,6 @@ check_header <- function(header_cells) {
       "Multiple lines of headers are not supported in this way.",
       "\n  Perhaps you meant to concatenate them together first,",
       "\n  Or look at ?partition"
-    )
-  }
-}
-
-# Check that a given direction is a supported compass direction
-check_direction_enhead <- function(direction_string) {
-  directions <- c(
-    "NNW", "N", "NNE",
-    "ENE", "E", "ESE",
-    "SSE", "S", "SSW",
-    "WSW", "W", "WNW",
-    "ABOVE", "LEFT", "RIGHT", "BELOW"
-  )
-  if (!(direction_string %in% directions)) {
-    stop(
-      "`direction` must be one of \"",
-      paste(directions, collapse = "\", \""),
-      "\""
     )
   }
 }
