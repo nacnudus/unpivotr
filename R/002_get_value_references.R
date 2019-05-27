@@ -9,19 +9,15 @@
 
 get_value_references <- function(sheet, manual_value_references) {
 
-
-
   # Automatic producedure
   if (is.null(manual_value_references)) {
-    
     ref_df <- 
-    sheet %>%
-      filter(!is.na(numeric)) %>%
+    sheet %>% 
+      dplyr::filter(!is.na(numeric)) %>%
       summarise(
         min_row = min(row), max_row = max(row),
         min_col = min(col), max_col = max(col)
       ) 
-    
     return(ref_df)
       
       

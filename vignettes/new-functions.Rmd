@@ -1,86 +1,51 @@
 ---
-title: "New Functions"
-author: "Ian"
-date: "`r Sys.Date()`"
-output:
-  rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{New Functions}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
+title: "New Functions Testing"
+output: html_document
 editor_options: 
   chunk_output_type: console
 ---
 
-
-**The newest work on tidyABS has not been moved across. More flexibility carried over soon.**
-
-This vignette outlines functions introduced by the "ian" branch of unpivotr. These functios allow for a tidyABS-style workflow to tidying excel sheets. 
-
-
-This workflow involves two key functions: `orientate`/`orientate_auto` and `migrate`.  
-
-* `orientate`/`orientate_auto` add a string variable to a tidyxl data frame indicating, for each row, whether the cell is a header or data. If it is a header, a direction is added. 
-
-* `migrate` transforms a tidyxl data frame containing orientation information into a tidy data frame that has a column for each header and a row for each table value. 
-
-Below is an example demonstrate `orientate` and `migrate`.
-
-### Example 1 
-
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
-# Install required packages 
-library(devtools)
-install_github("nacnudus/unpivotr",ref = "ian")
-library(unpivotr)
-library(tidyverse)
-library(tidyxl)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This vignette uses the `humanities` sheet from unpivotr's `worked-examples.xlsx` workbook.
-```{r}
-# Identify workbooks and sheet for example 
-workbook_path <- unpivotr_example("worked-examples.xlsx")
-sheet_name <- "humanities"
-```
+## R Markdown
 
-This spreadsheet is read in using tidyxl.
-```{r}
-# Identify workbooks and sheet for example 
-testsheet_df <-  xlsx_cells(path = workbook_path,sheets = sheet_name)
-formats <-  xlsx_formats(workbook_path)
-```
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-`orientate_auto` is used to automatically add direction information to the tidyxl dataframe. 
-```{r message=FALSE, warning=FALSE}
-# Apply orientate_auto
-auto_orientated_df <- testsheet_df %>%  orientate_auto(formats)
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-# .header_goup and .orientation have been added to `testsheet_df`.
-auto_orientated_df[,c("row","col","character","numeric", ".orientation", ".header_group")] 
-```
+```{r cars}
+# Clear environment 
+rm(list = ls())
 
-Alternatively, `orientate` can be used to add directions manually. 
-```{r}
-# Idicate which ranges represent data, and the direction of headers. 
-orientations <- c("B2:C3" = "data", "B1:C1" = "N", "A2:A3" = "W")
 
-# .header_goup and .orientation have been added to `testsheet_df`.
-orientated_df <- testsheet_df %>% orientate(orientations)
+# Load all packages 
+devtools::load_all("C:/Users/ianmo/OneDrive/Documents/data/projects/unpivotr-dev/tidyxl")
+devtools::load_all()
 
-# .header_goup and .orientation have been added to `testsheet_df`.
-orientated_df[,c("row","col","character","numeric", ".orientation", ".header_group")] 
-```
-
-Both `orientated_df` and `auto_orientated_df` can be transformed to a column per header and row per value with `migrate`
-
-```{r}
-auto_orientated_df %>% migrate() 
+# Install packages
+library("stringr")
+library("purrr")
+library(dplyr)
 ```
 
 
 ```{r}
-orientated_df %>% migrate()
+unpivotr_example("bball-examples.xlsx") %>% 
+  xlsx_cells_fmt()
+
+unpivotr_example("bball-examples.xlsx") %>% xlsx_cells()
+unpivotr_example("bball-examples.xlsx") %>% xlsx_formats()
+unpivotr_example("bball-examples.xlsx") %>% xlsx_cells_fmt() %>% attributes() %>% str()
+
 ```
 
+```{r}
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  locate_data() %>% 
+  locate_header_groups()
+  
+```
 
