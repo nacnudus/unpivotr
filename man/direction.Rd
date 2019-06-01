@@ -49,6 +49,21 @@ has a value, which is the header cell.
 \item \code{"down-right"} means from each data cell go directly down to a cell at the
 edge of the the table, then if the cell is blank go right until a cell that
 has a value, which is the header cell.
+}
+}
+\section{-ish}{
+
+
+The difference between \code{"up"} and \code{"up-ish"} (and similar pairs of directions)
+is that \code{"up"} finds headers directly above the data cell, whereas \code{"up-ish"}
+matches the nearest header, whether above-left, above-right or directly above
+the data cell.  This is useful for matching headers that are not aligned to
+the edge of the data cells that they refer to.  There can be a tie in the
+directions \code{"up-ish"}, \code{"down-ish"}, \code{"left-ish"} and \code{"right-ish"} , causing
+\code{NA}s to be returned in the place of header values.  Avoid ties by using
+\code{\link[=justify]{justify()}} first to align header cells to the corner of the data cells they
+describe.
+\itemize{
 \item \code{"up-ish"} means the closest cell at the top edge of the table without
 crossing a border defined by the \code{border} parameter.
 \item \code{"left-ish"} means the closest cell at the left-hand edge of the table
@@ -59,6 +74,7 @@ without crossing a border defined by the \code{border} parameter.
 crossing a border defined by the \code{border} parameter.
 }
 }
+
 \section{Tables}{
 \preformatted{+----------------+-------------+-------------+
 |                | up-left     | up-left     |

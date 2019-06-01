@@ -51,6 +51,18 @@
 #' edge of the the table, then if the cell is blank go right until a cell that
 #' has a value, which is the header cell.
 #'
+#' @section -ish:
+#'
+#' The difference between `"up"` and `"up-ish"` (and similar pairs of directions)
+#' is that `"up"` finds headers directly above the data cell, whereas `"up-ish"`
+#' matches the nearest header, whether above-left, above-right or directly above
+#' the data cell.  This is useful for matching headers that are not aligned to
+#' the edge of the data cells that they refer to.  There can be a tie in the
+#' directions `"up-ish"`, `"down-ish"`, `"left-ish"` and `"right-ish"` , causing
+#' `NA`s to be returned in the place of header values.  Avoid ties by using
+#' [justify()] first to align header cells to the corner of the data cells they
+#' describe.
+#'
 #' * `"up-ish"` means the closest cell at the top edge of the table without
 #' crossing a border defined by the `border` parameter.
 #' * `"left-ish"` means the closest cell at the left-hand edge of the table
