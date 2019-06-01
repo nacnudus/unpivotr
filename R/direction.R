@@ -9,7 +9,11 @@
 #' example, the direction `"up"` means "from each data cell go directly up to a
 #' cell at the edge of the table, which is the header cell."
 #'
-#' See the tables at the bottom for a visual explanation.
+#' Scroll down to the "Tables" section for a visual explanation.
+#'
+#' Legacy directions `"N"`, `"NNW", `"W"`, `"WNW"`, etc. are still supported.
+#' Scroll down to the "Legacy directions" section for how they map to the new
+#' directions.
 #'
 #' * `"up"` means from each data cell go directly up to a cell at the edge of
 #' the the table, which is the header cell.
@@ -55,6 +59,8 @@
 #' without crossing a border defined by the `border` parameter.
 #' * `"down-ish"` means the closest cell at the bottom edge of the table without
 #' crossing a border defined by the `border` parameter.
+#'
+#' @section Tables:
 #'
 #' ```
 #' +----------------+-------------+-------------+
@@ -162,6 +168,28 @@
 #' +------+----------+------+------+------+----------+------+                   +
 #' |        down-ish        |               down-ish        |                   |
 #' +------------------------+-------------------------------+-------------------+
+#' ```
+#'
+#' @section Legacy directions:
+#'
+#' Older versions of unpivotr used different names for the directions, based on
+#' the points of the compass.  These are still supported but are discouraged.
+#'
+#' ```
+#' | old direction | new direction |
+#' |---------------|---------------|
+#' | N             | up            |
+#' | NNW           | up-left       |
+#' | NNE           | up-right      |
+#' | W             | left          |
+#' | WNW           | left-up       |
+#' | WSW           | left-down     |
+#' | E             | right         |
+#' | ENE           | right-up      |
+#' | ESE           | right-down    |
+#' | S             | down          |
+#' | SSW           | down-left     |
+#' | SSE           | down-right    |
 #' ```
 #'
 #' @name direction
