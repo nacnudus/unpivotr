@@ -18,7 +18,7 @@ A data.frame with the following columns:
 \itemize{
 \item \code{row} and \code{col} (integer) giving the original position of the 'cells'
 \item any relevant columns for cell values in their original types: \code{chr},
-\code{cplx}, \code{cplx}, \code{dbl}, \code{fct}, \code{int}, \code{lgl}, \code{list}, and \code{ord}
+\code{cpl}, \code{dbl}, \code{fct}, \code{int}, \code{lgl}, \code{list}, and \code{ord}
 \item \code{data_type} to specify for each cell which of the above columns (\code{chr}
 etc.) the value is in.
 }
