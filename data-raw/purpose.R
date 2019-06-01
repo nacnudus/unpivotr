@@ -26,4 +26,4 @@ purpose <- c(
   purpose,
   list(small_multiples = small_multiples)
 )
-use_data(purpose, overwrite = TRUE)
+usethis::use_data(purpose, overwrite = TRUE)
