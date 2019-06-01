@@ -1,6 +1,6 @@
 context("test-behead.R")
 
-x <- purpose$`NNW WNW`
+x <- purpose$`up-left left-up`
 cells <- as_cells(x)
 
 test_that("behead() works", {
