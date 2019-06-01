@@ -126,7 +126,7 @@ expect_education_short <-
   )
 
 test_that("Compass directions \"up\", \"up-left\", \"left\", and \"left-up\" work", {
-  cells <- as_cells(purpose$`NNW WNW`)
+  cells <- as_cells(purpose$`up-left left-up`)
   col_headers <-
     cells %>%
     dplyr::filter(row <= 2, !is.na(chr)) %>%
@@ -154,7 +154,7 @@ test_that("Compass directions \"up\", \"up-left\", \"left\", and \"left-up\" wor
 })
 
 test_that("Compass directions \"up-right\" and \"left-down\" work", {
-  cells <- as_cells(purpose$`NNE WSW`)
+  cells <- as_cells(purpose$`up-right left-down`)
   row_headers <-
     cells %>%
     dplyr::filter(col <= 2, !is.na(chr)) %>%
@@ -178,7 +178,7 @@ test_that("Compass directions \"up-right\" and \"left-down\" work", {
 })
 
 test_that("Compass directions \"down\", \"down-right\" , \"right\" and \"right-down\" work", {
-  cells <- as_cells(purpose$`SSE ESE`)
+  cells <- as_cells(purpose$`right-down down-right`)
   row_headers <-
     cells %>%
     dplyr::filter(col >= 5, !is.na(chr)) %>%
@@ -206,7 +206,7 @@ test_that("Compass directions \"down\", \"down-right\" , \"right\" and \"right-d
 })
 
 test_that("Compass directions \"down-left\" and \"right-up\" work", {
-  cells <- as_cells(purpose$`SSW ENE`)
+  cells <- as_cells(purpose$`right-up down-left`)
   row_headers <-
     cells %>%
     dplyr::filter(col >= 5, !is.na(chr)) %>%
@@ -230,7 +230,7 @@ test_that("Compass directions \"down-left\" and \"right-up\" work", {
 })
 
 test_that("Compass directions \"up-ish\" and \"left-ish\" work", {
-  cells <- as_cells(purpose$`ABOVE LEFT`)
+  cells <- as_cells(purpose$`up-ish left-ish`)
   row_headers <-
     cells %>%
     dplyr::filter(col <= 2, !is.na(chr)) %>%
@@ -256,7 +256,7 @@ test_that("Compass directions \"up-ish\" and \"left-ish\" work", {
 })
 
 test_that("Compass directions \"down-ish\" and \"right-ish\" work", {
-  cells <- as_cells(purpose$`BELOW RIGHT`)
+  cells <- as_cells(purpose$`right-ish down-ish`)
   row_headers <-
     cells %>%
     dplyr::filter(col >= 7, !is.na(chr)) %>%
@@ -280,7 +280,7 @@ test_that("Compass directions \"down-ish\" and \"right-ish\" work", {
 })
 
 test_that("enhead() works", {
-  cells <- as_cells(purpose$`NNW WNW`)
+  cells <- as_cells(purpose$`up-left left-up`)
   col_headers <-
     cells %>%
     dplyr::filter(row <= 2, !is.na(chr)) %>%
@@ -307,7 +307,7 @@ test_that("enhead() works", {
 
 test_that("the `drop` argument works", {
   spreadsheet <- system.file("extdata/purpose.xlsx", package = "unpivotr")
-  cells <- tidyxl::xlsx_cells(spreadsheet, "ABOVE LEFT border")
+  cells <- tidyxl::xlsx_cells(spreadsheet, "up-ish left-ish border")
   formatting <- tidyxl::xlsx_formats(spreadsheet)
   left_borders <- which(!is.na(formatting$local$border$left$style))
   top_borders <- which(!is.na(formatting$local$border$top$style))
@@ -343,7 +343,7 @@ test_that("the `drop` argument works", {
 })
 
 test_that("enhead() stops on non-distinct cells", {
-  cells <- as_cells(purpose$`NNW WNW`)
+  cells <- as_cells(purpose$`up-left left-up`)
   col_headers <-
     cells %>%
     dplyr::filter(row <= 2, !is.na(chr)) %>%

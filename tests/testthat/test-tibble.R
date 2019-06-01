@@ -2,7 +2,7 @@ context("tibbles")
 
 test_that("functions return tibbles", {
   # Load some pivoted data
-  x <- purpose$`NNW WNW`
+  x <- purpose$`up-left left-up`
   # Make a tidy representation
   cells <- as_cells(x)
   cells <- cells[!is.na(cells$chr), ]
