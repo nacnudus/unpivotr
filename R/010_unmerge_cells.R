@@ -37,9 +37,9 @@ unmerge_cells <- function(sheet, strict_merging = T) {
       filter(!is_blank) %>%
       mutate(row_col = paste0(row, "_", col)) %>%
       mutate(merged = 1)
-
-
-
+    
+    
+    
   }else{
 
 

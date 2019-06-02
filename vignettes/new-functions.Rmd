@@ -28,6 +28,8 @@ devtools::load_all()
 library("stringr")
 library("purrr")
 library(dplyr)
+library(rlang)
+
 ```
 
 
@@ -42,6 +44,7 @@ unpivotr_example("bball-examples.xlsx") %>% xlsx_cells_fmt() %>% attributes() %>
 ```
 
 ```{r}
+
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
   locate_data() %>% 

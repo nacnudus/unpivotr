@@ -17,9 +17,8 @@ locate_header_groups <-
            formats = NULL,
            table_range = NULL, manual_value_references = NULL, 
            added_row_groups = NULL,
-           group_col_headers_by = list(), 
-           group_row_headers_by = list(fmt_alignment_indent, fmt_font_bold, ~data_type),
            col_header_fill = "local_format_id",
+           .groupings = groupings(fmt_alignment_indent),
            row_header_fill = "none",
            filter_col_headers_by = NULL,
            filter_row_headers_by = NULL,
@@ -27,37 +26,35 @@ locate_header_groups <-
            default_row_header_direction = "W",
            keep_meta_data = FALSE) {
     
-    
-    
-   browser() 
+    browser()
     
     tabledata <- attr(sheet, "data_cells")
+    
+    # Identify empty rows of data_cells
     
     empty_row_df <- 
       tabledata %>% 
       select(-comment) %>% 
-      group_by(row) %>% 
-      mutate(.value = coalesce(as.character(numeric),as.character(character),as.character(date),
-                               as.character(logical),as.character(error), as.character(formula))) %>% 
+      group_by(row)  %>% 
       summarise(empty_share = sum(.value == "")/n()) %>% 
-      filter(empty_share == 1)
+      mutate(empty_share = ifelse(is.na(empty_share),1,empty_share))
     
-    tabledata <- 
-      tabledata %>% filter(!row %in%  empty_row_df$row)
+    # tabledata <- 
+    #   tabledata %>% filter(!row %in%  empty_row_df$row)
     
     # Get col groups ----
     
-    value_ref
+    value_ref <-   get_corner_cell_refs(tabledata)
     
     col_header_fill_choice <-   match.arg(arg = col_header_fill, choices = c("local_format_id","style","borders","none"))  
     
-    group_col_headers_by_temp <- group_col_headers_by
+    groupings_temp <- .groupings
     
     default_col_header_direction_temp <- default_col_header_direction
     filter_col_headers_by_temp <- filter_col_headers_by 
     
     col_groups <- get_col_groups(sheet = sheet, value_ref = value_ref, formats = formats, 
-                                 group_col_headers_by = group_col_headers_by_temp, 
+                                 .groupings = groupings_temp, 
                                  col_header_fill = col_header_fill_choice,
                                  default_col_header_direction = default_col_header_direction_temp,
                                  filter_col_headers_by = filter_col_headers_by_temp)

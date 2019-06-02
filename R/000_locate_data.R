@@ -53,8 +53,15 @@ locate_data <-
      
     if (is.null(filter)) {
       
-   value_ref <- sheet %>% get_value_references(manual_value_references = NULL)
     
+   value_ref <- 
+     sheet %>% 
+     dplyr::filter(!is.na(numeric)) %>%
+     summarise(
+       min_row = min(row), max_row = max(row),
+       min_col = min(col), max_col = max(col)
+     ) 
+   
    data_sheet <-
     sheet %>%
     filter(row >= value_ref$min_row[1],
@@ -68,7 +75,9 @@ locate_data <-
     sheet[!(sheet$address %in% data_sheet$address),]
      
     
-   attr(sheet, "data_cells") <- data_sheet
+    attr(sheet, "data_cells") <- data_sheet %>%  
+      mutate(.value = coalesce(as.character(numeric),as.character(character),as.character(date),
+                               as.character(logical),as.character(error), as.character(formula)))
     
     sheet
         
