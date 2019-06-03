@@ -15,7 +15,7 @@ fill_blanks_in_headers <- function(header_df,col_header_fill, formats){
     while (continue) {
       sheet_original <- header_df
       header_df <- header_df %>% unmerge_cells(strict_merging = FALSE)
-
+      
       continue <- !identical(sheet_original, header_df)
     }
     
@@ -24,7 +24,7 @@ fill_blanks_in_headers <- function(header_df,col_header_fill, formats){
   
   if(col_header_fill ==  "local_format_id"){
     continue <- TRUE
-
+    
     while (continue) {
       sheet_original <- header_df
       header_df <- header_df %>% unmerge_cells(strict_merging = TRUE)
@@ -36,18 +36,18 @@ fill_blanks_in_headers <- function(header_df,col_header_fill, formats){
   
 
   if(col_header_fill ==  "borders"){
-  
+    
     filled_join <- 
       header_df %>%  
-        add_h_border_groups(formats) %>% 
-        group_by(h_border_group)  %>%  
-        select(row,col,h_border_group, character) %>% 
-        mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% 
-                                str_remove_all(" _ "),character)) %>% 
-        ungroup() %>% 
-        arrange(h_border_group, row,col ) %>% 
-        select(row,col, character = value) 
-  
+      add_h_border_groups(formats) %>% 
+      group_by(h_border_group)  %>%  
+      select(row,col,h_border_group, character) %>% 
+      mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% 
+                              str_remove_all(" _ "),character)) %>% 
+      ungroup() %>% 
+      arrange(h_border_group, row,col ) %>% 
+      select(row,col, character = value) 
+    
     header_df <- 
       header_df %>% select(-character) %>% 
       left_join(filled_join, by = c("row", "col")) 

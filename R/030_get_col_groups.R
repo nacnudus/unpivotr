@@ -18,13 +18,12 @@ get_col_groups <- function(sheet, value_ref, formats,
                            col_header_fill = "local_format_id",
                            default_col_header_direction = default_col_header_direction,
                            table_data = tabledata,
-                           filter_col_headers_by = filter_col_headers_by_temp) {
+                           filter_col_headers_by = filter_col_headers_by_temp){
   
  browser() 
   
  # Idenitfy header cells to which directions will be allocated  
 
-  
   header_df <-
     sheet %>%
       filter(col <= value_ref$max_col) %>%
@@ -47,25 +46,31 @@ get_col_groups <- function(sheet, value_ref, formats,
   header_df <- fill_blanks_in_headers(header_df, col_header_fill,formats)
   
  # create names for grouping functions  
+  .groupings <- .groupings %>% append(quo(ones))
+  .groupings
+
+  closures <- .groupings  
   
-  .groupings <- .groupings %>% append(enqou(1))
+  openenv <- environment()
   
-  types <- .groupings %>% map_chr(type_of)
+  seq_along(closures) %>% 
+    map(~ assign(paste0("cls_", as_label(closures[[.x]])),
+                 set_env(eval_tidy(closures[[.x]])),envir = openenv))
+   
   
-  # Add formatting information from formulas ( ~ *)
+
+  closure_list <- syms(ls()[str_detect(ls(),"cls_")])
     
-  form_list <- seq_along(.groupings) %>% 
-    map(~list(.groupings[.x],
-              paste0("frm_",
-                     .groupings[.x] %>% as.character() %>% make.names() %>% 
-                       str_replace_all("\\.+",".") %>% str_remove_all("(\\.$)|(^X\\.)") %>% 
-                       ifelse(str_sub(.,start = 1,1) %in% as.character(0:9),paste0("x",.),.  ))))
+
+  header_df <- 
+    header_df %>% 
+    mutate_at(.vars = "local_format_id",
+              .funs = funs(!!!closure_list)) 
   
   
-  form_list <- form_list %>% map(~.x %>% map(1))
+
+   
   
-  header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)  
-    
   grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"cls_|frm_")])
   
   # Nest header groups ----
@@ -82,8 +87,7 @@ get_col_groups <- function(sheet, value_ref, formats,
   header_df <-
     header_df %>%
     mutate(row_no_name = row_temp - min(row_temp) + 1) %>%
-    mutate(header_label = paste0("header_label_", 
-                                 str_pad(row_number(), 2, side = "left", "0")))
+    mutate(header_label = paste0("header_label_",row_no_name))
   
   # Create and name headers ----
   header_df <-
@@ -110,15 +114,23 @@ get_col_groups <- function(sheet, value_ref, formats,
     mutate(direction = default_col_header_direction) %>%
     dplyr::select(header_label, direction, data, !!!grouping_vars)
   
-
+  header_df
+  
+  
+  
   # Add information to output df ----
   header_df %>%
     mutate(data_summary = data %>%
-      map(~ .x %>% summarise(
-        min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
-        min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
-      ))) %>%
-    unnest(data_summary) 
+             map(~ .x %>% summarise(
+               min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
+               min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
+             ))) %>%
+    unnest(data_summary)
+  
+  
+  
+  
+  
   
   # %>%
   # check_low_col_names

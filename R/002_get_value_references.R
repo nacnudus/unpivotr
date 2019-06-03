@@ -19,8 +19,8 @@ get_value_references <- function(sheet, manual_value_references) {
         min_col = min(col), max_col = max(col)
       ) 
     return(ref_df)
-      
-      
+    
+    
   } 
   
   if(is.character(manual_value_references)){
@@ -39,7 +39,7 @@ get_value_references <- function(sheet, manual_value_references) {
     return(ref_df)
     
   }
-
+  
   
   
   if (is_formula(manual_value_references)) {
@@ -61,9 +61,6 @@ get_value_references <- function(sheet, manual_value_references) {
     
     
   } 
-  
-  # if(is.character(manual_value_references)){
-  
   
   
 } 

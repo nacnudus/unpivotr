@@ -47,8 +47,8 @@ unpivotr_example("bball-examples.xlsx") %>% xlsx_cells_fmt() %>% attributes() %>
 
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-  locate_data() %>% 
-  locate_header_groups()
+  locate_data() %>%  
+  locate_header_groups(.groupings = groupings(fmt_font_bold,fmt_alignment_indent))
   
 ```
 

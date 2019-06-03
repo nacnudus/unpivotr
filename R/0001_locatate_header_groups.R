@@ -28,6 +28,7 @@ locate_header_groups <-
     
     browser()
     
+    formats <- attr(sheet, "formats")
     tabledata <- attr(sheet, "data_cells")
     
     # Identify empty rows of data_cells
@@ -45,11 +46,8 @@ locate_header_groups <-
     # Get col groups ----
     
     value_ref <-   get_corner_cell_refs(tabledata)
-    
     col_header_fill_choice <-   match.arg(arg = col_header_fill, choices = c("local_format_id","style","borders","none"))  
-    
     groupings_temp <- .groupings
-    
     default_col_header_direction_temp <- default_col_header_direction
     filter_col_headers_by_temp <- filter_col_headers_by 
     
@@ -58,7 +56,6 @@ locate_header_groups <-
                                  col_header_fill = col_header_fill_choice,
                                  default_col_header_direction = default_col_header_direction_temp,
                                  filter_col_headers_by = filter_col_headers_by_temp)
-    
     
     
     # Get rows groups ----

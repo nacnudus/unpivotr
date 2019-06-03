@@ -44,13 +44,13 @@ locate_data <-
       
       current_quosure <-  as_quosure(filter)
       
-     data_sheet <- 
+      data_sheet <- 
         sheet %>% 
         filter(!!current_quosure)
       
     } 
     
-     
+    
     if (is.null(filter)) {
       
     
