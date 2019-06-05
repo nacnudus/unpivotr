@@ -9,21 +9,14 @@
 
  
   reduce_mutated <- function(df, form_list,format){
-   browser() 
 
     current_quosure <-  form_list[[1]]
     var_name_sym <-  sym(form_list[[2]])
     
-     
-     df %>% 
-     mutate_at(.vars = "local_format_id",
-               .funs = funs( x= !!!current_quosure)) %>% glimpse
-     
      df %>% 
       mutate(!!var_name_sym:= !!current_quosure)  
      
      
-     fmt_font_bold(df$local_format_id, formats)
      
      
      

@@ -19,7 +19,6 @@ When you click the **Knit** button a document will be generated that includes bo
 # Clear environment 
 rm(list = ls())
 
-
 # Load all packages 
 devtools::load_all("C:/Users/ianmo/OneDrive/Documents/data/projects/unpivotr-dev/tidyxl")
 devtools::load_all()
@@ -34,6 +33,15 @@ library(rlang)
 
 
 ```{r}
+
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  locate_data() %>%  
+  locate_header_groups(.groupings = groupings(fmt_font_bold,fmt_alignment_indent))
+  
+```
+
+```{r}
 unpivotr_example("bball-examples.xlsx") %>% 
   xlsx_cells_fmt()
 
@@ -43,12 +51,4 @@ unpivotr_example("bball-examples.xlsx") %>% xlsx_cells_fmt() %>% attributes() %>
 
 ```
 
-```{r}
-
-unpivotr_example("bball-examples.xlsx") %>%
-  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-  locate_data() %>%  
-  locate_header_groups(.groupings = groupings(fmt_font_bold,fmt_alignment_indent))
-  
-```
 

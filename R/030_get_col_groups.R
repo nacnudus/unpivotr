@@ -15,12 +15,11 @@
 
 get_col_groups <- function(sheet, value_ref, formats, 
                            .groupings = groupings(fmt_alignment_indent), 
-                           col_header_fill = "local_format_id",
-                           default_col_header_direction = default_col_header_direction,
+                           header_fill = "local_format_id",
+                           default_col_header_direction = default_col_header_direction_temp,
                            table_data = tabledata,
-                           filter_col_headers_by = filter_col_headers_by_temp){
-  
- browser() 
+                           filter_headers_by = filter_headers_by_temp){
+   
   
  # Idenitfy header cells to which directions will be allocated  
 
@@ -42,36 +41,38 @@ get_col_groups <- function(sheet, value_ref, formats,
   }
   
   # Fill in blanks ----
-    
-  header_df <- fill_blanks_in_headers(header_df, col_header_fill,formats)
   
- # create names for grouping functions  
+  header_df <- fill_blanks_in_col_headers(header_df, header_fill,formats)
+  
+ # Create grouping variables for symbols provided to grouping.  
   .groupings <- .groupings %>% append(quo(ones))
-  .groupings
 
-  closures <- .groupings  
+  symbol_filter <- .groupings %>% map_lgl(~ type_of(get_expr(.x)) ==  "symbol")
+  
+  closures <- .groupings[symbol_filter]  
   
   openenv <- environment()
   
   seq_along(closures) %>% 
-    map(~ assign(paste0("cls_", as_label(closures[[.x]])),
+    map(~ assign(paste0("grp_", as_label(closures[[.x]]) %>% str_remove_all("\\(\\)") ),
                  set_env(eval_tidy(closures[[.x]])),envir = openenv))
-   
-  
 
-  closure_list <- syms(ls()[str_detect(ls(),"cls_")])
+  closure_list <- syms(ls()[str_detect(ls(),"grp_")])
     
-
   header_df <- 
     header_df %>% 
     mutate_at(.vars = "local_format_id",
-              .funs = funs(!!!closure_list)) 
+              .funs = funs(!!!closure_list))  
   
+# Create grouping variables for symbols provided to grouping.    
   
+fmt_forms <-   closures <- .groupings[!symbol_filter]  
+  
+form_list <-  fmt_forms %>% map(append_name_to_quosure)
 
-   
+header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)
   
-  grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"cls_|frm_")])
+grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
   
   # Nest header groups ----
   header_df <-
@@ -79,7 +80,6 @@ get_col_groups <- function(sheet, value_ref, formats,
     filter(coalesce(as.character(logical),as.character(numeric),
                     as.character(date),as.character(character) ) != "") %>%  
     group_by(row_temp,!!!grouping_vars) %>% 
-    filter(!(is_blank & is.na(character))) %>% 
     nest() %>%
     ungroup()
   
@@ -91,7 +91,7 @@ get_col_groups <- function(sheet, value_ref, formats,
   
   # Create and name headers ----
   header_df <-
-    header_df %>%
+    header_df %>% 
     mutate(data = map2(
       data, header_label,
       function(data, header_label) {
@@ -126,10 +126,6 @@ get_col_groups <- function(sheet, value_ref, formats,
                min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
              ))) %>%
     unnest(data_summary)
-  
-  
-  
-  
   
   
   # %>%

@@ -16,12 +16,8 @@ locate_header_groups <-
   function(sheet= NULL, 
            formats = NULL,
            table_range = NULL, manual_value_references = NULL, 
-           added_row_groups = NULL,
-           col_header_fill = "local_format_id",
+           header_fill = "local_format_id",
            .groupings = groupings(fmt_alignment_indent),
-           row_header_fill = "none",
-           filter_col_headers_by = NULL,
-           filter_row_headers_by = NULL,
            default_col_header_direction = "N",
            default_row_header_direction = "W",
            keep_meta_data = FALSE) {
@@ -33,52 +29,32 @@ locate_header_groups <-
     
     # Identify empty rows of data_cells
     
-    empty_row_df <- 
-      tabledata %>% 
-      select(-comment) %>% 
-      group_by(row)  %>% 
-      summarise(empty_share = sum(.value == "")/n()) %>% 
-      mutate(empty_share = ifelse(is.na(empty_share),1,empty_share))
-    
     # tabledata <- 
     #   tabledata %>% filter(!row %in%  empty_row_df$row)
     
     # Get col groups ----
     
     value_ref <-   get_corner_cell_refs(tabledata)
-    col_header_fill_choice <-   match.arg(arg = col_header_fill, choices = c("local_format_id","style","borders","none"))  
+    header_fill_choice <-   match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
     groupings_temp <- .groupings
     default_col_header_direction_temp <- default_col_header_direction
-    filter_col_headers_by_temp <- filter_col_headers_by 
     
     col_groups <- get_col_groups(sheet = sheet, value_ref = value_ref, formats = formats, 
                                  .groupings = groupings_temp, 
-                                 col_header_fill = col_header_fill_choice,
-                                 default_col_header_direction = default_col_header_direction_temp,
-                                 filter_col_headers_by = filter_col_headers_by_temp)
-    
+                                 header_fill = header_fill_choice,
+                                 default_col_header_direction = default_col_header_direction_temp)
     
     # Get rows groups ----
     
-    row_header_fill_choice <-   match.arg(arg = row_header_fill, choices = c("local_format_id","style","borders","none"))  
-    group_row_headers_by_temp <- group_row_headers_by
-    added_row_groups_temp <- added_row_groups
+    value_ref <-   get_corner_cell_refs(tabledata)
+    header_fill_choice <-   match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
+    groupings_temp <- .groupings
+    default_row_header_direction_temp <- default_row_header_direction
     
-    default_row_header_direction_temp <-default_row_header_direction
-    filter_row_headers_by_temp <- filter_row_headers_by
-    
-    
-    row_groups <- get_row_groups(
-      sheet = sheet, value_ref = value_ref, col_groups = col_groups, 
-      formats = formats, added_row_groups = added_row_groups_temp, 
-      group_row_headers_by = group_row_headers_by_temp, 
-      row_header_fill = row_header_fill_choice,
-      default_row_header_direction = default_row_header_direction_temp,
-      table_data = tabledata,
-      filter_row_headers_by = filter_row_headers_by_temp)
-    
-    
-    
+    row_groups <- get_row_groups(sheet = sheet, value_ref = value_ref, formats = formats, 
+                                 .groupings = groupings_temp, 
+                                 header_fill = header_fill_choice,
+                                 default_row_header_direction = default_row_header_direction_temp)
     
     # Get metadata ----
     meta_df <- get_meta_df(sheet = sheet, value_ref = value_ref, formats = formats, col_groups = col_groups)
