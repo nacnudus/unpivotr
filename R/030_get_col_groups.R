@@ -23,16 +23,12 @@ get_col_groups <- function(sheet, value_ref, formats,
   
  # Idenitfy header cells to which directions will be allocated  
 
-  header_df <-
-    sheet %>%
-      filter(col <= value_ref$max_col) %>%
-      filter(col >= value_ref$min_col) %>%
-      filter(row < value_ref$min_row) 
+  header_df <-  sheet %>% 
+    filter(col <= value_ref$max_col, col >= value_ref$min_col,row < value_ref$min_row) 
   
  # Create additional row variables to allow for nesting  
   
-  header_df <- 
-    header_df %>% mutate(row_temp = row)
+  header_df <- header_df %>% mutate(row_temp = row)
   
  # Check that at least one cell is in the header_df 
   
@@ -116,9 +112,9 @@ grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
   
   header_df
   
-  
-  
   # Add information to output df ----
+  
+  header_df <- 
   header_df %>%
     mutate(data_summary = data %>%
              map(~ .x %>% summarise(
@@ -127,6 +123,15 @@ grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
              ))) %>%
     unnest(data_summary)
   
+  header_vars <- syms(header_df$header_label)
+  
+  header_df <- 
+    header_df %>% 
+    unnest() %>% 
+    mutate(value = coalesce(!!!header_vars)) %>% 
+    select(row,col,.header_label = header_label, .direction = direction, .value = value)
+  
+  header_df
   
   # %>%
   # check_low_col_names

@@ -19,7 +19,20 @@ reduce_mutated <- function(df, form_list){
 
 } 
 
-
+#' get tidyABS components
+#'
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param path path to .xlsx file
+#' @param sheets sheet nominated for tidying
+#'
+#' @examples
+#'
+#'  \donttest{tidyABS_example("australian-industry.xlsx") %>% process_sheet(sheets = "Table_1")  }
+#'
+#'
+#'
+#' @export
+#'
 
 append_name_to_quosure <- function(x){
   list(x,
@@ -29,5 +42,35 @@ append_name_to_quosure <- function(x){
                 str_replace_all("\\.","_") %>% 
                 ifelse(str_sub(.,start = 1,1) %in% as.character(0:9),paste0("x",.),.  )))
   
+}
+
+
+
+#' get tidyABS components
+#'
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param path path to .xlsx file
+#' @param sheets sheet nominated for tidying
+#'
+#' @examples
+#'
+#'  \donttest{tidyABS_example("australian-industry.xlsx") %>% process_sheet(sheets = "Table_1")  }
+#'
+#'
+#'
+#' @export
+#'
+
+
+
+add_variable_if_missing <- function(sheet, var){
+  
+  if(!var %in%  names(sheet)){
+    var_sym <- sym(var)
+    
+    sheet <- sheet %>% mutate(!!var_sym := NA_character_)
+  }
+  
+  sheet
 }
 

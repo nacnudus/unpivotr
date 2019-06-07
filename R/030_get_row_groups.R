@@ -13,42 +13,25 @@
 #' @export
 
 
-get_row_groups <- function(sheet, value_ref, formats, 
-                           .groupings = groupings(fmt_alignment_indent), 
-                           header_fill = "local_format_id",
-                           default_row_header_direction = default_row_header_direction,
-                           table_data = tabledata,
-                           filter_headers_by = filter_headers_by_temp){
+get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_alignment_indent), 
+                           header_fill = "local_format_id",default_row_header_direction = default_row_header_direction,
+                           table_data = tabledata, filter_headers_by = filter_headers_by_temp){
 
   # Idenitfy header cells to which directions will be allocated  
- browser() 
   
-  col_df <-
-    sheet %>%
-    filter(col <= value_ref$max_col) %>%
-    filter(col >= value_ref$min_col) %>%
-    filter(row < value_ref$min_row) 
+  col_df <-  sheet %>% filter(col <= value_ref$max_col,col >= value_ref$min_col,row < value_ref$min_row) 
   
-  
-  header_df <-
-    sheet %>%
-    filter(
-      row <= value_ref$max_row,
-      row > max(col_df$max_row),
-      col < value_ref$min_col
-    )
+  header_df <- sheet %>% filter(row <= value_ref$max_row,row > max(col_df$max_row),col < value_ref$min_col)
   
   # Create additional row variables to allow for nesting  
   
-  header_df <- 
-    header_df %>% mutate(col_temp = col)
+  header_df <- header_df %>% mutate(col_temp = col)
   
   # Check that at least one cell is in the header_df 
   
   if(nrow(header_df) == 0){
     warning("No header groups have been detected. If you haven't already, try using the 'manual_value_references` argument")
   }
-  
   
   # Fill in blanks ----
   
@@ -85,8 +68,6 @@ get_row_groups <- function(sheet, value_ref, formats,
   header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)
   
   grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
-  
-
 
   # Nest row groups
   header_df <-
@@ -101,14 +82,14 @@ get_row_groups <- function(sheet, value_ref, formats,
   header_df <-
     header_df %>%
     mutate(row_no_name = col_temp - min(col_temp) + 1) %>%
-    mutate(row_group = paste0("row_label_", str_pad(row_number(), 2, side = "left", "0")))
+    mutate(header_label = paste0("row_label_", str_pad(row_number(), 2, side = "left", "0")))
   
   # Set row_group varnames and set values
   header_df <-
     header_df %>%
     mutate(data = map2(
-      data, row_group,
-      function(data, row_group) {
+      data, header_label,
+      function(data, header_label) {
         temp_df <- data %>%
           mutate(value = coalesce(
             as.character(numeric),
@@ -118,7 +99,7 @@ get_row_groups <- function(sheet, value_ref, formats,
           )) %>%
           select(row, col, value)
         
-        temp_df[[row_group]] <- temp_df$value
+        temp_df[[header_label]] <- temp_df$value
         
         temp_df %>% select(-value)
       }
@@ -127,7 +108,7 @@ get_row_groups <- function(sheet, value_ref, formats,
   # check whether there are values in the rows
   
   empty_row_df <- 
-  attr(sheet,"data") %>%
+    table_data %>%
     mutate(value = coalesce(
       as.character(numeric),
       as.character(character),
@@ -161,9 +142,7 @@ get_row_groups <- function(sheet, value_ref, formats,
   header_df <-
     header_df %>%
     mutate(direction = ifelse(wnw_vector, "WNW", default_row_header_direction)) %>%
-    dplyr::select(row_group, direction, data, !!!grouping_vars)
-
-
+    dplyr::select(header_label, direction, data, !!!grouping_vars)
 
   # Add additional information
   header_df %>%
@@ -173,6 +152,16 @@ get_row_groups <- function(sheet, value_ref, formats,
         min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
       ))) %>%
     unnest(data_summary)
+  
+  header_vars <- syms(header_df$header_label)
+  
+  header_df <- 
+    header_df %>% 
+    unnest() %>% 
+    mutate(value = coalesce(!!!header_vars)) %>% 
+    select(row,col,.header_label = header_label, .direction = direction, .value = value)
+  
+  header_df
   
 }
 
