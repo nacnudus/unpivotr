@@ -13,72 +13,63 @@
 #' @export
 
 locate_data <-
-  function(sheet= NULL, 
-           filter = NULL) {
+  function(sheet= NULL, ... = !is.na(numeric)) {
+    format <-  attr(sheet, "formats")
     
+    filter_expresions <- quos(...)
+    
+    filter_expresions_type <- filter_expresions %>% map_chr(~type_of(get_expr(.x)))
+    
+    filter_expresions_string <- filter_expresions[filter_expresions_type == "string"]
+    filter_expresions_langage <- filter_expresions[filter_expresions_type == "language"]
+    filter_expresions_symbol <- filter_expresions[filter_expresions_type == "symbol"]
+
     # Limit to table Range ----
-    if (is.character(filter)) {
-      
-      cell_ref_df <- as_tibble(cellranger::as.cell_limits(table_range))
-      
-      table_range_df <-
-        cell_ref_df[,1:2] %>%
-        set_names(c("min","max")) %>%
-        mutate(dimension = c("row","col")) %>%
-        gather(key, value, -dimension) %>%
-        unite(label, key, dimension, sep = "_") %>%
-        spread(label, value )
-      
-      data_sheet <-
-        sheet %>%
-        filter(row >= table_range_df$min_row[1],
-               row <= table_range_df$max_row[1],
-               col >= table_range_df$min_col[1],
-               col <= table_range_df$max_col[1])
-      
-    }
+    filter_expresions_string <- filter_expresions_string %>% append(quo("A1"))  
     
+    string_var_names <- map(filter_expresions_string,get_expr)  %>% unlist() %>% 
+        str_remove("\\:") %>% paste0("flt_",.) %>%  syms()
+      filter_expresions_list <-  list(sheet) %>% append(map(filter_expresions_string, get_expr))
     
+      sheet <-  filter_expresions_list %>% reduce(string_range_to_filter_vars) 
     
-    if (purrr::is_formula(filter)) {
-      
-      current_quosure <-  as_quosure(filter)
-      
-      data_sheet <- 
-        sheet %>% 
-        filter(!!current_quosure)
-      
-    } 
+    #---------------------------------------------------------------------------------------------
     
+    closures <- filter_expresions_symbol  %>% append(quos(ones))
     
-    if (is.null(filter)) {
-      
+    openenv <- environment()
     
-   value_ref <- 
-     sheet %>% 
-     dplyr::filter(!is.na(numeric)) %>%
-     summarise(
-       min_row = min(row), max_row = max(row),
-       min_col = min(col), max_col = max(col)
-     ) 
-   
-   data_sheet <-
-    sheet %>%
-    filter(row >= value_ref$min_row[1],
-           row <= value_ref$max_row[1],
-           col >= value_ref$min_col[1],
-           col <= value_ref$max_col[1])
-   
-    } 
-   
-   sheet <-  
-    sheet[!(sheet$address %in% data_sheet$address),]
-     
+    seq_along(closures) %>% 
+      map(~ assign(paste0("flt_", as_label(closures[[.x]]) %>% str_remove_all("\\(\\)") ),
+                   set_env(eval_tidy(closures[[.x]])),envir = openenv))
     
-    attr(sheet, "data_cells") <- data_sheet %>%  
-      mutate(.value = coalesce(as.character(numeric),as.character(character),as.character(date),
-                               as.character(logical),as.character(error), as.character(formula)))
+    closure_list <- syms(ls()[str_detect(ls(),"flt_")]) 
     
-    sheet
+    sheet <- 
+    sheet %>% 
+      mutate_at(.vars = "local_format_id",
+                .funs = funs(!!!closure_list))
+    
+    #------------------------------------------------------------------------------------------
+    filter_expresions_langage <- filter_expresions_langage %>% append(quo(2 + 1))   
+    
+    fmt_forms <-  filter_expresions_langage     
+    
+    form_list <-  fmt_forms %>% map(append_name_to_quosure,prefix = "flt_")
+    
+    sheet <- append(list(sheet),form_list) %>% reduce(reduce_mutated)
+        
+  data_cell_filter <- 
+    sheet %>% select(starts_with("flt")) %>% select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_A1"))]) %>% 
+    as_list %>% map(as.logical) %>% pmap_lgl(~ sum(...,na.rm = TRUE) > 0 )
+  
+  data_cells <- sheet[data_cell_filter,]
+    
+  sheet <- sheet[!data_cell_filter,]
+    
+  attr(sheet, "data_cells") <- data_cells 
+    
+    sheet %>% select(-starts_with("flt_"))
+    
         
   }

@@ -37,7 +37,7 @@ library(rlang)
 located_df <- 
   unpivotr_example("bball-examples.xlsx") %>%
     xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-    locate_data() %>%  
+    locate_data(!is.na(numeric)) %>%  
     locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent))
 
 located_df %>% 
