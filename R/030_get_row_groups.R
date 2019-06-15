@@ -15,7 +15,8 @@
 
 get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_alignment_indent), 
                            header_fill = "local_format_id",default_row_header_direction = default_row_header_direction,
-                           table_data = tabledata, filter_headers_by = filter_headers_by_temp){
+                           table_data = tabledata, filter_headers_by = filter_headers_by_temp,
+                           min_header_index = min_header_index_temp){
 
   # Idenitfy header cells to which directions will be allocated  
   
@@ -81,8 +82,8 @@ get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_
   # Name row groups
   header_df <-
     header_df %>%
-    mutate(row_no_name = col_temp - min(col_temp) + 1) %>%
-    mutate(header_label = paste0("row_label_", str_pad(row_number(), 2, side = "left", "0")))
+    mutate(row_no_name = row_number() + min_header_index + 1) %>%
+    mutate(header_label = paste0("row_label_", str_pad(row_no_name, 2, side = "left", "0")))
   
   # Set row_group varnames and set values
   header_df <-
@@ -154,7 +155,11 @@ get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_
     unnest(data_summary)
   
   header_vars <- syms(header_df$header_label)
-  
+ 
+  if(nrow(header_df)==0){
+    return(header_df)
+  }
+   
   header_df <- 
     header_df %>% 
     unnest() %>% 

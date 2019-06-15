@@ -34,25 +34,27 @@ library(rlang)
 
 ```{r}
 
-located_df <- 
   unpivotr_example("bball-examples.xlsx") %>%
     xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
     locate_data(!is.na(numeric)) %>% 
     locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
-    locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+    locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
   migrate() 
 
-
-located_df <- 
   unpivotr_example("bball-examples.xlsx") %>%
     xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
     locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
     locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
   migrate() 
 
+  unpivotr_example("bball-examples.xlsx") %>%
+    xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+    behead_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+    behead_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+    attr("data_cells") %>% 
+    select(row,col,contains("header"),contains("row"),.value) %>% View
 
-located_df %>% 
-  select(row,col,.header_label,.direction,.value) %>% View
+
 
 ```
 

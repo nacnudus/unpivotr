@@ -10,16 +10,13 @@
 #'
 #' @export
 
-
-
-
 get_col_groups <- function(sheet, value_ref, formats, 
                            .groupings = groupings(fmt_alignment_indent), 
                            header_fill = "local_format_id",
                            default_col_header_direction = default_col_header_direction_temp,
                            table_data = tabledata,
-                           filter_headers_by = filter_headers_by_temp){
-  
+                           filter_headers_by = filter_headers_by_temp,
+                           min_header_index = min_header_index_temp){
  # Idenitfy header cells to which directions will be allocated  
 
   header_df <-  sheet %>% 
@@ -40,7 +37,7 @@ get_col_groups <- function(sheet, value_ref, formats,
   header_df <- fill_blanks_in_col_headers(header_df, header_fill,formats)
   
  # Create grouping variables for symbols provided to grouping.  
-  .groupings <- .groupings %>% append(quo(ones))
+  .groupings <- .groupings %>% append(quo(ones)) %>% append(quo(1+ 1))
 
   symbol_filter <- .groupings %>% map_lgl(~ type_of(get_expr(.x)) ==  "symbol")
   
@@ -61,6 +58,8 @@ get_col_groups <- function(sheet, value_ref, formats,
   
 # Create grouping variables for symbols provided to grouping.    
   
+  
+
 fmt_forms <-   closures <- .groupings[!symbol_filter]  
   
 form_list <-  fmt_forms %>% map(append_name_to_quosure)
@@ -78,10 +77,13 @@ grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
     nest() %>%
     ungroup()
   
+
+  min_header_index
+  
   # Name header groups
   header_df <-
     header_df %>%
-    mutate(row_no_name = row_temp - min(row_temp) + 1) %>%
+    mutate(row_no_name = row_number() + min_header_index -1 ) %>%
     mutate(header_label = paste0("header_label_",row_no_name))
   
   # Create and name headers ----
@@ -109,7 +111,7 @@ grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
     mutate(direction = default_col_header_direction) %>%
     dplyr::select(header_label, direction, data, !!!grouping_vars)
   
-  header_df
+  header_df$data
   
   # Add information to output df ----
   
@@ -123,6 +125,11 @@ grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
     unnest(data_summary)
   
   header_vars <- syms(header_df$header_label)
+  
+  if(nrow(header_df)==0){
+    return(header_df)
+  }
+  
   
   header_df <- 
     header_df %>% 
