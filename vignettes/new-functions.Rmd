@@ -37,8 +37,19 @@ library(rlang)
 located_df <- 
   unpivotr_example("bball-examples.xlsx") %>%
     xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-    locate_data(!is.na(numeric)) %>%  
-    locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent))
+    locate_data(!is.na(numeric)) %>% 
+    locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
+    locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  migrate() 
+
+
+located_df <- 
+  unpivotr_example("bball-examples.xlsx") %>%
+    xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+    locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+    locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  migrate() 
+
 
 located_df %>% 
   select(row,col,.header_label,.direction,.value) %>% View

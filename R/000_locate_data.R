@@ -14,6 +14,7 @@
 
 locate_data <-
   function(sheet= NULL, ... = !is.na(numeric)) {
+    
     format <-  attr(sheet, "formats")
     
     filter_expresions <- quos(...)
@@ -67,9 +68,15 @@ locate_data <-
     
   sheet <- sheet[!data_cell_filter,]
     
+  data_cells <- data_cells %>% 
+    dplyr::select(-starts_with("flt_")) %>% 
+    mutate(.value = coalesce(as.character(numeric),as.character(character),
+                             as.character(logical),as.character(date)))
+    
   attr(sheet, "data_cells") <- data_cells 
-    
-    sheet %>% select(-starts_with("flt_"))
-    
+  attr(sheet, "formats") <- format 
+  
+  sheet
         
   }
+

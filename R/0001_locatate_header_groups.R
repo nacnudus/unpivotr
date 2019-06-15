@@ -13,6 +13,30 @@
 locate_header_groups <-
   function(sheet= NULL, type = "both", .groupings = groupings(fmt_alignment_indent),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
+   
+
+    if(is.null(attr(sheet,"data_cells"))){
+    
+      sheet <- 
+      sheet %>% locate_data(sheet = .,!is.na(numeric))
+      
+      corner_refs <-  unpivotr::get_corner_cell_refs(attr(sheet,"data_cells"))
+    
+      rows_index <- 
+      data_frame(LETTERS) %>% mutate(letters2 = map(1:length(.),function(x) LETTERS)) %>% 
+      unnest()  %>% 
+      mutate(final = paste0(LETTERS,letters2)) %>% pull(final) %>% 
+      c(LETTERS,.)
+      
+      min_letter <- rows_index[corner_refs$min_col]
+      max_letter <- rows_index[corner_refs$max_col]
+      
+      warning(paste0("Data cells have yet not been identified in this this dataframe with `locate_data()`.",
+             " Continuing using defaults of `locate_data()`. Data cells have been located at :",
+              min_letter,corner_refs$min_row,":",max_letter,corner_refs$max_row))
+  
+    }
+    
     
     formats <- attr(sheet, "formats")
     tabledata <- attr(sheet, "data_cells")
