@@ -43,6 +43,7 @@ Suggests:
     selectr,
     DT,
     testthat,
-    covr
+    covr,
+    here
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
