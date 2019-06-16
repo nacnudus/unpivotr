@@ -39,33 +39,36 @@ library(rlang)
     locate_data(!is.na(numeric)) %>% 
     locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
     locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
-  migrate() 
+    migrate() 
 
   unpivotr_example("bball-examples.xlsx") %>%
     xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
     locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
     locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-  migrate() 
+    migrate() 
 
   unpivotr_example("bball-examples.xlsx") %>%
     xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
     behead_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
     behead_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
     attr("data_cells") %>% 
-    select(row,col,contains("header"),contains("row"),.value) %>% View
+    select(row,col,contains("header"),contains("row"),.value) 
 
 
+  cells <- 
+    unpivotr_example("bball-examples.xlsx") %>%
+    xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
+    locate_data(!is.na(numeric)) %>% 
+    filter(row > 2) %>% 
+    behead_dc("NNW","stat_type",types =data_type ) %>% 
+    behead_dc("N","stat",types =data_type ) %>% 
+    behead_dc("W","player",types =data_type ) %>% 
+    attr("data_cells") %>% 
+    select(row,col,contains("header"),stat_type,stat,player,contains("row"))  %>% View
+  
+  
 
 ```
 
-```{r}
-unpivotr_example("bball-examples.xlsx") %>% 
-  xlsx_cells_fmt()
-
-unpivotr_example("bball-examples.xlsx") %>% xlsx_cells()
-unpivotr_example("bball-examples.xlsx") %>% xlsx_formats()
-unpivotr_example("bball-examples.xlsx") %>% xlsx_cells_fmt() %>% attributes() %>% str()
-
-```
 
 
