@@ -76,7 +76,7 @@ library(rlang)
     locate("W","player",types =data_type ) %>% 
     mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
     mutate(.value = ifelse(.direction == "data", coalesce(as.character(numeric),as.character(character)),.value)) %>% 
-   migrate_dc()
+   migrate()
 
         locate_dc("N","stat",types =data_type ) %>%  
     locate_dc("W","player",types =data_type ) %>% 

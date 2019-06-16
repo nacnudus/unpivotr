@@ -9,7 +9,7 @@
 #' @name migrate
 #' @export
 
-migrate_dc <- function(orientated_df, numeric_value = FALSE){
+migrate_ndc <- function(orientated_df, numeric_value = FALSE){
   
   orientated_df_nested <-
     orientated_df %>%
