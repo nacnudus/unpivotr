@@ -65,8 +65,26 @@ library(rlang)
     behead_dc("W","player",types =data_type ) %>% 
     attr("data_cells") %>% 
     select(row,col,contains("header"),stat_type,stat,player,contains("row"))  %>% View
+
+
+  cells <- 
+    unpivotr_example("bball-examples.xlsx") %>%
+    xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
+    filter(row > 2) %>% 
+    locate("NNW","stat_type",types =data_type ) %>%
+    locate("N","stat",types =data_type ) %>% 
+    locate("W","player",types =data_type ) %>% 
+    mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
+    mutate(.value = ifelse(.direction == "data", coalesce(as.character(numeric),as.character(character)),.value)) %>% 
+   migrate_dc()
+
+        locate_dc("N","stat",types =data_type ) %>%  
+    locate_dc("W","player",types =data_type ) %>% 
+    attr("data_cells") %>% 
+    select(row,col,contains("header"),stat_type,stat,player,contains("row"))  %>% View
   
   
+    
 
 ```
 
