@@ -12,7 +12,7 @@
 
 locate_dc <- function(cells, direction, name, values = NULL, types = data_type,
                    formatters = list(), drop_na = TRUE){
-  browser()
+  
   data_cells <-  cells %>% attr("data_cells")
   formats <-  cells %>% attr("formats")
   
@@ -27,7 +27,7 @@ locate_dc <- function(cells, direction, name, values = NULL, types = data_type,
   
   temp_df <- 
     bind_rows(cells,data_cells) %>%   
-    locate(direction = direction_temp, name = !!name_temp)
+    locate(direction = direction_temp, name = !!name_temp) 
   
   data_cells <- temp_df %>% filter(dc == 1) %>% select(-dc)
   

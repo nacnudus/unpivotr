@@ -74,13 +74,13 @@ unpivotr_example("bball-examples.xlsx") %>%
  migrate_ndc()
 
 unpivotr_example("bball-examples.xlsx") %>%
-  locate_data(!is.na(numeric)) %>% 
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
   filter(row >2 ) %>%
+  locate_data(!is.na(numeric)) %>% 
+  locate_dc("NNW","stat_type",types =data_type ) %>%
   locate_dc("N","stat",types =data_type ) %>%  
   locate_dc("W","player",types =data_type ) %>% 
-  migrate()
-  select(row,col,contains("header"),stat_type,stat,player,contains("row"))  %>% View
+  migrate() 
 
 ```
 
