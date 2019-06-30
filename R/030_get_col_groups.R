@@ -37,6 +37,7 @@ get_col_groups <- function(sheet, value_ref, formats,
   header_df <- fill_blanks_in_col_headers(header_df, header_fill,formats)
   
  # Create grouping variables for symbols provided to grouping.  
+    
   .groupings <- .groupings %>% append(quo(ones)) %>% append(quo(1+ 1))
 
   symbol_filter <- .groupings %>% map_lgl(~ type_of(get_expr(.x)) ==  "symbol")
@@ -60,13 +61,13 @@ get_col_groups <- function(sheet, value_ref, formats,
   
   
 
-fmt_forms <-   closures <- .groupings[!symbol_filter]  
+  fmt_forms <-   closures <- .groupings[!symbol_filter]  
+    
+  form_list <-  fmt_forms %>% map(append_name_to_quosure)
   
-form_list <-  fmt_forms %>% map(append_name_to_quosure)
-
-header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)
-  
-grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
+  header_df <- append(list(header_df),form_list) %>% reduce(reduce_mutated)
+    
+  grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
   
   # Nest header groups ----
   header_df <-
@@ -77,14 +78,11 @@ grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
     nest() %>%
     ungroup()
   
-
-  min_header_index
-  
   # Name header groups
   header_df <-
     header_df %>%
     mutate(row_no_name = row_number() + min_header_index -1 ) %>%
-    mutate(header_label = paste0("header_label_",row_no_name))
+    mutate(header_label = paste0("col_header_label_",str_pad(row_no_name, 2, side = "left", "0")))
   
   # Create and name headers ----
   header_df <-

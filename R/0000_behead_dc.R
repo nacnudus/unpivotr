@@ -39,7 +39,7 @@ cells <- temp_df %>% filter(is.na(dc)) %>% select(-dc) %>% select(-!!name_temp)
 attr(cells,"data_cells") <- data_cells 
 attr(cells,"formats") <- formats 
 
-cells  
+cells 
 
 
 }

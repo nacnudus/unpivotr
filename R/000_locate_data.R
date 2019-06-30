@@ -36,7 +36,7 @@ locate_data <-
     
     #---------------------------------------------------------------------------------------------
     
-    closures <- filter_expresions_symbol  %>% append(quos(ones))
+    closures <- filter_expresions_symbol  %>% append(quos(ones)) %>% append(quos(twos))
     
     openenv <- environment()
     
@@ -61,15 +61,14 @@ locate_data <-
     sheet <- append(list(sheet),form_list) %>% reduce(reduce_mutated)
         
   data_cell_filter <- 
-    sheet %>% select(starts_with("flt")) %>% select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_A1"))]) %>% 
+    sheet %>% select(starts_with("flt")) %>% select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_twos","flt_A1"))]) %>% 
     as_list %>% map(as.logical) %>% pmap_lgl(~ sum(...,na.rm = TRUE) > 0 )
   
-  data_cells <- sheet[data_cell_filter,]
+  data_cells <- sheet[data_cell_filter,] %>% dplyr::select(-starts_with("flt_"))
     
-  sheet <- sheet[!data_cell_filter,]
+  sheet <- sheet[!data_cell_filter,] %>% dplyr::select(-starts_with("flt_"))
     
   data_cells <- data_cells %>% 
-    dplyr::select(-starts_with("flt_")) %>% 
     mutate(.value = coalesce(as.character(numeric),as.character(character),
                              as.character(logical),as.character(date)))
     

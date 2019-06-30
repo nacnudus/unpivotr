@@ -19,10 +19,11 @@ get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_
                            min_header_index = min_header_index_temp){
 
   # Idenitfy header cells to which directions will be allocated  
-  
   col_df <-  sheet %>% filter(col <= value_ref$max_col,col >= value_ref$min_col,row < value_ref$min_row) 
   
-  header_df <- sheet %>% filter(row <= value_ref$max_row,row > max(col_df$max_row),col < value_ref$min_col)
+  col_df_crns <- col_df %>% filter(!is_blank) %>% get_corner_cell_refs()
+  
+  header_df <- sheet %>% filter(row <= value_ref$max_row,row > col_df_crns$max_row,col < value_ref$min_col)
   
   # Create additional row variables to allow for nesting  
   
@@ -70,6 +71,7 @@ get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_
   
   grouping_vars <- syms(names(header_df) %>% .[str_detect(.,"^grp_")])
 
+  
   # Nest row groups
   header_df <-
     header_df %>%
@@ -83,7 +85,7 @@ get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_
   header_df <-
     header_df %>%
     mutate(row_no_name = row_number() + min_header_index + 1) %>%
-    mutate(header_label = paste0("row_label_", str_pad(row_no_name, 2, side = "left", "0")))
+    mutate(header_label = paste0("row_header_label_", str_pad(row_no_name, 2, side = "left", "0")))
   
   # Set row_group varnames and set values
   header_df <-
@@ -137,8 +139,14 @@ get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_
   
   wnw_vector <- 
   header_df$data %>% map(~.$row)  %>% 
-    map_lgl( ~ sum(.x %in% empty_row_df$row[empty_row_df$empty_share==1]) > 0)
+    map_lgl( ~ sum(.x %in% empty_row_df$row[empty_row_df$empty_share==1]) > 0) 
+  
+  if("grp_fmt_alignment_indent" %in% names(header_df)){
     
+    wnw_vector <-   wnw_vector | (header_df$grp_fmt_alignment_indent == "0")
+  
+  }
+  
     # Set directions
   header_df <-
     header_df %>%
@@ -147,11 +155,7 @@ get_row_groups <- function(sheet, value_ref, formats,.groupings = groupings(fmt_
 
   # Add additional information
   header_df %>%
-    mutate(data_summary = data %>%
-      map(~ .x %>% summarise(
-        min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
-        min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
-      ))) %>%
+    mutate(data_summary = data %>% map(~ get_corner_cell_refs(.x) )) %>%
     unnest(data_summary)
   
   header_vars <- syms(header_df$header_label)

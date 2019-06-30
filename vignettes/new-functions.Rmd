@@ -28,63 +28,59 @@ library("stringr")
 library("purrr")
 library(dplyr)
 library(rlang)
-
+library(magrittr)
 ```
 
 
 ```{r}
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  locate_data(!is.na(numeric)) %>% 
+  locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
+  locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
+  migrate() 
 
-  unpivotr_example("bball-examples.xlsx") %>%
-    xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-    locate_data(!is.na(numeric)) %>% 
-    locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
-    locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
-    migrate() 
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  migrate() 
 
-  unpivotr_example("bball-examples.xlsx") %>%
-    xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-    locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-    locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-    migrate() 
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  behead_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  behead_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  attr("data_cells") %>% 
+  select(row,col,contains("header"),contains("row"),.value) 
 
-  unpivotr_example("bball-examples.xlsx") %>%
-    xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-    behead_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-    behead_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-    attr("data_cells") %>% 
-    select(row,col,contains("header"),contains("row"),.value) 
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
+  locate_data(!is.na(numeric)) %>% 
+  filter(row > 2) %>% 
+  behead_dc("NNW","stat_type",types =data_type ) %>% 
+  behead_dc("N","stat",types =data_type ) %>% 
+  behead_dc("W","player",types =data_type ) %>% 
+  attr("data_cells") %>% 
+  select(row,col,contains("header"),stat_type,stat,player,contains("row"))
 
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
+  filter(row > 2) %>% 
+  locate("NNW","stat_type",types =data_type ) %>%
+  locate("N","stat",types =data_type ) %>% 
+  locate("W","player",types =data_type ) %>% 
+  mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
+  mutate(.value = ifelse(.direction == "data", coalesce(as.character(numeric),as.character(character)),.value)) %>% 
+ migrate_ndc()
 
-  cells <- 
-    unpivotr_example("bball-examples.xlsx") %>%
-    xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
-    locate_data(!is.na(numeric)) %>% 
-    filter(row > 2) %>% 
-    behead_dc("NNW","stat_type",types =data_type ) %>% 
-    behead_dc("N","stat",types =data_type ) %>% 
-    behead_dc("W","player",types =data_type ) %>% 
-    attr("data_cells") %>% 
-    select(row,col,contains("header"),stat_type,stat,player,contains("row"))  %>% View
-
-
-  cells <- 
-    unpivotr_example("bball-examples.xlsx") %>%
-    xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
-    filter(row > 2) %>% 
-    locate("NNW","stat_type",types =data_type ) %>%
-    locate("N","stat",types =data_type ) %>% 
-    locate("W","player",types =data_type ) %>% 
-    mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
-    mutate(.value = ifelse(.direction == "data", coalesce(as.character(numeric),as.character(character)),.value)) %>% 
-   migrate()
-
-        locate_dc("N","stat",types =data_type ) %>%  
-    locate_dc("W","player",types =data_type ) %>% 
-    attr("data_cells") %>% 
-    select(row,col,contains("header"),stat_type,stat,player,contains("row"))  %>% View
-  
-  
-    
+unpivotr_example("bball-examples.xlsx") %>%
+  locate_data(!is.na(numeric)) %>% 
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  filter(row >2 ) %>%
+  locate_dc("N","stat",types =data_type ) %>%  
+  locate_dc("W","player",types =data_type ) %>% 
+  migrate()
+  select(row,col,contains("header"),stat_type,stat,player,contains("row"))  %>% View
 
 ```
 
