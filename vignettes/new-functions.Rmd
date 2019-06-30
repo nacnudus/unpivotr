@@ -82,6 +82,39 @@ unpivotr_example("bball-examples.xlsx") %>%
   locate_dc("W","player",types =data_type ) %>% 
   migrate() 
 
+
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>% 
+  filter(row > 2) %>% 
+  locate_if(col == 1 & !row %in% c(5,13) , direction = "W",name = "player",types = data_type ) %>% 
+  locate_if(col == 1 & row %in% c(5,13) , direction = "WNW",name = "team",types = data_type ) %>% 
+  locate_if(col > 1 & row ==4 ,           direction = "N",name = "stat"  ,types = data_type ) %>%  
+  mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
+  mutate(.value = ifelse(!is.na(numeric),numeric,.value)) %>% 
+  migrate_ndc()
+  
+  select(row,col,character,.direction,.value)
+
+  locate_if(col > 2 & row ==4 , direction = "N",name = "stat",types = data_type ) %>%
+%>%
+  locate("N","stat",types =data_type ) %>% 
+  locate("W","player",types =data_type ) %>% 
+  mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
+  mutate(.value = ifelse(.direction == "data", coalesce(as.character(numeric),as.character(character)),.value)) %>% 
+ migrate_ndc()
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 
