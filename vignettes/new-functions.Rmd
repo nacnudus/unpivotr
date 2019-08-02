@@ -44,9 +44,19 @@ unpivotr_example("bball-examples.xlsx") %>%
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
   locate_data(!is.na(numeric)) %>% 
-  locate_header_groups_if(row == 3, type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
+  locate_header_groups_if(row == 4, type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
   locate_header_groups_if(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
   migrate() 
+
+
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  locate_header_groups_if(row == 4, type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
+  locate_header_groups_if(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
+  migrate() 
+
+
+
 ```
 
 
@@ -81,11 +91,30 @@ unpivotr_example("bball-examples.xlsx") %>%
 ```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-  behead_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-  behead_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  behead_groups_if(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  behead_groups_if(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
   attr("data_cells") %>% 
   select(row,col,contains("header"),contains("row"),.value) 
 ```
+
+
+## 2.2             behead_groups ->  migrate 
+```{r}
+
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  behead_groups_if(row == 4, type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  behead_groups_if(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  attr("data_cells") %>% 
+  select(row,col,contains("header"),contains("row"),.value) 
+
+```
+
+
+
+
+
+
 
 ## 3.1                       locate -> migrate 
 ```{r}
