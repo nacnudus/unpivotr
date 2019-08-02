@@ -14,6 +14,7 @@ locate_header_groups_if <-
   function(sheet= NULL,..., type = "both", .groupings = groupings(fmt_alignment_indent),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
  
+    
     # If data_cells are missing, locate them automatically  
     if(is.null(attr(sheet,"data_cells"))){
       # Set data location 
@@ -64,6 +65,17 @@ locate_header_groups_if <-
                                  default_col_header_direction = default_col_header_direction_temp,
                                  min_header_index = min_header_index_temp)
     
+    
+    if(exists("filtered_header_cells")){
+      col_groups_in_filter <- 
+        paste0(col_groups$row,unpivotr::cols_index[col_groups$col]) %in% 
+        paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
+      
+      col_groups <- col_groups %>% filter(col_groups_in_filter)
+      
+    }
+    
+    
     # Get rows groups ----
     
     value_ref <-   get_corner_cell_refs(tabledata)
@@ -83,13 +95,15 @@ locate_header_groups_if <-
                                  table_data = tabledata,
                                  min_header_index = min_header_index_temp)
 
+    if(exists("filtered_header_cells")){
+      row_groups_in_filter <- 
+        paste0(row_groups$row,unpivotr::cols_index[row_groups$col]) %in% 
+        paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
+      
+        row_groups <- row_groups %>% filter(row_groups_in_filter)
+    }
     
     
-    row_groups_in_filter <- 
-    paste0(row_groups$row,unpivotr::cols_index[row_groups$col]) %in% 
-    paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
-    
-    row_groups <- row_groups %>% filter(row_groups_in_filter)
     
   
     # Create column values 
