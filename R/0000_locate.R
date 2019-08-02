@@ -12,28 +12,45 @@
 
 locate <- function(cells, direction, name, values = NULL, types = data_type,
                       formatters = list(), drop_na = TRUE){
- 
+
+  
+  # Store attributes (bind datacells and others if present)
+  if(!is.null(attr(cells,"data_cells"))){
+    data_cells_attr <- attr(cells,"data_cells")
+    data_cells_attr$dc <- 1
+    cells <- bind_rows(cells,data_cells_attr) 
+  }
+  
+  if(!is.null(attr(cells, "formats"))){
+    format <-  attr(cells, "formats")
+  }
+
+  # Add annotation variables  
   added_var_list <- list(cells,".header_label",".direction", ".value")
   
   cells <-  added_var_list %>% reduce(add_variable_if_missing)
   
-  cells %>% select(row,col,character) %>% spread(col,character)
-  
+  # Filter for cells without direction, but with character or numeric
   cells_f <- cells %>% filter(is.na(.direction)) %>% filter(!is.na(character) | !is.na(numeric)) 
   
-  
+  # Checks 
   check_direction_behead(direction)
   check_distinct(cells)
+
+  # Create Name variable
   name <- rlang::ensym(name)
   functions <- purrr::map(formatters, purrr::as_mapper)
   values <- rlang::enexpr(values)
-    values_was_null <- TRUE
+  values_was_null <- TRUE
   types <- rlang::ensym(types)
 
-    
+  
+  
   type_names <- unique(dplyr::pull(cells_f, !!types))
   filter_expr <- direction_filter(direction)
+  
   is_header <- rlang::eval_tidy(filter_expr, cells_f)
+  
   headers <-
     cells_f %>%
     dplyr::filter(is_header) %>%
@@ -69,10 +86,16 @@ locate <- function(cells, direction, name, values = NULL, types = data_type,
     mutate(.value = coalesce(.value.n,.value.o)) %>% 
     select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o) 
   
+  if(exists("data_cells_attr")){
+    cells <- cells %>% filter(is.na(dc))
+    attr(cells, "data_cells") <- data_cells_attr 
+  }
   
-  cells 
-
+  if(exists("format")){
+    attr(cells, "formats") <- format
+  }
   
+  cells
   
   
 }

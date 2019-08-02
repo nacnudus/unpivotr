@@ -9,29 +9,26 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Set up 
 
 ```{r cars}
 # Clear environment 
 rm(list = ls())
 
+install.packages("pacman");
+library("pacman")
+p_load(here,piton)
+
 # Load all packages 
-devtools::load_all("C:/Users/ianmo/OneDrive/Documents/data/projects/unpivotr-dev/tidyxl")
-devtools::load_all()
+devtools::load_all(file.path(dirname(here::here()),"tidyxl"))
+devtools::load_all(here::here())
 
 # Install packages
-library("stringr")
-library("purrr")
-library(dplyr)
-library(rlang)
-library(magrittr)
+p_load(stringr,purrr,dplyr,rlang,magrittr)
 ```
 
 
+## 1.1 locate_data -> locate_groups ->  migrate 
 ```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
@@ -39,20 +36,19 @@ unpivotr_example("bball-examples.xlsx") %>%
   locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
   locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
   migrate() 
+```
 
+## 1.2                Locate_groups ->  migrate 
+```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
   locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
   locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
   migrate() 
+```
 
-unpivotr_example("bball-examples.xlsx") %>%
-  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
-  behead_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-  behead_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-  attr("data_cells") %>% 
-  select(row,col,contains("header"),contains("row"),.value) 
-
+## 2.1 locate_data -> behead_groups ->  migrate 
+```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
   locate_data(!is.na(numeric)) %>% 
@@ -62,7 +58,20 @@ unpivotr_example("bball-examples.xlsx") %>%
   behead_dc("W","player",types =data_type ) %>% 
   attr("data_cells") %>% 
   select(row,col,contains("header"),stat_type,stat,player,contains("row"))
+```
 
+## 2.2             behead_groups ->  migrate 
+```{r}
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  behead_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  behead_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  attr("data_cells") %>% 
+  select(row,col,contains("header"),contains("row"),.value) 
+```
+
+## 3.1                       locate -> migrate 
+```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
   filter(row > 2) %>% 
@@ -72,17 +81,22 @@ unpivotr_example("bball-examples.xlsx") %>%
   mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
   mutate(.value = ifelse(.direction == "data", coalesce(as.character(numeric),as.character(character)),.value)) %>% 
  migrate_ndc()
+```
 
+## 3.2 locate_data -> locate -> migrate 
+```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
   filter(row >2 ) %>%
   locate_data(!is.na(numeric)) %>% 
-  locate_dc("NNW","stat_type",types =data_type ) %>%
-  locate_dc("N","stat",types =data_type ) %>%  
-  locate_dc("W","player",types =data_type ) %>% 
+  locate_if(direction = "NNW",name = "stat_type",types =data_type ) %>%
+  locate_if(direction = "N",name =  "stat",types =data_type ) %>%  
+  locate_if(direction = "W",name = "player",types =data_type ) %>% 
   migrate() 
+```
 
-
+## 4.1              locate_if -> migrate 
+```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>% 
   filter(row > 2) %>% 
@@ -92,30 +106,19 @@ unpivotr_example("bball-examples.xlsx") %>%
   mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
   mutate(.value = ifelse(!is.na(numeric),numeric,.value)) %>% 
   migrate_ndc()
-  
-  select(row,col,character,.direction,.value)
-
-  locate_if(col > 2 & row ==4 , direction = "N",name = "stat",types = data_type ) %>%
-%>%
-  locate("N","stat",types =data_type ) %>% 
-  locate("W","player",types =data_type ) %>% 
-  mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
-  mutate(.value = ifelse(.direction == "data", coalesce(as.character(numeric),as.character(character)),.value)) %>% 
- migrate_ndc()
-
-
-
-
-
-
-
-
-
-
-
-
-
 ```
 
+
+## 4.2  locate_data -> locate_if -> migrate 
+```{r}
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>% 
+  filter(row > 2) %>% 
+  locate_data(!is.na(numeric)) %>%    
+  locate_if(col == 1 & !row %in% c(5,13) , direction = "W",name = "player",types = data_type ) %>% 
+  locate_if(col == 1 & row %in% c(5,13) , direction = "WNW",name = "team",types = data_type ) %>% 
+  locate_if(col > 1 & row ==4 ,           direction = "N",name = "stat"  ,types = data_type ) %>% 
+  migrate()
+```
 
 

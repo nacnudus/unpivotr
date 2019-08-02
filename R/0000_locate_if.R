@@ -13,32 +13,61 @@
 locate_if <- function(cells,..., direction, name, values = NULL, types = data_type,
                    formatters = list(), drop_na = TRUE){
   
+  # Store attributes (bind datacells and others if present)
+  if(!is.null(attr(cells,"data_cells"))){
+    data_cells_attr <- attr(cells,"data_cells")
+    data_cells_attr$dc <- 1
+    cells <- bind_rows(cells,data_cells_attr) 
+  }
   
+  if(!is.null(attr(cells, "formats"))){
+    format <-  attr(cells, "formats")
+  }
+  
+  
+
+  #Add Annotation variables 
   added_var_list <- list(cells,".header_label",".direction", ".value")
-  
-  filters <- enquos(...)
   
   cells <-  added_var_list %>% reduce(add_variable_if_missing)
   
-  cells %>% select(row,col,character) %>% spread(col,character)
-  
+  # Filter for cells without direction, but with character or numeric
   cells_f <- cells %>% filter(is.na(.direction)) %>% filter(!is.na(character) | !is.na(numeric)) 
   
-  
+  # Checks 
   check_direction_behead(direction)
   check_distinct(cells)
+  
+  # Create variables
   name <- rlang::ensym(name)
   functions <- purrr::map(formatters, purrr::as_mapper)
   values <- rlang::enexpr(values)
   values_was_null <- TRUE
   types <- rlang::ensym(types)
   
+  
   type_names <- unique(dplyr::pull(cells_f, !!types))
+  
+  if(length(enquos(...))>0){
+    filter_expr <- enquos(...)
 
+    headers <- cells_f %>% filter(!!!filter_expr)
+
+    is_header <- 
+      paste0(cells_f$row,unpivotr::cols_index[cells_f$col]) %in%
+      paste0(headers$row,unpivotr::cols_index[headers$col])
+      
+  }else{
+    filter_expr <- direction_filter(direction)
+    is_header <- rlang::eval_tidy(filter_expr, cells_f)
+    
+  } 
+  
+  
   
   headers <-
     cells_f %>%
-    dplyr::filter(!!!filters) %>% 
+    dplyr::filter(is_header) %>% 
     pack(types = !!types) %>%
     dplyr::mutate(
       is_na = is.na(value),
@@ -56,7 +85,7 @@ locate_if <- function(cells,..., direction, name, values = NULL, types = data_ty
 header_addresses <- paste0(unpivotr::cols_index[headers$col],headers$row)
 
   # no predicate filters, so discard all cells in the row/col of the headers
-  data_cells <- dplyr::filter(cells_f, !address %in% header_addresses )
+  data_cells <- dplyr::filter(cells_f, !is_header )
   
   headers_reshaped <-   
     headers %>% 
@@ -73,8 +102,16 @@ header_addresses <- paste0(unpivotr::cols_index[headers$col],headers$row)
     mutate(.value = coalesce(.value.n,.value.o)) %>% 
     select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o) 
   
+  if(exists("data_cells_attr")){
+    cells <- cells %>% filter(is.na(dc))
+    attr(cells, "data_cells") <- data_cells_attr 
+  }
   
-  cells 
+  if(exists("format")){
+    attr(cells, "formats") <- format
+  }
+  
+  cells
   
   
 }

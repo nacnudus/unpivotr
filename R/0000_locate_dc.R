@@ -13,8 +13,27 @@
 locate_dc <- function(cells, direction, name, values = NULL, types = data_type,
                    formatters = list(), drop_na = TRUE){
   
-  data_cells <-  cells %>% attr("data_cells")
-  formats <-  cells %>% attr("formats")
+  # Store attributes 
+  if(!is.null(attr(cells,"data_cells"))){
+    data_cells_attr <- attr(cells,"data_cells")
+  }
+  
+  if(!is.null(attr(cells, "formats"))){
+    format <-  attr(cells, "formats")
+  }
+  
+
+  # Add annotation variables  
+  added_var_list <- list(cells,".header_label",".direction", ".value")
+  
+  cells <-  added_var_list %>% reduce(add_variable_if_missing)
+  
+  cells %>% select(row,col,character) %>% spread(col,character)
+  
+  cells_f <- cells %>% filter(is.na(.direction)) %>% filter(!is.na(character) | !is.na(numeric)) 
+  
+  
+  
   
   data_cells$dc <- 1 
   
