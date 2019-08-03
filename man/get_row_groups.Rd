@@ -4,18 +4,21 @@
 \alias{get_row_groups}
 \title{Get Rowname DF}
 \usage{
-get_row_groups(sheet, value_ref, col_groups, formats, added_row_groups,
-  group_row_headers_by = c("bolding", "italics", "indenting"),
-  row_header_fill = "none", default_row_header_direction = "W")
+get_row_groups(sheet, value_ref, formats,
+  .groupings = groupings(fmt_alignment_indent),
+  header_fill = "local_format_id",
+  default_row_header_direction = default_row_header_direction,
+  table_data = tabledata, filter_headers_by = filter_headers_by_temp,
+  min_header_index = min_header_index_temp)
 }
 \arguments{
 \item{sheet}{sheet object read in by \code{tidyxl::xlsx_cells}}
 
 \item{value_ref}{data frame representing corners of numeric cells in excel sheet}
 
-\item{col_groups}{format object read in by \code{tidyxl::xlsx_cells}}
-
 \item{formats}{format object read in by \code{tidyxl::xlsx_cells}}
+
+\item{col_groups}{format object read in by \code{tidyxl::xlsx_cells}}
 
 \item{added_row_groups}{format object read in by \code{tidyxl::xlsx_cells}}
 }

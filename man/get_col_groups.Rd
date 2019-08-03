@@ -5,9 +5,11 @@
 \title{Get column groups}
 \usage{
 get_col_groups(sheet, value_ref, formats,
-  group_col_headers_by = c("bolding"),
-  col_header_fill = "local_format_id",
-  default_col_header_direction = default_col_header_direction)
+  .groupings = groupings(fmt_alignment_indent),
+  header_fill = "local_format_id",
+  default_col_header_direction = default_col_header_direction_temp,
+  table_data = tabledata, filter_headers_by = filter_headers_by_temp,
+  min_header_index = min_header_index_temp)
 }
 \arguments{
 \item{sheet}{sheet object read in by \code{tidyxl::xlsx_cells}}

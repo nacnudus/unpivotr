@@ -9,7 +9,7 @@ enhead_tabledata(header_data, direction, values = tabledata)
 \arguments{
 \item{header_data}{a list of data frames that are header subsets from the original data frame produced by tidyxl.}
 
-\item{direction}{a vector of orientations}
+\item{direction}{a vector of directions}
 
 \item{values}{the central values of the table}
 

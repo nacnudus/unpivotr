@@ -8,7 +8,6 @@
 #'
 #' @export
 
-
 plot_directions <- function(sheet, interactive = FALSE){
   
   sheet <-   plot_data

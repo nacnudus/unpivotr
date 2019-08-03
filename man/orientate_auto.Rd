@@ -6,10 +6,11 @@
 \usage{
 orientate_auto(sheet = NULL, formats = NULL, table_range = NULL,
   manual_value_references = NULL, added_row_groups = NULL,
-  group_col_headers_by = c("bolding", "italics"),
-  group_row_headers_by = c("bolding", "italics", "indenting"),
-  col_header_fill = "local_format_id", row_header_fill = "none",
-  default_col_header_direction = "N",
+  group_col_headers_by = list(),
+  group_row_headers_by = list(fmt_alignment_indent, fmt_font_bold,
+  ~data_type), col_header_fill = "local_format_id",
+  row_header_fill = "none", filter_col_headers_by = NULL,
+  filter_row_headers_by = NULL, default_col_header_direction = "N",
   default_row_header_direction = "W", keep_meta_data = FALSE)
 }
 \arguments{
