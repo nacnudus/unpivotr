@@ -12,13 +12,8 @@
 #' readxl_example("datasets.xlsx")
 unpivotr_example <- function(path = NULL) {
   if (is.null(path)) {
-    dir(system.file("extdata", package = "unpivotr")) %>% .[str_detect(.,"xlsx$")]
+    dir(system.file("extdata", package = "unpivotr")) %>% .[str_detect(., "xlsx$")]
   } else {
-    system.file("extdata", path, package = "unpivotr", mustWork = TRUE) 
+    system.file("extdata", path, package = "unpivotr", mustWork = TRUE)
   }
 }
-
-
-
-
-

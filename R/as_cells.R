@@ -43,9 +43,11 @@
 #' they appear in the `chr` column.
 #'
 #' @examples
-#' x <- data.frame(a = c(10, 20),
-#'                 b = c("foo", "bar"),
-#'                 stringsAsFactors = FALSE)
+#' x <- data.frame(
+#'   a = c(10, 20),
+#'   b = c("foo", "bar"),
+#'   stringsAsFactors = FALSE
+#' )
 #' x
 #' as_cells(x)
 #' as_cells(x, row_names = TRUE)
@@ -59,8 +61,10 @@
 #'
 #' # Factors are preserved by being wrapped in lists so that their levels don't
 #' # conflict.  Blanks are NULLs.
-#' z <- data.frame(x = factor(c("a", "b")),
-#'                 y = factor(c("c", "d"), ordered = TRUE))
+#' z <- data.frame(
+#'   x = factor(c("a", "b")),
+#'   y = factor(c("c", "d"), ordered = TRUE)
+#' )
 #' as_cells(z)
 #' as_cells(z)$fct
 #' as_cells(z)$ord
@@ -73,7 +77,6 @@
 #' colspan <- system.file("extdata", "colspan.html", package = "unpivotr")
 #' rowspan <- system.file("extdata", "rowspan.html", package = "unpivotr")
 #' nested <- system.file("extdata", "nested.html", package = "unpivotr")
-#'
 #' \dontrun{
 #' browseURL(colspan)
 #' browseURL(rowspan)

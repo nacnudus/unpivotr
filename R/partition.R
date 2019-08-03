@@ -52,9 +52,11 @@
 #'
 #' # First, find the cells that mark a corner of each table
 #' corners <-
-#'   dplyr::filter(multiples,
-#'                 !is.na(character),
-#'                 !(character %in% c("Sex", "Value", "Female", "Male")))
+#'   dplyr::filter(
+#'     multiples,
+#'     !is.na(character),
+#'     !(character %in% c("Sex", "Value", "Female", "Male"))
+#'   )
 #'
 #' # Then find out which cells fall into which partition
 #' partition(multiples, corners)

@@ -18,12 +18,13 @@ unmerge_cells <- function(sheet, strict_merging = T) {
 
 
   # Filter out blank cells - use this to check neighbours of blank cells
-  joiner <- sheet %>% select(-character_formatted) %>% filter(!is_blank)
+  joiner <- sheet %>%
+    select(-character_formatted) %>%
+    filter(!is_blank)
 
   # Check each cells agains the column to the left
 
-  if(strict_merging){
-
+  if (strict_merging) {
     inserter <-
       blank_df %>%
       mutate(col_old = col, col = col - 1) %>%
@@ -37,12 +38,7 @@ unmerge_cells <- function(sheet, strict_merging = T) {
       filter(!is_blank) %>%
       mutate(row_col = paste0(row, "_", col)) %>%
       mutate(merged = 1)
-    
-    
-    
-  }else{
-
-
+  } else {
     inserter <-
       blank_df %>%
       mutate(col_old = col, col = col - 1) %>%
@@ -56,8 +52,6 @@ unmerge_cells <- function(sheet, strict_merging = T) {
       filter(!is_blank) %>%
       mutate(row_col = paste0(row, "_", col)) %>%
       mutate(merged = 1)
-
-
   }
 
   # Join sheet with inserter
@@ -69,27 +63,31 @@ unmerge_cells <- function(sheet, strict_merging = T) {
     arrange(row, col)
 
   # Remove duplicates
-  sheet %>% group_by(row, col) %>% top_n(n = 1, wt = row_number()) %>% ungroup()
+  sheet %>%
+    group_by(row, col) %>%
+    top_n(n = 1, wt = row_number()) %>%
+    ungroup()
 }
 
 
-# Rows 
+# Rows
 
 
 unmerge_row_cells <- function(sheet, strict_merging = T) {
-  
+
   # Define blank cells
   blank_df <-
     sheet %>%
     filter(data_type == "blank")
-  
+
   # Filter out blank cells - use this to check neighbours of blank cells
-  joiner <- sheet %>% select(-character_formatted) %>% filter(!is_blank)
-  
+  joiner <- sheet %>%
+    select(-character_formatted) %>%
+    filter(!is_blank)
+
   # Check each cells agains the column to the left
-  
-  if(strict_merging){
-    
+
+  if (strict_merging) {
     inserter <-
       blank_df %>%
       mutate(row_old = row, row = row - 1) %>%
@@ -103,10 +101,7 @@ unmerge_row_cells <- function(sheet, strict_merging = T) {
       filter(!is_blank) %>%
       mutate(row_col = paste0(row, "_", col)) %>%
       mutate(merged = 1)
-    
-  }else{
-    
-    
+  } else {
     inserter <-
       blank_df %>%
       mutate(row_old = row, row = row - 1) %>%
@@ -120,10 +115,8 @@ unmerge_row_cells <- function(sheet, strict_merging = T) {
       filter(!is_blank) %>%
       mutate(row_col = paste0(row, "_", col)) %>%
       mutate(merged = 1)
-    
-    
   }
-  
+
   # Join sheet with inserter
   sheet <-
     sheet %>%
@@ -131,7 +124,10 @@ unmerge_row_cells <- function(sheet, strict_merging = T) {
     filter(!row_col %in% inserter$row_col) %>%
     bind_rows(inserter) %>%
     arrange(row, col)
-  
+
   # Remove duplicates
-  sheet %>% group_by(row, col) %>% top_n(n = 1, wt = row_number()) %>% ungroup()
+  sheet %>%
+    group_by(row, col) %>%
+    top_n(n = 1, wt = row_number()) %>%
+    ungroup()
 }

@@ -12,9 +12,11 @@
 #'
 #' @export
 #' @examples
-#' x <- data.frame(name = c("Matilda", "Nicholas", "Olivia", "Paul"),
-#'                 score = c(10, "confidential", "N/A", 12),
-#'                 stringsAsFactors = FALSE)
+#' x <- data.frame(
+#'   name = c("Matilda", "Nicholas", "Olivia", "Paul"),
+#'   score = c(10, "confidential", "N/A", 12),
+#'   stringsAsFactors = FALSE
+#' )
 #' x
 #' isolate_sentinels(x, score, c("confidential", "N/A"))
 #' isolate_sentinels(x, score, c("confidential", "N/A"), "flag")

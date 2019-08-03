@@ -9,8 +9,6 @@
 
 
 get_tabledata <- function(sheet, value_ref) {
-
-
   sheet %>%
     filter(
       !is_blank | !is.na(comment),

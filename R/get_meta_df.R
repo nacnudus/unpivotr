@@ -30,7 +30,7 @@ get_meta_df <- function(sheet, value_ref, col_groups, formats) {
 
 
   # Get format information ----
-  
+
   header_df <-
     header_df %>%
     mutate(col_temp = col) %>%
@@ -38,52 +38,54 @@ get_meta_df <- function(sheet, value_ref, col_groups, formats) {
 
 
   # Name columns
-header_df <-
-  header_df %>% 
-  filter(!(is_blank & is.na(character))) %>% 
-  group_by(col_temp,row_temp) %>% 
-  nest() %>%
-  ungroup()  
+  header_df <-
+    header_df %>%
+    filter(!(is_blank & is.na(character))) %>%
+    group_by(col_temp, row_temp) %>%
+    nest() %>%
+    ungroup()
 
-header_df <-
-  header_df %>% 
-  mutate(row_no_name = row_temp - min(row_temp) + 1) %>%
-  mutate(header_label = paste0("header_meta_", 
-                               str_pad(row_number(), 2, side = "left", "0")))
+  header_df <-
+    header_df %>%
+    mutate(row_no_name = row_temp - min(row_temp) + 1) %>%
+    mutate(header_label = paste0(
+      "header_meta_",
+      str_pad(row_number(), 2, side = "left", "0")
+    ))
 
-# Create and name headers ----
-header_df <-
-  header_df %>%
-  mutate(data = map2(
-    data, header_label,
-    function(data, header_label) {
-      temp_df <- data %>%
-        mutate(value = coalesce(
-          as.character(numeric),
-          as.character(character),
-          as.character(logical),
-          as.character(date)
-        )) %>%
-        select(row, col, value)
-      temp_df[[header_label]] <- temp_df$value
-      temp_df %>% select(-value)
-    }
-  ))      
-         
-         
+  # Create and name headers ----
+  header_df <-
+    header_df %>%
+    mutate(data = map2(
+      data, header_label,
+      function(data, header_label) {
+        temp_df <- data %>%
+          mutate(value = coalesce(
+            as.character(numeric),
+            as.character(character),
+            as.character(logical),
+            as.character(date)
+          )) %>%
+          select(row, col, value)
+        temp_df[[header_label]] <- temp_df$value
+        temp_df %>% select(-value)
+      }
+    ))
+
+
 
   # Set direction
-header_df <-
+  header_df <-
     header_df %>%
     mutate(direction = "WNW")
 
 
-# Add information to output df ----
-header_df %>%
-  mutate(data_summary = data %>%
-           map(~ .x %>% summarise(
-             min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
-             min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
-           ))) %>%
-  unnest(data_summary) 
+  # Add information to output df ----
+  header_df %>%
+    mutate(data_summary = data %>%
+      map(~ .x %>% summarise(
+        min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
+        min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
+      ))) %>%
+    unnest(data_summary)
 }
