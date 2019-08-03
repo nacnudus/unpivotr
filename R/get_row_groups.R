@@ -39,7 +39,7 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
 
   # Fill in blanks ----
 
-  header_df <- fill_blanks_in_row_headers(header_df, header_fill, formats)
+  header_df <- suppressMessages(fill_blanks_in_row_headers(header_df, header_fill, formats))
 
   # Create grouping variables for symbols provided to grouping.
   .groupings <- .groupings %>%

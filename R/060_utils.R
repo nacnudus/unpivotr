@@ -222,7 +222,8 @@ fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
     
     while (continue) {
       sheet_original <- header_df
-      header_df <- header_df %>% unmerge_cells(strict_merging = FALSE)
+      header_df <- header_df %>% unmerge_cells(strict_merging = FALSE) 
+      
       
       continue <- !identical(sheet_original, header_df)
     }
@@ -235,7 +236,7 @@ fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
     
     while (continue) {
       sheet_original <- header_df
-      header_df <- header_df %>% unmerge_cells(strict_merging = TRUE)
+      header_df <- header_df %>% unmerge_cells(strict_merging = TRUE) 
       
       continue <- !identical(sheet_original, header_df)
     }
@@ -289,7 +290,7 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
     
     while (continue) {
       sheet_original <- header_df
-      header_df <- header_df %>% unmerge_row_cells(strict_merging = FALSE)
+      header_df <- header_df %>% unmerge_row_cells(strict_merging = FALSE) 
       
       continue <- !identical(sheet_original, header_df)
     }
@@ -302,7 +303,7 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
     
     while (continue) {
       sheet_original <- header_df
-      header_df <- header_df %>% unmerge_row_cells(strict_merging = TRUE)
+      header_df <- header_df %>% unmerge_row_cells(strict_merging = TRUE) 
       
       continue <- !identical(sheet_original, header_df)
     }
