@@ -9,7 +9,8 @@
 #' @name migrate
 #' @export
 
-migrate <- function(orientated_df, numeric_value = FALSE){
+migrate_old <- function(orientated_df, numeric_value = FALSE){
+  
   orientated_df_nested <-
     orientated_df %>%
     filter(!is.na(.direction)) %>% 

@@ -9,7 +9,7 @@
 #' @name migrate
 #' @export
 
-migrate_ndc <- function(orientated_df, numeric_value = FALSE){
+migrate <- function(orientated_df, numeric_value = FALSE){
   
   orientated_df_nested <-
     orientated_df %>%
@@ -19,12 +19,19 @@ migrate_ndc <- function(orientated_df, numeric_value = FALSE){
     select(row,col,.value,.direction,.header_label) %>%
     nest()
   
-  data_row_index <- which(orientated_df_nested$.direction == "data")
   header_dfs   <- orientated_df_nested$data[orientated_df_nested$.direction != "data"]
   directions <- orientated_df_nested$.direction[orientated_df_nested$.direction != "data"]
   header_names <- orientated_df_nested$.header_label[orientated_df_nested$.direction != "data"]
-  data_cells <- orientated_df_nested$data[orientated_df_nested$.direction == "data"][[1]] 
   
+  if(!is.null(attr(orientated_df, "data_cells"))){
+    
+    data_cells <- attr(orientated_df, "data_cells") %>% select(row,col,.value)
+    
+  }else{
+    
+    data_cells <- orientated_df_nested$data[orientated_df_nested$.direction == "data"][[1]]
+    
+  }
   
   
   header_dfs <- 

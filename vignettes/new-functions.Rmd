@@ -17,14 +17,13 @@ rm(list = ls())
 
 install.packages("pacman");
 library("pacman")
-p_load(here,piton)
-
+p_load(here)
 # Load all packages 
 devtools::load_all(file.path(dirname(here::here()),"tidyxl"))
 devtools::load_all(here::here())
 
 # Install packages
-p_load(stringr,purrr,dplyr,rlang,magrittr)
+p_load(stringr,purrr,dplyr,rlang,magrittr,ggplot2,cowplot,plotly)
 ```
 
 
@@ -33,13 +32,13 @@ p_load(stringr,purrr,dplyr,rlang,magrittr)
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
   locate_data(!is.na(numeric)) %>% 
-  locate_header_groups_if(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
-  locate_header_groups_if(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
+  locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
+  locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
   migrate() 
 ```
 
 
-## 1.1 locate_data -> locate_groups ->  migrate 
+## 1.1 locate_data -> locate_groups_if ->  migrate 
 ```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
@@ -54,24 +53,18 @@ unpivotr_example("bball-examples.xlsx") %>%
   locate_header_groups_if(row == 4, type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%
   locate_header_groups_if(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>%   
   migrate() 
-
-
-
 ```
-
-
-
-
-
-
 
 ## 1.2                Locate_groups ->  migrate 
 ```{r}
+
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  locate_data(!is.na(numeric)) %>% 
   locate_header_groups(type = "col" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
   locate_header_groups(type = "row" , .groupings = groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
-  migrate() 
+  plot_directions(interactive = TRUE)
+
 ```
 
 ## 2.1 locate_data -> behead_groups ->  migrate 
@@ -110,23 +103,17 @@ unpivotr_example("bball-examples.xlsx") %>%
 
 ```
 
-
-
-
-
-
-
 ## 3.1                       locate -> migrate 
 ```{r}
 unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1")  %>%
   filter(row > 2) %>% 
-  locate_if(direction = "NNW",name = "stat_type",types =data_type ) %>%
-  locate_if(direction = "N"  ,name = "stat"     ,types =data_type ) %>% 
-  locate_if(direction = "W"  ,name = "player"   ,types =data_type ) %>% 
+  locate("NNW","stat_type") %>%
+  locate("N"  ,"stat") %>% 
+  locate("W","player") %>% 
   mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
   mutate(.value = ifelse(.direction == "data", coalesce(as.character(numeric),as.character(character)),.value)) %>% 
- migrate_ndc()
+ migrate()
 ```
 
 ## 3.2 locate_data -> locate -> migrate 
@@ -135,9 +122,9 @@ unpivotr_example("bball-examples.xlsx") %>%
   xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
   filter(row >2 ) %>%
   locate_data(!is.na(numeric)) %>% 
-  locate_if(direction = "NNW",name = "stat_type",types =data_type ) %>%
-  locate_if(direction = "N",name =  "stat",types =data_type ) %>%  
-  locate_if(direction = "W",name = "player",types =data_type ) %>% 
+  locate("NNW","stat_type") %>%
+  locate("N","stat") %>%  
+  locate("W","player") %>% 
   migrate() 
 ```
 
@@ -151,7 +138,7 @@ unpivotr_example("bball-examples.xlsx") %>%
   locate_if(col > 1 & row ==4 ,           direction = "N",name = "stat"  ,types = data_type ) %>%  
   mutate(.direction = ifelse(!is.na(numeric),"data",.direction)) %>% 
   mutate(.value = ifelse(!is.na(numeric),numeric,.value)) %>% 
-  migrate_ndc()
+  migrate()
 ```
 
 
