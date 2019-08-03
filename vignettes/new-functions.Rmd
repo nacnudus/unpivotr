@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r cars}
 # Clear environment 
 rm(list = ls())
-
+devtools::document()
 install.packages("pacman");
 library("pacman")
 p_load(here)
@@ -88,9 +88,16 @@ unpivotr_example("bball-examples.xlsx") %>%
   behead_groups("row",groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
   attr("data_cells") %>% 
   select(row,col,contains("header"),contains("row"),.value) 
+
+unpivotr_example("bball-examples.xlsx") %>%
+  xlsx_cells_fmt(path = . , sheets = "Sheet1") %>% 
+  locate_data(!is.na(numeric)) %>% 
+  behead_groups("col",groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  behead_groups("row",groupings(fmt_font_bold,fmt_alignment_indent)) %>% 
+  attr("data_cells") %>% 
+  select(row,col,contains("header"),contains("row"),.value) 
+
 ```
-
-
 ## 2.2             behead_groups ->  migrate 
 ```{r}
 
