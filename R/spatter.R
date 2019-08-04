@@ -22,17 +22,13 @@
 #' @export
 #' @examples
 #' # A tidy representation of cells of mixed data types
-#' x <- data.frame(
-#'   stringsAsFactors = FALSE,
-#'   row = c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L),
-#'   col = c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
-#'   data_type = c(
-#'     "character", "character", "character", "numeric", "character",
-#'     "numeric", "character", "numeric"
-#'   ),
+#' x <- data.frame(stringsAsFactors = FALSE,
+#'         row = c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L),
+#'         col = c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
+#'   data_type = c("character", "character", "character", "numeric", "character",
+#'                 "numeric", "character", "numeric"),
 #'   character = c("Name", "Age", "Matilda", NA, "Nicholas", NA, "Olivia", NA),
-#'   numeric = c(NA, NA, NA, 1, NA, 3, NA, 5)
-#' )
+#'     numeric = c(NA, NA, NA, 1, NA, 3, NA, 5))
 #' x
 #'
 #' # How it would look in a spreadsheet
@@ -96,8 +92,7 @@
 #' # column).  If your custom functions aren't sufficient to avoid the need for
 #' # coercion, then they will be overridden.
 #' spatter(y, header,
-#'   formatters = list(character = ~ toupper(.), numeric = as.complex)
-#' )
+#'         formatters = list(character = ~ toupper(.), numeric = as.complex))
 spatter <- function(cells, key, values = NULL, types = data_type,
                     formatters = list()) {
   UseMethod("spatter")

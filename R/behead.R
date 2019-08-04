@@ -83,14 +83,14 @@
 #' # seems to have been an oversight by Statistics New Zealand.
 #'
 #' cells <- tibble::tribble(
-#'   ~X1, ~adult, ~juvenile,
-#'   "LION", 855, 677,
-#'   "male", 496, 322,
-#'   "female", 359, 355,
-#'   "TIGER", 690, 324,
-#'   "male", 381, 222,
-#'   "female", 309, 102
-#' )
+#'        ~X1, ~adult, ~juvenile,
+#'     "LION",    855,       677,
+#'     "male",    496,       322,
+#'   "female",    359,       355,
+#'    "TIGER",    690,       324,
+#'     "male",    381,       222,
+#'   "female",    309,       102
+#'   )
 #' cells <- as_cells(cells, col_names = TRUE)
 #'
 #' cells %>%

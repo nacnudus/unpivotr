@@ -66,11 +66,9 @@
 #' @export
 #' @examples
 #' # A normal data frame
-#' w <- data.frame(
-#'   foo = 1:2,
-#'   bar = c("a", "b"),
-#'   stringsAsFactors = FALSE
-#' )
+#' w <- data.frame(foo = 1:2,
+#'                 bar = c("a", "b"),
+#'                 stringsAsFactors = FALSE)
 #' w
 #'
 #' # The same data, represented by one row per cell, with integer values in the

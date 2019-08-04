@@ -42,11 +42,9 @@
 #'
 #' @export
 #' @examples
-#' x <- data.frame(
-#'   name = c("Matilda", "Nicholas"),
-#'   score = c(14L, 10L),
-#'   stringsAsFactors = FALSE
-#' )
+#' x <- data.frame(name = c("Matilda", "Nicholas"),
+#'                 score = c(14L, 10L),
+#'                 stringsAsFactors = FALSE)
 #'
 #' # This is the original form of the table, which is easy to read.
 #' x
@@ -85,9 +83,7 @@ rectify <- function(cells, values = NULL, types = data_type,
 rectify.data.frame <- function(cells, values = NULL, types = data_type,
                                formatters = list()) {
   check_distinct(cells)
-  if (nrow(cells) == 0L) {
-    return(tibble::tibble())
-  }
+  if (nrow(cells) == 0L) return(tibble::tibble())
   values <- rlang::enexpr(values)
   types <- rlang::ensym(types)
   cells <- pad(cells)
@@ -130,9 +126,9 @@ rectify.data.frame <- function(cells, values = NULL, types = data_type,
 #' #
 #' # Print in the browser or in the RStudio viewer pane
 #' \dontrun{
-#' z <- rectify(y)
-#' print(z, "browser")
-#' print(z, "rstudio")
+#'   z <- rectify(y)
+#'   print(z, "browser")
+#'   print(z, "rstudio")
 #' }
 print.cell_grid <- function(x, display = "terminal", ...) { # nocov start
   if (display == "terminal") {
