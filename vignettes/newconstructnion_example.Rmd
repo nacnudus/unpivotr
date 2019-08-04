@@ -18,29 +18,17 @@ options(width = 100)
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
+# Clear environment 
 rm(list = ls())
-setwd("C:/Users/Ian/Data/r-projects/unpivotr-dev/unpivotr/vignettes")
-home_dir <- rprojroot::find_package_root_file()
-setwd(home_dir)
-```
-
-
-#### Setup packages 
-```{r message=FALSE, warning=FALSE, include=FALSE}
-library(devtools)
-load_all()
-install_github("nacnudus/unpivotr", ref = "ian")
-library(unpivotr)
-library(rprojroot)
-library(magick)
-library(magrittr)
-library(tidyverse)
-library(tidyxl)
-library(stringr)
-library(rlang)
-library(lubridate)
-library(hrbrthemes)
-library(scales)
+install.packages("pacman");
+library("pacman")
+(p_load(here,stringr,purrr,dplyr,rlang,magrittr,ggplot2,cowplot,plotly,
+       unpivotr, magick, magrittr, tidyverse, stringr, rlang, lubridate, 
+       hrbrthemes, scales, devtools))
+# Load all packages 
+devtools::load_all(file.path(dirname(here::here()),"tidyxl"))
+devtools::load_all(here::here())
+tidyxl::xlsx
 ```
 
 
@@ -58,8 +46,22 @@ magick::image_read(unpivotr_example(path = "newconst.png"))
 The example below provides unpivotr a hard coded range for the data cells of the table. (In examples 2 and 3, this range is identified by a few lines of code.)
 ```{r message=FALSE, warning=FALSE}
 # Load in spreadsheet and format data
-testsheet_df <- xlsx_cells(path = unpivotr_example("newresconst.xlsx"), sheets = "Table 1 - Permits")
-formats <- xlsx_formats(unpivotr_example("newresconst.xlsx"))
+testsheet_df <- xlsx_cells_fmt(path = unpivotr_example("newresconst.xlsx"), sheets = "Table 1 - Permits")
+# formats <- xlsx_formats_fmt(unpivotr_example("newresconst.xlsx"))
+
+min_row <-  testsheet_df %>% filter(str_detect(character,"RSE")) %>% pull(row) %>% min
+
+testsheet_df %>% filter(row < min_row) %>% 
+  locate_data(!is.na(numeric) & col > 1) %>% 
+  locate_header_groups(type = "row", .groupings = groupings(!is.na(numeric),str_detect(character, "\\.") )) %>%  
+  locate_header_groups(type = "col", header_fill = "style") %>% 
+  plot_directions(text = local_format_id)
+  migrate()
+
+  
+
+
+
 
 # Add variables to indicate data cells, header groups and directions. Then migrate
 testsheet_df %>%

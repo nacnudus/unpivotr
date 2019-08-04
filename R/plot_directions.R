@@ -8,8 +8,7 @@
 #'
 #' @export
 
-plot_directions <- function(sheet, interactive = FALSE) {
-  sheet <- plot_data
+plot_directions <- function(sheet, text = values, interactive = FALSE) {
 
   data_cells <-
     sheet %>%
@@ -26,14 +25,16 @@ plot_directions <- function(sheet, interactive = FALSE) {
         .direction == "NNW" ~ "\U21B1",
         .direction == "WNW" ~ "\U21B1",
         T ~ NA_character_
-      ))
+      )) %>% 
+      mutate(values = coalesce(as.character(numeric),as.character(character),
+                                    as.character(logical),as.character(date)))
 
     bind_rows(
       mutate(sheet_01, .arrow = NA, set = "Cell values"),
-      mutate(sheet_01, .value = NA, set = "Directions")
+      mutate(sheet_01, {{text}} := NA, set = "Directions")
     ) %>%
       ggplot(aes(x = col, y = -row, fill = .header_label)) + geom_tile() +
-      geom_text(aes(label = str_sub(.value, 1, 5))) +
+      geom_text(aes(label = str_sub({{text}}, 1, 5))) +
       geom_text(aes(label = ifelse(.direction %in% c("W", "N"), .arrow, NA))) +
       geom_text(aes(label = ifelse(.direction %in% c("NNW", "WNW"), .arrow, NA)), angle = -90) +
       facet_wrap(~set, scales = "free")
@@ -51,10 +52,10 @@ plot_directions <- function(sheet, interactive = FALSE) {
     plot_object <-
       bind_rows(
         mutate(sheet_01, .arrow = NA, set = "Cell values"),
-        mutate(sheet_01, .value = NA, set = "Directions")
+        mutate(sheet_01, {{text}} := NA, set = "Directions")
       ) %>%
       ggplot(aes(x = col, y = -row, fill = .header_label)) + geom_tile() +
-      geom_text(aes(label = str_sub(.value, 1, 5))) +
+      geom_text(aes(label = str_sub({{text}}, 1, 5))) +
       geom_text(aes(label = ifelse(.direction %in% c("W", "N"), .arrow, NA))) +
       geom_text(aes(label = ifelse(.direction %in% c("NNW", "WNW"), .arrow, NA)), angle = -90) +
       facet_wrap(~set, scales = "free")

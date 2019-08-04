@@ -24,7 +24,7 @@ locate_header_groups <-
       
       
       
-      locate_header_groups_if(sheet= sheet_temp,type = "both", .groupings = .groupings_temp,
+      locate_header_groups_if(sheet= sheet_temp,type = type_temp, .groupings = .groupings_temp,
                               default_col_header_direction = default_col_header_direction_temp,
                               default_row_header_direction = default_row_header_direction_temp,
                               header_fill = header_fill_temp)
@@ -52,7 +52,8 @@ locate_header_groups_if <-
   function(sheet= NULL,..., type = "both", .groupings = groupings(fmt_alignment_indent),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
  
-    
+ 
+       
     # If data_cells are missing, locate them automatically  
     if(is.null(attr(sheet,"data_cells"))){
       # Set data location 
