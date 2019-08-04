@@ -13,11 +13,17 @@
 #' @export
 
 locate_data <-
-  function(sheet= NULL, ... = !is.na(numeric)) {
+  function(sheet= NULL, ...) {
     format <-  attr(sheet, "formats")
     
     filter_expresions <- quos(...)
+   
+    if(length(filter_expresions) == 0){
+      filter_expresions <- rlang::quos(!is.na(numeric))
+      }
+
     
+         
     filter_expresions_type <- filter_expresions %>% map_chr(~type_of(get_expr(.x)))
     
     filter_expresions_string <- filter_expresions[filter_expresions_type == "string"]
@@ -36,31 +42,31 @@ locate_data <-
     #---------------------------------------------------------------------------------------------
     
     closures <- filter_expresions_symbol  %>% append(quos(ones)) %>% append(quos(twos))
-    
-    openenv <- environment()
-    
-    seq_along(closures) %>% 
-      map(~ assign(paste0("flt_", as_label(closures[[.x]]) %>% str_remove_all("\\(\\)") ),
-                   set_env(eval_tidy(closures[[.x]])),envir = openenv))
-    
-    closure_list <- syms(ls()[str_detect(ls(),"flt_")]) 
-    
-    sheet <- 
-    sheet %>% 
-      mutate_at(.vars = "local_format_id",
-                .funs = funs(!!!closure_list))
-    
-    #------------------------------------------------------------------------------------------
-    filter_expresions_langage <- filter_expresions_langage %>% append(quo(2 + 1))   
-    
+      
+      openenv <- environment()
+      
+      seq_along(closures) %>% 
+        map(~ assign(paste0("flt_", as_label(closures[[.x]]) %>% str_remove_all("\\(\\)") ),
+                     set_env(eval_tidy(closures[[.x]])),envir = openenv))
+      
+      closure_list <- syms(ls()[str_detect(ls(),"flt_")]) 
+      
+      sheet <- 
+        sheet %>% 
+        mutate_at(.vars = "local_format_id",
+                  .funs = funs(!!!closure_list))
+      
+      #------------------------------------------------------------------------------------------
+      filter_expresions_langage <- filter_expresions_langage %>% append(quo(2 + 1))   
+      
     fmt_forms <-  filter_expresions_langage     
     
     form_list <-  fmt_forms %>% map(append_name_to_quosure,prefix = "flt_")
     
     sheet <- append(list(sheet),form_list) %>% reduce(reduce_mutated)
-        
-  data_cell_filter <- 
-    sheet %>% select(starts_with("flt")) %>% select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_twos","flt_A1"))]) %>% 
+    
+    data_cell_filter <- 
+      sheet %>% select(starts_with("flt")) %>% select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_twos","flt_A1"))]) %>% 
     as_list %>% map(as.logical) %>% pmap_lgl(~ sum(...,na.rm = TRUE) > 0 )
   
   data_cells <- sheet[data_cell_filter,] %>% dplyr::select(-starts_with("flt_"))

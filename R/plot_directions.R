@@ -8,7 +8,7 @@
 #'
 #' @export
 
-plot_directions <- function(sheet, text = values, interactive = FALSE) {
+plot_cells <- function(sheet, text = values, interactive = FALSE) {
 
   data_cells <-
     sheet %>%
@@ -27,8 +27,8 @@ plot_directions <- function(sheet, text = values, interactive = FALSE) {
         T ~ NA_character_
       )) %>% 
       mutate(values = coalesce(as.character(numeric),as.character(character),
-                                    as.character(logical),as.character(date)))
-
+                               as.character(logical),as.character(date)))
+    
     bind_rows(
       mutate(sheet_01, .arrow = NA, set = "Cell values"),
       mutate(sheet_01, {{text}} := NA, set = "Directions")
@@ -39,6 +39,7 @@ plot_directions <- function(sheet, text = values, interactive = FALSE) {
       geom_text(aes(label = ifelse(.direction %in% c("NNW", "WNW"), .arrow, NA)), angle = -90) +
       facet_wrap(~set, scales = "free")
   } else {
+    
     sheet_01 <-
       bind_rows(sheet, data_cells) %>%
       mutate(.arrow = case_when(
@@ -47,8 +48,11 @@ plot_directions <- function(sheet, text = values, interactive = FALSE) {
         .direction == "NNW" ~ "\U21B4",
         .direction == "WNW" ~ "\U21B4",
         T ~ NA_character_
-      ))
-
+      )) %>%  
+      mutate(values = coalesce(as.character(numeric),as.character(character),
+                               as.character(logical),as.character(date)))
+    
+    
     plot_object <-
       bind_rows(
         mutate(sheet_01, .arrow = NA, set = "Cell values"),
@@ -59,7 +63,7 @@ plot_directions <- function(sheet, text = values, interactive = FALSE) {
       geom_text(aes(label = ifelse(.direction %in% c("W", "N"), .arrow, NA))) +
       geom_text(aes(label = ifelse(.direction %in% c("NNW", "WNW"), .arrow, NA)), angle = -90) +
       facet_wrap(~set, scales = "free")
-
+    
     ggplotly(plot_object)
   }
 }

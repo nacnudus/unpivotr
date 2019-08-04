@@ -55,7 +55,8 @@ testsheet_df %>% filter(row < min_row) %>%
   locate_data(!is.na(numeric) & col > 1) %>% 
   locate_header_groups(type = "row", .groupings = groupings(!is.na(numeric),str_detect(character, "\\.") )) %>%  
   locate_header_groups(type = "col", header_fill = "style") %>% 
-  plot_directions(text = local_format_id)
+  locate_header_groups(type = "meta", headerheader_fill = "none") %T>% 
+  plot_cells(interactive = FALSE,text = local_format_id) %>% 
   migrate()
 
   

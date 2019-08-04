@@ -4,6 +4,8 @@ author: "Ian Moran"
 date: "28/04/2019"
 output:   
   html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -15,16 +17,16 @@ options(width=100)
 
 #### Setup packages 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-library(devtools)
-
-install_github("nacnudus/unpivotr",ref = "ian")
-library(unpivotr)
-
-library(magick)
-library(magrittr)
-library(tidyverse)
-library(tidyxl)
-library(stringr)
+# Clear environment 
+rm(list = ls())
+install.packages("pacman");
+library("pacman")
+(p_load(here,stringr,purrr,dplyr,rlang,magrittr,ggplot2,cowplot,plotly,
+       unpivotr, magick, magrittr, tidyverse, stringr, rlang, lubridate,
+       hrbrthemes, scales, devtools,rlang))
+# Load all packages 
+devtools::load_all(file.path(dirname(here::here()),"tidyxl"))
+devtools::load_all(here::here())
 ```
 
 ## Spreadsheets from worked-examples.xlsx
@@ -38,15 +40,14 @@ magick::image_read("https://unpivotr.s3.amazonaws.com/worked-examples_clean.png"
 
 
 ```{r message=FALSE, warning=FALSE}
-workbook_path <- unpivotr_example("worked-examples.xlsx")
-sheet_name <- "clean"
 
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
-formats <- xlsx_formats(workbook_path)
+unpivotr_example("worked-examples.xlsx") %>% 
+ xlsx_cells_fmt(sheets = "clean") %>% 
+  locate_data() %>% 
+  locate_header_groups(type = "row") %>% 
+  locate_header_groups(type = "col") %>% 
+  migrate()
 
-orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats)
-
-orientated_df_auto %>% migrate()
 ```
 
 
@@ -54,101 +55,32 @@ orientated_df_auto %>% migrate()
 #### notes
 
 ```{r message=FALSE, warning=FALSE}
-sheet_name <- "notes"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 
-orientated_df_auto <- orientate_auto(sheet = testsheet_df, formats = formats)
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "notes") %>% 
+  locate_data() %>% 
+  locate_header_groups(type = "both") %>% 
+  migrate()
 
-orientated_df_auto %>% migrate()
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "notes") %>% 
+  locate_data() %>% 
+  locate_header_groups(type = "both") %>% 
+  locate_header_groups(type = "meta") %>% 
+  migrate()
+
 ```
 
-#### highlights
-
-```{r message=FALSE, warning=FALSE}
-sheet_name <- "highlights"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
-
-orientated_df_auto <-  orientate_auto(sheet = testsheet_df,formats = formats)
-
-orientated_df_auto %>% migrate()
-```
-
-#### annotations
-
-```{r message=FALSE, warning=FALSE}
-sheet_name <- "annotations"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
-
-orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
-
-orientated_df_auto %>% migrate()
-```
-
-#### combined-highlights
-
-```{r message=FALSE, warning=FALSE}
-sheet_name <- "combined-highlights"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
-
-orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
-
-orientated_df_auto %>% migrate()
-```
-
-#### highlight-hierarchy
-
-```{r message=FALSE, warning=FALSE}
-sheet_name <- "highlight-hierarchy"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
-
-orientated_df_auto <-
-  orientate_auto(
-    sheet = testsheet_df, formats = formats,
-    group_row_headers_by = "none"
-  )
-
-orientated_df_auto %>% migrate()
-```
-
-#### sentinels
-
-```{r message=FALSE, warning=FALSE}
-sheet_name <- "sentinels"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
-
-orientated_df_auto <-
-  orientate_auto(
-    sheet = testsheet_df, formats = formats,
-    manual_value_references = "C2:C5"
-  )
-
-orientated_df_auto %>% migrate()
-```
-
-#### transposed
-
-```{r message=FALSE, warning=FALSE}
-sheet_name <- "transposed"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
-
-orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
-
-orientated_df_auto %>% migrate()
-```
 
 #### pivot-annotations
 
 ```{r message=FALSE, warning=FALSE}
-sheet_name <- "pivot-annotations"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 
-orientated_df_auto <-
-  orientate_auto(
-    sheet = testsheet_df,formats = formats,
-    col_header_fill = "style",row_header_fill = "style"
-  )
-
-orientated_df_auto %>% migrate()
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-annotations") %>% 
+  locate_data() %>% 
+  locate_header_groups(type = "both",header_fill = "style") %>% 
+  migrate()
 
 ```
 
@@ -156,45 +88,56 @@ orientated_df_auto %>% migrate()
 
 
 ```{r message=FALSE, warning=FALSE}
-sheet_name <- "pivot-centre-aligned"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-centre-aligned") %>% 
+  locate_data() %>% 
+  locate_header_groups(type = "both",header_fill = "borders") %>% 
+  migrate()
 
-orientated_df_auto <-
-  orientate_auto(
-    sheet = testsheet_df,formats = formats,
-    col_header_fill = "border",row_header_fill = "border"
-  )
-
-orientated_df_auto %>% migrate()
 ```
 
 #### pivot-notes
 **Note: Add option to ignore specified cells.**
 
 ```{r message=FALSE, warning=FALSE}
-sheet_name <- "pivot-notes"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 
-orientated_df_auto <-
-  orientate_auto(
-    sheet = testsheet_df,formats = formats, 
-    col_header_fill = "style"
-  )
-
-orientated_df_auto %>% migrate()
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-notes") %>% 
+  locate_data() %>% 
+  locate_header_groups(type = "row",header_fill = "borders",
+                          .groupings = groupings(fmt_font_color_rgb),
+                          default_row_header_direction = "WNW") %>%
+  migrate
 ```
 
 #### pivot-hierarchy
 
 ```{r message=FALSE, warning=FALSE}
-sheet_name <- "pivot-hierarchy"
-testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 
-orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-hierarchy") %>% 
+  locate_data() %>% 
+  locate_header_groups(type = "both",header_fill = "borders",
+                          .groupings = groupings(fmt_alignment_indent))%>%
+  migrate()
 
-orientated_df_auto %>% migrate()
 ```
+
+
+```{r message=FALSE, warning=FALSE}
+
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "implied-multiples") %>% 
+  locate_data(col > 1 & row >2) %>% 
+  locate_header_groups(type = "both",header_fill = "style")%>%
+  migrate()
+
+```
+
+
+
+
 
 #### pivot-repeated-headers
 

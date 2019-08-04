@@ -492,3 +492,25 @@ enhead_tabledata <- function(header_data, direction, values = tabledata) {
     header_cells = header_data,
     direction = direction) 
 }
+
+
+
+#' Fill in blanks
+#'
+#' This function ensures that merged cells are unmerged.
+#'
+#' @param header_df a data frame containing header cells. 
+#' @param col_header_fill the manner is which blank cells will be filled. 
+#' @param formats the formats associated with the workbook containing the header_df cells.
+
+
+
+get_header_index <- function(labels, regex_term = "^col_header") {
+  labels %>% .[str_detect(.,regex_term)] %>%  str_remove_all("[a-z]+|[:punct:]+") %>% 
+    as.numeric() %>% max(.,na.rm = TRUE) %>% ifelse(is.finite(.),.,0) %>% `+`(1) 
+  
+}
+
+
+
+
