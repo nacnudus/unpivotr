@@ -17,7 +17,6 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
                            header_fill = "local_format_id", default_row_header_direction = default_row_header_direction,
                            table_data = tabledata, filter_headers_by = filter_headers_by_temp,
                            min_header_index = min_header_index_temp) {
-
   # Idenitfy header cells to which directions will be allocated
   col_df <- sheet %>% filter(col <= value_ref$max_col, col >= value_ref$min_col, row < value_ref$min_row)
 

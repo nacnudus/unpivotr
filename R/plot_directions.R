@@ -14,15 +14,15 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
     sheet %>%
     attr("data_cells") %>%
     mutate(.direction = "\U2610", .header_label = "data")
-
-
+  
+  
   if (interactive == FALSE) {
     sheet_01 <-
       bind_rows(sheet, data_cells) %>%
       mutate(.arrow = case_when(
         .direction == "W" ~ "\U2192",
         .direction == "N" ~ "\U2193",
-        .direction == "NNW" ~ "\U21B1",
+        .direction == "NNW" ~ "\U21B3",
         .direction == "WNW" ~ "\U21B1",
         T ~ NA_character_
       )) %>% 
@@ -35,8 +35,8 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
     ) %>%
       ggplot(aes(x = col, y = -row, fill = .header_label)) + geom_tile() +
       geom_text(aes(label = str_sub({{text}}, 1, 5))) +
-      geom_text(aes(label = ifelse(.direction %in% c("W", "N"), .arrow, NA))) +
-      geom_text(aes(label = ifelse(.direction %in% c("NNW", "WNW"), .arrow, NA)), angle = -90) +
+      geom_text(aes(label = ifelse(!.direction %in% c("WNW"), .arrow, NA))) +
+      geom_text(aes(label = ifelse(.direction %in% c("WNW"), .arrow, NA)), angle = -90) +
       facet_wrap(~set, scales = "free")
   } else {
     
@@ -45,7 +45,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       mutate(.arrow = case_when(
         .direction == "W" ~ "\U2192",
         .direction == "N" ~ "\U2193",
-        .direction == "NNW" ~ "\U21B4",
+        .direction == "NNW" ~ "\U21B3",
         .direction == "WNW" ~ "\U21B4",
         T ~ NA_character_
       )) %>%  
@@ -61,7 +61,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       ggplot(aes(x = col, y = -row, fill = .header_label)) + geom_tile() +
       geom_text(aes(label = str_sub({{text}}, 1, 5))) +
       geom_text(aes(label = ifelse(.direction %in% c("W", "N"), .arrow, NA))) +
-      geom_text(aes(label = ifelse(.direction %in% c("NNW", "WNW"), .arrow, NA)), angle = -90) +
+      geom_text(aes(label = ifelse(.direction %in% c("WNW"), .arrow, NA)), angle = -90) +
       facet_wrap(~set, scales = "free")
     
     ggplotly(plot_object)

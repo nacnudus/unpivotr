@@ -109,41 +109,41 @@ get_col_groups <- function(sheet, value_ref, formats,
         temp_df %>% select(-value)
       }
     ))
-
+  
   # Set direction ----
   header_df <-
     header_df %>%
     mutate(direction = default_col_header_direction) %>%
     dplyr::select(header_label, direction, data, !!!grouping_vars)
-
+  
   header_df$data
-
+  
   # Add information to output df ----
-
+  
   header_df <-
     header_df %>%
     mutate(data_summary = data %>%
-      map(~ .x %>% summarise(
-        min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
-        min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
-      ))) %>%
+             map(~ .x %>% summarise(
+               min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
+               min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
+             ))) %>%
     unnest(data_summary)
-
+  
   header_vars <- syms(header_df$header_label)
-
+  
   if (nrow(header_df) == 0) {
     return(header_df)
   }
-
-
+  
+  
   header_df <-
     header_df %>%
     unnest() %>%
     mutate(value = coalesce(!!!header_vars)) %>%
     select(row, col, .header_label = header_label, .direction = direction, .value = value)
-
+  
   header_df
-
+  
   # %>%
   # check_low_col_names
 }

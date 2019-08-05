@@ -102,13 +102,34 @@ unpivotr_example("worked-examples.xlsx") %>%
 
 ```{r message=FALSE, warning=FALSE}
 
+
 unpivotr_example("worked-examples.xlsx") %>% 
   xlsx_cells_fmt(sheets = "pivot-notes") %>% 
   locate_data() %>% 
-  locate_header_groups(type = "row",header_fill = "borders",
-                          .groupings = groupings(fmt_font_color_rgb),
+  append_fmt(fmt_font_color_rgb) %>% 
+  append_fmt(fmt_font_italic) %>%
+  locate_header_groups_if(fmt_font_color_rgb !=  "FFFF0000", type = "row",
                           default_row_header_direction = "WNW") %>%
-  migrate
+  locate_header_groups_if(fmt_font_italic !=  TRUE, type = "col",
+                          default_col_header_direction = "NNW") %>%
+  migrate()
+  
+
+
+
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-notes") %>% 
+  locate_data() %>% 
+  append_fmt(fmt_font_color_rgb) %>% 
+  append_fmt(fmt_font_italic) %>%
+  behead_groups_if(fmt_font_color_rgb !=  "FFFF0000", type = "row",
+                          default_row_header_direction = "WNW") %>% 
+  behead_groups_if(fmt_font_italic !=  TRUE, type = "col",
+                          default_col_header_direction = "NNW") %>%
+  plot_cells()
+  
+  attr("data_cells")  
+  
 ```
 
 #### pivot-hierarchy
@@ -238,6 +259,10 @@ testsheet_df <- xlsx_cells(path = workbook_path, sheets = sheet_name)
 orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats)
 
 orientated_df_auto %>% migrate()
+
+
+
+
 ```
 
 #### implied-multiples
@@ -286,6 +311,23 @@ formats <- xlsx_formats(workbook_path)
 orientated_df_auto <- orientate_auto(sheet = testsheet_df,formats = formats) 
 
 orientated_df_auto %>% migrate()
+
+
+
+cells <- 
+  unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-notes")  
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 

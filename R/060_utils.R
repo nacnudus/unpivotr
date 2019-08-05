@@ -512,5 +512,30 @@ get_header_index <- function(labels, regex_term = "^col_header") {
 }
 
 
+#' Fill in blanks
+#'
+#' This function ensures that merged cells are unmerged.
+#'
+#' @param header_df a data frame containing header cells. 
+#' @param col_header_fill the manner is which blank cells will be filled. 
+#' @param formats the formats associated with the workbook containing the header_df cells.
 
 
+
+
+append_fmt <- function(cells, fmt_function){
+ 
+  formats <- attr(cells,"formats")
+  data_cells <- attr(cells,"data_cells")
+  
+  cells <- 
+  cells %>% 
+    mutate({{fmt_function}} := exec({{fmt_function}},
+                                    format_id_vec = cells$local_format_id, 
+                                    sheet_formats = formats))
+  attr(cells,"formats") <- formats
+  attr(cells,"data_cells") <- data_cells
+  
+  cells
+  
+}

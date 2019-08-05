@@ -13,7 +13,6 @@
 locate_header_groups <-
   function(sheet= NULL,..., type = "both", .groupings = groupings(fmt_alignment_indent),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
-    
 
       sheet_temp  <-  sheet
       type_temp  <-  type
@@ -51,7 +50,6 @@ locate_header_groups <-
 locate_header_groups_if <-
   function(sheet= NULL,..., type = "both", .groupings = groupings(fmt_alignment_indent),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
- 
        
     # If data_cells are missing, locate them automatically  
     if(is.null(attr(sheet,"data_cells"))){
@@ -69,17 +67,14 @@ locate_header_groups_if <-
               min_letter,corner_refs$min_row,":",max_letter,corner_refs$max_row))
   
     }
-    
-    
     # Add filtering if statements 
     if(length(enquos(...))>0){
       filter_expr <- enquos(...)
       
       filtered_header_cells <- sheet %>% filter(!!!filter_expr)
     } 
-    
-    
-    
+
+
     # Assign attributes to objects  
     formats <- attr(sheet, "formats")
     tabledata <- attr(sheet, "data_cells")
@@ -90,6 +85,10 @@ locate_header_groups_if <-
    
     # Get col groups ---------------------------------------------------------------------------------------------------
     # Get arguments for get_col_groups 
+    
+    if(type == "both" | type == "col"){
+      
+    
     value_ref <-   get_corner_cell_refs(tabledata)
     header_fill_choice <-   match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
     groupings_temp <- .groupings
@@ -103,8 +102,9 @@ locate_header_groups_if <-
                                  default_col_header_direction = default_col_header_direction_temp,
                                  min_header_index = min_header_index_temp)
     
-    
-    if(exists("filtered_header_cells")){
+    }
+
+    if(exists("filtered_header_cells") & (type == "both" | type == "col")){
       col_groups_in_filter <- 
         paste0(col_groups$row,unpivotr::cols_index[col_groups$col]) %in% 
         paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
@@ -115,6 +115,9 @@ locate_header_groups_if <-
     
     
     # Get rows groups ----
+    
+    if(type == "both" | type == "row"){
+      
     
     value_ref <-   get_corner_cell_refs(tabledata)
     header_fill_choice <- match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
@@ -129,8 +132,10 @@ locate_header_groups_if <-
                                  default_row_header_direction = default_row_header_direction_temp,
                                  table_data = tabledata,
                                  min_header_index = min_header_index_temp)
+    
+    }
 
-    if(exists("filtered_header_cells")){
+    if(exists("filtered_header_cells") & (type == "both" | type == "row")){
       row_groups_in_filter <- 
         paste0(row_groups$row,unpivotr::cols_index[row_groups$col]) %in% 
         paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
@@ -160,7 +165,7 @@ locate_header_groups_if <-
     
     }
     
-    if(exists("filtered_header_cells")){
+    if(exists("filtered_header_cells") & type == "meta"){
       row_groups_in_filter <- 
         paste0(meta_groups$row,unpivotr::cols_index[meta_groups$col]) %in% 
         paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])

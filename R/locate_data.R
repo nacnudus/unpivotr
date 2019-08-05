@@ -70,17 +70,17 @@ locate_data <-
     as_list %>% map(as.logical) %>% pmap_lgl(~ sum(...,na.rm = TRUE) > 0 )
   
   data_cells <- sheet[data_cell_filter,] %>% dplyr::select(-starts_with("flt_"))
-    
+  
   sheet <- sheet[!data_cell_filter,] %>% dplyr::select(-starts_with("flt_"))
-    
+  
   data_cells <- data_cells %>% 
     mutate(.value = coalesce(as.character(numeric),as.character(character),
                              as.character(logical),as.character(date)))
-    
+  
   attr(sheet, "data_cells") <- data_cells 
   attr(sheet, "formats") <- format 
   
   sheet
-        
+  
   }
 

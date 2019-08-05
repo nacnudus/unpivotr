@@ -121,8 +121,8 @@ get_meta_groups <- function(sheet, value_ref, formats, .groupings = groupings(fm
         temp_df %>% select(-value)
       }
     ))
-
-
+  
+  
   # Set direction
   header_df <-
     header_df %>%
