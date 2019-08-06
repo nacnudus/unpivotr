@@ -44,9 +44,45 @@ magick::image_read("https://unpivotr.s3.amazonaws.com/worked-examples_clean.png"
 unpivotr_example("worked-examples.xlsx") %>% 
  xlsx_cells_fmt(sheets = "clean") %>% 
   locate_data() %>% 
-  locate_header_groups(type = "row") %>% 
-  locate_header_groups(type = "col") %>% 
+  locate(direction = "W",name = name) %>%
+  locate(direction = "N",name = age) %>% 
   migrate()
+
+locate_header()
+
+unpivotr_example("worked-examples.xlsx") %>% 
+ xlsx_cells_fmt(sheets = "pivot-notes") %>% 
+  locate_data() %>% 
+  append_fmt(fmt_font_color_rgb) %>% 
+  append_fmt(fmt_font_italic) %>% 
+  locate_if(fmt_font_color_rgb !=  "FFFF0000" & col == 2, direction = "WNW",name = subject_type) %>%
+  locate(direction = "WSW",name = subject_comment) %>% 
+  locate_if(col == 3,  direction = "W",name = subject) %>% 
+  locate_if(fmt_font_italic == FALSE & row == 2,  direction = "NNW",name = gender) %>% 
+  locate_if(fmt_font_italic == TRUE & row == 2,  direction = "NNE",name = note) %>% 
+  locate_if(fmt_font_italic == FALSE & row == 3,  direction = "N",name = name) %>% 
+  plot_cells()  %>% 
+  migrate()
+
+
+unpivotr_example("compass-directions.xlsx") %>% 
+ xlsx_cells_fmt(sheets = "Sheet1") %>% 
+  locate_data() %>% 
+  locate(direction = "WSW",name = WSW) %>% 
+  locate(direction = "WNW",name = WNW) %>% 
+  locate(direction = "W",name = W) %>% 
+  locate(direction = "NNE",name = NNE) %>% 
+  locate(direction = "NNW",name = NNW) %>% 
+  locate(direction = "N",name = N) %>% 
+  locate(direction = "ESE",name = ESE) %>% 
+  locate(direction = "ENE",name = ENE) %>% 
+  locate(direction = "E",name = W) %>% 
+  locate(direction = "SSW",name = SSW) %>% 
+  locate(direction = "SSE",name = SSE) %>% 
+  locate(direction = "S",name = S) %>% 
+  plot_cells
+
+
 
 ```
 
