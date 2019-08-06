@@ -22,7 +22,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       bind_rows(sheet, data_cells) %>%
       mutate(.arrow = case_when(
         .direction == "N"   ~ "\U2193",
-        .direction == "NNE" ~ "\U21B1", 
+        .direction == "NNE" ~ "\U21B2", 
         .direction == "ENE" ~ "\U21B3",
         .direction == "E"   ~ "\U2190",
         .direction == "ESE" ~ "\U21B2",
@@ -41,9 +41,8 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       mutate(sheet_01, {{text}} := NA, set = "Directions")) %>%
       ggplot(aes(x = col, y = -row, fill = .header_label)) + geom_tile() +
       geom_text(aes(label = str_sub({{text}}, 1, 5))) +
-      geom_text(aes(label = ifelse(!.direction %in% c("NNE","ESE","WSW","ENE"), .arrow, NA))) +
-      geom_text(aes(label = ifelse(.direction %in% c("NNE","ESE","WSW"), .arrow, NA)), angle = 270) +
-      geom_text(aes(label = ifelse(.direction %in% c("ENE"), .arrow, NA)), angle = 270) +
+      geom_text(aes(label = ifelse(!.direction %in% c("WNW","ESE","WSW","ENE"), .arrow, NA))) +
+      geom_text(aes(label = ifelse(.direction %in% c("WNW", "ESE","WSW","ENE"), .arrow, NA)), angle = 270) +
       facet_wrap(~set, scales = "free")
   } else {
     
