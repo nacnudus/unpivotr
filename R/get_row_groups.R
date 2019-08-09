@@ -156,7 +156,7 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
     map_lgl(~ sum(.x %in% empty_row_df$row[empty_row_df$empty_share == 1]) > 0)
 
   if ("grp_fmt_alignment_indent" %in% names(header_df)) {
-    wnw_vector <- wnw_vector | (header_df$grp_fmt_alignment_indent == "0")
+    wnw_vector <- wnw_vector | (header_df$grp_fmt_alignment_indent < max(header_df$grp_fmt_alignment_indent,na.rm = TRUE))
   }
 
   # Set directions

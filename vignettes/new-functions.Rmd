@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Clear environment 
 rm(list = ls())
 devtools::document()
-install.packages("pacman");
+install.packages("pacman")
 library("pacman")
 p_load(here)
 # Load all packages 

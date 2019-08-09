@@ -10,16 +10,31 @@
 
 plot_cells <- function(sheet, text = values, interactive = FALSE) {
 
-  data_cells <-
-    sheet %>%
-    attr("data_cells") %>%
-    mutate(.direction = "\U2610", .header_label = "data")
+   if(!is.null(attr(sheet,"data_cells"))){
+    
+    data_cells <-
+      sheet %>%
+      attr("data_cells") %>%
+      mutate(.direction = "\U2610", .header_label = "data")
+    
+    sheet <- bind_rows(sheet, data_cells)
+    
+   }else{
   
+     # Add annotation variables if missing  
+     added_var_list <- list(sheet,".header_label",".direction", ".value")
+     sheet <-  added_var_list %>% reduce(add_variable_if_missing)
+     
+   sheet <- 
+     sheet %>% 
+     mutate(.header_label = "None")
+     
+  }
   
     
   if (interactive == FALSE) {
     sheet_01 <-
-      bind_rows(sheet, data_cells) %>%
+      sheet %>%
       mutate(.arrow = case_when(
         .direction == "N"   ~ "\U2193",
         .direction == "NNE" ~ "\U21B2", 
@@ -47,7 +62,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
   } else {
     
     sheet_01 <-
-      bind_rows(sheet, data_cells) %>%
+      sheet %>%
       mutate(.arrow = case_when(
         .direction == "N"   ~ "\U2193",
         .direction == "NNE" ~ "\U21B1", 

@@ -20,16 +20,8 @@ locate <- function(cells, direction, name, values = NULL, types = data_type,
 
 
   locate_if(
-    cells = cells_temp, direction = direction_temp, name = {
-      {
-        name
-      }
-    },
-    values = values_temp, types = {
-      {
-        types
-      }
-    },
+    cells = cells_temp, direction = direction_temp, name = {{name}},
+    values = values_temp, types = {{types}},
     formatters = formatters_temp, drop_na = drop_na_temp
   )
 }
@@ -92,9 +84,15 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
 
     headers <- cells_f %>% filter(!!!filter_expr)
 
-    is_header <-
+    is_header_if <-
       paste0(cells_f$row, unpivotr::cols_index[cells_f$col]) %in%
       paste0(headers$row, unpivotr::cols_index[headers$col])
+    
+    filter_expr <- direction_filter(direction)
+    is_header_dir <- rlang::eval_tidy(filter_expr, cells_f)
+    
+    is_header <- is_header_dir & is_header_if
+      
   } else {
     filter_expr <- direction_filter(direction)
     is_header <- rlang::eval_tidy(filter_expr, cells_f)
@@ -130,6 +128,9 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
   # Join headers to original cells
   cells <- cells %>% left_join(headers_reshaped, by = c("row", "col"), suffix = c(".o", ".n"))
 
+  
+  cells %>% select(dplyr::matches("^\\."))
+  
   # Unite updated/non-updated values
   cells <-
     cells %>%

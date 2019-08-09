@@ -539,3 +539,55 @@ append_fmt <- function(cells, fmt_function){
   cells
   
 }
+
+#' Fill in blanks
+#'
+#' This function ensures that merged cells are unmerged.
+#'
+#' @param header_df a data frame containing header cells. 
+#' @param col_header_fill the manner is which blank cells will be filled. 
+#' @param formats the formats associated with the workbook containing the header_df cells.
+
+
+
+select_fmt <- function(df, ...){
+  
+  data_cells <- attr(df,"data_cells")
+  formats    <- attr(df,"formats")
+  
+  select_quos <-   enquos(...) 
+  
+  df <- select(df,!!!select_quos)
+  
+  attr(df,"data_cells") <- data_cells
+  attr(df,"formats") <- formats
+
+  df  
+}
+  
+#' Fill in blanks
+#'
+#' This function ensures that merged cells are unmerged.
+#'
+#' @param header_df a data frame containing header cells. 
+#' @param col_header_fill the manner is which blank cells will be filled. 
+#' @param formats the formats associated with the workbook containing the header_df cells.
+
+
+
+
+filter_fmt <- function(df, ...){
+  
+  data_cells <- attr(df,"data_cells")
+  formats    <- attr(df,"formats")
+  
+  filter_quos <-   enquos(...) 
+  
+  df <- filter(df,!!!filter_quos)
+  
+  attr(df,"data_cells") <- data_cells
+  attr(df,"formats") <- formats
+  
+  df  
+}
+

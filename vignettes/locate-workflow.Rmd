@@ -1,0 +1,107 @@
+---
+title: "Locate workflow"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#### Setup packages 
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# Clear environment 
+rm(list = ls())
+install.packages("pacman");
+library("pacman")
+(p_load(here,stringr,purrr,dplyr,rlang,magrittr,ggplot2,cowplot,plotly,
+       unpivotr, magick, magrittr, tidyverse, stringr, rlang, lubridate,
+       hrbrthemes, scales, devtools,rlang))
+# Load all packages 
+devtools::load_all(file.path(dirname(here::here()),"tidyxl"))
+devtools::load_all()
+
+```
+
+
+## The Locate workflow 
+```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+magick::image_read("https://unpivotr.s3.amazonaws.com/pivot-annotations.png")
+```
+
+
+### A short demonstration 
+
+```{r cars}
+
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-annotations") %>% 
+  locate_data(!is.na(numeric)) %>%
+  locate(direction = "WNW",name = subject_type) %>% 
+  locate(direction = "W",name = subject) %>%
+  locate(direction = "NNW",name = sex) %>%
+  locate(direction = "N",name = name) %>% 
+  migrate()
+
+  plot_cells()
+
+```
+
+
+```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+magick::image_read("https://unpivotr.s3.amazonaws.com/pivot-hierarchy.png")
+```
+
+
+```{r cars}
+
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
+  plot_cells()
+  append_fmt(fmt_alignment_indent) %>%
+  locate_data(data_type == "numeric") %>%
+  locate_if(fmt_alignment_indent == 0, direction = "WNW", name = subject_type) %>% 
+  locate_if(fmt_alignment_indent == 1, direction = "W", name = subject) %>% 
+  locate(direction = "N", name = student) %>% 
+  migrate()
+
+  plot_cells()
+  
+```
+
+
+```{r cars}
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
+  locate_data(data_type == "numeric") %>%
+  locate_header_groups(type = "row",.groupings = groupings(fmt_alignment_indent)) %>%
+  locate(direction = "N", name = student) %>% 
+  migrate()
+
+  plot_cells()
+  
+```
+
+## Tidying new residential construction data from the US Census Bureau
+
+Here's one of the sheets from the work book. Each sheet contains two tables. One with seasonally adjusted data, the other with non-adjusted data. 
+```{r echo=FALSE, fig.height=16, fig.width=24, message=FALSE, warning=FALSE}
+magick::image_read(unpivotr_example(path = "newconst.png"))
+```
+
+
+```{r}
+
+unpivotr_example("newresconst.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "Table 1 - Permits") %>%
+  filter_fmt(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
+  locate_data(data_type == "numeric" & col > 1) %>%
+  locate_header_groups(type = "row", .groupings = groupings(is.na(numeric))) %>% 
+  locate_header_groups(type = "col", .groupings = groupings(is.na(numeric)),header_fill = "style") %>% 
+  migrate()
+  
+plot_cells() 
+  
+```

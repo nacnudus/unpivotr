@@ -48,20 +48,21 @@ unpivotr_example("worked-examples.xlsx") %>%
   locate(direction = "N",name = age) %>% 
   migrate()
 
-locate_header()
+
+
+
 
 unpivotr_example("worked-examples.xlsx") %>% 
  xlsx_cells_fmt(sheets = "pivot-notes") %>% 
   locate_data() %>% 
   append_fmt(fmt_font_color_rgb) %>% 
-  append_fmt(fmt_font_italic) %>% 
-  locate_if(fmt_font_color_rgb !=  "FFFF0000" & col == 2, direction = "WNW",name = subject_type) %>%
-  locate(direction = "WSW",name = subject_comment) %>% 
-  locate_if(col == 3,  direction = "W",name = subject) %>% 
-  locate_if(fmt_font_italic == FALSE & row == 2,  direction = "NNW",name = gender) %>% 
-  locate_if(fmt_font_italic == TRUE & row == 2,  direction = "NNE",name = note) %>% 
-  locate_if(fmt_font_italic == FALSE & row == 3,  direction = "N",name = name) %>% 
-  plot_cells()  %>% 
+  append_fmt(fmt_font_italic) %>%   
+  locate_if(data_type == "character" & fmt_font_color_rgb !="FFFF0000", direction = "WNW",name = subject_type) %>%
+  locate(direction = "WSW",name = subject_comment) %>%
+  locate_if(direction = "W",name = subject) %>% 
+  locate_if(fmt_font_italic == FALSE, direction = "NNW",name = gender) %>% 
+  locate_if(fmt_font_italic == TRUE, direction = "NNE",name = note) %>% 
+  locate_if(fmt_font_italic == FALSE,  direction = "N",name = name) %>% 
   migrate()
 
 
@@ -130,6 +131,15 @@ unpivotr_example("worked-examples.xlsx") %>%
   locate_data() %>% 
   locate_header_groups(type = "both",header_fill = "borders") %>% 
   migrate()
+
+
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-centre-aligned") %>% 
+  locate_data() %>% 
+  locate_header_groups(type = "both",header_fill = "borders") %>%
+  plot_cells
+  migrate()
+
 
 ```
 

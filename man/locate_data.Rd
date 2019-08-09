@@ -4,7 +4,7 @@
 \alias{locate_data}
 \title{get tidyABS components}
 \usage{
-locate_data(sheet = NULL, ... = !is.na(numeric))
+locate_data(sheet = NULL, ...)
 }
 \arguments{
 \item{path}{path to .xlsx file}
