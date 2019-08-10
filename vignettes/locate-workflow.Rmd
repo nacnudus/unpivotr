@@ -10,22 +10,17 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-# Clear environment 
-rm(list = ls())
+# Load all packages 
 install.packages("pacman");
 library("pacman")
 (p_load(here,stringr,purrr,dplyr,rlang,magrittr,ggplot2,cowplot,plotly,
        unpivotr, magick, magrittr, tidyverse, stringr, rlang, lubridate,
        hrbrthemes, scales, devtools,rlang))
-# Load all packages 
-
 devtools::install_github(repo = "ianmoran11/tidyxl")
 library(tidyxl)
 
 devtools::install_github(repo = "nacnudus/unpivotr", ref = "ian")
 library(unpivotr)
-
-
 ```
 
 The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl dataframe and leave reshaping to a final function call. 

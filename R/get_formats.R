@@ -13,11 +13,17 @@
 #' @export
  
 
-
-
 get_indenting <- function(format_id = local_format_id,sheet_format = formats){
   sheet_format$local$alignment[["indent"]][[format_id]]
 }
+
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 indenting <- function(format_id_vec= local_format_id,sheet_format = formats){
   format_id_vec %>% map(possibly(get_indenting,NA_real_),sheet_format = sheet_format) %>% unlist %>% unlist
@@ -28,6 +34,13 @@ get_bolding <- function(format_id= local_format_id,sheet_format = formats){
   sheet_format$local$font[["bold"]][[format_id]]
 }
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 bolding <- function(format_id_vec= local_format_id,sheet_format = formats){
   format_id_vec %>% map(possibly(get_bolding,NA_real_),sheet_format = sheet_format) %>% unlist %>% unlist
 }
@@ -36,6 +49,13 @@ get_italics <- function(format_id= local_format_id,sheet_format = formats){
   sheet_format$local$font[["italic"]][[format_id]]
 }
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 italics <- function(format_id_vec= local_format_id,sheet_format = formats){
   format_id_vec %>% map(possibly(get_italics,NA_real_),sheet_format = sheet_format) %>% unlist %>% unlist
 }
@@ -45,6 +65,13 @@ get_italics <- function(format_id= local_format_id,sheet_format = formats){
   sheet_format$local$font[["italic"]][[format_id]]
 }
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 italics <- function(format_id_vec= local_format_id,sheet_format = formats){
   format_id_vec %>% map(possibly(get_italics,NA_real_),sheet_format = sheet_format) %>% unlist %>% unlist
 }
@@ -55,6 +82,13 @@ get_text_color <- function(format_id= local_format_id,sheet_format = formats){
   formats$local$font$color$rgb[[format_id]]
 }
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 text_color <- function(format_id_vec= local_format_id,sheet_format = formats){
   format_id_vec %>% map(possibly(get_text_color,NA_real_),sheet_format = sheet_format) %>% unlist
@@ -65,6 +99,13 @@ get_bg_color <- function(format_id= local_format_id,sheet_format = formats){
   formats$local$fill$patternFill$bgColor[[format_id]]
 }
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 bg_color <- function(format_id_vec= local_format_id,sheet_format = formats){
   format_id_vec %>% map(possibly(get_bg_color,NA_real_),sheet_format = sheet_format) %>% unlist
@@ -76,6 +117,13 @@ get_h_alignment <- function(format_id= local_format_id,sheet_format = formats){
   formats$local$alignment$horizontal[[format_id]]
 }
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 h_alignment <- function(format_id_vec= local_format_id,sheet_format = formats){
   format_id_vec %>% map(possibly(get_h_alignment,NA_real_),sheet_format = sheet_format) %>% unlist
@@ -118,6 +166,13 @@ fmt_numFmt_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_numFmt <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -130,6 +185,13 @@ fmt_font_bold_single <-
     format_type_vec <- c('font','bold')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_bold <- 
@@ -143,6 +205,13 @@ fmt_font_italic_single <-
     format_type_vec <- c('font','italic')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_italic <- 
@@ -156,6 +225,13 @@ fmt_font_underline_single <-
     format_type_vec <- c('font','underline')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_underline <- 
@@ -169,6 +245,13 @@ fmt_font_strike_single <-
     format_type_vec <- c('font','strike')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_strike <- 
@@ -182,6 +265,13 @@ fmt_font_vertAlign_single <-
     format_type_vec <- c('font','vertAlign')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_vertAlign <- 
@@ -195,6 +285,13 @@ fmt_font_size_single <-
     format_type_vec <- c('font','size')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_size <- 
@@ -209,6 +306,13 @@ fmt_font_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_font_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -221,6 +325,13 @@ fmt_font_color_theme_single <-
     format_type_vec <- c('font','color','theme')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_color_theme <- 
@@ -235,6 +346,13 @@ fmt_font_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_font_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -247,6 +365,13 @@ fmt_font_color_tint_single <-
     format_type_vec <- c('font','color','tint')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_color_tint <- 
@@ -260,6 +385,13 @@ fmt_font_name_single <-
     format_type_vec <- c('font','name')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_name <- 
@@ -273,6 +405,13 @@ fmt_font_family_single <-
     format_type_vec <- c('font','family')
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 
 fmt_font_family <- 
@@ -287,6 +426,13 @@ fmt_font_scheme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_font_scheme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -301,6 +447,13 @@ fmt_fill_patternFill_fgColor_rgb_single <-
 
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 fmt_fill_patternFill_fgColor_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(possibly(fmt_fill_patternFill_fgColor_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
@@ -313,6 +466,13 @@ fmt_fill_patternFill_fgColor_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_patternFill_fgColor_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -326,6 +486,13 @@ fmt_fill_patternFill_fgColor_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_patternFill_fgColor_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -339,6 +506,13 @@ fmt_fill_patternFill_fgColor_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_patternFill_fgColor_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -352,6 +526,13 @@ fmt_fill_patternFill_bgColor_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_patternFill_bgColor_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -365,6 +546,13 @@ fmt_fill_patternFill_bgColor_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_patternFill_bgColor_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -378,6 +566,13 @@ fmt_fill_patternFill_bgColor_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_patternFill_bgColor_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -391,6 +586,13 @@ fmt_fill_patternFill_bgColor_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_patternFill_bgColor_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -404,6 +606,13 @@ fmt_fill_patternFill_patternType_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_patternFill_patternType <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -417,6 +626,13 @@ fmt_fill_gradientFill_type_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_type <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -430,6 +646,13 @@ fmt_fill_gradientFill_degree_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_degree <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -443,6 +666,13 @@ fmt_fill_gradientFill_left_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_left <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -456,6 +686,13 @@ fmt_fill_gradientFill_right_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_right <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -469,6 +706,13 @@ fmt_fill_gradientFill_top_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_top <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -482,6 +726,13 @@ fmt_fill_gradientFill_bottom_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_bottom <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -495,6 +746,13 @@ fmt_fill_gradientFill_stop1_position_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop1_position <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -508,6 +766,13 @@ fmt_fill_gradientFill_stop1_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop1_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -521,6 +786,13 @@ fmt_fill_gradientFill_stop1_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop1_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -534,6 +806,13 @@ fmt_fill_gradientFill_stop1_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop1_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -547,6 +826,13 @@ fmt_fill_gradientFill_stop1_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop1_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -560,6 +846,13 @@ fmt_fill_gradientFill_stop2_position_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop2_position <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -573,6 +866,13 @@ fmt_fill_gradientFill_stop2_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop2_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -586,6 +886,13 @@ fmt_fill_gradientFill_stop2_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop2_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -599,6 +906,13 @@ fmt_fill_gradientFill_stop2_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop2_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -612,6 +926,13 @@ fmt_fill_gradientFill_stop2_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_fill_gradientFill_stop2_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -625,6 +946,13 @@ fmt_border_diagonalDown_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_diagonalDown <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -638,6 +966,13 @@ fmt_border_diagonalUp_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_diagonalUp <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -651,6 +986,13 @@ fmt_border_outline_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_outline <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -664,6 +1006,13 @@ fmt_border_left_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_left_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -677,6 +1026,13 @@ fmt_border_left_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_left_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -690,6 +1046,13 @@ fmt_border_left_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_left_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -703,6 +1066,13 @@ fmt_border_left_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_left_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -716,6 +1086,13 @@ fmt_border_left_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_left_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -729,6 +1106,13 @@ fmt_border_right_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_right_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -742,6 +1126,13 @@ fmt_border_right_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_right_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -755,6 +1146,13 @@ fmt_border_right_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_right_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -768,6 +1166,13 @@ fmt_border_right_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_right_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -781,6 +1186,13 @@ fmt_border_right_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_right_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -794,6 +1206,13 @@ fmt_border_start_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_start_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -807,6 +1226,13 @@ fmt_border_start_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_start_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -820,6 +1246,13 @@ fmt_border_start_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_start_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -833,6 +1266,13 @@ fmt_border_start_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_start_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -846,6 +1286,13 @@ fmt_border_start_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_start_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -859,6 +1306,13 @@ fmt_border_end_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_end_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -872,6 +1326,13 @@ fmt_border_end_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_end_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -885,6 +1346,13 @@ fmt_border_end_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_end_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -898,6 +1366,13 @@ fmt_border_end_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_end_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -911,6 +1386,13 @@ fmt_border_end_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_end_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -924,6 +1406,13 @@ fmt_border_top_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_top_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -937,6 +1426,13 @@ fmt_border_top_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_top_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -950,6 +1446,13 @@ fmt_border_top_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_top_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -963,6 +1466,13 @@ fmt_border_top_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_top_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -976,6 +1486,13 @@ fmt_border_top_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_top_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -989,6 +1506,13 @@ fmt_border_bottom_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_bottom_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1002,6 +1526,13 @@ fmt_border_bottom_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_bottom_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1015,6 +1546,13 @@ fmt_border_bottom_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_bottom_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1028,6 +1566,13 @@ fmt_border_bottom_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_bottom_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1041,6 +1586,13 @@ fmt_border_bottom_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_bottom_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1054,6 +1606,13 @@ fmt_border_diagonal_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_diagonal_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1067,6 +1626,13 @@ fmt_border_diagonal_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_diagonal_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1080,6 +1646,13 @@ fmt_border_diagonal_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_diagonal_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1093,6 +1666,13 @@ fmt_border_diagonal_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_diagonal_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1106,6 +1686,13 @@ fmt_border_diagonal_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_diagonal_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1119,6 +1706,13 @@ fmt_border_vertical_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_vertical_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1132,6 +1726,13 @@ fmt_border_vertical_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_vertical_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1145,6 +1746,13 @@ fmt_border_vertical_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_vertical_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1158,6 +1766,13 @@ fmt_border_vertical_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_vertical_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1171,6 +1786,13 @@ fmt_border_vertical_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_vertical_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1184,6 +1806,13 @@ fmt_border_horizontal_style_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_horizontal_style <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1197,6 +1826,13 @@ fmt_border_horizontal_color_rgb_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_horizontal_color_rgb <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1210,6 +1846,13 @@ fmt_border_horizontal_color_theme_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_horizontal_color_theme <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1223,6 +1866,13 @@ fmt_border_horizontal_color_indexed_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_horizontal_color_indexed <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1236,6 +1886,13 @@ fmt_border_horizontal_color_tint_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_border_horizontal_color_tint <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1249,6 +1906,13 @@ fmt_alignment_horizontal_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_alignment_horizontal <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1262,6 +1926,13 @@ fmt_alignment_vertical_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_alignment_vertical <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1275,6 +1946,13 @@ fmt_alignment_wrapText_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_alignment_wrapText <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1288,6 +1966,13 @@ fmt_alignment_readingOrder_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_alignment_readingOrder <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1301,6 +1986,13 @@ fmt_alignment_indent_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_alignment_indent <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1314,6 +2006,13 @@ fmt_alignment_justifyLastLine_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_alignment_justifyLastLine <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1327,6 +2026,13 @@ fmt_alignment_shrinkToFit_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_alignment_shrinkToFit <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1340,6 +2046,13 @@ fmt_alignment_textRotation_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_alignment_textRotation <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1353,6 +2066,13 @@ fmt_protection_locked_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_protection_locked <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
@@ -1366,6 +2086,13 @@ fmt_protection_hidden_single <-
     append(list(sheet_formats),c("local",format_type_vec)) %>%  reduce(into_list) %>% .[[local_format_id]]}
 
 
+#' Format function
+#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' @param format_id_vec local format id vector 
+#' @param sheet_format formats 
+#'
+#'
+#' @export
 
 fmt_protection_hidden <- 
   function(format_id_vec= local_format_id,sheet_formats = formats){
