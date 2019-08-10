@@ -1,6 +1,8 @@
 ---
 title: "Tidying with unpivotr locate functions"
-output: html_document
+output:   
+  html_document:
+    keep_html: true
 editor_options: 
   chunk_output_type: console
 ---
@@ -23,7 +25,7 @@ devtools::install_github(repo = "nacnudus/unpivotr", ref = "ian")
 library(unpivotr)
 ```
 
-The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl dataframe and leave reshaping to a final function call. 
+The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl data frame and leave reshaping to a final function call. 
 
 ### Minimal example : `locate` 
 
