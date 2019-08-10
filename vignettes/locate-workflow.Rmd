@@ -1,5 +1,5 @@
 ---
-title: "Locate workflow"
+title: "Tidying with unpivotr locate functions"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -9,8 +9,6 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-#### Setup packages 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 # Clear environment 
 rm(list = ls())
@@ -20,88 +18,113 @@ library("pacman")
        unpivotr, magick, magrittr, tidyverse, stringr, rlang, lubridate,
        hrbrthemes, scales, devtools,rlang))
 # Load all packages 
+
+devtools::install_github(repo = "ianmoran11/tidyxl")
+library(tidyxl)
+
+devtools::install_github(repo = "nacnudus/unpivotr", ref = "ian")
+library(unpivotr)
+
+devtools::document()
+
 devtools::load_all(file.path(dirname(here::here()),"tidyxl"))
 devtools::load_all()
 
 ```
 
+The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl dataframe and leave reshaping to a final function call. 
 
-## The Locate workflow 
-```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+### Minimal example : `locate` 
+
+Here's a minimal example involving a table with two row headers and two column headers. 
+
+```{r echo=FALSE, fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
 magick::image_read("https://unpivotr.s3.amazonaws.com/pivot-annotations.png")
 ```
 
+The first step is to locate the data cells with the `locate_data` function. Calling `locate_data` and providing an expression that filters for data cells sends these cells to an attribute named `data_cells`.  
 
-### A short demonstration 
 
-```{r cars}
-
+```{r message=FALSE, warning=FALSE, fig.height=4, fig.width=6}
 unpivotr_example("worked-examples.xlsx") %>% 
-  xlsx_cells_fmt(sheets = "pivot-annotations") %>% 
-  locate_data(!is.na(numeric)) %>%
-  locate(direction = "WNW",name = subject_type) %>% 
-  locate(direction = "W",name = subject) %>%
-  locate(direction = "NNW",name = sex) %>%
-  locate(direction = "N",name = name) %>% 
-  migrate()
-
-  plot_cells()
-
+  xlsx_cells_fmt(sheets = "pivot-annotations") %>%
+  locate_data(data_type == "numeric") %>% 
+  attr("data_cells")
 ```
 
+`plot_cells` produces a plot that indicates which cells are now labelled as data. 
 
-```{r echo=FALSE, fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
+unpivotr_example("worked-examples.xlsx") %>% 
+  xlsx_cells_fmt(sheets = "pivot-annotations") %>%
+  locate_data(data_type == "numeric") %>% 
+  plot_cells()
+```
+
+Once the data cells are identified, we can add header information using the `locate` function. This function requires direction and variable names. Again, `plot_cells` can be called to check that data cells have been identified correctly. 
+
+Once all header have directions and names, `migrate` reshapes the tidyxl data frame into a tidy structure.
+
+The gif below illustrate how direction informations is progressively added to the data frame. 
+
+![](https://unpivotr.s3.amazonaws.com/up_g01.gif)
+
+### Conditional headers : `locate_if` 
+
+Sometimes not all headers in the same column or row belong to the same group. For example, in the table below, the  row headers in column B represent a mix of subject type and subject name. 
+
+```{r echo=FALSE,  fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
 magick::image_read("https://unpivotr.s3.amazonaws.com/pivot-hierarchy.png")
 ```
 
+To deal with this we create a variable that represents the indenting of cells, and then use  `locate_if` to selectively assocaiate cells with directions and header groups.  
 
-```{r cars}
-
+```{r message=FALSE, warning=FALSE}
 unpivotr_example("worked-examples.xlsx") %>% 
   xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
-  plot_cells()
   append_fmt(fmt_alignment_indent) %>%
   locate_data(data_type == "numeric") %>%
   locate_if(fmt_alignment_indent == 0, direction = "WNW", name = subject_type) %>% 
   locate_if(fmt_alignment_indent == 1, direction = "W", name = subject) %>% 
   locate(direction = "N", name = student) %>% 
   migrate()
-
-  plot_cells()
-  
 ```
 
+### A more concise syntax : `locate_groups` 
 
-```{r cars}
+We can deal with headers differentiated by formatting more concisely using `locate_groups`. The `.grouping` argument allows us to indicate which formats differentiate headers. In this case, hierarchy is indicated by indenting, which can be accessed with the `fmt_alignment_indent` function. 
+
+```{r message=FALSE, warning=FALSE}
 unpivotr_example("worked-examples.xlsx") %>% 
   xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
   locate_data(data_type == "numeric") %>%
-  locate_header_groups(type = "row",.groupings = groupings(fmt_alignment_indent)) %>%
+  locate_groups(type = "row",.groupings = groupings(fmt_alignment_indent)) %>%
   locate(direction = "N", name = student) %>% 
   migrate()
-
-  plot_cells()
-  
 ```
 
-## Tidying new residential construction data from the US Census Bureau
+To browse different aspects of formatting on which to separate headers, type `fmt_` and tab 
 
-Here's one of the sheets from the work book. Each sheet contains two tables. One with seasonally adjusted data, the other with non-adjusted data. 
-```{r echo=FALSE, fig.height=16, fig.width=24, message=FALSE, warning=FALSE}
+## A more complicated example: Tidying new residential construction data from the US Census Bureau
+
+Here's a more complicate table.  
+```{r echo=FALSE, fig.height=6, fig.width=9, message=FALSE, warning=FALSE}
 magick::image_read(unpivotr_example(path = "newconst.png"))
 ```
 
+We can tidy this table by:
 
-```{r}
+* filtering to include only the upper table (filtering out any cells below the first containing "RSE")
+* locating the data, preventing the inclusion of the cells containing 2018 and 2019 in column 1
+* differentiating row groups based on whether they are numeric cells
+* identifying column headers, using the `header_fill` argument to deal with merged cells.
 
+```{r message=FALSE, warning=FALSE}
 unpivotr_example("newresconst.xlsx") %>% 
   xlsx_cells_fmt(sheets = "Table 1 - Permits") %>%
   filter_fmt(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
   locate_data(data_type == "numeric" & col > 1) %>%
-  locate_header_groups(type = "row", .groupings = groupings(is.na(numeric))) %>% 
-  locate_header_groups(type = "col", .groupings = groupings(is.na(numeric)),header_fill = "style") %>% 
+  locate_groups(type = "row", .groupings = groupings(is.na(numeric))) %>% 
+  locate_groups(type = "col", header_fill = "style") %>% 
   migrate()
-  
-plot_cells() 
-  
 ```

@@ -1,12 +1,11 @@
-#' Transform a tidyxl data frame with directions to a tidy data frame that has a column for each header label.
+#' Add direction annations to tidyxl data frame
 #'
 #' @description
-#' This function is to be used following [unpivotr::migrate()].
-#' It transforms a tidyxl data frame with directions to a tidy data frame that has a column for each header label.
+#' This adds direction annations to tidyxl data frame.
 #'
-#' @param orientated_df  a tidyxl data frame with a `.direction` and `.header.group` columns
-#'
-#' @name migrate
+#' @param cells  a tidyxl data frame 
+#' @param direction  direction of new headers
+#' @param name  of variable associated with header
 #' @export
 
 
@@ -27,17 +26,16 @@ locate <- function(cells, direction, name, values = NULL, types = data_type,
 }
 
 
-#' Transform a tidyxl data frame with directions to a tidy data frame that has a column for each header label.
+#' Conditionally adds direction annations to tidyxl data frame
 #'
 #' @description
-#' This function is to be used following [unpivotr::migrate()].
-#' It transforms a tidyxl data frame with directions to a tidy data frame that has a column for each header label.
+#' This function conditionally adds direction annations to tidyxl data frame.
 #'
-#' @param orientated_df  a tidyxl data frame with a `.direction` and `.header.group` columns
-#'
-#' @name migrate
+#' @param cells  a tidyxl data frame 
+#' @param dots  filter expression to isolate desired header cells. 
+#' @param direction  direction of new headers
+#' @param name  of variable associated with header
 #' @export
-
 
 locate_if <- function(cells, ..., direction, name, values = NULL, types = data_type,
                       formatters = list(), drop_na = TRUE) {
@@ -55,9 +53,9 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
 
   # Add Annotation variables
   added_var_list <- list(cells, ".header_label", ".direction", ".value")
-
   cells <- added_var_list %>% reduce(add_variable_if_missing)
 
+  
   # Filter for cells without direction, but with character or numeric
   cells_f <- cells %>%
     filter(is.na(.direction)) %>%
@@ -138,6 +136,11 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
     mutate(.direction = coalesce(.direction.n, .direction.o)) %>%
     mutate(.value = coalesce(.value.n, .value.o)) %>%
     select(-.value.n, -.value.o, -.direction.n, -.direction.o, -.header_label.n, -.header_label.o)
+
+  
+  cells <- 
+    cells %>% select(.value, .direction, .header_label, everything() )
+  
 
   # Reattach data_cells and format if they exist
   if (exists("data_cells_attr")) {

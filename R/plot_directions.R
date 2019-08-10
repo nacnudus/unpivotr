@@ -1,9 +1,10 @@
 
-#' plot orientations
-#'
+#' Plots tidyxl data frame in a grid layout
+#' @description
 #' This function plots the excel sheet, highlighting the relationship between headers and table values.
-#' @param orientated_df returned by orientated or orientate_df
-#'
+#' @param sheet tidyxl data frame
+#' @param sheet text variable to be represented in values plot.
+#' @param interactive TRUE produces an interactive plotly visualisation.
 #' @examples
 #'
 #' @export
@@ -55,7 +56,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       mutate(sheet_01, .arrow = NA, set = "Cell values"),
       mutate(sheet_01, {{text}} := NA, set = "Directions")) %>%
       ggplot(aes(x = col, y = -row, fill = .header_label)) + geom_tile() +
-      geom_text(aes(label = str_sub({{text}}, 1, 5))) +
+      geom_text(aes(label = str_sub({{text}}, 1, 3))) +
       geom_text(aes(label = ifelse(!.direction %in% c("WNW","ESE","WSW","ENE"), .arrow, NA))) +
       geom_text(aes(label = ifelse(.direction %in% c("WNW", "ESE","WSW","ENE"), .arrow, NA)), angle = 270) +
       facet_wrap(~set, scales = "free")

@@ -2,12 +2,16 @@
 % Please edit documentation in R/plot_directions.R
 \name{plot_cells}
 \alias{plot_cells}
-\title{plot orientations}
+\title{Plots tidyxl data frame in a grid layout}
 \usage{
 plot_cells(sheet, text = values, interactive = FALSE)
 }
 \arguments{
-\item{orientated_df}{returned by orientated or orientate_df}
+\item{sheet}{tidyxl data frame}
+
+\item{interactive}{TRUE produces an interactive plotly visualisation.}
+
+\item{sheet}{text variable to be represented in values plot.}
 }
 \description{
 This function plots the excel sheet, highlighting the relationship between headers and table values.

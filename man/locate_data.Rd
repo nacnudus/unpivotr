@@ -2,24 +2,15 @@
 % Please edit documentation in R/locate_data.R
 \name{locate_data}
 \alias{locate_data}
-\title{get tidyABS components}
+\title{Locates data cells}
 \usage{
 locate_data(sheet = NULL, ...)
 }
 \arguments{
-\item{path}{path to .xlsx file}
+\item{sheet}{data frame produced by xlsx_cells}
 
-\item{sheets}{sheet nominated for tidying}
-
-\item{filter}{condition idnetifying cells.}
+\item{dots}{filtering conditions used to produce data_cells data frame}
 }
 \description{
-Moves data cells to an attribute of the tidyxl data frame.
-}
-\examples{
-
- \donttest{tidyABS_example("australian-industry.xlsx") \%>\% process_sheet(sheets = "Table_1")  }
-
-
-
+Removes data cells from data frame and stores in an attribute.
 }

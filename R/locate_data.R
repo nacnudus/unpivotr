@@ -1,14 +1,8 @@
-#' get tidyABS components
-#'
-#' Moves data cells to an attribute of the tidyxl data frame. 
-#' @param path path to .xlsx file
-#' @param sheets sheet nominated for tidying
-#' @param filter condition idnetifying cells.
-#' @examples
-#'
-#'  \donttest{tidyABS_example("australian-industry.xlsx") %>% process_sheet(sheets = "Table_1")  }
-#'
-#'
+#' Locates data cells 
+#' @description
+#' Removes data cells from data frame and stores in an attribute.  
+#' @param sheet data frame produced by xlsx_cells
+#' @param dots  filtering conditions used to produce data_cells data frame 
 #'
 #' @export
 
@@ -22,8 +16,15 @@ locate_data <-
       filter_expresions <- rlang::quos(!is.na(numeric))
       }
 
+    # Add annotation variables if missing  
+    added_var_list <- list(sheet,".header_label",".direction", ".value")
+    sheet <-  added_var_list %>% reduce(add_variable_if_missing)
     
-         
+    sheet <- 
+      sheet %>% select(.value, .direction, .header_label, everything() )
+    
+    
+    
     filter_expresions_type <- filter_expresions %>% map_chr(~type_of(get_expr(.x)))
     
     filter_expresions_string <- filter_expresions[filter_expresions_type == "string"]
@@ -73,6 +74,7 @@ locate_data <-
   
   sheet <- sheet[!data_cell_filter,] %>% dplyr::select(-starts_with("flt_"))
   
+
   data_cells <- data_cells %>% 
     mutate(.value = coalesce(as.character(numeric),as.character(character),
                              as.character(logical),as.character(date)))
