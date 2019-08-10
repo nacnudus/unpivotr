@@ -10,6 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
+
+devtools::document()
+
 # Load all packages 
 install.packages("pacman");
 library("pacman")
@@ -73,12 +76,13 @@ To deal with this we create a variable that represents the indenting of cells, a
 ```{r message=FALSE, warning=FALSE}
 unpivotr_example("worked-examples.xlsx") %>% 
   xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
-  unpivotr::append_fmt(fmt_alignment_indent) %>%
+  unpivotr::append_fmt() %>%
   locate_data(data_type == "numeric") %>%
   locate_if(fmt_alignment_indent == 0, direction = "WNW", name = subject_type) %>% 
   locate_if(fmt_alignment_indent == 1, direction = "W", name = subject) %>% 
   locate(direction = "N", name = student) %>% 
   migrate()
+
 ```
 
 ### A more concise syntax : `locate_groups` 
