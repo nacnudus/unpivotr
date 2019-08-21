@@ -50,12 +50,14 @@ test_that("partition() works", {
       !is.na(character),
       !(character %in% c("Sex", "Value", "Female", "Male"))
     ) %>%
-    dplyr::select(row, col, qualification = character)
+    dplyr::select(row, col, corner = character)
   expect_equal(
     partition(multiples, tl_corners, nest = FALSE)$corner_row,
     rep(c(1, 6, 11, 1, 6), each = 8)
   )
-  bl_corners <- dplyr::filter(multiples, character == "Male")
+  bl_corners <-
+    dplyr::filter(multiples, character == "Male") %>%
+    dplyr::select(row, col, corner = character)
   expect_equal(
     partition(multiples,
       bl_corners,
@@ -67,7 +69,8 @@ test_that("partition() works", {
   tr_corners <-
     multiples %>%
     dplyr::filter(character == "Value") %>%
-    dplyr::mutate(row = row - 1)
+    dplyr::mutate(row = row - 1) %>%
+    dplyr::select(row, col, corner = character)
   expect_equal(
     partition(multiples,
       tr_corners,
@@ -79,7 +82,8 @@ test_that("partition() works", {
   br_corners <-
     multiples %>%
     dplyr::filter(character == "Male") %>%
-    dplyr::mutate(col = col + 1)
+    dplyr::mutate(col = col + 1) %>%
+    dplyr::select(row, col, corner = character)
   expect_equal(
     partition(multiples,
       br_corners,
