@@ -2,8 +2,6 @@
 #' @export
 magrittr::`%>%`
 
-#' @import tidyr
-
 #' @importFrom methods is
 #' @importFrom utils View installed.packages
 

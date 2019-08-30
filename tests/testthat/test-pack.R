@@ -49,8 +49,10 @@ test_that("pack() works on common data types", {
 test_that("unpack() works on common data types", {
   y <- pack(x)
   z <- unpack(y)
-  expect(all(colnames(z) %in% colnames(x)))
-  expect(all(purrr::map_lgl(colnames(z), ~ identical(z[[.]], x[[.]]))))
+  expect(all(colnames(z) %in% colnames(x)),
+         "pack() and unpack() aren't commutative")
+  expect(all(purrr::map_lgl(colnames(z), ~ identical(z[[.]], x[[.]]))),
+         "pack() and unpack() aren't commutative")
 })
 
 test_that("unpack() orders type columns alphabetically", {
