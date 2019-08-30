@@ -10,9 +10,10 @@
 #'   [as_cells()] or [tidyxl::xlsx_cells()], or of a subsequent operation on
 #'   those outputs.
 #' @param direction The direction between a data cell and its header, one of
-#' `"N"`, `"E"`, `"S"`, `"W"`, `"NNW"`, `"NNE"`, `"ENE"`, `"ESE"`, `"SSE"`,
-#' `"SSW"`. `"WSW"` and `"WNW"`.  See 'details'.  `"ABOVE"`, `"BELOW"`, `"LEFT"`
-#' and `"RIGHT"` aren't available because they require certain ambiguities that
+#' `"up"`, `"right"`, `"down"`, `"left"`, `"up-left"`, `"up-right"`,
+#' `"right-up"`, `"right-down"`, `"down-right"`, `"down-left"`, `"left-down"`,
+#' `"left-up"`.  See `?direction`.  `"up-ish"`, `"down-ish"`, `"left-ish"` and
+#' `"right-ish"` aren't available because they require certain ambiguities that
 #' are better handled by using [enhead()] directly rather than via [behead()].
 #' @param name A name to give the new column that will be created, e.g.
 #'   `"location"` if the headers are locations.  Quoted (`"location"`, not
@@ -57,7 +58,7 @@
 #' behead(cells, "N", foo)
 #'
 #' # More complex example: pivot table with several layers of headers
-#' (x <- purpose$`NNW WNW`)
+#' (x <- purpose$`up-left left-up`)
 #'
 #' # Make a tidy representation
 #' cells <- as_cells(x)
@@ -67,10 +68,10 @@
 #' # Strip the headers and make them into data
 #' tidy <-
 #'   cells %>%
-#'   behead("NNW", Sex) %>%
-#'   behead("N", `Sense of purpose`) %>%
-#'   behead("WNW", `Highest qualification`) %>%
-#'   behead("W", `Age group (Life-stages)`) %>%
+#'   behead("up-left", Sex) %>%
+#'   behead("up", `Sense of purpose`) %>%
+#'   behead("left-up", `Highest qualification`) %>%
+#'   behead("left", `Age group (Life-stages)`) %>%
 #'   dplyr::mutate(count = as.integer(chr)) %>%
 #'   dplyr::select(-row, -col, -data_type, -chr)
 #' head(tidy)
@@ -94,9 +95,9 @@
 #' cells <- as_cells(cells, col_names = TRUE)
 #'
 #' cells %>%
-#'   behead_if(chr == toupper(chr), direction = "WNW", name = "species") %>%
-#'   behead("W", "sex") %>%
-#'   behead("N", "age") %>%
+#'   behead_if(chr == toupper(chr), direction = "left-up", name = "species") %>%
+#'   behead("left", "sex") %>%
+#'   behead("up", "age") %>%
 #'   dplyr::select(species, sex, age, population = dbl)
 behead <- function(cells, direction, name, values = NULL, types = data_type,
                    formatters = list(), drop_na = TRUE) {
@@ -128,6 +129,7 @@ behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
                                  types = data_type, formatters = list(),
                                  drop_na = TRUE) {
   dots <- rlang::enquos(...)
+  direction <- standardise_direction(direction)
   check_direction_behead(direction)
   check_distinct(cells)
   name <- rlang::ensym(name)
@@ -180,36 +182,21 @@ behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
 direction_filter <- function(direction) {
   direction <- substr(direction, 1L, 1L)
   dplyr::case_when(
-    direction == "N" ~ rlang::expr(.data$row == min(.data$row)),
-    direction == "E" ~ rlang::expr(.data$col == max(.data$col)),
-    direction == "S" ~ rlang::expr(.data$row == max(.data$row)),
-    direction == "W" ~ rlang::expr(.data$col == min(.data$col))
+    direction == "u" ~ rlang::expr(.data$row == min(.data$row)),
+    direction == "r" ~ rlang::expr(.data$col == max(.data$col)),
+    direction == "d" ~ rlang::expr(.data$row == max(.data$row)),
+    direction == "l" ~ rlang::expr(.data$col == min(.data$col))
   )
 }
 
 # Check that a given direction is a supported compass direction
 check_direction_behead <- function(direction_string) {
-  directions <- c(
-    "NNW", "N", "NNE",
-    "ENE", "E", "ESE",
-    "SSE", "S", "SSW",
-    "WSW", "W", "WNW"
-  )
-  other_directions <- c("ABOVE", "LEFT", "RIGHT", "BELOW")
-  if (direction_string %in% other_directions) {
+  ish_directions <- c("up-ish", "right-ish", "down-ish", "left-ish")
+  if (direction_string %in% ish_directions) {
     stop(
-      "`direction` must be one of \"",
-      paste(directions, collapse = "\", \""),
-      "\".  To use the directions \"",
-      paste(other_directions, collapse = "\", \""),
+      "To use the directions \"",
+      paste(ish_directions, collapse = "\", \""),
       "\" look at `?enhead`."
-    )
-  }
-  if (!(direction_string %in% directions)) {
-    stop(
-      "`direction` must be one of \"",
-      paste(directions, collapse = "\", \""),
-      "\""
     )
   }
 }
