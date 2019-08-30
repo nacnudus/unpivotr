@@ -1,5 +1,7 @@
 # unpivotr (development version)
 
+* Patch for upcoming upstream changes
+
 # unpivotr 0.5.1
 
 * Patch for tibble `.name_repair` compatibility (#2144 @krlmlr)
