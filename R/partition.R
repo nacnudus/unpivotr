@@ -89,13 +89,13 @@ partition <- function(cells, corners, align = "top_left",
       corner_row = row_groups,
       corner_col = col_groups
     ) %>%
-    tidyr::nest(-corner_row, -corner_col, .key = "cells") %>%
+    tidyr::nest(cells = -tidyselect::one_of("corner_row", "corner_col")) %>%
     dplyr::inner_join(corners, by = join_names)
   if (strict) {
     out <- dplyr::filter(out, purrr::map_lgl(cells, contains_corner, corners))
   }
   if (!nest) {
-    out <- tidyr::unnest(out)
+    out <- tidyr::unnest(out, cells)
   }
   out
 }

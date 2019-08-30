@@ -111,7 +111,7 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
       tibble::tibble(
         col = 1L,
         row = seq_along(rnames),
-        chr = rlang::as_list(rnames),
+        chr = vctrs::vec_cast(rnames, list()),
         data_type = "chr"
       )
     )
@@ -124,7 +124,7 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
       tibble::tibble(
         row = 1L,
         col = seq_along(cnames) + row_names,
-        chr = rlang::as_list(cnames),
+        chr = vctrs::vec_cast(cnames, list()),
         data_type = "chr"
       )
     )
