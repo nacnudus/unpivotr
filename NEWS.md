@@ -1,5 +1,8 @@
 # unpivotr (development version)
 
+* Change `"NNW"` to `"up-left"` etc.  Compass directions still work, but the
+    built-in dataset `purpose` has different names and documentation will
+    gradually change to the new terms.
 * Patch for upcoming upstream changes
 
 # unpivotr 0.5.1
