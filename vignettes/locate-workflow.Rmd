@@ -1,10 +1,14 @@
 ---
 title: "Tidying with unpivotr locate functions"
-output:   
-  html_document:
-    keep_html: true
-editor_options: 
-  chunk_output_type: console
+author: "Ian Moran"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Tidying with unpivotr locate functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
@@ -13,15 +17,27 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 # Load all packages 
-install.packages("pacman");
-library("pacman")
-(p_load(here,stringr,purrr,dplyr,rlang,magrittr,ggplot2,cowplot,plotly,
-       unpivotr, magick, magrittr, tidyverse, stringr, rlang, lubridate,
-       hrbrthemes, scales, devtools,rlang))
-devtools::install_github(repo = "ianmoran11/tidyxl")
+library(here)
+library(stringr)
+library(purrr)
+library(dplyr)
+library(rlang)
+library(magrittr)
+library(ggplot2)
+library(cowplot)
+library(plotly)
+library(unpivotr)
+library(magick)
+library(magrittr)
+library(tidyverse)
+library(stringr)
+library(rlang)
+library(lubridate)
+library(hrbrthemes)
+library(scales)
+library(devtools)
+library(rlang)
 library(tidyxl)
-
-devtools::load_all()
 library(unpivotr)
 ```
 
@@ -32,7 +48,7 @@ The locate functions work much like `unpivotr::behead.` The key difference is th
 Here's a minimal example involving a table with two row headers and two column headers. 
 
 ```{r echo=FALSE, fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
-magick::image_read("https://unpivotr.s3.amazonaws.com/pivot-annotations.png")
+knitr::include_graphics("https://unpivotr.s3.amazonaws.com/pivot-annotations.png")
 ```
 
 The first step is to locate the data cells with the `locate_data` function. Calling `locate_data` and providing an expression that filters for data cells sends these cells to an attribute named `data_cells`.  
@@ -67,7 +83,7 @@ The gif below illustrate how direction informations is progressively added to th
 Sometimes not all headers in the same column or row belong to the same group. For example, in the table below, the  row headers in column B represent a mix of subject type and subject name. 
 
 ```{r echo=FALSE,  fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
-magick::image_read("https://unpivotr.s3.amazonaws.com/pivot-hierarchy.png")
+knitr::include_graphics("https://unpivotr.s3.amazonaws.com/pivot-hierarchy.png")
 ```
 
 To deal with this we create a variable that represents the indenting of cells, and then use  `locate_if` to selectively assocaiate cells with directions and header groups.  
@@ -81,8 +97,6 @@ unpivotr_example("worked-examples.xlsx") %>%
   locate_if(fmt_alignment_indent == 1, direction = "W", name = subject) %>% 
   locate(direction = "N", name = student) %>% 
   migrate()
-
-
 
 ```
 
@@ -105,7 +119,7 @@ To browse different aspects of formatting on which to separate headers, type `fm
 
 Here's a more complicate table.  
 ```{r echo=FALSE, fig.height=6, fig.width=9, message=FALSE, warning=FALSE}
-magick::image_read(unpivotr_example(path = "newconst.png"))
+knitr::include_graphics(unpivotr_example(path = "newconst.png"))
 ```
 
 We can tidy this table by:

@@ -45,6 +45,12 @@ Suggests:
     DT,
     testthat,
     covr,
-    here
+    here,
+    stringr
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
+Remotes: git::https://github.com/ianmoran11/tidyxl.git
+
+
+
+
