@@ -52,7 +52,7 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
   if (!is.null(attr(cells, "data_cells"))) {
     data_cells_attr <- attr(cells, "data_cells")
     data_cells_attr$dc <- 1
-    cells <- bind_rows(cells, data_cells_attr)
+    cells <- dplyr::bind_rows(cells, data_cells_attr)
   }
   
   if (!is.null(attr(cells, "formats"))) {
@@ -61,13 +61,13 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
   
   # Add Annotation variables
   added_var_list <- list(cells, ".header_label", ".direction", ".value")
-  cells <- added_var_list %>% reduce(add_variable_if_missing)
+  cells <- added_var_list %>% purrr::reduce(add_variable_if_missing)
   
   
   # Filter for cells without direction, but with character or numeric
   cells_f <- cells %>%
-    filter(is.na(.direction)) %>%
-    filter(!is.na(character) | !is.na(numeric))
+    dplyr::filter(is.na(.direction)) %>%
+    dplyr::filter(!is.na(character) | !is.na(numeric))
   
   # Checks
   check_direction_behead(direction)
@@ -85,10 +85,10 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
   
   # Use ... filter expressions if they have been provided
   # Otherwise, use direction filter
-  if (length(enquos(...)) > 0) {
-    filter_expr <- enquos(...)
+  if (length(rlang::enquos(...)) > 0) {
+    filter_expr <- rlang::enquos(...)
     
-    headers <- cells_f %>% filter(!!!filter_expr)
+    headers <- cells_f %>% dplyr::filter(!!!filter_expr)
     
     is_header_if <-
       paste0(cells_f$row, unpivotr::cols_index[cells_f$col]) %in%
@@ -132,7 +132,7 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
     mutate(.direction = direction)
   
   # Join headers to original cells
-  cells <- cells %>% left_join(headers_reshaped, by = c("row", "col"), suffix = c(".o", ".n"))
+  cells <- cells %>% dplyr::left_join(headers_reshaped, by = c("row", "col"), suffix = c(".o", ".n"))
   
   
   cells %>% select(dplyr::matches("^\\."))
@@ -140,9 +140,9 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
   # Unite updated/non-updated values
   cells <-
     cells %>%
-    mutate(.header_label = coalesce(.header_label.n, .header_label.o)) %>%
-    mutate(.direction = coalesce(.direction.n, .direction.o)) %>%
-    mutate(.value = coalesce(.value.n, .value.o)) %>%
+    mutate(.header_label = dplyr::coalesce(.header_label.n, .header_label.o)) %>%
+    mutate(.direction = dplyr::coalesce(.direction.n, .direction.o)) %>%
+    mutate(.value = dplyr::coalesce(.value.n, .value.o)) %>%
     select(-.value.n, -.value.o, -.direction.n, -.direction.o, -.header_label.n, -.header_label.o)
   
   
@@ -152,7 +152,7 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
   
   # Reattach data_cells and format if they exist
   if (exists("data_cells_attr")) {
-    cells <- cells %>% filter(is.na(dc))
+    cells <- cells %>% dplyr::filter(is.na(dc))
     attr(cells, "data_cells") <- data_cells_attr
   }
   

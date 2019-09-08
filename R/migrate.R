@@ -55,7 +55,7 @@ migrate <- function(orientated_df, numeric_value = FALSE) {
         values = data_cells
       )
     }) %>%
-    purrr::reduce(full_join, by = c("row", "col", ".value"))
+    purrr::reduce(dplyr::full_join, by = c("row", "col", ".value"))
 
   if (numeric_value) {
     tidy_df <-

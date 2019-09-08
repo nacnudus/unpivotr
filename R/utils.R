@@ -76,7 +76,18 @@ globalVariables(c(
   "style_format",
   "tabledata",
   "v_border_group",
-  "top_border"
+  "top_border",
+  "local_format_id",
+  "header_label",
+  "is_blank",
+  "label",
+  "key",
+  "character_formatted",
+  "header_label",
+  "is_blank",
+  "left_border",
+  "values"
+  
 ))
 
 # Concatenate lists into vectors, handling factors and NULLs, and coercing data
