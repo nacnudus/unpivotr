@@ -17,9 +17,10 @@ behead_if(cells, ..., direction, name, values = NULL,
 those outputs.}
 
 \item{direction}{The direction between a data cell and its header, one of
-\code{"N"}, \code{"E"}, \code{"S"}, \code{"W"}, \code{"NNW"}, \code{"NNE"}, \code{"ENE"}, \code{"ESE"}, \code{"SSE"},
-\code{"SSW"}. \code{"WSW"} and \code{"WNW"}.  See 'details'.  \code{"ABOVE"}, \code{"BELOW"}, \code{"LEFT"}
-and \code{"RIGHT"} aren't available because they require certain ambiguities that
+\code{"up"}, \code{"right"}, \code{"down"}, \code{"left"}, \code{"up-left"}, \code{"up-right"},
+\code{"right-up"}, \code{"right-down"}, \code{"down-right"}, \code{"down-left"}, \code{"left-down"},
+\code{"left-up"}.  See \code{?direction}.  \code{"up-ish"}, \code{"down-ish"}, \code{"left-ish"} and
+\code{"right-ish"} aren't available because they require certain ambiguities that
 are better handled by using \code{\link[=enhead]{enhead()}} directly rather than via \code{\link[=behead]{behead()}}.}
 
 \item{name}{A name to give the new column that will be created, e.g.
@@ -77,7 +78,7 @@ of row-headers), and it only works on tables that have first come through
 behead(cells, "N", foo)
 
 # More complex example: pivot table with several layers of headers
-(x <- purpose$`NNW WNW`)
+(x <- purpose$`up-left left-up`)
 
 # Make a tidy representation
 cells <- as_cells(x)
@@ -87,10 +88,10 @@ tail(cells)
 # Strip the headers and make them into data
 tidy <-
   cells \%>\%
-  behead("NNW", Sex) \%>\%
-  behead("N", `Sense of purpose`) \%>\%
-  behead("WNW", `Highest qualification`) \%>\%
-  behead("W", `Age group (Life-stages)`) \%>\%
+  behead("up-left", Sex) \%>\%
+  behead("up", `Sense of purpose`) \%>\%
+  behead("left-up", `Highest qualification`) \%>\%
+  behead("left", `Age group (Life-stages)`) \%>\%
   dplyr::mutate(count = as.integer(chr)) \%>\%
   dplyr::select(-row, -col, -data_type, -chr)
 head(tidy)
@@ -114,8 +115,8 @@ cells <- tibble::tribble(
 cells <- as_cells(cells, col_names = TRUE)
 
 cells \%>\%
-  behead_if(chr == toupper(chr), direction = "WNW", name = "species") \%>\%
-  behead("W", "sex") \%>\%
-  behead("N", "age") \%>\%
+  behead_if(chr == toupper(chr), direction = "left-up", name = "species") \%>\%
+  behead("left", "sex") \%>\%
+  behead("up", "age") \%>\%
   dplyr::select(species, sex, age, population = dbl)
 }

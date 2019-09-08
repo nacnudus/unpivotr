@@ -3,49 +3,26 @@
 #' @description
 #' Data cells in a table are associated with header cells by proximity.
 #' [enhead()] joins a data frame of data cells to a data frame of header cells,
-#' choosing the nearest header cells in the given direction.
+#' choosing the nearest header cells in the given direction.  See `?direction`.
 #'
 #' @param data_cells Data frame of data cells with at least the columns 'row'
 #'   and 'column', which are `numeric` or `integer`.
 #' @param header_cells Data frame of header cells with at least the columns
 #'   'row' and 'column', which are numeric/integer vectors.
 #' @param direction The direction between a data cell and its header, one of
-#' `"N"`, `"E"`, `"S"`, `"W"`, `"NNW"`, `"NNE"`, `"ENE"`, `"ESE"`, `"SSE"`,
-#' `"SSW"`. `"WSW"`, `"WNW"`, `"ABOVE"`, `"BELOW"`, `"LEFT"` and `"RIGHT"`.  See
-#' 'details'.
+#' `"up"`, `"right"`, `"down"`, `"left"`, `"up-left"`, `"up-right"`,
+#' `"right-up"`, `"right-down"`, `"down-right"`, `"down-left"`, `"left-down"`,
+#' `"left-up"`, `"up-ish"`, `"down-ish"`, `"left-ish"` and `"right-ish"`. See
+#' `?direction`.
 #' @param drop Logical vector length 1. Whether data cells that can't be
 #'   associated with a header should be dropped.  Default: `TRUE`.
-#'
-#' @details
-#' Headers are associated with data by proximity in a given direction.  The
-#' directions are mapped to the points of the compass, where 'N' is north (up),
-#' 'E' is east (right), and so on.  [enhead()] finds the nearest header to
-#' a given data cell in a given direction, and joins it to the data cell.
-#'
-#' The most common directions to search are `"NNW"` (for left-aligned headers at
-#' the top of the table) and `"WNW"` for top-aligned headers at the side of the
-#' table.
-#'
-#' The full list of available directions is `"N"`, `"E"`, `"S"`, `"W"`, `"NNW"`,
-#' `"NNE"`, `"ENE"`, `"ESE"`, `"SSE"`, `"SSW"`, `"WSW"`, `"WNW"`, `"ABOVE"`,
-#' `"BELOW"`, `"LEFT"`, `"RIGHT"`.  For convenience, these directions are
-#' provided as their own functions, wrapping the concept of [enhead()].
-#'
-#' The difference between `"N"` and `"ABOVE"` (and similar pairs of directions)
-#' is that `"N"` finds headers directly above the data cell, whereas `"ABOVE"`
-#' matches the nearest header, whether above-left, above-right or directly above
-#' the data cell.  This is useful for matching headers that are not aligned to
-#' the edge of the data cells that they refer to.  There can be a tie in the
-#' directions `"ABOVE"`, `"BELOW"`, `"LEFT"` and `"RIGHT"` , causing `NA`s to be
-#' returned in the place of header values.  Avoid ties by using [justify()]
-#' first to align header cells to the corner of the data cells they describe.
 #'
 #' @name enhead
 #' @export
 #' @examples
 #' library(dplyr)
 #' # Load some pivoted data
-#' (x <- purpose$`NNW WNW`)
+#' (x <- purpose$`up-left left-up`)
 #' # Make a tidy representation
 #' cells <- as_cells(x)
 #' cells <- cells[!is.na(cells$chr), ]
@@ -70,17 +47,17 @@
 #'   select(row, col, satisfaction = chr)
 #' # From each data cell, search for the nearest one of each of the headers
 #' data_cells %>%
-#'   enhead(gender, "NNW") %>%
-#'   enhead(satisfaction, "N") %>%
-#'   enhead(qualification, "WNW") %>%
-#'   enhead(age, "W") %>%
+#'   enhead(gender, "up-left") %>%
+#'   enhead(satisfaction, "up") %>%
+#'   enhead(qualification, "left-up") %>%
+#'   enhead(age, "left") %>%
 #'   select(-row, -col)
 #'
 #' # The `drop` argument controls what happens when for some cells there is no
 #' # header in the given direction. When `drop = TRUE` (the default), cells that
 #' # can't be joined to a header are dropped.  Otherwise they are kept.
-#' enhead(data_cells, gender, "N")
-#' enhead(data_cells, gender, "N", drop = FALSE)
+#' enhead(data_cells, gender, "up")
+#' enhead(data_cells, gender, "up", drop = FALSE)
 enhead <- function(data_cells, header_cells, direction, drop = TRUE) {
   UseMethod("enhead")
 }
@@ -89,23 +66,23 @@ enhead <- function(data_cells, header_cells, direction, drop = TRUE) {
 enhead.data.frame <- function(data_cells, header_cells, direction,
                               drop = TRUE) {
   check_header(header_cells)
-  check_direction_enhead(direction)
+  direction <- standardise_direction(direction)
   check_distinct(data_cells)
   check_distinct(header_cells)
-  if (direction %in% c("ABOVE", "RIGHT", "BELOW", "LEFT")) {
+  if (direction %in% c("up-ish", "right-ish", "down-ish", "left-ish")) {
     do.call(direction, list(data_cells, header_cells))
   } else if (direction %in% c(
-    "N", "E", "S", "W",
-    "NNW", "NNE",
-    "ENE", "ESE",
-    "SSE", "SSW",
-    "WSW", "WNW"
+    "up", "right", "down", "left",
+    "up-left", "up-right",
+    "right-up", "right-down",
+    "down-right", "down-left",
+    "left-down", "left-up"
   )) {
     do.call(direction, list(data_cells, header_cells, drop))
   }
 }
 
-N <- function(data_cells, header_cells, drop = TRUE) {
+up <- function(data_cells, header_cells, drop = TRUE) {
   check_header(header_cells)
   join <- ifelse(drop, dplyr::inner_join, dplyr::left_join)
   out <- join(data_cells, dplyr::select(header_cells, -row),
@@ -115,7 +92,7 @@ N <- function(data_cells, header_cells, drop = TRUE) {
   tibble::as_tibble(out)
 }
 
-E <- function(data_cells, header_cells, drop = TRUE) {
+right <- function(data_cells, header_cells, drop = TRUE) {
   check_header(header_cells)
   join <- ifelse(drop, dplyr::inner_join, dplyr::left_join)
   out <- join(data_cells, dplyr::select(header_cells, -col),
@@ -125,29 +102,29 @@ E <- function(data_cells, header_cells, drop = TRUE) {
   tibble::as_tibble(out)
 }
 
-S <- N
-W <- E
+down <- up
+left <- right
 
-NNW <- function(data_cells, header_cells, drop = TRUE) {
+`up-left` <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "top_left", drop)
 }
 
-NNE <- function(data_cells, header_cells, drop = TRUE) {
+`up-right` <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "top_right", drop)
 }
 
-SSE <- function(data_cells, header_cells, drop = TRUE) {
+`down-right` <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "bottom_right", drop)
 }
 
-SSW <- function(data_cells, header_cells, drop = TRUE) {
+`down-left` <- function(data_cells, header_cells, drop = TRUE) {
   corner_join(data_cells, header_cells, "bottom_left", drop)
 }
 
-WNW <- NNW
-ENE <- NNE
-ESE <- SSE
-WSW <- SSW
+`left-up` <- `up-left`
+`right-up` <- `up-right`
+`right-down` <- `down-right`
+`left-down` <- `down-left`
 
 corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   check_header(header_cells)
@@ -177,25 +154,25 @@ corner_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   out
 }
 
-ABOVE <- function(data_cells, header_cells, drop = TRUE) {
-  side_join(data_cells, header_cells, "NNW", drop)
+`up-ish` <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "up-left", drop)
 }
 
-LEFT <- function(data_cells, header_cells, drop = TRUE) {
-  side_join(data_cells, header_cells, "WNW", drop)
+`left-ish` <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "left-up", drop)
 }
 
-BELOW <- function(data_cells, header_cells, drop = TRUE) {
-  side_join(data_cells, header_cells, "SSW", drop)
+`down-ish` <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "down-left", drop)
 }
 
-RIGHT <- function(data_cells, header_cells, drop = TRUE) {
-  side_join(data_cells, header_cells, "ENE", drop)
+`right-ish` <- function(data_cells, header_cells, drop = TRUE) {
+  side_join(data_cells, header_cells, "right-up", drop)
 }
 
 side_join <- function(data_cells, header_cells, corner, drop = TRUE) {
   check_header(header_cells)
-  if (corner %in% c("NNW", "NNE", "SSW", "SSE")) {
+  if (corner %in% c("up-left", "up-right", "down-left", "down-right")) {
     pos <- rlang::sym("col")
   } else {
     pos <- rlang::sym("row")
@@ -210,7 +187,9 @@ side_join <- function(data_cells, header_cells, corner, drop = TRUE) {
 }
 
 corner_pos <- function(cells, corner) {
-  corner_names <- c("NNW", "NNE", "ENE", "ESE", "SSE", "SSW", "WSW", "WNW")
+  corner_names <-
+    c("up-left", "up-right", "right-up", "right-down",
+      "down-right", "down-left", "left-down", "left-up")
   corner_poss <- rep(c("col", "col", "row", "row"), 2L)
   corner_looks <- c(
     rep(c(dplyr::lag, dplyr::lead), 2L),
@@ -239,24 +218,6 @@ check_header <- function(header_cells) {
       "Multiple lines of headers are not supported in this way.",
       "\n  Perhaps you meant to concatenate them together first,",
       "\n  Or look at ?partition"
-    )
-  }
-}
-
-# Check that a given direction is a supported compass direction
-check_direction_enhead <- function(direction_string) {
-  directions <- c(
-    "NNW", "N", "NNE",
-    "ENE", "E", "ESE",
-    "SSE", "S", "SSW",
-    "WSW", "W", "WNW",
-    "ABOVE", "LEFT", "RIGHT", "BELOW"
-  )
-  if (!(direction_string %in% directions)) {
-    stop(
-      "`direction` must be one of \"",
-      paste(directions, collapse = "\", \""),
-      "\""
     )
   }
 }

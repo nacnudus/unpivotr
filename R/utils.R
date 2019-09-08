@@ -2,8 +2,6 @@
 #' @export
 magrittr::`%>%`
 
-#' @import tidyr
-
 #' @importFrom methods is
 #' @importFrom utils View installed.packages
 
@@ -121,4 +119,24 @@ maybe_format_list_element <- function(x, name, functions) {
   func <- functions[[name]]
   if (is.null(func)) func <- identity
   func(x)
+}
+
+# Standardise dialects of directions
+standardise_direction <- function(direction) {
+  stopifnot(length(direction) == 1L)
+  dictionary <-
+    c(`up-left` = "up-left", `up` = "up", `up-right` = "up-right",
+      `right-up` = "right-up", `right` = "right", `right-down` = "right-down",
+      `down-right` = "down-right", `down` = "down", `down-left` = "down-left",
+      `left-down` = "left-down", `left` = "left", `left-up` = "left-up",
+      `up-ish` = "up-ish", `right-ish` = "right-ish",
+      `down-ish` = "down-ish", `left-ish` = "left-ish",
+      NNW = "up-left", N = "up", NNE = "up-right",
+      ENE = "right-up", E = "right", ESE = "right-down",
+      SSE = "down-right", S = "down", SSW = "down-left",
+      WSW = "left-down", W = "left", WNW = "left-up",
+      ABOVE = "up-ish", RIGHT = "right-ish",
+      BELOW = "down-ish", LEFT = "left-ish")
+  if (direction %in% names(dictionary)) return(unname(dictionary[direction]))
+  stop("The direction \"", direction, "\" is not recognised.  See ?directions.")
 }

@@ -500,7 +500,7 @@ data_cells <-
   enhead(col_headers[[2]], "BELOW", left_border_cells) %>% # Different from BELOW RIGHT
   enhead(col_headers[[1]], "S") %>% # Same as BELOW RIGHT
   enhead(row_headers[[2]], "RIGHT", top_border_cells) %>% # Different from BELOW RIGHT
-  enhead(row_headers[[1]], "E") # Same as BELOW RIGHT
+  enhead(row_headers[[1]], "E") # Same as BELOW RIGHT.
 ```
 
 ### Result

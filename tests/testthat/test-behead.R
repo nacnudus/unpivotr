@@ -1,6 +1,6 @@
 context("test-behead.R")
 
-x <- purpose$`NNW WNW`
+x <- purpose$`up-left left-up`
 cells <- as_cells(x)
 
 test_that("behead() works", {
@@ -43,10 +43,10 @@ test_that("the `drop_na` argument of behead() works", {
 })
 
 test_that("``\"ABOVE\"`` etc. don't work", {
-  error_message <- "`direction` must be one of \"NNW\", \"N\", \"NNE\", \"ENE\", \"E\", \"ESE\", \"SSE\", \"S\", \"SSW\", \"WSW\", \"W\", \"WNW\""
+  error_message <-"To use the directions \"up-ish\", \"right-ish\", \"down-ish\", \"left-ish\" look at `\\?enhead`."
   # Strip the headers and make them into data
-  expect_error(behead(cells, "ABOVE", "Sex"), error_message)
-  expect_error(behead(cells, "FOO", "Sex"), error_message)
+  expect_error(behead(cells, "up-ish", "Sex"),
+               "To use the directions \"up-ish\", \"right-ish\", \"down-ish\", \"left-ish\" look at `\\?enhead`.")
 })
 
 test_that("behead() works with all common datatypes", {
@@ -66,7 +66,7 @@ test_that("behead() works with all common datatypes", {
     list = list(1:2, letters[1:2])
   )
   x <- as_cells(w, col_names = TRUE)
-  y <- behead(x, "N", header)
+  y <- behead(x, "up", header)
   expect_equal(nrow(y), 20L)
   expect_equal(y$header, rep(colnames(w), each = 2L))
   expect_equal(y$chr[12], NA_character_)
@@ -129,21 +129,21 @@ test_that("behead() handles headers of factor and ordered-factor data types", {
 test_that("behead() supports custom formatters", {
   x <-
     as_cells(BOD, FALSE, TRUE) %>%
-    behead("N", header, formatters = list(chr = ~ paste(.x, "foo"))) %>%
-    behead("W", rowheader, formatters = list(dbl = as.complex))
+    behead("up", header, formatters = list(chr = ~ paste(.x, "foo"))) %>%
+    behead("left", rowheader, formatters = list(dbl = as.complex))
   expect_equal(x$header[1], "demand foo")
   expect_equal(x$rowheader[1], 1 + 0i)
 })
 
 test_that("behead() can use row, col and data_type as headers", {
   x <- as_cells(BOD, FALSE, TRUE)
-  y <- behead(x, "N", header, values = row)
+  y <- behead(x, "up", header, values = row)
   expect_equal(y$header, rep(1L, 12L))
   expect_equal(colnames(y), c(colnames(x), "header"))
-  y <- behead(x, "N", header, values = col)
+  y <- behead(x, "up", header, values = col)
   expect_equal(y$header, rep(1:2, each = 6L))
   expect_equal(colnames(y), c(colnames(x), "header"))
-  y <- behead(x, "N", header, values = data_type)
+  y <- behead(x, "up", header, values = data_type)
   expect_equal(y$header, rep("chr", 12L))
   expect_equal(colnames(y), c(colnames(x), "header"))
 })
@@ -170,8 +170,8 @@ test_that("behead_if() works", {
   x <-
     cells %>%
     behead_if(chr == toupper(chr), direction = "WNW", name = "species") %>%
-    behead("W", "sex") %>%
-    behead("N", "age") %>%
+    behead("left", "sex") %>%
+    behead("up", "age") %>%
     dplyr::select(species, sex, age, population = dbl)
   y <- tibble::tribble(
     ~ species,     ~ sex,       ~ age, ~ population,
