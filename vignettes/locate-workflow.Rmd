@@ -21,7 +21,7 @@ library("pacman")
 devtools::install_github(repo = "ianmoran11/tidyxl")
 library(tidyxl)
 
-devtools::install_github(repo = "nacnudus/unpivotr", ref = "ian")
+devtools::load_all()
 library(unpivotr)
 ```
 
@@ -81,6 +81,8 @@ unpivotr_example("worked-examples.xlsx") %>%
   locate_if(fmt_alignment_indent == 1, direction = "W", name = subject) %>% 
   locate(direction = "N", name = student) %>% 
   migrate()
+
+
 
 ```
 

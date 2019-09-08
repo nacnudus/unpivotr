@@ -81,7 +81,7 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
     filter_expr <- enquos(...)
 
     headers <- cells_f %>% filter(!!!filter_expr)
-
+    
     is_header_if <-
       paste0(cells_f$row, unpivotr::cols_index[cells_f$col]) %in%
       paste0(headers$row, unpivotr::cols_index[headers$col])
