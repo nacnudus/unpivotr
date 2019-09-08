@@ -19,23 +19,23 @@ behead_dc <- function(cells, direction, name, values = NULL, types = data_type,
 
 
   direction_temp <- direction
-  name_temp <- sym(name)
+  name_temp <- rlang::sym(name)
   values_temp <- values
   types_temp <- quo(types)
   formatters_temp <- formatters
   drop_na_temp <- drop_na
 
   temp_df <-
-    bind_rows(cells, data_cells) %>%
+    dplyr::bind_rows(cells, data_cells) %>%
     behead(direction = direction_temp, name = !!name_temp)
 
 
   data_cells <- temp_df %>%
-    filter(dc == 1) %>%
+    dplyr::filter(dc == 1) %>%
     select(-dc)
 
   cells <- temp_df %>%
-    filter(is.na(dc)) %>%
+    dplyr::filter(is.na(dc)) %>%
     select(-dc) %>%
     select(-!!name_temp)
 

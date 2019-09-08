@@ -18,7 +18,3 @@ tidyABS comes bundled with some example files in its \code{inst/extdata}
 directory. This function make them easy to access.
 This function has been copied from the readxl package.
 }
-\examples{
-readxl_example()
-readxl_example("datasets.xlsx")
-}

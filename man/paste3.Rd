@@ -7,7 +7,9 @@
 paste3(..., sep = ", ")
 }
 \arguments{
-\item{table_components}{object returned by \code{process_ABS_sheet}}
+\item{...}{objects to be pasted together.}
+
+\item{sep}{separating string.}
 }
 \description{
 Removes NAs from paste. Taken from https://stackoverflow.com/users/1855677/42 stackoverflow answer.

@@ -6,22 +6,13 @@
 Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.}
 \usage{
 italics(format_id_vec = local_format_id, sheet_format = formats)
-
-italics(format_id_vec = local_format_id, sheet_format = formats)
 }
 \arguments{
 \item{format_id_vec}{local format id vector}
 
 \item{sheet_format}{formats}
-
-\item{format_id_vec}{local format id vector}
-
-\item{sheet_format}{formats}
 }
 \description{
-Format function
-Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
-
 Format function
 Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
 }

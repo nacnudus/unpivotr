@@ -38,13 +38,12 @@ locate_groups <-
 #' @description
 #' Adds annotations to the data frame, indicating which cells are headers and how they relate to data cells
 #' @param sheet data frame created by xlsx_cells
-#' @param dots  Expressions that filter header cells. 
 #' @param type  indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta". 
 #' @param .groupings expressions representing how header cells are differentiated. Most naturally works with fmt_* functions. 
 #' @param default_col_header_direction Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N". 
 #' @param default_row_header_direction Indicates which direction is given to row headers by default. Only need if "WNW" is required, rather than "W". 
 #' @param header_fill deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".
-#'
+#' @param ... filter expression that identifies headers.
 #' @export
 
 locate_groups_if <-
@@ -58,7 +57,7 @@ locate_groups_if <-
       sheet %>% locate_data(sheet = .,!is.na(numeric))
       
       # Report location of data cells 
-      corner_refs <-  unpivotr::get_corner_cell_refs(attr(sheet,"data_cells"))
+      corner_refs <-  get_corner_cell_refs(attr(sheet,"data_cells"))
       min_letter <- unpivotr::cols_index[corner_refs$min_col]
       max_letter <- unpivotr::cols_index[corner_refs$max_col]
       
@@ -68,10 +67,10 @@ locate_groups_if <-
   
     }
     # Add filtering if statements 
-    if(length(enquos(...))>0){
-      filter_expr <- enquos(...)
+    if(length(rlang::quos(...))>0){
+      filter_expr <- rlang::quos(...)
       
-      filtered_header_cells <- sheet %>% filter(!!!filter_expr)
+      filtered_header_cells <- sheet %>% dplyr::filter(!!!filter_expr)
     } 
 
 
@@ -81,7 +80,7 @@ locate_groups_if <-
    
     # Add annotation variables if missing  
     added_var_list <- list(sheet,".header_label",".direction", ".value")
-    sheet <-  added_var_list %>% reduce(add_variable_if_missing)
+    sheet <-  added_var_list %>% purrr::reduce(add_variable_if_missing)
    
     # Get col groups ---------------------------------------------------------------------------------------------------
     # Get arguments for get_col_groups 
@@ -109,7 +108,7 @@ locate_groups_if <-
         paste0(col_groups$row,unpivotr::cols_index[col_groups$col]) %in% 
         paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
       
-      col_groups <- col_groups %>% filter(col_groups_in_filter)
+      col_groups <- col_groups %>% dplyr::filter(col_groups_in_filter)
       
     }
     
@@ -140,7 +139,7 @@ locate_groups_if <-
         paste0(row_groups$row,unpivotr::cols_index[row_groups$col]) %in% 
         paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
       
-        row_groups <- row_groups %>% filter(row_groups_in_filter)
+        row_groups <- row_groups %>% dplyr::filter(row_groups_in_filter)
     }
     
     
@@ -170,31 +169,31 @@ locate_groups_if <-
         paste0(meta_groups$row,unpivotr::cols_index[meta_groups$col]) %in% 
         paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
       
-      meta_groups <- meta_groups %>% filter(row_groups_in_filter)
+      meta_groups <- meta_groups %>% dplyr::filter(row_groups_in_filter)
     }
     
     # Create column values 
     if(type == "both" | type == "row"){
       
-      sheet <- sheet %>% left_join(row_groups, by = c("row","col"),suffix = c(".o",".n")) 
+      sheet <- sheet %>% dplyr::left_join(row_groups, by = c("row","col"),suffix = c(".o",".n")) 
       
       sheet <- 
         sheet %>% 
-          mutate(.header_label = coalesce(.header_label.n,.header_label.o)) %>% 
-          mutate(.direction = coalesce(.direction.n,.direction.o)) %>% 
-          mutate(.value = coalesce(.value.n,.value.o)) %>% 
+          mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
+          mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
+          mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
           select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
     }
     
     if(type == "both" | type == "col"){
       
-      sheet <-  sheet %>% left_join(col_groups, by = c("row","col"), suffix = c(".o",".n")) 
+      sheet <-  sheet %>% dplyr::left_join(col_groups, by = c("row","col"), suffix = c(".o",".n")) 
       
       sheet <- 
         sheet %>% 
-        mutate(.header_label = coalesce(.header_label.n,.header_label.o)) %>% 
-        mutate(.direction = coalesce(.direction.n,.direction.o)) %>% 
-        mutate(.value = coalesce(.value.n,.value.o)) %>% 
+        mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
+        mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
+        mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
         select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
       
     }
@@ -203,13 +202,13 @@ locate_groups_if <-
     # Create column values 
     if(type == "meta"){
       
-      sheet <- sheet %>% left_join(meta_groups, by = c("row","col"),suffix = c(".o",".n")) 
+      sheet <- sheet %>% dplyr::left_join(meta_groups, by = c("row","col"),suffix = c(".o",".n")) 
       
       sheet <- 
         sheet %>% 
-        mutate(.header_label = coalesce(.header_label.n,.header_label.o)) %>% 
-        mutate(.direction = coalesce(.direction.n,.direction.o)) %>% 
-        mutate(.value = coalesce(.value.n,.value.o)) %>% 
+        mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
+        mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
+        mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
         select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
     }
         

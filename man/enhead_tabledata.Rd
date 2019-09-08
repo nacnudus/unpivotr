@@ -7,11 +7,11 @@
 enhead_tabledata(header_data, direction, values = tabledata)
 }
 \arguments{
-\item{header_df}{a data frame containing header cells.}
+\item{header_data}{a data frame containing header cells.}
 
-\item{col_header_fill}{the manner is which blank cells will be filled.}
+\item{direction}{direction suplied to enhead.}
 
-\item{formats}{the formats associated with the workbook containing the header_df cells.}
+\item{values}{the data values.}
 }
 \description{
 This function ensures that merged cells are unmerged.

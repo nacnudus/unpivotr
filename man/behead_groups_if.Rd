@@ -2,7 +2,7 @@
 % Please edit documentation in R/behead_groups_if.R
 \name{behead_groups_if}
 \alias{behead_groups_if}
-\title{get tidyABS components}
+\title{Behead multiple header groups}
 \usage{
 behead_groups_if(sheet = NULL, ..., type = "both",
   .groupings = groupings(fmt_alignment_indent),
@@ -10,15 +10,20 @@ behead_groups_if(sheet = NULL, ..., type = "both",
   default_row_header_direction = "W", header_fill = "local_format_id")
 }
 \arguments{
-\item{path}{path to .xlsx file}
+\item{sheet}{data frame created by xlsx_cells}
 
-\item{sheets}{sheet nominated for tidying}
+\item{...}{filter expression identifying header cells.}
+
+\item{type}{indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta".}
+
+\item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
+
+\item{default_col_header_direction}{Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N".}
+
+\item{default_row_header_direction}{Indicates which direction is given to row headers by default. Only need if "WNW" is required, rather than "W".}
+
+\item{header_fill}{deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".}
 }
 \description{
-Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
-}
-\examples{
-
- \donttest{tidyABS_example("australian-industry.xlsx") \%>\% process_sheet(sheets = "Table_1")  }
-
+Beheads multiple headers defined according to expressions in .groupings.
 }

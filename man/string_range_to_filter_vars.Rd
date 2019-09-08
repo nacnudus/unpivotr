@@ -7,9 +7,9 @@
 string_range_to_filter_vars(sheet, table_range)
 }
 \arguments{
-\item{path}{path to .xlsx file}
+\item{sheet}{sheet nominated for tidying}
 
-\item{sheets}{sheet nominated for tidying}
+\item{table_range}{table_range}
 }
 \description{
 Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.

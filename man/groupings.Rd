@@ -7,7 +7,7 @@
 groupings(...)
 }
 \arguments{
-\item{dots}{gouring expressions}
+\item{...}{mutate expression to group headers.}
 }
 \description{
 This functions passes grouping expressions to the .groupings argument of locate_groups. It works most naturually with fmt_* functions.

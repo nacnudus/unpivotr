@@ -11,14 +11,27 @@ behead_dc(cells, direction, name, values = NULL, types = data_type,
 migrate(orientated_df, numeric_value = FALSE)
 }
 \arguments{
-\item{orientated_df}{a tidyxl data frame with a \code{.direction} and \code{.header.group} columns}
+\item{cells}{types}
+
+\item{direction}{types}
+
+\item{name}{types}
+
+\item{values}{types}
+
+\item{types}{types}
+
+\item{formatters}{types}
+
+\item{drop_na}{types}
 
 \item{orientated_df}{a tidyxl data frame with a \code{.direction} and \code{.header.group} columns}
+
+\item{numeric_value}{types}
 }
 \description{
 This function is to be used following \code{\link[unpivotr:migrate]{unpivotr::migrate()}}.
 It transforms a tidyxl data frame with directions to a tidy data frame that has a column for each header label.
 
-This function is to be used following \code{\link[unpivotr:migrate]{unpivotr::migrate()}}.
-It transforms a tidyxl data frame with directions to a tidy data frame that has a column for each header label.
+This function conditionally adds direction annations to tidyxl data frame.
 }

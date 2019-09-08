@@ -9,13 +9,10 @@ plot_cells(sheet, text = values, interactive = FALSE)
 \arguments{
 \item{sheet}{tidyxl data frame}
 
-\item{interactive}{TRUE produces an interactive plotly visualisation.}
+\item{text}{text variable to be represented in values plot.}
 
-\item{sheet}{text variable to be represented in values plot.}
+\item{interactive}{TRUE produces an interactive plotly visualisation.}
 }
 \description{
 This function plots the excel sheet, highlighting the relationship between headers and table values.
-}
-\examples{
-
 }

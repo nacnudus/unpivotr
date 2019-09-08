@@ -12,7 +12,7 @@ append_fmt <- function(cells, fmt_function){
   
   cells <- 
     cells %>% 
-    mutate({{fmt_function}} := exec({{fmt_function}},
+    mutate({{fmt_function}} := rlang::exec({{fmt_function}},
                                     format_id_vec = cells$local_format_id, 
                                     sheet_formats = formats))
   attr(cells,"formats") <- formats
@@ -26,7 +26,7 @@ append_fmt <- function(cells, fmt_function){
 #' @description 
 #' A wrapper for dplyr::select that retains formatting information 
 #' @param df a data frame created by tidyxl::xlsx_cells 
-#' @param dots select input. 
+#' @param ... select input. 
 #' @export
 
 select_fmt <- function(df, ...){
@@ -34,7 +34,7 @@ select_fmt <- function(df, ...){
   data_cells <- attr(df,"data_cells")
   formats    <- attr(df,"formats")
   
-  select_quos <-   enquos(...) 
+  select_quos <-   rlang::quos(...) 
   
   df <- select(df,!!!select_quos)
   
@@ -48,7 +48,7 @@ select_fmt <- function(df, ...){
 #' @description 
 #' A wrapper for dplyr::filter that retains formatting information 
 #' @param df a data frame created by tidyxl::xlsx_cells 
-#' @param dots filter input. 
+#' @param ... filter expression. 
 #' @export
 
 filter_fmt <- function(df, ...){
@@ -56,9 +56,9 @@ filter_fmt <- function(df, ...){
   data_cells <- attr(df,"data_cells")
   formats    <- attr(df,"formats")
   
-  filter_quos <-   enquos(...) 
+  filter_quos <-   rlang::quos(...) 
   
-  df <- filter(df,!!!filter_quos)
+  df <- dplyr::filter(df,!!!filter_quos)
   
   attr(df,"data_cells") <- data_cells
   attr(df,"formats") <- formats

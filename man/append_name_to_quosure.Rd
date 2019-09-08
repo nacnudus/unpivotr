@@ -2,22 +2,15 @@
 % Please edit documentation in R/060_utils.R
 \name{append_name_to_quosure}
 \alias{append_name_to_quosure}
-\title{get tidyABS components}
+\title{Give quasure a name}
 \usage{
 append_name_to_quosure(x, prefix = "grp_")
 }
 \arguments{
-\item{path}{path to .xlsx file}
+\item{x}{quosure}
 
-\item{sheets}{sheet nominated for tidying}
+\item{prefix}{prefix to be added in name}
 }
 \description{
-Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
-}
-\examples{
-
- \donttest{tidyABS_example("australian-industry.xlsx") \%>\% process_sheet(sheets = "Table_1")  }
-
-
-
+Adds name of a quosure so that use in mutate automatically adds name.
 }

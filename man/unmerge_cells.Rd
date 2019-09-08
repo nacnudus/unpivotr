@@ -8,6 +8,8 @@ unmerge_cells(sheet, strict_merging = T)
 }
 \arguments{
 \item{sheet}{sheet object read in by \code{tidyxl::xlsx_cells}}
+
+\item{strict_merging}{only merge on local_format_id.}
 }
 \description{
 This function ensures that merged cells are unmerged.

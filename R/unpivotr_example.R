@@ -7,12 +7,9 @@
 #'
 #' @param path Name of file. If `NULL`, the example files will be listed.
 #' @export
-#' @examples
-#' readxl_example()
-#' readxl_example("datasets.xlsx")
 unpivotr_example <- function(path = NULL) {
   if (is.null(path)) {
-    dir(system.file("extdata", package = "unpivotr")) %>% .[str_detect(., "xlsx$")]
+    dir(system.file("extdata", package = "unpivotr")) %>% .[stringr::str_detect(., "xlsx$")]
   } else {
     system.file("extdata", path, package = "unpivotr", mustWork = TRUE)
   }

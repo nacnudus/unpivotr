@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_meta_df.R
 \name{get_meta_groups}
 \alias{get_meta_groups}
-\title{get metadata df}
+\title{Get meta data groups}
 \usage{
 get_meta_groups(sheet, value_ref, formats,
   .groupings = groupings(fmt_alignment_indent),
@@ -12,17 +12,31 @@ get_meta_groups(sheet, value_ref, formats,
   min_header_index = min_header_index_temp)
 }
 \arguments{
-\item{sheet}{sheet object read in by \code{tidyxl::xlsx_cells}}
+\item{sheet}{data frame created by xlsx_cells}
 
-\item{value_ref}{data frame representing corners of numeric cells in excel sheet}
+\item{value_ref}{referece to where data cells are located.}
 
-\item{formats}{format object read in by \code{tidyxl::xlsx_cells}}
+\item{formats}{format object created by tidyxl.}
 
-\item{col_groups}{format object read in by \code{tidyxl::xlsx_cells}}
+\item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
+
+\item{header_fill}{deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".}
+
+\item{default_row_header_direction}{Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N".}
+
+\item{table_data}{datacell dataframe.}
+
+\item{filter_headers_by}{method for dealing with merged cells.}
+
+\item{min_header_index}{min header index}
 }
 \description{
+Beheads multiple headers defined according to expressions in .groupings.
+}
+\details{
 This function:
-1. Identifies which cells are likely to to contains meta data (in top right corner)
+1. Identifies which cells are likely to be headers
 2. groups them according to their indenting, bold and italic formatting
 3. Specifies the unpivotr function specifying the direction of the header w.r.t. table data
+Behead multiple header groups
 }

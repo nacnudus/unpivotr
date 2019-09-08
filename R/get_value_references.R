@@ -14,7 +14,7 @@ get_value_references <- function(sheet, manual_value_references) {
     ref_df <-
       sheet %>%
       dplyr::filter(!is.na(numeric)) %>%
-      summarise(
+      dplyr::summarise(
         min_row = min(row), max_row = max(row),
         min_col = min(col), max_col = max(col)
       )
@@ -24,31 +24,31 @@ get_value_references <- function(sheet, manual_value_references) {
   if (is.character(manual_value_references)) {
     # Use manual values
 
-    cell_ref_df <- as_tibble(cellranger::as.cell_limits(manual_value_references))
+    cell_ref_df <- tibble::as_tibble(cellranger::as.cell_limits(manual_value_references))
 
     ref_df <-
       cell_ref_df[, 1:2] %>%
-      set_names(c("min", "max")) %>%
+      purrr::set_names(c("min", "max")) %>%
       mutate(dimension = c("row", "col")) %>%
-      gather(key, value, -dimension) %>%
-      unite(label, key, dimension, sep = "_") %>%
-      spread(label, value)
+      tidyr::gather(key, value, -dimension) %>%
+      tidyr::unite(label, key, dimension, sep = "_") %>%
+      tidyr::spread(label, value)
 
     return(ref_df)
   }
 
+  
 
-
-  if (is_formula(manual_value_references)) {
-    current_quosure <- as_quosure(manual_value_references)
+  if (rlang::is_formula(manual_value_references)) {
+    current_quosure <- rlang::as_quosure(manual_value_references)
 
     sheet <-
       sheet %>%
-      filter(!!current_quosure)
+      dplyr::filter(!!current_quosure)
 
     ref_df <-
       sheet %>%
-      summarise(
+      dplyr::summarise(
         min_row = min(row), max_row = max(row),
         min_col = min(col), max_col = max(col)
       )

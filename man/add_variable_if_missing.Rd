@@ -2,22 +2,15 @@
 % Please edit documentation in R/060_utils.R
 \name{add_variable_if_missing}
 \alias{add_variable_if_missing}
-\title{get tidyABS components}
+\title{An internal function to add a variable to a tidyxl data frame in that variable is missing}
 \usage{
 add_variable_if_missing(sheet, var)
 }
 \arguments{
-\item{path}{path to .xlsx file}
+\item{sheet}{sheet nominated for tidying}
 
-\item{sheets}{sheet nominated for tidying}
+\item{var}{name of the var to be added.}
 }
 \description{
 Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
-}
-\examples{
-
- \donttest{tidyABS_example("australian-industry.xlsx") \%>\% process_sheet(sheets = "Table_1")  }
-
-
-
 }

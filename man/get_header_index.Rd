@@ -2,17 +2,15 @@
 % Please edit documentation in R/060_utils.R
 \name{get_header_index}
 \alias{get_header_index}
-\title{Fill in blanks}
+\title{Get current column number}
 \usage{
 get_header_index(labels, regex_term = "^col_header")
 }
 \arguments{
-\item{header_df}{a data frame containing header cells.}
+\item{labels}{list of labels.}
 
-\item{col_header_fill}{the manner is which blank cells will be filled.}
-
-\item{formats}{the formats associated with the workbook containing the header_df cells.}
+\item{regex_term}{prefix for col_header.}
 }
 \description{
-This function ensures that merged cells are unmerged.
+This function gets the maximum col_group number
 }

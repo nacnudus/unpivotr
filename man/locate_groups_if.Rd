@@ -12,6 +12,8 @@ locate_groups_if(sheet = NULL, ..., type = "both",
 \arguments{
 \item{sheet}{data frame created by xlsx_cells}
 
+\item{...}{filter expression that identifies headers.}
+
 \item{type}{indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta".}
 
 \item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
@@ -21,8 +23,6 @@ locate_groups_if(sheet = NULL, ..., type = "both",
 \item{default_row_header_direction}{Indicates which direction is given to row headers by default. Only need if "WNW" is required, rather than "W".}
 
 \item{header_fill}{deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".}
-
-\item{dots}{Expressions that filter header cells.}
 }
 \description{
 Adds annotations to the data frame, indicating which cells are headers and how they relate to data cells

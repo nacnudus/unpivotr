@@ -10,11 +10,19 @@ locate_if(cells, ..., direction, name, values = NULL,
 \arguments{
 \item{cells}{a tidyxl data frame}
 
+\item{...}{expression to filter for headers}
+
 \item{direction}{direction of new headers}
 
 \item{name}{of variable associated with header}
 
-\item{dots}{filter expression to isolate desired header cells.}
+\item{values}{values}
+
+\item{types}{types}
+
+\item{formatters}{formatters}
+
+\item{drop_na}{drop_na}
 }
 \description{
 This function conditionally adds direction annations to tidyxl data frame.

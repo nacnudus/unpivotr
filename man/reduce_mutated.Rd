@@ -7,11 +7,11 @@
 reduce_mutated(df, form_list, format)
 }
 \arguments{
-\item{header_df}{a data frame containing header cells.}
+\item{df}{a data frame containing header cells.}
 
-\item{col_header_fill}{the manner is which blank cells will be filled.}
+\item{form_list}{list of fomulae}
 
-\item{formats}{the formats associated with the workbook containing the header_df cells.}
+\item{format}{the formats associated with the workbook containing the header_df cells.}
 }
 \description{
 This function ensures that merged cells are unmerged.

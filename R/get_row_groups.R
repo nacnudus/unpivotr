@@ -1,30 +1,34 @@
-#' Get Rowname DF
+#' Get meta data groups
 #'
 #' This function:
-#'          1. Identifies which cells are likely to be row names
+#'          1. Identifies which cells are likely to be headers
 #'          2. groups them according to their indenting, bold and italic formatting
 #'          3. Specifies the unpivotr function specifying the direction of the header w.r.t. table data
-#' @param sheet sheet object read in by `tidyxl::xlsx_cells`
-#' @param value_ref data frame representing corners of numeric cells in excel sheet
-#' @param formats format object read in by `tidyxl::xlsx_cells`
-#' @param col_groups format object read in by `tidyxl::xlsx_cells`
-#' @param added_row_groups format object read in by `tidyxl::xlsx_cells`
-#'
-#' @export
-
+#' Behead multiple header groups 
+#' @description
+#' Beheads multiple headers defined according to expressions in .groupings. 
+#' @param sheet data frame created by xlsx_cells
+#' @param value_ref  referece to where data cells are located. 
+#' @param table_data datacell dataframe.
+#' @param formats  format object created by tidyxl. 
+#' @param .groupings expressions representing how header cells are differentiated. Most naturally works with fmt_* functions. 
+#' @param default_row_header_direction Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N". 
+#' @param header_fill deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".
+#' @param filter_headers_by method for dealing with merged cells.
+#' @param min_header_index min header index
 
 get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt_alignment_indent),
                            header_fill = "local_format_id", default_row_header_direction = default_row_header_direction,
                            table_data = tabledata, filter_headers_by = filter_headers_by_temp,
                            min_header_index = min_header_index_temp) {
   # Idenitfy header cells to which directions will be allocated
-  col_df <- sheet %>% filter(col <= value_ref$max_col, col >= value_ref$min_col, row < value_ref$min_row)
+  col_df <- sheet %>% dplyr::filter(col <= value_ref$max_col, col >= value_ref$min_col, row < value_ref$min_row)
 
   col_df_crns <- col_df %>%
-    filter(!is_blank) %>%
+    dplyr::filter(!is_blank) %>%
     get_corner_cell_refs()
 
-  header_df <- sheet %>% filter(row <= value_ref$max_row, row > col_df_crns$max_row, col < value_ref$min_col)
+  header_df <- sheet %>% dplyr::filter(row <= value_ref$max_row, row > col_df_crns$max_row, col < value_ref$min_col)
 
   # Create additional row variables to allow for nesting
 
@@ -45,25 +49,25 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
     append(quo(ones)) %>%
     append(quo(1 + 1))
 
-  symbol_filter <- .groupings %>% map_lgl(~ type_of(get_expr(.x)) == "symbol")
+  symbol_filter <- .groupings %>% purrr::map_lgl(~ type_of(rlang::get_expr(.x)) == "symbol")
 
   closures <- .groupings[symbol_filter]
 
   openenv <- environment()
 
-  rm(list = ls()[str_detect(ls(), "^grp_")])
+  rm(list = ls()[stringr::str_detect(ls(), "^grp_")])
 
   seq_along(closures) %>%
-    map(~ assign(paste0("grp_", as_label(closures[[.x]]) %>% str_remove_all("\\(\\)")),
+    map(~ assign(paste0("grp_", rlang::as_label(closures[[.x]]) %>% stringr::str_remove_all("\\(\\)")),
       set_env(eval_tidy(closures[[.x]])),
       envir = openenv
     ))
 
-  closure_list <- syms(ls()[str_detect(ls(), "grp_")])
+  closure_list <- rlang::syms(ls()[stringr::str_detect(ls(), "grp_")])
 
   header_df <-
     header_df %>%
-    mutate_at(
+    dplyr::mutate_at(
       .vars = "local_format_id",
       .funs = funs(!!!closure_list)
     )
@@ -74,36 +78,36 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
 
   form_list <- fmt_forms %>% map(append_name_to_quosure)
 
-  header_df <- append(list(header_df), form_list) %>% reduce(reduce_mutated)
+  header_df <- append(list(header_df), form_list) %>% purrr::reduce(reduce_mutated)
 
-  grouping_vars <- syms(names(header_df) %>% .[str_detect(., "^grp_")])
+  grouping_vars <- rlang::syms(names(header_df) %>% .[stringr::str_detect(., "^grp_")])
 
 
   # Nest row groups
   header_df <-
     header_df %>%
-    filter(coalesce(
+    dplyr::filter(dplyr::coalesce(
       as.character(logical), as.character(numeric),
       as.character(date), as.character(character)
     ) != "") %>%
-    group_by(col_temp, !!!grouping_vars) %>%
-    nest() %>%
-    ungroup()
+    dplyr::group_by(col_temp, !!!grouping_vars) %>%
+    tidyr::nest() %>%
+    dplyr::ungroup()
 
   # Name row groups
   header_df <-
     header_df %>%
-    mutate(row_no_name = row_number() + min_header_index + 1) %>%
-    mutate(header_label = paste0("row_header_label_", str_pad(row_no_name, 2, side = "left", "0")))
+    mutate(row_no_name = dplyr::row_number() + min_header_index + 1) %>%
+    mutate(header_label = paste0("row_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
 
   # Set row_group varnames and set values
   header_df <-
     header_df %>%
-    mutate(data = map2(
+    mutate(data = purrr::map2(
       data, header_label,
       function(data, header_label) {
         temp_df <- data %>%
-          mutate(value = coalesce(
+          mutate(value = dplyr::coalesce(
             as.character(numeric),
             as.character(character),
             as.character(logical),
@@ -121,15 +125,15 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
 
   empty_row_df <-
     table_data %>%
-    mutate(value = coalesce(
+    mutate(value = dplyr::coalesce(
       as.character(numeric),
       as.character(character),
       as.character(logical),
       as.character(date)
     )) %>%
     select(-comment) %>%
-    group_by(row) %>%
-    summarise(empty_share = sum(value == "") / n()) %>%
+    dplyr::group_by(row) %>%
+    dplyr::summarise(empty_share = sum(value == "") / n()) %>%
     mutate(empty_share = ifelse(is.na(empty_share) | empty_share == 1, 1, 0))
 
   row_range <- c(min(empty_row_df$row):max(empty_row_df$row))
@@ -137,9 +141,9 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
   missing_rows_from_headers <- row_range[!row_range %in% empty_row_df$row]
 
   empty_row_df <-
-    bind_rows(
+    dplyr::bind_rows(
       empty_row_df,
-      tibble(
+      tibble::tibble(
         row = missing_rows_from_headers,
         empty_share = 1
       )
@@ -148,12 +152,12 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
   #
   # header_df <-
   #   header_df %>%
-  #   mutate(row_sum = map_dbl(data, ~ get_row_sum(data = .x, sheet = sheet)))
+  #   mutate(row_sum = purrr::map_dbl(data, ~ get_row_sum(data = .x, sheet = sheet)))
 
   wnw_vector <-
     header_df$data %>%
     map(~ .$row) %>%
-    map_lgl(~ sum(.x %in% empty_row_df$row[empty_row_df$empty_share == 1]) > 0)
+    purrr::map_lgl(~ sum(.x %in% empty_row_df$row[empty_row_df$empty_share == 1]) > 0)
 
   if ("grp_fmt_alignment_indent" %in% names(header_df)) {
     wnw_vector <- wnw_vector | (header_df$grp_fmt_alignment_indent < max(header_df$grp_fmt_alignment_indent,na.rm = TRUE))
@@ -168,9 +172,9 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
   # Add additional information
   header_df %>%
     mutate(data_summary = data %>% map(~ get_corner_cell_refs(.x))) %>%
-    unnest(data_summary)
+    tidyr::unnest(data_summary)
 
-  header_vars <- syms(header_df$header_label)
+  header_vars <- rlang::syms(header_df$header_label)
 
   if (nrow(header_df) == 0) {
     return(header_df)
@@ -178,8 +182,8 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
 
   header_df <-
     header_df %>%
-    unnest() %>%
-    mutate(value = coalesce(!!!header_vars)) %>%
+    tidyr::unnest() %>%
+    mutate(value = dplyr::coalesce(!!!header_vars)) %>%
     select(row, col, .header_label = header_label, .direction = direction, .value = value)
 
   header_df
@@ -195,12 +199,12 @@ get_row_groups <- function(sheet, value_ref, formats, .groupings = groupings(fmt
 
 get_row_sum <- function(data, sheet) {
   data %>%
-    mutate(row_sum_values = map_dbl(
+    mutate(row_sum_values = purrr::map_dbl(
       row,
       function(x) {
-        summarise(filter(sheet, row == x), filled = sum(numeric, na.rm = T))$filled
+        dplyr::summarise(dplyr::filter(sheet, row == x), filled = sum(numeric, na.rm = T))$filled
       }
     )) %>%
-    summarise(row_sum_values = sum(row_sum_values, na.rm = T)) %>%
-    pull(row_sum_values)
+    dplyr::summarise(row_sum_values = sum(row_sum_values, na.rm = T)) %>%
+    dplyr::pull(row_sum_values)
 }

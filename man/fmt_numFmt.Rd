@@ -10,7 +10,7 @@ fmt_numFmt(format_id_vec = local_format_id, sheet_formats = formats)
 \arguments{
 \item{format_id_vec}{local format id vector}
 
-\item{sheet_format}{formats}
+\item{sheet_formats}{formats}
 }
 \description{
 Format function5

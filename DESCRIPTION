@@ -17,6 +17,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     methods,
+    stringr,
     rlang,
     magrittr,
     dplyr,
@@ -38,7 +39,6 @@ Suggests:
     readr,
     tidyxl,
     readxl,
-    stringr,
     htmltools,
     rvest,
     selectr,
@@ -46,7 +46,15 @@ Suggests:
     testthat,
     covr,
     here,
-    stringr
+    cowplot,
+    devtools,
+    ggplot2,
+    hrbrthemes,
+    lubridate,
+    magick,
+    plotly,
+    scales,
+    tidyverse
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 Remotes: git::https://github.com/ianmoran11/tidyxl.git

@@ -9,7 +9,7 @@ select_fmt(df, ...)
 \arguments{
 \item{df}{a data frame created by tidyxl::xlsx_cells}
 
-\item{dots}{select input.}
+\item{...}{select input.}
 }
 \description{
 A wrapper for dplyr::select that retains formatting information

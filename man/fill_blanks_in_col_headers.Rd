@@ -5,24 +5,14 @@
 \title{Fill in blanks}
 \usage{
 fill_blanks_in_col_headers(header_df, header_fill, formats)
-
-fill_blanks_in_col_headers(header_df, header_fill, formats)
 }
 \arguments{
 \item{header_df}{a data frame containing header cells.}
 
-\item{formats}{the formats associated with the workbook containing the header_df cells.}
-
-\item{col_header_fill}{the manner is which blank cells will be filled.}
-
-\item{header_df}{a data frame containing header cells.}
-
-\item{col_header_fill}{the manner is which blank cells will be filled.}
+\item{header_fill}{the manner is which blank cells will be filled.}
 
 \item{formats}{the formats associated with the workbook containing the header_df cells.}
 }
 \description{
-This function ensures that merged cells are unmerged.
-
 This function ensures that merged cells are unmerged.
 }

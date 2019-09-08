@@ -9,7 +9,7 @@ locate_data(sheet = NULL, ...)
 \arguments{
 \item{sheet}{data frame produced by xlsx_cells}
 
-\item{dots}{filtering conditions used to produce data_cells data frame}
+\item{...}{filter expression that identifies data cells.}
 }
 \description{
 Removes data cells from data frame and stores in an attribute.

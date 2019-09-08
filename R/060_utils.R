@@ -2,8 +2,8 @@
 #'
 #' Removes NAs from paste. Taken from https://stackoverflow.com/users/1855677/42 stackoverflow answer.
 #'
-#' @param table_components object returned by `process_ABS_sheet`
-#'
+#' @param ... objects to be pasted together.
+#' @param sep separating string.
 #' @export
 
 paste3 <- function(...,sep=", ") {
@@ -27,15 +27,15 @@ paste3 <- function(...,sep=", ") {
 
 get_range_df <- function(range){
   
-  cell_ref_df <- as_tibble(cellranger::as.cell_limits(range))
+  cell_ref_df <- tibble::as_tibble(cellranger::as.cell_limits(range))
   
   range_df <-
     cell_ref_df[,1:2] %>%
-    set_names(c("min","max")) %>%
+    purrr::set_names(c("min","max")) %>%
     mutate(dimension = c("row","col")) %>%
-    gather(key, value, -dimension) %>%
-    unite(label, key, dimension, sep = "_") %>%
-    spread(label, value )
+    tidyr::gather(key, value, -dimension) %>%
+    tidyr::unite(label, key, dimension, sep = "_") %>%
+    tidyr::spread(label, value )
   
   expand.grid(row = c(range_df$min_row[1]:range_df$max_row[1]),
               col = c(range_df$min_col[2]:range_df$max_col[1]))
@@ -55,72 +55,14 @@ get_range_df <- function(range){
 get_range_dfs <- function(range){
   
   range %>%
-    str_split(",") %>%
+    stringr::str_split(",") %>%
     unlist %>%
     map(get_range_df) %>%
-    bind_rows()
+    dplyr::bind_rows()
 }
 
 
 
-#' Fill in blanks
-#'
-#' This function ensures that merged cells are unmerged.
-#'
-#' @param header_df a data frame containing header cells. 
-#' @param col_header_fill the manner is which blank cells will be filled. 
-#' @param formats the formats associated with the workbook containing the header_df cells.
-
-fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
-  
-  if(header_fill ==  "style"){
-    continue <- TRUE
-    
-    while (continue) {
-      sheet_original <- header_df
-      header_df <- header_df %>% unmerge_cells(strict_merging = FALSE)
-      
-      continue <- !identical(sheet_original, header_df)
-    }
-    
-  }
-  
-  
-  if(header_fill ==  "local_format_id"){
-    continue <- TRUE
-    
-    while (continue) {
-      sheet_original <- header_df
-      header_df <- header_df %>% unmerge_cells(strict_merging = TRUE)
-      
-      continue <- !identical(sheet_original, header_df)
-    }
-    
-  }
-  
-  
-  if(header_fill ==  "borders"){
-    
-    filled_join <- 
-      header_df %>%  
-      add_h_border_groups(formats) %>% 
-      group_by(h_border_group)  %>%  
-      select(row,col,h_border_group, character) %>% 
-      mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% 
-                              str_remove_all(" _ "),character)) %>% 
-      ungroup() %>% 
-      arrange(h_border_group, row,col ) %>% 
-      select(row,col, character = value) 
-    
-    header_df <- 
-      header_df %>% select(-character) %>% 
-      left_join(filled_join, by = c("row", "col")) 
-    
-  }
-  
-  header_df  
-  
-} 
 
 
 #' Fill in blanks
@@ -128,7 +70,7 @@ fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
 #' This function ensures that merged cells are unmerged.
 #'
 #' @param header_df a data frame containing header cells. 
-#' @param col_header_fill the manner is which blank cells will be filled. 
+#' @param header_fill the manner is which blank cells will be filled. 
 #' @param formats the formats associated with the workbook containing the header_df cells.
 
 fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
@@ -165,18 +107,17 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
     filled_join <- 
       header_df %>%  
       add_v_border_groups(formats) %>% 
-      group_by(v_border_group)  %>%  
+      dplyr::group_by(v_border_group)  %>%  
       select(row,col,v_border_group, character) %>% 
-      mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% str_remove_all(" _ "),character)) %>% 
-      ungroup() %>% 
+      mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% stringr::str_remove_all(" _ "),character)) %>% 
+      dplyr::ungroup() %>% 
       select(row,col, character = value) 
     
     header_df <- 
-      header_df %>% select(-character) %>% left_join(filled_join, by = c("row", "col")) %>% 
-      arrange(row,col) 
+      header_df %>% select(-character) %>% dplyr::left_join(filled_join, by = c("row", "col")) %>% 
+      dplyr::arrange(row,col) 
     
-    
-    
+  
   }
   
   header_df
@@ -188,16 +129,16 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
 #'
 #' This function ensures that merged cells are unmerged.
 #'
-#' @param header_df a data frame containing header cells. 
-#' @param col_header_fill the manner is which blank cells will be filled. 
-#' @param formats the formats associated with the workbook containing the header_df cells.
+#' @param df a data frame containing header cells. 
+#' @param form_list list of fomulae 
+#' @param format the formats associated with the workbook containing the header_df cells.
 #' 
 
 
 reduce_mutated <- function(df, form_list,format){
   
   current_quosure <-  form_list[[1]]
-  var_name_sym <-  sym(form_list[[2]])
+  var_name_sym <-  rlang::sym(form_list[[2]])
   
   df %>% 
     mutate(!!var_name_sym:= !!current_quosure)  
@@ -206,31 +147,28 @@ reduce_mutated <- function(df, form_list,format){
 
 
 
-
-#' Fill in blanks
-#'
-#' This function ensures that merged cells are unmerged.
-#'
-#' @param header_df a data frame containing header cells. 
-#' @param col_header_fill the manner is which blank cells will be filled. 
-#' @param formats the formats associated with the workbook containing the header_df cells.
-
-fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
   
-  if(header_fill ==  "style"){
-    continue <- TRUE
+  #' Fill in blanks
+  #'
+  #' This function ensures that merged cells are unmerged.
+  #'
+  #' @param header_df a data frame containing header cells. 
+  #' @param header_fill the manner is which blank cells will be filled. 
+  #' @param formats the formats associated with the workbook containing the header_df cells.
+  
+  fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
     
-    while (continue) {
-      sheet_original <- header_df
-      header_df <- header_df %>% unmerge_cells(strict_merging = FALSE) 
+    if(header_fill ==  "style"){
+      continue <- TRUE
       
+      while (continue) {
+        sheet_original <- header_df
+        header_df <- header_df %>% unmerge_cells(strict_merging = FALSE)
+        
+        continue <- !identical(sheet_original, header_df)
+      }
       
-      continue <- !identical(sheet_original, header_df)
     }
-    
-  }
-  
-  
   if(header_fill ==  "local_format_id"){
     continue <- TRUE
     
@@ -249,17 +187,17 @@ fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
     filled_join <- 
       header_df %>%  
       add_h_border_groups(formats) %>% 
-      group_by(h_border_group)  %>%  
+      dplyr::group_by(h_border_group)  %>%  
       select(row,col,h_border_group, character) %>% 
       mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% 
-                              str_remove_all(" _ "),character)) %>% 
-      ungroup() %>% 
-      arrange(h_border_group, row,col ) %>% 
+                              stringr::str_remove_all(" _ "),character)) %>% 
+      dplyr::ungroup() %>% 
+      dplyr::arrange(h_border_group, row,col ) %>% 
       select(row,col, character = value) 
     
     header_df <- 
       header_df %>% select(-character) %>% 
-      left_join(filled_join, by = c("row", "col")) 
+      dplyr::left_join(filled_join, by = c("row", "col")) 
     
   }
   
@@ -269,121 +207,35 @@ fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
 
 
 
-
-
-
-
-
-#' Fill in blanks
+#' Give quasure a name
 #'
-#' This function ensures that merged cells are unmerged.
-#'
-#' @param header_df a data frame containing header cells. 
-#' @param col_header_fill the manner is which blank cells will be filled. 
-#' @param formats the formats associated with the workbook containing the header_df cells.
-
-fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
-  
-  if(header_fill ==  "style"){
-    
-    continue <- TRUE
-    
-    while (continue) {
-      sheet_original <- header_df
-      header_df <- header_df %>% unmerge_row_cells(strict_merging = FALSE) 
-      
-      continue <- !identical(sheet_original, header_df)
-    }
-    
-  }
-  
-  if(header_fill ==  "local_format_id"){
-    
-    continue <- TRUE
-    
-    while (continue) {
-      sheet_original <- header_df
-      header_df <- header_df %>% unmerge_row_cells(strict_merging = TRUE) 
-      
-      continue <- !identical(sheet_original, header_df)
-    }
-    
-  }
-  
-  if(header_fill ==  "borders"){
-    
-    
-    filled_join <- 
-      header_df %>%  
-      add_v_border_groups(formats) %>% 
-      group_by(v_border_group)  %>%  
-      select(row,col,v_border_group, character) %>% 
-      mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% str_remove_all(" _ "),character)) %>% 
-      ungroup() %>% 
-      select(row,col, character = value) 
-    
-    header_df <- 
-      header_df %>% select(-character) %>% left_join(filled_join, by = c("row", "col")) %>% 
-      arrange(row,col) 
-    
-    
-    
-  }
-  
-  header_df
-  
-}
-
-
-
-#' get tidyABS components
-#'
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
-#' @param path path to .xlsx file
-#' @param sheets sheet nominated for tidying
-#'
-#' @examples
-#'
-#'  \donttest{tidyABS_example("australian-industry.xlsx") %>% process_sheet(sheets = "Table_1")  }
-#'
-#'
-#'
-#' @export
+#' Adds name of a quosure so that use in mutate automatically adds name.
+#' @param x quosure
+#' @param prefix prefix to be added in name
 #'
 
 append_name_to_quosure <- function(x, prefix = "grp_"){
   list(x,
        paste0(prefix,
-              x %>% as_label() %>% make.names() %>% 
-                str_replace_all("\\.+",".") %>% str_remove_all("(\\.$)|(^X\\.)") %>% 
-                str_replace_all("\\.","_") %>% 
-                ifelse(str_sub(.,start = 1,1) %in% as.character(0:9),paste0("x",.),.  )))
+              x %>% rlang::as_label() %>% make.names() %>% 
+                stringr::str_replace_all("\\.+",".") %>% stringr::str_remove_all("(\\.$)|(^X\\.)") %>% 
+                stringr::str_replace_all("\\.","_") %>% 
+                ifelse(stringr::str_sub(.,start = 1,1) %in% as.character(0:9),paste0("x",.),.  )))
   
 }
 
 
 
-#' get tidyABS components
+#' An internal function to add a variable to a tidyxl data frame in that variable is missing 
 #'
 #' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
-#' @param path path to .xlsx file
-#' @param sheets sheet nominated for tidying
+#' @param sheet sheet nominated for tidying
+#' @param var name of the var to be added.
 #'
-#' @examples
-#'
-#'  \donttest{tidyABS_example("australian-industry.xlsx") %>% process_sheet(sheets = "Table_1")  }
-#'
-#'
-#'
-#' @export
-#'
-
-
-
 add_variable_if_missing <- function(sheet, var){
   
   if(!var %in%  names(sheet)){
-    var_sym <- sym(var)
+    var_sym <- rlang::sym(var)
     
     sheet <- sheet %>% mutate(!!var_sym := NA_character_)
   }
@@ -396,8 +248,8 @@ add_variable_if_missing <- function(sheet, var){
 #' get tidyABS components
 #'
 #' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
-#' @param path path to .xlsx file
-#' @param sheets sheet nominated for tidying
+#' @param table_range table_range
+#' @param sheet sheet nominated for tidying
 #'
 #' @examples
 #'
@@ -408,24 +260,19 @@ add_variable_if_missing <- function(sheet, var){
 #' @export
 #'
 
-
-
-
-
-
 string_range_to_filter_vars <- function(sheet,table_range){
   
-  cell_ref_df <- as_tibble(cellranger::as.cell_limits(table_range))
+  cell_ref_df <- tibble::as_tibble(cellranger::as.cell_limits(table_range))
   
   table_range_df <-
     cell_ref_df[,1:2] %>%
-    set_names(c("min","max")) %>%
+    purrr::set_names(c("min","max")) %>%
     mutate(dimension = c("row","col")) %>%
-    gather(key, value, -dimension) %>%
-    unite(label, key, dimension, sep = "_") %>%
-    spread(label, value )
+    tidyr::gather(key, value, -dimension) %>%
+    tidyr::unite(label, key, dimension, sep = "_") %>%
+    tidyr::spread(label, value )
   
-  string_filter_name <- sym(table_range %>% str_remove("\\:") %>% paste0("flt_",.))
+  string_filter_name <- rlang::sym(table_range %>% stringr::str_remove("\\:") %>% paste0("flt_",.))
   
   data_sheet <-
     sheet %>%
@@ -448,7 +295,7 @@ get_corner_cell_refs <- function(sheet) {
   # Automatic producedure
   ref_df <- 
     sheet %>% 
-    summarise(
+    dplyr::summarise(
       min_row = min(row), max_row = max(row),
       min_col = min(col), max_col = max(col)
     ) 
@@ -463,10 +310,9 @@ get_corner_cell_refs <- function(sheet) {
 #'
 #' This function ensures that merged cells are unmerged.
 #'
-#' @param header_df a data frame containing header cells. 
-#' @param col_header_fill the manner is which blank cells will be filled. 
-#' @param formats the formats associated with the workbook containing the header_df cells.
-
+#' @param header_data a data frame containing header cells. 
+#' @param direction direction suplied to enhead. 
+#' @param values the data values.
 
 
 enhead_tabledata <- function(header_data, direction, values = tabledata) {
@@ -478,21 +324,23 @@ enhead_tabledata <- function(header_data, direction, values = tabledata) {
 
 
 
-#' Fill in blanks
+#' Get current column number
 #'
-#' This function ensures that merged cells are unmerged.
+#' This function gets the maximum col_group number
 #'
-#' @param header_df a data frame containing header cells. 
-#' @param col_header_fill the manner is which blank cells will be filled. 
-#' @param formats the formats associated with the workbook containing the header_df cells.
-
-
+#' @param labels list of labels. 
+#' @param regex_term prefix for col_header. 
 
 get_header_index <- function(labels, regex_term = "^col_header") {
-  labels %>% .[str_detect(.,regex_term)] %>%  str_remove_all("[a-z]+|[:punct:]+") %>% 
+  labels %>% .[stringr::str_detect(.,regex_term)] %>%  stringr::str_remove_all("[a-z]+|[:punct:]+") %>% 
     as.numeric() %>% max(.,na.rm = TRUE) %>% ifelse(is.finite(.),.,0) %>% `+`(1) 
   
 }
 
 
-
+#' Order set of excel column indexes.
+#'
+#' A character vector containing and ordered set of excel column indexes  
+#'
+#' @format A character vector of length 702
+"cols_index"

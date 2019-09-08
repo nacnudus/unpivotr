@@ -11,7 +11,7 @@ fmt_border_left_style(format_id_vec = local_format_id,
 \arguments{
 \item{format_id_vec}{local format id vector}
 
-\item{sheet_format}{formats}
+\item{sheet_formats}{formats}
 }
 \description{
 Format function47

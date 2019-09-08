@@ -9,7 +9,7 @@ filter_fmt(df, ...)
 \arguments{
 \item{df}{a data frame created by tidyxl::xlsx_cells}
 
-\item{dots}{filter input.}
+\item{...}{filter expression.}
 }
 \description{
 A wrapper for dplyr::filter that retains formatting information

@@ -10,13 +10,13 @@
 
 get_tabledata <- function(sheet, value_ref) {
   sheet %>%
-    filter(
+    dplyr::filter(
       !is_blank | !is.na(comment),
       row <= value_ref$max_row,
       row >= value_ref$min_row,
       col <= value_ref$max_col,
       col >= value_ref$min_col
     ) %>%
-    mutate(value = coalesce(as.character(numeric), as.character(character), as.character(logical), as.character(date))) %>%
+    mutate(value = dplyr::coalesce(as.character(numeric), as.character(character), as.character(logical), as.character(date))) %>%
     select(row, col, value, comment)
 }
