@@ -86,7 +86,10 @@ globalVariables(c(
   "header_label",
   "is_blank",
   "left_border",
-  "values"
+  "values",
+  "error", 
+  "purrr", 
+  "sheet"
   
 ))
 

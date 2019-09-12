@@ -14,7 +14,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
     data_cells <-
       sheet %>%
       attr("data_cells") %>%
-      mutate(.direction = "\U2610", .header_label = "data")
+      dplyr::mutate(.direction = "\U2610", .header_label = "data")
     
     sheet <- dplyr::bind_rows(sheet, data_cells)
     
@@ -26,7 +26,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
      
    sheet <- 
      sheet %>% 
-     mutate(.header_label = "None")
+     dplyr::mutate(.header_label = "None")
      
   }
   
@@ -34,7 +34,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
   if (interactive == FALSE) {
     sheet_01 <-
       sheet %>%
-      mutate(.arrow = dplyr::case_when(
+      dplyr::mutate(.arrow = dplyr::case_when(
         .direction == "N"   ~ "\U2193",
         .direction == "NNE" ~ "\U21B2", 
         .direction == "ENE" ~ "\U21B3",
@@ -47,12 +47,12 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
         .direction == "W"   ~ "\U2192",
         .direction == "WNW" ~ "\U21B1",
         .direction == "NNW" ~ "\U21B3")) %>% 
-      mutate(values = dplyr::coalesce(as.character(numeric),as.character(character),
+      dplyr::mutate(values = dplyr::coalesce(as.character(numeric),as.character(character),
                                as.character(logical),as.character(date)))
     
     dplyr::bind_rows(
-      mutate(sheet_01, .arrow = NA, set = "Cell values"),
-      mutate(sheet_01, {{text}} := NA, set = "Directions")) %>%
+      dplyr::mutate(sheet_01, .arrow = NA, set = "Cell values"),
+      dplyr::mutate(sheet_01, {{text}} := NA, set = "Directions")) %>%
       ggplot2::ggplot(ggplot2::aes(x = col, y = -row, fill = .header_label)) + ggplot2::geom_tile() +
       ggplot2::geom_text(ggplot2::aes(label = stringr::str_sub({{text}}, 1, 3))) +
       ggplot2::geom_text(ggplot2::aes(label = ifelse(!.direction %in% c("WNW","ESE","WSW","ENE"), .arrow, NA))) +
@@ -62,7 +62,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
     
     sheet_01 <-
       sheet %>%
-      mutate(.arrow = dplyr::case_when(
+      dplyr::mutate(.arrow = dplyr::case_when(
         .direction == "N"   ~ "\U2193",
         .direction == "NNE" ~ "\U21B1", 
         .direction == "ENE" ~ "\U21B1",
@@ -75,13 +75,13 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
         .direction == "W"   ~ "\U2192",
         .direction == "WNW" ~ "\U21B1",
         .direction == "NNW" ~ "\U21B3")) %>%  
-      mutate(values = dplyr::coalesce(as.character(numeric),as.character(character),
+      dplyr::mutate(values = dplyr::coalesce(as.character(numeric),as.character(character),
                                as.character(logical),as.character(date)))
     
     plot_object <-
       dplyr::bind_rows(
-        mutate(sheet_01, .arrow = NA, set = "Cell values"),
-        mutate(sheet_01, {{text}} := NA, set = "Directions")
+        dplyr::mutate(sheet_01, .arrow = NA, set = "Cell values"),
+        dplyr::mutate(sheet_01, {{text}} := NA, set = "Directions")
       ) %>%
       ggplot2::ggplot(ggplot2::aes(x = col, y = -row, fill = .header_label)) + ggplot2::geom_tile() +
       ggplot2::geom_text(ggplot2::aes(label = stringr::str_sub({{text}}, 1, 5))) +

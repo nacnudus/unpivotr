@@ -179,10 +179,10 @@ locate_groups_if <-
       
       sheet <- 
         sheet %>% 
-          mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
-          mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
-          mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
-          select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
+        dplyr::mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
+        dplyr::mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
+        dplyr::mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
+        dplyr::select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
     }
     
     if(type == "both" | type == "col"){
@@ -191,10 +191,10 @@ locate_groups_if <-
       
       sheet <- 
         sheet %>% 
-        mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
-        mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
-        mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
-        select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
+        dplyr::mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
+        dplyr::mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
+        dplyr::mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
+        dplyr::select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
       
     }
 
@@ -206,10 +206,10 @@ locate_groups_if <-
       
       sheet <- 
         sheet %>% 
-        mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
-        mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
-        mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
-        select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
+        dplyr::mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
+        dplyr::mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
+        dplyr::mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
+        dplyr::select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
     }
         
     attr(sheet, "formats") <- formats

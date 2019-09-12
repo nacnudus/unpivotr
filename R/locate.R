@@ -129,25 +129,25 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
   headers_reshaped <-
     headers %>%
     tidyr::gather(.header_label, .value, -row, -col) %>%
-    mutate(.direction = direction)
+    dplyr::mutate(.direction = direction)
   
   # Join headers to original cells
   cells <- cells %>% dplyr::left_join(headers_reshaped, by = c("row", "col"), suffix = c(".o", ".n"))
   
   
-  cells %>% select(dplyr::matches("^\\."))
+  cells %>% dplyr::select(dplyr::matches("^\\."))
   
   # Unite updated/non-updated values
   cells <-
     cells %>%
-    mutate(.header_label = dplyr::coalesce(.header_label.n, .header_label.o)) %>%
-    mutate(.direction = dplyr::coalesce(.direction.n, .direction.o)) %>%
-    mutate(.value = dplyr::coalesce(.value.n, .value.o)) %>%
-    select(-.value.n, -.value.o, -.direction.n, -.direction.o, -.header_label.n, -.header_label.o)
+    dplyr::mutate(.header_label = dplyr::coalesce(.header_label.n, .header_label.o)) %>%
+    dplyr::mutate(.direction = dplyr::coalesce(.direction.n, .direction.o)) %>%
+    dplyr::mutate(.value = dplyr::coalesce(.value.n, .value.o)) %>%
+    dplyr::select(-.value.n, -.value.o, -.direction.n, -.direction.o, -.header_label.n, -.header_label.o)
   
   
   cells <- 
-    cells %>% select(.value, .direction, .header_label, everything() )
+    cells %>% dplyr::select(.value, .direction, .header_label, dplyr::everything() )
   
   
   # Reattach data_cells and format if they exist

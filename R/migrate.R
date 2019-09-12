@@ -22,8 +22,8 @@ migrate <- function(orientated_df, numeric_value = FALSE) {
     orientated_df %>%
     dplyr::filter(!is.na(.direction)) %>%
     dplyr::group_by(.direction, .header_label) %>%
-    mutate(value = dplyr::coalesce(character, as.character(numeric))) %>%
-    select(row, col, .value, .direction, .header_label) %>%
+    dplyr::mutate(value = dplyr::coalesce(character, as.character(numeric))) %>%
+    dplyr::select(row, col, .value, .direction, .header_label) %>%
     tidyr::nest()
 
   header_dfs <- orientated_df_nested$data[orientated_df_nested$.direction != "data"]
@@ -60,7 +60,7 @@ migrate <- function(orientated_df, numeric_value = FALSE) {
   if (numeric_value) {
     tidy_df <-
       tidy_df %>%
-      mutate(.value = as.numeric(.value))
+      dplyr::mutate(.value = as.numeric(.value))
   }
 
   tidy_df

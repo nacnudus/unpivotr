@@ -21,7 +21,7 @@ behead_dc <- function(cells, direction, name, values = NULL, types = data_type,
   direction_temp <- direction
   name_temp <- rlang::sym(name)
   values_temp <- values
-  types_temp <- quo(types)
+  types_temp <- rlang::quo(types)
   formatters_temp <- formatters
   drop_na_temp <- drop_na
 
@@ -32,12 +32,12 @@ behead_dc <- function(cells, direction, name, values = NULL, types = data_type,
 
   data_cells <- temp_df %>%
     dplyr::filter(dc == 1) %>%
-    select(-dc)
+    dplyr::select(-dc)
 
   cells <- temp_df %>%
     dplyr::filter(is.na(dc)) %>%
-    select(-dc) %>%
-    select(-!!name_temp)
+    dplyr::select(-dc) %>%
+    dplyr::select(-!!name_temp)
 
 
   attr(cells, "data_cells") <- data_cells

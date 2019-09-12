@@ -12,7 +12,7 @@ append_fmt <- function(cells, fmt_function){
   
   cells <- 
     cells %>% 
-    mutate({{fmt_function}} := rlang::exec({{fmt_function}},
+    dplyr::mutate({{fmt_function}} := rlang::exec({{fmt_function}},
                                     format_id_vec = cells$local_format_id, 
                                     sheet_formats = formats))
   attr(cells,"formats") <- formats
@@ -36,7 +36,7 @@ select_fmt <- function(df, ...){
   
   select_quos <-   rlang::quos(...) 
   
-  df <- select(df,!!!select_quos)
+  df <- dplyr::select(df,!!!select_quos)
   
   attr(df,"data_cells") <- data_cells
   attr(df,"formats") <- formats

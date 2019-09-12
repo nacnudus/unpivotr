@@ -17,6 +17,6 @@ get_tabledata <- function(sheet, value_ref) {
       col <= value_ref$max_col,
       col >= value_ref$min_col
     ) %>%
-    mutate(value = dplyr::coalesce(as.character(numeric), as.character(character), as.character(logical), as.character(date))) %>%
-    select(row, col, value, comment)
+    dplyr::mutate(value = dplyr::coalesce(as.character(numeric), as.character(character), as.character(logical), as.character(date))) %>%
+    dplyr::select(row, col, value, comment)
 }

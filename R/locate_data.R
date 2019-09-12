@@ -21,22 +21,22 @@ locate_data <-
     sheet <-  added_var_list %>% purrr::reduce(add_variable_if_missing)
     
     sheet <- 
-      sheet %>% select(.value, .direction, .header_label, everything() )
+      sheet %>% dplyr::select(.value, .direction, .header_label, dplyr::everything() )
     
     
-    
-    filter_expresions_type <- filter_expresions %>% purrr::map_chr(~type_of(rlang::get_expr(.x)))
+
+    filter_expresions_type <- filter_expresions %>% purrr::map_chr(~typeof(rlang::get_expr(.x)))
     
     filter_expresions_string <- filter_expresions[filter_expresions_type == "string"]
     filter_expresions_langage <- filter_expresions[filter_expresions_type == "language"]
     filter_expresions_symbol <- filter_expresions[filter_expresions_type == "symbol"]
     
     # Limit to table Range ----
-    filter_expresions_string <- filter_expresions_string %>% append(quo("A1"))  
+    filter_expresions_string <- filter_expresions_string %>% append(dplyr::quo("A1"))  
     
-    string_var_names <- map(filter_expresions_string,rlang::get_expr)  %>% unlist() %>% 
+    string_var_names <- purrr::map(filter_expresions_string,rlang::get_expr)  %>% unlist() %>% 
       stringr::str_remove("\\:") %>% paste0("flt_",.) %>%  rlang::syms()
-    filter_expresions_list <-  list(sheet) %>% append(map(filter_expresions_string, rlang::get_expr))
+    filter_expresions_list <-  list(sheet) %>% append(purrr::map(filter_expresions_string, rlang::get_expr))
     
     sheet <-  filter_expresions_list %>% purrr::reduce(string_range_to_filter_vars) 
     
@@ -47,18 +47,19 @@ locate_data <-
     openenv <- environment()
     
     seq_along(closures) %>% 
-      map(~ assign(paste0("flt_", as_label(closures[[.x]]) %>% stringr::str_remove_all("\\(\\)") ),
-                   set_env(eval_tidy(closures[[.x]])),envir = openenv))
+      purrr::map(~ assign(paste0("flt_", rlang::as_label(closures[[.x]]) %>% stringr::str_remove_all("\\(\\)") ),
+                   rlang::set_env(rlang::eval_tidy(closures[[.x]])),envir = openenv))
     
+    closure_list <- rlang::syms(ls()[stringr::str_detect(ls(),"flt_")]) 
     closure_list <- rlang::syms(ls()[stringr::str_detect(ls(),"flt_")]) 
     
     sheet <- 
       sheet %>% 
       dplyr::mutate_at(.vars = "local_format_id",
-                .funs = funs(!!!closure_list))
+                .funs = tibble::lst(!!!closure_list))
     
     #------------------------------------------------------------------------------------------
-    filter_expresions_langage <- filter_expresions_langage %>% append(quo(2 + 1))   
+    filter_expresions_langage <- filter_expresions_langage %>% append(rlang::quo(2 + 1))   
     
     fmt_forms <-  filter_expresions_langage     
     
@@ -67,7 +68,7 @@ locate_data <-
     sheet <- append(list(sheet),form_list) %>% purrr::reduce(reduce_mutated)
     
     data_cell_filter <- 
-      sheet %>% select(dplyr::starts_with("flt")) %>% dplyr::select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_twos","flt_A1"))]) %>% 
+      sheet %>% dplyr::select(dplyr::starts_with("flt")) %>% dplyr::select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_twos","flt_A1"))]) %>% 
       as.list %>% purrr::map(as.logical) %>% purrr::pmap_lgl(~ sum(...,na.rm = TRUE) > 0 )
     
     
@@ -78,7 +79,7 @@ locate_data <-
     
     
     data_cells <- data_cells %>% 
-      mutate(.value = dplyr::coalesce(as.character(numeric),as.character(character),
+      dplyr::mutate(.value = dplyr::coalesce(as.character(numeric),as.character(character),
                                as.character(logical),as.character(date)))
     
     attr(sheet, "data_cells") <- data_cells 

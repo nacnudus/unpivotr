@@ -33,7 +33,7 @@ get_col_groups <- function(sheet, value_ref, formats,
   
   # Create additional row variables to allow for nesting
   
-  header_df <- header_df %>% mutate(row_temp = row)
+  header_df <- header_df %>% dplyr::mutate(row_temp = row)
   
   # Check that at least one cell is in the header_df
   
@@ -48,10 +48,10 @@ get_col_groups <- function(sheet, value_ref, formats,
   # Create grouping variables for symbols provided to grouping.
   
   .groupings <- .groupings %>%
-    append(quo(ones)) %>%
-    append(quo(1 + 1))
+    append(rlang::quo(ones)) %>%
+    append(rlang::quo(1 + 1))
   
-  symbol_filter <- .groupings %>% purrr::map_lgl(~ type_of(rlang::get_expr(.x)) == "symbol")
+  symbol_filter <- .groupings %>% purrr::map_lgl(~ typeof(rlang::get_expr(.x)) == "symbol")
   
   closures <- .groupings[symbol_filter]
   
@@ -59,7 +59,7 @@ get_col_groups <- function(sheet, value_ref, formats,
   
   seq_along(closures) %>%
     map(~ assign(paste0("grp_", rlang::as_label(closures[[.x]]) %>% stringr::str_remove_all("\\(\\)")),
-                 set_env(eval_tidy(closures[[.x]])),
+                 rlang::set_env(rlang::eval_tidy(closures[[.x]])),
                  envir = openenv
     ))
   
@@ -69,7 +69,7 @@ get_col_groups <- function(sheet, value_ref, formats,
     header_df %>%
     dplyr::mutate_at(
       .vars = "local_format_id",
-      .funs = funs(!!!closure_list)
+      .funs = tibble::lst(!!!closure_list)
     )
   
   # Create grouping variables for symbols provided to grouping.
@@ -98,32 +98,32 @@ get_col_groups <- function(sheet, value_ref, formats,
   # Name header groups
   header_df <-
     header_df %>%
-    mutate(row_no_name = dplyr::row_number() + min_header_index - 1) %>%
-    mutate(header_label = paste0("col_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
+    dplyr::mutate(row_no_name = dplyr::row_number() + min_header_index - 1) %>%
+    dplyr::mutate(header_label = paste0("col_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
   
   # Create and name headers ----
   header_df <-
     header_df %>%
-    mutate(data = purrr::map2(
+    dplyr::mutate(data = purrr::map2(
       data, header_label,
       function(data, header_label) {
         temp_df <- data %>%
-          mutate(value = dplyr::coalesce(
+          dplyr::mutate(value = dplyr::coalesce(
             as.character(numeric),
             as.character(character),
             as.character(logical),
             as.character(date)
           )) %>%
-          select(row, col, value)
+          dplyr::select(row, col, value)
         temp_df[[header_label]] <- temp_df$value
-        temp_df %>% select(-value)
+        temp_df %>% dplyr::select(-value)
       }
     ))
   
   # Set direction ----
   header_df <-
     header_df %>%
-    mutate(direction = default_col_header_direction) %>%
+    dplyr::mutate(direction = default_col_header_direction) %>%
     dplyr::select(header_label, direction, data, !!!grouping_vars)
   
   header_df$data
@@ -132,7 +132,7 @@ get_col_groups <- function(sheet, value_ref, formats,
   
   header_df <-
     header_df %>%
-    mutate(data_summary = data %>%
+    dplyr::mutate(data_summary = data %>%
              map(~ .x %>% dplyr::summarise(
                min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
                min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
@@ -149,8 +149,8 @@ get_col_groups <- function(sheet, value_ref, formats,
   header_df <-
     header_df %>%
     tidyr::unnest() %>%
-    mutate(value = dplyr::coalesce(!!!header_vars)) %>%
-    select(row, col, .header_label = header_label, .direction = direction, .value = value)
+    dplyr::mutate(value = dplyr::coalesce(!!!header_vars)) %>%
+    dplyr::select(row, col, .header_label = header_label, .direction = direction, .value = value)
   
   header_df
   

@@ -29,7 +29,7 @@ get_value_references <- function(sheet, manual_value_references) {
     ref_df <-
       cell_ref_df[, 1:2] %>%
       purrr::set_names(c("min", "max")) %>%
-      mutate(dimension = c("row", "col")) %>%
+      dplyr::mutate(dimension = c("row", "col")) %>%
       tidyr::gather(key, value, -dimension) %>%
       tidyr::unite(label, key, dimension, sep = "_") %>%
       tidyr::spread(label, value)

@@ -32,7 +32,7 @@ get_range_df <- function(range){
   range_df <-
     cell_ref_df[,1:2] %>%
     purrr::set_names(c("min","max")) %>%
-    mutate(dimension = c("row","col")) %>%
+    dplyr::mutate(dimension = c("row","col")) %>%
     tidyr::gather(key, value, -dimension) %>%
     tidyr::unite(label, key, dimension, sep = "_") %>%
     tidyr::spread(label, value )
@@ -57,7 +57,7 @@ get_range_dfs <- function(range){
   range %>%
     stringr::str_split(",") %>%
     unlist %>%
-    map(get_range_df) %>%
+    purrr::map(get_range_df) %>%
     dplyr::bind_rows()
 }
 
@@ -108,13 +108,13 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
       header_df %>%  
       add_v_border_groups(formats) %>% 
       dplyr::group_by(v_border_group)  %>%  
-      select(row,col,v_border_group, character) %>% 
-      mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% stringr::str_remove_all(" _ "),character)) %>% 
+      dplyr::select(row,col,v_border_group, character) %>% 
+      dplyr::mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% stringr::str_remove_all(" _ "),character)) %>% 
       dplyr::ungroup() %>% 
-      select(row,col, character = value) 
+      dplyr::select(row,col, character = value) 
     
     header_df <- 
-      header_df %>% select(-character) %>% dplyr::left_join(filled_join, by = c("row", "col")) %>% 
+      header_df %>% dplyr::select(-character) %>% dplyr::left_join(filled_join, by = c("row", "col")) %>% 
       dplyr::arrange(row,col) 
     
   
@@ -141,7 +141,7 @@ reduce_mutated <- function(df, form_list,format){
   var_name_sym <-  rlang::sym(form_list[[2]])
   
   df %>% 
-    mutate(!!var_name_sym:= !!current_quosure)  
+    dplyr::mutate(!!var_name_sym:= !!current_quosure)  
   
 }  
 
@@ -188,15 +188,15 @@ reduce_mutated <- function(df, form_list,format){
       header_df %>%  
       add_h_border_groups(formats) %>% 
       dplyr::group_by(h_border_group)  %>%  
-      select(row,col,h_border_group, character) %>% 
-      mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% 
+      dplyr::select(row,col,h_border_group, character) %>% 
+      dplyr::mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% 
                               stringr::str_remove_all(" _ "),character)) %>% 
       dplyr::ungroup() %>% 
       dplyr::arrange(h_border_group, row,col ) %>% 
-      select(row,col, character = value) 
+      dplyr::select(row,col, character = value) 
     
     header_df <- 
-      header_df %>% select(-character) %>% 
+      header_df %>% dplyr::select(-character) %>% 
       dplyr::left_join(filled_join, by = c("row", "col")) 
     
   }
@@ -237,7 +237,7 @@ add_variable_if_missing <- function(sheet, var){
   if(!var %in%  names(sheet)){
     var_sym <- rlang::sym(var)
     
-    sheet <- sheet %>% mutate(!!var_sym := NA_character_)
+    sheet <- sheet %>% dplyr::mutate(!!var_sym := NA_character_)
   }
   
   sheet
@@ -267,7 +267,7 @@ string_range_to_filter_vars <- function(sheet,table_range){
   table_range_df <-
     cell_ref_df[,1:2] %>%
     purrr::set_names(c("min","max")) %>%
-    mutate(dimension = c("row","col")) %>%
+    dplyr::mutate(dimension = c("row","col")) %>%
     tidyr::gather(key, value, -dimension) %>%
     tidyr::unite(label, key, dimension, sep = "_") %>%
     tidyr::spread(label, value )
@@ -276,7 +276,7 @@ string_range_to_filter_vars <- function(sheet,table_range){
   
   data_sheet <-
     sheet %>%
-    mutate(!!string_filter_name := 
+    dplyr::mutate(!!string_filter_name := 
              row >= table_range_df$min_row[1] & 
              row <= table_range_df$max_row[1] & 
              col >= table_range_df$min_col[1] &
@@ -344,3 +344,24 @@ get_header_index <- function(labels, regex_term = "^col_header") {
 #'
 #' @format A character vector of length 702
 "cols_index"
+
+
+
+
+#' A data frame used for testing. 
+#'
+#' A dataframe with data_cells added correctly  
+#'
+#' @format A character vector of length 702
+"worked_example_datacells"
+
+
+
+#' A data frame used for testin locate_if 
+#'
+#' A dataframe with location information added correctly using lacate_if  
+#'
+#' @format A character vector of length 702
+"worked_example_locate_if"
+
+
