@@ -27,7 +27,6 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
                            table_data = tabledata,
                            min_header_index = min_header_index_temp) {
   
-  browser()
   # Allow grouings to take names 
   # Create a vector of names so that they aren't identified from all functions with regex  
   
@@ -160,33 +159,25 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   
   names(.hook_if) <- "hook_var"
   
+  header_df <- 
   header_df %>% 
     unnest(cols = data) %>%  
     group_by(header_label) %>%
-    summarise(!!!.hook_if)
+    summarise(!!!.hook_if) %>% 
+    left_join(header_df,.,by = "header_label")
   
   # Create additional row variables to allow for nesting
-  
-  if(direction == "N"){
     
-    header_df <- header_df %>% dplyr::mutate(rowcol_group = row)
-    
-  }else if(direction == "W"){
-    
-    header_df <- header_df %>% dplyr::mutate(rowcol_group = col)
-    
-  }else {
-    
-    stop("Please check the direction you are providing")
-    
-  }
+  hook_direction <- case_when(direction == "N" ~ "NNW",
+                              direction == "W" ~ "WNW",
+                              direction == "S" ~ "SSW",
+                              direction == "E" ~ "ENE")
   
   
-    
   # Set direction ----
   header_df <-
     header_df %>%
-    dplyr::mutate(direction = default_col_header_direction) %>%
+    dplyr::mutate(direction = ifelse(hook_var == FALSE, default_col_header_direction,hook_direction)) %>%
     dplyr::select(header_label, direction, data, !!!grouping_vars)
   
   
@@ -224,14 +215,15 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   
   header_vars <- rlang::syms(header_df$header_label)
   
-  if (nrow(header_df) == 0) {
-    return(header_df)
+   if (nrow(header_df) == 0) {
+     
+      return(header_df)
   }
   
   
   header_df <-
     header_df %>%
-    tidyr::unnest() %>%
+    tidyr::unnest(cols = data) %>%
     dplyr::mutate(value = dplyr::coalesce(!!!header_vars)) %>%
     dplyr::select(row, col, .header_label = header_label, .direction = direction, .value = value)
   

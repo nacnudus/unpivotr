@@ -11,13 +11,12 @@
 #' @export
 
 locate_groups <-
-  function(sheet= NULL, type = "both", .groupings = groupings(fmt_alignment_indent), .hook_if = hook(any(FALSE)),
+  function(sheet= NULL, direction = "N", .groupings = groupings(fmt_alignment_indent), .hook_if = hook(any(FALSE)),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
 
-    browser()
     
       sheet_temp  <-  sheet
-      type_temp  <-  type
+      direction_temp <- direction 
       .groupings_temp <-  .groupings
       .hook_if_temp <- .hook_if
       default_col_header_direction_temp <- default_col_header_direction
@@ -26,7 +25,7 @@ locate_groups <-
       
       
       
-      locate_groups_if(sheet= sheet_temp,type = type_temp, .groupings = .groupings_temp,.hook_if = .hook_if_temp,
+      locate_groups_if(sheet= sheet_temp, direction = direction_temp, .groupings = .groupings_temp,.hook_if = .hook_if_temp,
                               default_col_header_direction = default_col_header_direction_temp,
                               default_row_header_direction = default_row_header_direction_temp,
                               header_fill = header_fill_temp)
@@ -50,10 +49,9 @@ locate_groups <-
 #' @export
 
 locate_groups_if <-
-  function(sheet= NULL,..., type = "both", .groupings = groupings(fmt_alignment_indent), .hook_if = hook(any(FALSE)),
+  function(sheet= NULL,..., direction = "N", .groupings = groupings(fmt_alignment_indent), .hook_if = hook(any(FALSE)),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
     
-    browser()   
     
     # If data_cells are missing, locate them automatically  
     if(is.null(attr(sheet,"data_cells"))){
@@ -99,7 +97,7 @@ locate_groups_if <-
     
     min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
     
-    get_header_groups(sheet, direction, value_ref, formats,
+   header_groups <- get_header_groups(sheet, direction, value_ref, formats,
                                   .groupings = groupings_temp,
                                   .hook_if = .hook_if_temp,
                                   header_fill = header_fill_choice,
@@ -107,114 +105,22 @@ locate_groups_if <-
                                   table_data = tabledata,
                                   min_header_index = min_header_index_temp) 
       
-    
-    # Get col groups ---------------------------------------------------------------------------------------------------
-    # Get arguments for get_col_groups 
-    
-    if(type == "both" | type == "col"){
-      
-    
-    value_ref <-   get_corner_cell_refs(tabledata)
-    header_fill_choice <-   match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
-    groupings_temp <- .groupings
-    default_col_header_direction_temp <- default_col_header_direction
-    .hook_if_temp <- .hook_if
-    
     min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
     
     
-    col_groups <- get_col_groups(sheet = sheet, value_ref = value_ref, formats = formats,.hook_if = .hook_if_temp,  
-                                 .groupings = groupings_temp,header_fill = header_fill_choice,
-                                 default_col_header_direction = default_col_header_direction_temp,
-                                 min_header_index = min_header_index_temp)
+    # if(exists("filtered_header_cells") & (type == "both" | type == "col")){
+    #   col_groups_in_filter <- 
+    #     paste0(col_groups$row,unpivotr::cols_index[col_groups$col]) %in% 
+    #     paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
+    #   
+    #   col_groups <- col_groups %>% dplyr::filter(col_groups_in_filter)
+    #   
+    # }
     
-    }
-
-    if(exists("filtered_header_cells") & (type == "both" | type == "col")){
-      col_groups_in_filter <- 
-        paste0(col_groups$row,unpivotr::cols_index[col_groups$col]) %in% 
-        paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
-      
-      col_groups <- col_groups %>% dplyr::filter(col_groups_in_filter)
-      
-    }
-    
-    
-    # Get rows groups ----
-    
-    if(type == "both" | type == "row"){
-      
-    
-    value_ref <-   get_corner_cell_refs(tabledata)
-    header_fill_choice <- match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
-    groupings_temp <- .groupings
-    default_row_header_direction_temp <- default_row_header_direction
-    
-    min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^row_header"))  
-    
-    row_groups <- get_row_groups(sheet = sheet, value_ref = value_ref, formats = formats, 
-                                 .groupings = groupings_temp, 
-                                 header_fill = header_fill_choice,
-                                 default_row_header_direction = default_row_header_direction_temp,
-                                 table_data = tabledata,
-                                 min_header_index = min_header_index_temp)
-    
-    }
-
-    if(exists("filtered_header_cells") & (type == "both" | type == "row")){
-      row_groups_in_filter <- 
-        paste0(row_groups$row,unpivotr::cols_index[row_groups$col]) %in% 
-        paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
-      
-        row_groups <- row_groups %>% dplyr::filter(row_groups_in_filter)
-    }
-    
-    
-    # Get meta groups ----
-    
-    if(type == "meta"){
-      
-    
-    value_ref <-   get_corner_cell_refs(tabledata)
-    header_fill_choice <- match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
-    groupings_temp <- .groupings
-    default_row_header_direction_temp <- default_row_header_direction
-    
-    min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^meta_header"))  
-    
-    meta_groups <- get_meta_groups(sheet = sheet, value_ref = value_ref, formats = formats, 
-                                 .groupings = groupings_temp, 
-                                 header_fill = header_fill_choice,
-                                 default_row_header_direction = default_row_header_direction_temp,
-                                 table_data = tabledata,
-                                 min_header_index = min_header_index_temp)
-    
-    }
-    
-    if(exists("filtered_header_cells") & type == "meta"){
-      row_groups_in_filter <- 
-        paste0(meta_groups$row,unpivotr::cols_index[meta_groups$col]) %in% 
-        paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
-      
-      meta_groups <- meta_groups %>% dplyr::filter(row_groups_in_filter)
-    }
     
     # Create column values 
-    if(type == "both" | type == "row"){
       
-      sheet <- sheet %>% dplyr::left_join(row_groups, by = c("row","col"),suffix = c(".o",".n")) 
-      
-      sheet <- 
-        sheet %>% 
-        dplyr::mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
-        dplyr::mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
-        dplyr::mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
-        dplyr::select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
-    }
-    
-    if(type == "both" | type == "col"){
-      
-      sheet <-  sheet %>% dplyr::left_join(col_groups, by = c("row","col"), suffix = c(".o",".n")) 
+      sheet <- sheet %>% dplyr::left_join(header_groups, by = c("row","col"),suffix = c(".o",".n")) 
       
       sheet <- 
         sheet %>% 
@@ -222,22 +128,6 @@ locate_groups_if <-
         dplyr::mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
         dplyr::mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
         dplyr::select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
-      
-    }
-
-    
-    # Create column values 
-    if(type == "meta"){
-      
-      sheet <- sheet %>% dplyr::left_join(meta_groups, by = c("row","col"),suffix = c(".o",".n")) 
-      
-      sheet <- 
-        sheet %>% 
-        dplyr::mutate(.header_label = dplyr::coalesce(.header_label.n,.header_label.o)) %>% 
-        dplyr::mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
-        dplyr::mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
-        dplyr::select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
-    }
         
     attr(sheet, "formats") <- formats
     attr(sheet, "data_cells") <- tabledata
