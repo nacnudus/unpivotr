@@ -11,19 +11,22 @@
 #' @export
 
 locate_groups <-
-  function(sheet= NULL, type = "both", .groupings = groupings(fmt_alignment_indent),
+  function(sheet= NULL, type = "both", .groupings = groupings(fmt_alignment_indent), .hook_if = hook(any(FALSE)),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
 
+    browser()
+    
       sheet_temp  <-  sheet
       type_temp  <-  type
       .groupings_temp <-  .groupings
+      .hook_if_temp <- .hook_if
       default_col_header_direction_temp <- default_col_header_direction
       default_row_header_direction_temp <- default_row_header_direction
       header_fill_temp <- header_fill
       
       
       
-      locate_groups_if(sheet= sheet_temp,type = type_temp, .groupings = .groupings_temp,
+      locate_groups_if(sheet= sheet_temp,type = type_temp, .groupings = .groupings_temp,.hook_if = .hook_if_temp,
                               default_col_header_direction = default_col_header_direction_temp,
                               default_row_header_direction = default_row_header_direction_temp,
                               header_fill = header_fill_temp)
@@ -47,9 +50,11 @@ locate_groups <-
 #' @export
 
 locate_groups_if <-
-  function(sheet= NULL,..., type = "both", .groupings = groupings(fmt_alignment_indent),
+  function(sheet= NULL,..., type = "both", .groupings = groupings(fmt_alignment_indent), .hook_if = hook(any(FALSE)),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
-       
+    
+    browser()   
+    
     # If data_cells are missing, locate them automatically  
     if(is.null(attr(sheet,"data_cells"))){
       # Set data location 
@@ -84,6 +89,27 @@ locate_groups_if <-
    
     # Get col groups ---------------------------------------------------------------------------------------------------
     # Get arguments for get_col_groups 
+
+    value_ref <-   get_corner_cell_refs(tabledata)
+    header_fill_choice <-   match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
+    groupings_temp <- .groupings
+    default_col_header_direction_temp <- default_col_header_direction
+    .hook_if_temp <- .hook_if  
+    
+    
+    min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
+    
+    get_header_groups(sheet, direction, value_ref, formats,
+                                  .groupings = groupings_temp,
+                                  .hook_if = .hook_if_temp,
+                                  header_fill = header_fill_choice,
+                                  default_col_header_direction = default_col_header_direction_temp,
+                                  table_data = tabledata,
+                                  min_header_index = min_header_index_temp) 
+      
+    
+    # Get col groups ---------------------------------------------------------------------------------------------------
+    # Get arguments for get_col_groups 
     
     if(type == "both" | type == "col"){
       
@@ -92,11 +118,12 @@ locate_groups_if <-
     header_fill_choice <-   match.arg(arg = header_fill, choices = c("local_format_id","style","borders","none"))  
     groupings_temp <- .groupings
     default_col_header_direction_temp <- default_col_header_direction
-
+    .hook_if_temp <- .hook_if
+    
     min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
     
     
-    col_groups <- get_col_groups(sheet = sheet, value_ref = value_ref, formats = formats, 
+    col_groups <- get_col_groups(sheet = sheet, value_ref = value_ref, formats = formats,.hook_if = .hook_if_temp,  
                                  .groupings = groupings_temp,header_fill = header_fill_choice,
                                  default_col_header_direction = default_col_header_direction_temp,
                                  min_header_index = min_header_index_temp)

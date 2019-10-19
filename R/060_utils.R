@@ -61,6 +61,20 @@ get_range_dfs <- function(range){
     dplyr::bind_rows()
 }
 
+#' Supply an expression to identify which header groups are hooked.
+#'
+#' @description
+#' Supply an expression to identify which header groups are hooked.
+#'
+#' @param range  a string representing a range in standard excel format. For example, "A4:B15, C11:G22"
+#'
+#' @name get_range_dfs
+
+hook <- function(...){
+  
+  rlang::quos(...)
+  
+}
 
 
 

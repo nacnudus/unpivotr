@@ -19,26 +19,59 @@
 
 
 
-get_col_groups <- function(sheet, value_ref, formats,
+get_header_groups <- function(sheet, direction, value_ref, formats,
                            .groupings = groupings(fmt_alignment_indent),
                            .hook_if = hook(ones),
                            header_fill = "local_format_id",
                            default_col_header_direction = default_col_header_direction_temp,
                            table_data = tabledata,
-                           filter_headers_by = filter_headers_by_temp,
                            min_header_index = min_header_index_temp) {
-
-browser()
-# Allow grouings to take names 
-# Create a vector of names so that they aren't identified from all functions with regex  
   
-# Idenitfy header cells to which directions will be allocated
-  header_df <- sheet %>%
-    dplyr::filter(col <= value_ref$max_col, col >= value_ref$min_col, row < value_ref$min_row)
+  browser()
+  # Allow grouings to take names 
+  # Create a vector of names so that they aren't identified from all functions with regex  
+  
+  
+  # Filter for header cells to which directions will be allocated based on direction --------------------------
+  
+  if(direction == "N"){
+    
+    header_df <- 
+      sheet %>%
+      dplyr::filter(col <= value_ref$max_col, col >= value_ref$min_col, row < value_ref$min_row)
+  
+  }else if(direction == "W"){
+    
+    col_df <- sheet %>% dplyr::filter(col <= value_ref$max_col, col >= value_ref$min_col, row < value_ref$min_row)
+    
+    col_df_crns <- col_df %>%
+      dplyr::filter(!is_blank) %>%
+      get_corner_cell_refs()
+    
+    header_df <- sheet %>% dplyr::filter(row <= value_ref$max_row, row > col_df_crns$max_row, col < value_ref$min_col)
+    
+  }else {
+    
+    stop("Please check the direction you are providing")
+    
+  }
+  
   
   # Create additional row variables to allow for nesting
   
-  header_df <- header_df %>% dplyr::mutate(row_temp = row)
+  if(direction == "N"){
+    
+    header_df <- header_df %>% dplyr::mutate(rowcol_group = row)
+    
+  }else if(direction == "W"){
+    
+    header_df <- header_df %>% dplyr::mutate(rowcol_group = col)
+    
+  }else {
+    
+    stop("Please check the direction you are providing")
+    
+  }
   
   # Check that at least one cell is in the header_df
   
@@ -46,9 +79,23 @@ browser()
     warning("No header groups have been detected. If you haven't already, try using the 'manual_value_references` argument")
   }
   
+  
+  
   # Fill in blanks ----
   
-  header_df <- suppressMessages(fill_blanks_in_col_headers(header_df, header_fill, formats))
+  if(direction == "N"){
+    
+    header_df <- suppressMessages(fill_blanks_in_col_headers(header_df, header_fill, formats))
+    
+  }else if(direction == "W"){
+    
+    header_df <- suppressMessages(fill_blanks_in_row_headers(header_df, header_fill, formats))
+    
+  }else {
+    
+    stop("Please check the direction you are providing")
+    
+  }
   
   # Create grouping variables for symbols provided to grouping.
   
@@ -66,8 +113,8 @@ browser()
     map(~ assign(paste0("grp_", rlang::as_label(closures[[.x]]) %>% stringr::str_remove_all("\\(\\)")),
                  rlang::set_env(rlang::eval_tidy(closures[[.x]])),
                  envir = openenv
-  
-  #!#!  create list of names of closures                
+                 
+                 #!#!  create list of names of closures                
                  
     ))
   
@@ -99,7 +146,7 @@ browser()
       as.character(logical), as.character(numeric),
       as.character(date), as.character(character)
     ) != "") %>%
-    dplyr::group_by(row_temp, !!!grouping_vars) %>%
+    dplyr::group_by(rowcol_group, !!!grouping_vars) %>%
     tidyr::nest() %>%
     dplyr::ungroup()
   
@@ -107,15 +154,9 @@ browser()
   header_df <-
     header_df %>%
     dplyr::mutate(row_no_name = dplyr::row_number() + min_header_index - 1) %>%
-    dplyr::mutate(header_label = paste0("col_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
+    dplyr::mutate(header_label = paste0(direction,"_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
   
-  
-  # Set direction ----
-  header_df <-
-    header_df %>%
-    dplyr::mutate(direction = default_col_header_direction) %>%
-    dplyr::select(header_label, direction, data, !!!grouping_vars)
-
+  # Get directions --------------------------------------------------------------------------------------
   
   names(.hook_if) <- "hook_var"
   
@@ -123,7 +164,32 @@ browser()
     unnest(cols = data) %>%  
     group_by(header_label) %>%
     summarise(!!!.hook_if)
+  
+  # Create additional row variables to allow for nesting
+  
+  if(direction == "N"){
     
+    header_df <- header_df %>% dplyr::mutate(rowcol_group = row)
+    
+  }else if(direction == "W"){
+    
+    header_df <- header_df %>% dplyr::mutate(rowcol_group = col)
+    
+  }else {
+    
+    stop("Please check the direction you are providing")
+    
+  }
+  
+  
+    
+  # Set direction ----
+  header_df <-
+    header_df %>%
+    dplyr::mutate(direction = default_col_header_direction) %>%
+    dplyr::select(header_label, direction, data, !!!grouping_vars)
+  
+  
   
   # remove extra variables ----
   header_df <-
@@ -144,16 +210,16 @@ browser()
       }
     ))
   
-
+  
   # Add information to output df ----
   
   header_df <-
     header_df %>%
     dplyr::mutate(data_summary = data %>%
-             map(~ .x %>% dplyr::summarise(
-               min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
-               min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
-             ))) %>%
+                    map(~ .x %>% dplyr::summarise(
+                      min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
+                      min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
+                    ))) %>%
     tidyr::unnest(data_summary)
   
   header_vars <- rlang::syms(header_df$header_label)
