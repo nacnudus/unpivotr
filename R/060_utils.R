@@ -379,3 +379,39 @@ get_header_index <- function(labels, regex_term = "^col_header") {
 "worked_example_locate_if"
 
 
+
+
+#' Matches directions to unicode arrows for an interative chart  
+#'
+#' A dataframe .direction, .arrow and .rate columns   
+#'
+#' @format a dataframe
+"direction_plot_interactive"
+
+
+
+#' Matches directions to unicode arrows for an interative chart  
+#'
+#' A dataframe .direction, .arrow and .rate columns   
+#'
+#' @format a dataframe
+"direction_plot_noninteractive"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

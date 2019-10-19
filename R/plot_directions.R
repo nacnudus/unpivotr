@@ -9,6 +9,7 @@
 
 plot_cells <- function(sheet, text = values, interactive = FALSE) {
 
+  
    if(!is.null(attr(sheet,"data_cells"))){
     
     data_cells <-
@@ -19,37 +20,23 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
     sheet <- dplyr::bind_rows(sheet, data_cells)
     
    }else{
-  
+     
      # Add annotation variables if missing  
      added_var_list <- list(sheet,".header_label",".direction", ".value")
      sheet <-  added_var_list %>% purrr::reduce(add_variable_if_missing)
      
-   sheet <- 
-     sheet %>% 
-     dplyr::mutate(.header_label = "None")
+     sheet <- 
+       sheet %>% 
+       dplyr::mutate(.header_label = "None")
      
-  }
+   }
   
-    
+  
   if (interactive == FALSE) {
     sheet_01 <-
-      sheet %>%
-      dplyr::mutate(.arrow = dplyr::case_when(
-        .direction == "N"   ~ "\U2193",
-        .direction == "NNE" ~ "\U21B2", 
-        .direction == "ENE" ~ "\U21B3",
-        .direction == "E"   ~ "\U2190",
-        .direction == "ESE" ~ "\U21B2",
-        .direction == "SSE" ~ "\U21B0",     
-        .direction == "S"   ~ "\U2191",
-        .direction == "SSW" ~ "\U21B1",
-        .direction == "WSW" ~ "\U21B0",
-        .direction == "W"   ~ "\U2192",
-        .direction == "WNW" ~ "\U21B1",
-        .direction == "NNW" ~ "\U21B3")) %>% 
+      sheet %>% left_join(unpivotr::direction_plot_noninteractive, by = ".direction") %>% 
       dplyr::mutate(values = dplyr::coalesce(as.character(numeric),as.character(character),
-                               as.character(logical),as.character(date)))
-    
+                                             as.character(logical),as.character(date)))
     dplyr::bind_rows(
       dplyr::mutate(sheet_01, .arrow = NA, set = "Cell values"),
       dplyr::mutate(sheet_01, {{text}} := NA, set = "Directions")) %>%
@@ -61,23 +48,9 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
   } else {
     
     sheet_01 <-
-      sheet %>%
-      dplyr::mutate(.arrow = dplyr::case_when(
-        .direction == "N"   ~ "\U2193",
-        .direction == "NNE" ~ "\U21B1", 
-        .direction == "ENE" ~ "\U21B1",
-        .direction == "E"   ~ "\U2190",
-        .direction == "ESE" ~ "\U21B2",
-        .direction == "SSE" ~ "\U21B0",     
-        .direction == "S"   ~ "\U2191",
-        .direction == "SSW" ~ "\U21B1",
-        .direction == "WSW" ~ "\U21B0",
-        .direction == "W"   ~ "\U2192",
-        .direction == "WNW" ~ "\U21B1",
-        .direction == "NNW" ~ "\U21B3")) %>%  
+      sheet %>% left_join(unpivotr::direction_plot_interactive, by = ".direction") %>% 
       dplyr::mutate(values = dplyr::coalesce(as.character(numeric),as.character(character),
-                               as.character(logical),as.character(date)))
-    
+                                             as.character(logical),as.character(date)))
     plot_object <-
       dplyr::bind_rows(
         dplyr::mutate(sheet_01, .arrow = NA, set = "Cell values"),
