@@ -177,7 +177,7 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   # Set direction ----
   header_df <-
     header_df %>%
-    dplyr::mutate(direction = ifelse(hook_var == FALSE, default_col_header_direction,hook_direction)) %>%
+    dplyr::mutate(direction = ifelse(hook_var == FALSE, direction,hook_direction)) %>%
     dplyr::select(header_label, direction, data, !!!grouping_vars)
   
   

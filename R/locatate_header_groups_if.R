@@ -101,7 +101,6 @@ locate_groups_if <-
                                   .groupings = groupings_temp,
                                   .hook_if = .hook_if_temp,
                                   header_fill = header_fill_choice,
-                                  default_col_header_direction = default_col_header_direction_temp,
                                   table_data = tabledata,
                                   min_header_index = min_header_index_temp) 
       
