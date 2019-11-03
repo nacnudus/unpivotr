@@ -82,7 +82,7 @@ unmerge_row_cells <- function(sheet, strict_merging = T) {
 
   # Filter out blank cells - use this to check neighbours of blank cells
   joiner <- sheet %>%
-    select(-character_formatted) %>%
+    dplyr::select(-character_formatted) %>%
     dplyr::filter(!is_blank)
 
   # Check each cells agains the column to the left

@@ -34,7 +34,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
   
   if (interactive == FALSE) {
     sheet_01 <-
-      sheet %>% left_join(unpivotr::direction_plot_noninteractive, by = ".direction") %>% 
+      sheet %>% dplyr::left_join(unpivotr::direction_plot_noninteractive, by = ".direction") %>% 
       dplyr::mutate(values = dplyr::coalesce(as.character(numeric),as.character(character),
                                              as.character(logical),as.character(date)))
     dplyr::bind_rows(
@@ -48,7 +48,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
   } else {
     
     sheet_01 <-
-      sheet %>% left_join(unpivotr::direction_plot_interactive, by = ".direction") %>% 
+      sheet %>% dplyr::left_join(unpivotr::direction_plot_interactive, by = ".direction") %>% 
       dplyr::mutate(values = dplyr::coalesce(as.character(numeric),as.character(character),
                                              as.character(logical),as.character(date)))
     plot_object <-

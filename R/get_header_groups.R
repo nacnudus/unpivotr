@@ -161,14 +161,14 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   
   header_df <- 
   header_df %>% 
-    unnest(cols = data) %>%  
-    group_by(header_label) %>%
-    summarise(!!!.hook_if) %>% 
-    left_join(header_df,.,by = "header_label")
+    tidyr::unnest(cols = data) %>%  
+    dplyr::group_by(header_label) %>%
+    dplyr::summarise(!!!.hook_if) %>% 
+    dplyr::left_join(header_df,.,by = "header_label")
   
   # Create additional row variables to allow for nesting
     
-  hook_direction <- case_when(direction == "N" ~ "NNW",
+  hook_direction <- dplyr::case_when(direction == "N" ~ "NNW",
                               direction == "W" ~ "WNW",
                               direction == "S" ~ "SSW",
                               direction == "E" ~ "ENE")
@@ -207,7 +207,7 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   header_df <-
     header_df %>%
     dplyr::mutate(data_summary = data %>%
-                    map(~ .x %>% dplyr::summarise(
+                    purrr::map(~ .x %>% dplyr::summarise(
                       min_col = min(col, na.rm = T), max_col = max(col, na.rm = T),
                       min_row = min(row, na.rm = T), max_row = max(row, na.rm = T)
                     ))) %>%
