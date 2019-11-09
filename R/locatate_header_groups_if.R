@@ -107,14 +107,14 @@ locate_groups_if <-
     min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
     
     
-    # if(exists("filtered_header_cells") & (type == "both" | type == "col")){
-    #   col_groups_in_filter <- 
-    #     paste0(col_groups$row,unpivotr::cols_index[col_groups$col]) %in% 
-    #     paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
-    #   
-    #   col_groups <- col_groups %>% dplyr::filter(col_groups_in_filter)
-    #   
-    # }
+    if(exists("filtered_header_cells")){
+      col_groups_in_filter <-
+        paste0(header_groups$row,unpivotr::cols_index[header_groups$col]) %in%
+        paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
+
+      header_groups <- header_groups %>% dplyr::filter(col_groups_in_filter)
+
+    }
     
     
     # Create column values 
