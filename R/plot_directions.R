@@ -9,7 +9,6 @@
 
 plot_cells <- function(sheet, text = values, interactive = FALSE) {
 
-  
    if(!is.null(attr(sheet,"data_cells"))){
     
     data_cells <-
@@ -42,8 +41,9 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       dplyr::mutate(sheet_01, {{text}} := NA, set = "Directions")) %>%
       ggplot2::ggplot(ggplot2::aes(x = col, y = -row, fill = .header_label)) + ggplot2::geom_tile() +
       ggplot2::geom_text(ggplot2::aes(label = stringr::str_sub({{text}}, 1, 3))) +
-      ggplot2::geom_text(ggplot2::aes(label = ifelse(!.direction %in% c("WNW","ESE","WSW","ENE"), .arrow, NA))) +
-      ggplot2::geom_text(ggplot2::aes(label = ifelse(.direction %in% c("WNW", "ESE","WSW","ENE"), .arrow, NA)), angle = 270) +
+      ggplot2::geom_text(ggplot2::aes(label = ifelse(.rotate ==0 ,.arrow, NA))) +
+      ggplot2::geom_text(ggplot2::aes(label = ifelse(.rotate %in% 90,  .arrow, NA)), angle = 90) +
+      ggplot2::geom_text(ggplot2::aes(label = ifelse(.rotate %in% -90, .arrow, NA)), angle = -90) +
       ggplot2::facet_wrap(~set, scales = "free")
   } else {
     
@@ -58,8 +58,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       ) %>%
       ggplot2::ggplot(ggplot2::aes(x = col, y = -row, fill = .header_label)) + ggplot2::geom_tile() +
       ggplot2::geom_text(ggplot2::aes(label = stringr::str_sub({{text}}, 1, 5))) +
-      ggplot2::geom_text(ggplot2::aes(label = ifelse(.direction %in% c("W", "N"), .arrow, NA))) +
-      ggplot2::geom_text(ggplot2::aes(label = ifelse(.direction %in% c("WNW"), .arrow, NA)), angle = -90) +
+      ggplot2::geom_text(ggplot2::aes(label = .arrow)) +
       ggplot2::facet_wrap(~set, scales = "free")
     
     plotly::ggplotly(plot_object)
