@@ -7,8 +7,10 @@ output:
     toc: true
 vignette: >
   %\VignetteIndexEntry{Tidying with unpivotr locate functions}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -17,28 +19,33 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 # Load all packages 
+library("pacman")
+
+load_outcome <- 
+  p_load(cowplot, dplyr,ggplot2, devtools, here, hrbrthemes,lubridate,magrittr,
+        magick, stringr, purrr, plotly, rlang, tidyverse, stringr, scales, tidyxl)
+
+p_load(hrbrthemes)
+
+library(cowplot)
+library(dplyr)
+library(ggplot2)
+library(devtools)
 library(here)
+library(hrbrthemes)
+library(lubridate)
+library(magrittr)
+library(magick)
 library(stringr)
 library(purrr)
-library(dplyr)
-library(rlang)
-library(magrittr)
-library(ggplot2)
-library(cowplot)
 library(plotly)
-library(unpivotr)
-library(magick)
-library(magrittr)
+library(rlang)
 library(tidyverse)
 library(stringr)
-library(rlang)
-library(lubridate)
-library(hrbrthemes)
 library(scales)
-library(devtools)
-library(rlang)
 library(tidyxl)
-library(unpivotr)
+
+load_all(".")
 ```
 
 The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl data frame and leave reshaping to a final function call. 
@@ -105,12 +112,21 @@ unpivotr_example("worked-examples.xlsx") %>%
 We can deal with headers differentiated by formatting more concisely using `locate_groups`. The `.grouping` argument allows us to indicate which formats differentiate headers. In this case, hierarchy is indicated by indenting, which can be accessed with the `fmt_alignment_indent` function. 
 
 ```{r message=FALSE, warning=FALSE}
-unpivotr_example("worked-examples.xlsx") %>% 
+
+load_all()
+unpivotr_example("worked-examples.xlsx") %>%
   xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
+  append_fmt(fmt_alignment_indent) %>% 
   locate_data(data_type == "numeric") %>%
-  locate_groups(type = "row",.groupings = groupings(fmt_alignment_indent)) %>%
+  locate_groups(direction = "W",
+                .groupings = groupings(fmt_alignment_indent),
+                .hook_if =     hook(any(fmt_alignment_indent == 0))) %>%
   locate(direction = "N", name = student) %>% 
+  plot_cells()
+  
   migrate()
+
+
 ```
 
 To browse different aspects of formatting on which to separate headers, type `fmt_` and tab 

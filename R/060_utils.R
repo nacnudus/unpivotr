@@ -39,7 +39,6 @@ get_range_df <- function(range){
   
   expand.grid(row = c(range_df$min_row[1]:range_df$max_row[1]),
               col = c(range_df$min_col[2]:range_df$max_col[1]))
-  
 }
 
 #' Produces a data frame with a row for each col/row combination in a the provided range.
@@ -75,9 +74,6 @@ hook <- function(...){
   rlang::quos(...)
   
 }
-
-
-
 
 #' Fill in blanks
 #'
@@ -117,7 +113,6 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
   
   if(header_fill ==  "borders"){
     
-    
     filled_join <- 
       header_df %>%  
       add_v_border_groups(formats) %>% 
@@ -149,6 +144,50 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
 #' 
 
 
+fill_blanks_in_headers <- function(header_df, header_fill, formats, direction){
+  
+  
+  if(direction %in% c("N", "S", "up","down")){
+    
+    header_df <- suppressMessages(fill_blanks_in_col_headers(header_df, header_fill, formats))
+    
+  }else if(direction %in% c("W", "E", "left","right")){
+    
+    header_df <- suppressMessages(fill_blanks_in_row_headers(header_df, header_fill, formats))
+    
+  }else {
+    
+    stop("Please check the direction you are providing")
+    
+  }
+  
+  header_df
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' Fill in blanks
+#'
+#' This function ensures that merged cells are unmerged.
+#'
+#' @param df a data frame containing header cells. 
+#' @param form_list list of fomulae 
+#' @param format the formats associated with the workbook containing the header_df cells.
+#' 
+
 reduce_mutated <- function(df, form_list,format){
   
   current_quosure <-  form_list[[1]]
@@ -159,16 +198,13 @@ reduce_mutated <- function(df, form_list,format){
   
 }  
 
-
-
-  
-  #' Fill in blanks
-  #'
-  #' This function ensures that merged cells are unmerged.
-  #'
-  #' @param header_df a data frame containing header cells. 
-  #' @param header_fill the manner is which blank cells will be filled. 
-  #' @param formats the formats associated with the workbook containing the header_df cells.
+#' Fill in blanks
+#'
+#' This function ensures that merged cells are unmerged.
+#'
+#' @param header_df a data frame containing header cells. 
+#' @param header_fill the manner is which blank cells will be filled. 
+#' @param formats the formats associated with the workbook containing the header_df cells.
   
   fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
     
@@ -195,7 +231,6 @@ reduce_mutated <- function(df, form_list,format){
     
   }
   
-  
   if(header_fill ==  "borders"){
     
     filled_join <- 
@@ -219,8 +254,6 @@ reduce_mutated <- function(df, form_list,format){
   
 } 
 
-
-
 #' Give quasure a name
 #'
 #' Adds name of a quosure so that use in mutate automatically adds name.
@@ -238,8 +271,6 @@ append_name_to_quosure <- function(x, prefix = "grp_"){
   
 }
 
-
-
 #' An internal function to add a variable to a tidyxl data frame in that variable is missing 
 #'
 #' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
@@ -256,8 +287,6 @@ add_variable_if_missing <- function(sheet, var){
   
   sheet
 }
-
-
 
 #' get tidyABS components
 #'
@@ -295,7 +324,6 @@ string_range_to_filter_vars <- function(sheet,table_range){
              row <= table_range_df$max_row[1] & 
              col >= table_range_df$min_col[1] &
              col <= table_range_df$max_col[1])
-  
 }
 
 #' get_corner_cell_refs
@@ -317,9 +345,6 @@ get_corner_cell_refs <- function(sheet) {
   
 } 
 
-
-
-
 #' Fill in blanks
 #'
 #' This function ensures that merged cells are unmerged.
@@ -328,15 +353,12 @@ get_corner_cell_refs <- function(sheet) {
 #' @param direction direction suplied to enhead. 
 #' @param values the data values.
 
-
 enhead_tabledata <- function(header_data, direction, values = tabledata) {
   unpivotr::enhead(
     data_cells = values,
     header_cells = header_data,
     direction = direction) 
 }
-
-
 
 #' Get current column number
 #'
@@ -351,16 +373,12 @@ get_header_index <- function(labels, regex_term = "^col_header") {
   
 }
 
-
 #' Order set of excel column indexes.
 #'
 #' A character vector containing and ordered set of excel column indexes  
 #'
 #' @format A character vector of length 702
 "cols_index"
-
-
-
 
 #' A data frame used for testing. 
 #'
@@ -369,17 +387,12 @@ get_header_index <- function(labels, regex_term = "^col_header") {
 #' @format A character vector of length 702
 "worked_example_datacells"
 
-
-
 #' A data frame used for testin locate_if 
 #'
 #' A dataframe with location information added correctly using lacate_if  
 #'
 #' @format A character vector of length 702
 "worked_example_locate_if"
-
-
-
 
 #' Matches directions to unicode arrows for an interative chart  
 #'
@@ -388,30 +401,9 @@ get_header_index <- function(labels, regex_term = "^col_header") {
 #' @format a dataframe
 "direction_plot_interactive"
 
-
-
 #' Matches directions to unicode arrows for an interative chart  
 #'
 #' A dataframe .direction, .arrow and .rate columns   
 #'
 #' @format a dataframe
 "direction_plot_noninteractive"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

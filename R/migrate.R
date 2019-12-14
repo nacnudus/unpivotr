@@ -16,8 +16,6 @@
 
 migrate <- function(orientated_df, numeric_value = FALSE) {
   
-
-  
   orientated_df_nested <-
     orientated_df %>%
     dplyr::filter(!is.na(.direction)) %>%

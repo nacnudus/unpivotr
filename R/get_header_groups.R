@@ -22,6 +22,7 @@
 get_header_groups <- function(sheet, direction, value_ref, formats,
                            .groupings = groupings(fmt_alignment_indent),
                            .hook_if = hook(ones),
+                           .hook_if_rev = hook(ones),
                            header_fill = "local_format_id",
                            default_col_header_direction = default_col_header_direction_temp,
                            table_data = tabledata,
@@ -30,47 +31,20 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   # Allow grouings to take names 
   # Create a vector of names so that they aren't identified from all functions with regex  
   
-  
   # Filter for header cells to which directions will be allocated based on direction --------------------------
+ 
   
-  if(direction == "N"){
-    
-    header_df <- 
-      sheet %>%
-      dplyr::filter(col <= value_ref$max_col, col >= value_ref$min_col, row < value_ref$min_row)
+   
+  header_df <-  direction_filter_header(sheet,direction,value_ref)
   
-  }else if(direction == "W"){
-    
-    col_df <- sheet %>% dplyr::filter(col <= value_ref$max_col, col >= value_ref$min_col, row < value_ref$min_row)
-    
-    col_df_crns <- col_df %>%
-      dplyr::filter(!is_blank) %>%
-      get_corner_cell_refs()
-    
-    header_df <- sheet %>% dplyr::filter(row <= value_ref$max_row, row > col_df_crns$max_row, col < value_ref$min_col)
-    
-  }else {
-    
-    stop("Please check the direction you are providing")
-    
-  }
-  
-  
+
   # Create additional row variables to allow for nesting
   
-  if(direction == "N"){
-    
-    header_df <- header_df %>% dplyr::mutate(rowcol_group = row)
-    
-  }else if(direction == "W"){
-    
-    header_df <- header_df %>% dplyr::mutate(rowcol_group = col)
-    
-  }else {
-    
-    stop("Please check the direction you are providing")
-    
-  }
+  header_df <- 
+    header_df %>% 
+    dplyr::mutate(rowcol_group = case_when(
+      direction %in% c("N", "S", "up","down") ~ row, 
+      direction %in% c("W", "E", "left","right") ~ col))
   
   # Check that at least one cell is in the header_df
   
@@ -78,29 +52,14 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
     warning("No header groups have been detected. If you haven't already, try using the 'manual_value_references` argument")
   }
   
-  
-  
   # Fill in blanks ----
   
-  if(direction == "N"){
+  header_df <- fill_blanks_in_headers(header_df, header_fill, formats, direction)
     
-    header_df <- suppressMessages(fill_blanks_in_col_headers(header_df, header_fill, formats))
-    
-  }else if(direction == "W"){
-    
-    header_df <- suppressMessages(fill_blanks_in_row_headers(header_df, header_fill, formats))
-    
-  }else {
-    
-    stop("Please check the direction you are providing")
-    
-  }
-  
   # Create grouping variables for symbols provided to grouping.
   
-  .groupings <- .groupings %>%
-    append(rlang::quo(ones)) %>%
-    append(rlang::quo(1 + 1))
+  
+  .groupings <- .groupings %>% append(rlang::quo(ones)) %>% append(rlang::quo(1 + 1))
   
   symbol_filter <- .groupings %>% purrr::map_lgl(~ typeof(rlang::get_expr(.x)) == "symbol")
   
@@ -120,12 +79,9 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   closure_list <- rlang::syms(ls()[stringr::str_detect(ls(), "grp_")])
   
   header_df <-
-    header_df %>%
-    dplyr::mutate_at(
-      .vars = "local_format_id",
-      .funs = tibble::lst(!!!closure_list)
-    )
+    header_df %>% dplyr::mutate_at(.vars = "local_format_id",.funs = tibble::lst(!!!closure_list))
   
+
   # Create grouping variables for symbols provided to grouping.
   
   fmt_forms <-  .groupings[!symbol_filter]
@@ -141,10 +97,8 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   # Nest header groups ----
   header_df <-
     header_df %>%
-    dplyr::filter(dplyr::coalesce(
-      as.character(logical), as.character(numeric),
-      as.character(date), as.character(character)
-    ) != "") %>%
+    dplyr::filter(dplyr::coalesce(as.character(logical), as.character(numeric),
+                  as.character(date), as.character(character)) != "") %>%
     dplyr::group_by(rowcol_group, !!!grouping_vars) %>%
     tidyr::nest() %>%
     dplyr::ungroup()
@@ -156,31 +110,50 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
     dplyr::mutate(header_label = paste0(direction,"_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
   
   # Get directions --------------------------------------------------------------------------------------
+ 
   
   names(.hook_if) <- "hook_var"
-  
-  header_df <- 
+  names(.hook_if_rev) <- "hook_var_rev"
+    
+  header_df_hook <- 
   header_df %>% 
     tidyr::unnest(cols = data) %>%  
     dplyr::group_by(header_label) %>%
-    dplyr::summarise(!!!.hook_if) %>% 
-    dplyr::left_join(header_df,.,by = "header_label")
+    dplyr::summarise(!!!.hook_if)
+  
+  header_df_hook_rev <- 
+    header_df %>% 
+    tidyr::unnest(cols = data) %>%  
+    dplyr::group_by(header_label) %>%
+    dplyr::summarise(!!!.hook_if_rev)
+  
+  header_df <- 
+  full_join(header_df_hook,header_df_hook_rev,by = "header_label") %>% 
+  dplyr::left_join(header_df,.,by = "header_label")
   
   # Create additional row variables to allow for nesting
     
-  hook_direction <- dplyr::case_when(direction == "N" ~ "NNW",
-                              direction == "W" ~ "WNW",
-                              direction == "S" ~ "SSW",
-                              direction == "E" ~ "ENE")
+  hook_direction <- dplyr::case_when(
+                              direction %in% c("N","up") ~ "NNW",
+                              direction %in% c("W","left") ~ "WNW",
+                              direction %in% c("S","down") ~ "SSW",
+                              direction %in% c("E","right") ~ "ENE")
+  
+  hook_direction_rev <- dplyr::case_when(
+                              direction %in% c("N","up") ~ "NNE",
+                              direction %in% c("W","left") ~ "WSW",
+                              direction %in% c("S","down") ~ "SSE",
+                              direction %in% c("E","right") ~ "ESE")
   
   
   # Set direction ----
   header_df <-
     header_df %>%
-    dplyr::mutate(direction = ifelse(hook_var == FALSE, direction,hook_direction)) %>%
+    dplyr::mutate(direction = case_when(
+      hook_var_rev == TRUE ~ hook_direction_rev, 
+      hook_var == TRUE     ~ hook_direction, 
+      TRUE                 ~ direction)) %>%
     dplyr::select(header_label, direction, data, !!!grouping_vars)
-  
-  
   
   # remove extra variables ----
   header_df <-

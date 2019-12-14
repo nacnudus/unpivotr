@@ -11,28 +11,26 @@
 #' @export
 
 locate_groups <-
-  function(sheet= NULL, direction = "N", .groupings = groupings(fmt_alignment_indent), .hook_if = hook(any(FALSE)),
+  function(sheet= NULL, direction = "N", .groupings = groupings(fmt_alignment_indent), 
+           .hook_if = hook(any(FALSE)),.hook_if_rev = hook(any(FALSE)),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
 
-    
-      sheet_temp  <-  sheet
-      direction_temp <- direction 
-      .groupings_temp <-  .groupings
-      .hook_if_temp <- .hook_if
+      sheet_temp        <-  sheet
+      direction_temp    <- direction 
+      .groupings_temp   <-  .groupings
+      .hook_if_temp     <- .hook_if
+      .hook_if_rev_temp <- .hook_if_rev
       default_col_header_direction_temp <- default_col_header_direction
       default_row_header_direction_temp <- default_row_header_direction
       header_fill_temp <- header_fill
       
-      
-      
-      locate_groups_if(sheet= sheet_temp, direction = direction_temp, .groupings = .groupings_temp,.hook_if = .hook_if_temp,
+      locate_groups_if(sheet= sheet_temp, direction = direction_temp, .groupings = .groupings_temp,
+                              .hook_if = .hook_if_temp,
+                              .hook_if_rev = .hook_if_rev_temp,
                               default_col_header_direction = default_col_header_direction_temp,
                               default_row_header_direction = default_row_header_direction_temp,
                               header_fill = header_fill_temp)
       
-    
-    
-    
   }
 
 
@@ -49,7 +47,8 @@ locate_groups <-
 #' @export
 
 locate_groups_if <-
-  function(sheet= NULL,..., direction = "N", .groupings = groupings(fmt_alignment_indent), .hook_if = hook(any(FALSE)),
+  function(sheet= NULL,..., direction = "N", .groupings = groupings(fmt_alignment_indent), 
+           .hook_if = hook(any(FALSE)), .hook_if_rev = hook(any(FALSE)),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
     
     
@@ -93,6 +92,7 @@ locate_groups_if <-
     groupings_temp <- .groupings
     default_col_header_direction_temp <- default_col_header_direction
     .hook_if_temp <- .hook_if  
+    .hook_if_rev_temp <- .hook_if_rev  
     
     
     min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
@@ -100,6 +100,7 @@ locate_groups_if <-
    header_groups <- get_header_groups(sheet, direction, value_ref, formats,
                                   .groupings = groupings_temp,
                                   .hook_if = .hook_if_temp,
+                                  .hook_if_rev = .hook_if_rev_temp,
                                   header_fill = header_fill_choice,
                                   table_data = tabledata,
                                   min_header_index = min_header_index_temp) 
@@ -108,11 +109,11 @@ locate_groups_if <-
     
     
     if(exists("filtered_header_cells")){
-      col_groups_in_filter <-
+      header_groups_in_filter <-
         paste0(header_groups$row,unpivotr::cols_index[header_groups$col]) %in%
         paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
 
-      header_groups <- header_groups %>% dplyr::filter(col_groups_in_filter)
+      header_groups <- header_groups %>% dplyr::filter(header_groups_in_filter)
 
     }
     

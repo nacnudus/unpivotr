@@ -45,6 +45,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       ggplot2::geom_text(ggplot2::aes(label = ifelse(.rotate %in% 90,  .arrow, NA)), angle = 90) +
       ggplot2::geom_text(ggplot2::aes(label = ifelse(.rotate %in% -90, .arrow, NA)), angle = -90) +
       ggplot2::facet_wrap(~set, scales = "free") + 
+      ggplot2::labs(y = "Row", x = "Column") +
       scale_y_reverse()
     
   } else {
@@ -62,6 +63,7 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
       ggplot2::geom_text(ggplot2::aes(label = stringr::str_sub({{text}}, 1, 5))) +
       ggplot2::geom_text(ggplot2::aes(label = .arrow)) +
       ggplot2::facet_wrap(~set, scales = "free") +
+      ggplot2::labs(y = "Row", x = "Column") +
       scale_y_reverse()
     
     plotly::ggplotly(plot_object)
