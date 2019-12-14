@@ -1,10 +1,15 @@
-library("XLConnect")
+
+rm(list = ls())
 
 # Test script 
+library("XLConnect")
 library(devtools)
 library(tidyverse)
 load_all("/home/ian/main/projects/unpivotr")
 
+devtools::document()
+devtools::build()
+devtools::build()
 
 # Check Arrow directions ----------------------------------------------------------------------
 direction_df <- unpivotr::xlsx_cells_fmt("/home/ian/main/projects/data/directions_table.xlsx")
@@ -92,28 +97,16 @@ cpi_df %>% tidyabs_ts() %>% plot_cells()
 
 
 # Check check tidy abs   ----------------------------------------------------------------------
-phd_df <- unpivotr::xlsx_cells_fmt("/home/ian/main/projects/data/PhD_ subfield-citizenship-status-ethnicity-race.xlsx",sheets = 1)
 
 load_all("/home/ian/main/projects/unpivotr")
 
-phd_df$
+phd_df <- unpivotr::xlsx_cells_fmt("/home/ian/main/projects/data/PhD_ subfield-citizenship-status-ethnicity-race.xlsx",sheets = 1)
 
 phd_df %>% 
   append_fmt(fmt_font_bold,fmt_font_italic,fmt_alignment_indent) %>% 
-  mutate_fmt(fmt_alignment_indent_max = max(fmt_alignment_indent)) %>% 
+  mutate(fmt_alignment_indent_max = max(fmt_alignment_indent)) %>% 
   locate_data(data_type == "numeric") %>% 
   locate_groups(directio= "W", .groupings = groupings(fmt_alignment_indent), 
                 .hook_if = hook(any(fmt_alignment_indent < fmt_alignment_indent_max)) ) %>% 
   locate_groups(direction= "N") %>% 
-  plot_cells %>% 
-  migrate %>% write_csv("temp.csv")
-
-
-
-list.files("/home/ian/main/projects/data/",full.names = T)
-
-
-
-
-
-PhD_major-field.xlsx
+  plot_cells

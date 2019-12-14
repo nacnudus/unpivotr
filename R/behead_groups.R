@@ -25,8 +25,8 @@ behead_groups <-
     
     
     behead_groups_if(sheet= sheet_temp ,type = type_temp, .groupings = .groupings_temp,
-               default_col_header_direction = default_col_header_direction_temp,
-               default_row_header_direction = default_row_header_direction_temp,
-               header_fill = header_fill_temp)
+                     default_col_header_direction = default_col_header_direction_temp,
+                     default_row_header_direction = default_row_header_direction_temp,
+                     header_fill = header_fill_temp)
     
   }

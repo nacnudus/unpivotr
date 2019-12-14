@@ -2,11 +2,11 @@
 % Please edit documentation in R/behead_dc.R, R/migrate.R
 \name{migrate}
 \alias{migrate}
-\alias{behead_dc}
+\alias{behead.located_data}
 \title{Transform a tidyxl data frame with directions to a tidy data frame that has a column for each header label.}
 \usage{
-behead_dc(cells, direction, name, values = NULL, types = data_type,
-  formatters = list(), drop_na = TRUE)
+\method{behead}{located_data}(cells, direction, name, values = NULL,
+  types = data_type, formatters = list(), drop_na = TRUE)
 
 migrate(orientated_df, numeric_value = FALSE)
 }

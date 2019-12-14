@@ -126,7 +126,7 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
       header_df %>% dplyr::select(-character) %>% dplyr::left_join(filled_join, by = c("row", "col")) %>% 
       dplyr::arrange(row,col) 
     
-  
+    
   }
   
   header_df

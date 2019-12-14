@@ -23,8 +23,6 @@ locate_data <-
     sheet <- 
       sheet %>% dplyr::select(.value, .direction, .header_label, dplyr::everything() )
     
-    
-
     filter_expresions_type <- filter_expresions %>% purrr::map_chr(~typeof(rlang::get_expr(.x)))
     
     filter_expresions_string <- filter_expresions[filter_expresions_type == "string"]
@@ -48,7 +46,7 @@ locate_data <-
     
     seq_along(closures) %>% 
       purrr::map(~ assign(paste0("flt_", rlang::as_label(closures[[.x]]) %>% stringr::str_remove_all("\\(\\)") ),
-                   rlang::set_env(rlang::eval_tidy(closures[[.x]])),envir = openenv))
+                          rlang::set_env(rlang::eval_tidy(closures[[.x]])),envir = openenv))
     
     closure_list <- rlang::syms(ls()[stringr::str_detect(ls(),"flt_")]) 
     closure_list <- rlang::syms(ls()[stringr::str_detect(ls(),"flt_")]) 
@@ -56,7 +54,7 @@ locate_data <-
     sheet <- 
       sheet %>% 
       dplyr::mutate_at(.vars = "local_format_id",
-                .funs = tibble::lst(!!!closure_list))
+                       .funs = tibble::lst(!!!closure_list))
     
     #------------------------------------------------------------------------------------------
     filter_expresions_langage <- filter_expresions_langage %>% append(rlang::quo(2 + 1))   
@@ -71,22 +69,20 @@ locate_data <-
       sheet %>% dplyr::select(dplyr::starts_with("flt")) %>% dplyr::select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_twos","flt_A1"))]) %>% 
       as.list %>% purrr::map(as.logical) %>% purrr::pmap_lgl(~ sum(...,na.rm = TRUE) > 0 )
     
-    
-    
     data_cells <- sheet[data_cell_filter,] %>% dplyr::select(-dplyr::starts_with("flt_"))
     
     sheet <- sheet[!data_cell_filter,] %>% dplyr::select(-dplyr::starts_with("flt_"))
     
-    
     data_cells <- data_cells %>% 
       dplyr::mutate(.value = dplyr::coalesce(as.character(numeric),as.character(character),
-                               as.character(logical),as.character(date)))
+                                             as.character(logical),as.character(date)))
     
     attr(sheet, "data_cells") <- data_cells 
     attr(sheet, "formats") <- format 
     
+    class(sheet) <- append("located_data",class(sheet))
+    
     sheet
     
-  
   }
 

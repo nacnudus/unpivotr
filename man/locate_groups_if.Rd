@@ -4,8 +4,9 @@
 \alias{locate_groups_if}
 \title{Conditionally locate multiple header groups}
 \usage{
-locate_groups_if(sheet = NULL, ..., type = "both",
+locate_groups_if(sheet = NULL, ..., direction = "N",
   .groupings = groupings(fmt_alignment_indent),
+  .hook_if = hook(any(FALSE)), .hook_if_rev = hook(any(FALSE)),
   default_col_header_direction = "N",
   default_row_header_direction = "W", header_fill = "local_format_id")
 }
@@ -14,8 +15,6 @@ locate_groups_if(sheet = NULL, ..., type = "both",
 
 \item{...}{filter expression that identifies headers.}
 
-\item{type}{indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta".}
-
 \item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
 
 \item{default_col_header_direction}{Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N".}
@@ -23,6 +22,8 @@ locate_groups_if(sheet = NULL, ..., type = "both",
 \item{default_row_header_direction}{Indicates which direction is given to row headers by default. Only need if "WNW" is required, rather than "W".}
 
 \item{header_fill}{deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".}
+
+\item{type}{indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta".}
 }
 \description{
 Adds annotations to the data frame, indicating which cells are headers and how they relate to data cells

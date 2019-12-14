@@ -4,15 +4,14 @@
 \alias{locate_groups}
 \title{Locate multiple header groups}
 \usage{
-locate_groups(sheet = NULL, type = "both",
+locate_groups(sheet = NULL, direction = "N",
   .groupings = groupings(fmt_alignment_indent),
+  .hook_if = hook(any(FALSE)), .hook_if_rev = hook(any(FALSE)),
   default_col_header_direction = "N",
   default_row_header_direction = "W", header_fill = "local_format_id")
 }
 \arguments{
 \item{sheet}{data frame created by xlsx_cells}
-
-\item{type}{indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta".}
 
 \item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
 
@@ -21,6 +20,8 @@ locate_groups(sheet = NULL, type = "both",
 \item{default_row_header_direction}{Indicates which direction is given to row headers by default. Only need if "WNW" is required, rather than "W".}
 
 \item{header_fill}{deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".}
+
+\item{type}{indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta".}
 }
 \description{
 Adds annotations to the data frame, indicating which cells are headers and how they relate to data cells

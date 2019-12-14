@@ -113,7 +113,6 @@ We can deal with headers differentiated by formatting more concisely using `loca
 
 ```{r message=FALSE, warning=FALSE}
 
-load_all()
 unpivotr_example("worked-examples.xlsx") %>%
   xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
   append_fmt(fmt_alignment_indent) %>% 
@@ -123,10 +122,6 @@ unpivotr_example("worked-examples.xlsx") %>%
                 .hook_if =     hook(any(fmt_alignment_indent == 0))) %>%
   locate(direction = "N", name = student) %>% 
   plot_cells()
-  
-  migrate()
-
-
 ```
 
 To browse different aspects of formatting on which to separate headers, type `fmt_` and tab 
@@ -148,9 +143,9 @@ We can tidy this table by:
 ```{r message=FALSE, warning=FALSE}
 unpivotr_example("newresconst.xlsx") %>% 
   xlsx_cells_fmt(sheets = "Table 1 - Permits") %>%
-  filter_fmt(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
+  filter(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
   locate_data(data_type == "numeric" & col > 1) %>%
-  locate_groups(type = "row", .groupings = groupings(is.na(numeric))) %>% 
-  locate_groups(type = "col", header_fill = "style") %>% 
+  locate_groups(direction = "W", .groupings = groupings(is.na(numeric))) %>% 
+  locate_groups(direction = "N", header_fill = "style") %>% 
   migrate()
 ```
