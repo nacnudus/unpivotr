@@ -9,7 +9,7 @@ append_fmt(cells, ...)
 \arguments{
 \item{cells}{a data frame created by tidyxl::xlsx_cells}
 
-\item{fmt_function}{fmt_* function.}
+\item{...}{fmt_* function.}
 }
 \description{
 Add a format variable.

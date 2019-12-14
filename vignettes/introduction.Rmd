@@ -167,8 +167,8 @@ tidied <-
             direction = "left-up",
             name = "location") %>%
   behead("left", "subject") %>%
-  dplyr::select(address, dormitory, name, location, subject, mark = numeric) %>%
-  dplyr::arrange(dormitory, name, location, subject)
+  select(address, dormitory, name, location, subject, mark = numeric) %>%
+  arrange(dormitory, name, location, subject)
 
 tidied
 ```
@@ -187,7 +187,7 @@ of `xlsx_cells()` to a cell in the spreadsheet.
 cells <-
   xlsx_cells(hp_xlsx, sheet = "pivoted") %>%
   # Drop some columns to make it clearer what is going on
-  dplyr::select(row, col, is_blank, data_type, character, numeric, local_format_id)
+  select(row, col, is_blank, data_type, character, numeric, local_format_id)
 
 cells
 ```
@@ -433,7 +433,7 @@ cells %>%
             direction = "left-up",
             name = "location") %>%
   behead("left", "subject") %>%
-  dplyr::select(dormitory, name, location, subject, mark = numeric, other = character)
+  select(dormitory, name, location, subject, mark = numeric, other = character)
 ```
 
 It is up to you now what to do with the 'total' values for the castle and the
@@ -462,8 +462,8 @@ tidied <-
             direction = "left-up",
             name = "location") %>%
   behead("left", "subject") %>%
-  dplyr::select(address, dormitory, name, location, subject, mark = numeric) %>%
-  dplyr::arrange(dormitory, name, location, subject)
+  select(address, dormitory, name, location, subject, mark = numeric) %>%
+  arrange(dormitory, name, location, subject)
 
 tidied
 ```

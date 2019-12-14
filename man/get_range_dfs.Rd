@@ -12,7 +12,7 @@ hook(...)
 \arguments{
 \item{range}{a string representing a range in standard excel format. For example, "A4:B15, C11:G22"}
 
-\item{range}{a string representing a range in standard excel format. For example, "A4:B15, C11:G22"}
+\item{...}{a string representing a range in standard excel format. For example, "A4:B15, C11:G22"}
 }
 \description{
 This function produces a data frame with a row for each col/row combination in a the provided range.

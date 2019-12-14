@@ -89,7 +89,9 @@ globalVariables(c(
   "values",
   "error", 
   "purrr", 
-  "sheet"
+  "sheet",
+  "rowcol_group",
+  ".rotate"
   
 ))
 

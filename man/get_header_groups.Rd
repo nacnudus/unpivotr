@@ -13,11 +13,17 @@ get_header_groups(sheet, direction, value_ref, formats,
 \arguments{
 \item{sheet}{data frame created by xlsx_cells}
 
+\item{direction}{direction of headers.}
+
 \item{value_ref}{referece to where data cells are located.}
 
 \item{formats}{format object created by tidyxl.}
 
 \item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
+
+\item{.hook_if}{expression determining whether direction is hooked.}
+
+\item{.hook_if_rev}{expression determining whether direction is reverse hooked.}
 
 \item{header_fill}{deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".}
 
@@ -26,8 +32,6 @@ get_header_groups(sheet, direction, value_ref, formats,
 \item{table_data}{datacell dataframe.}
 
 \item{min_header_index}{min header index}
-
-\item{filter_headers_by}{method for dealing with merged cells.}
 }
 \description{
 Beheads multiple headers defined according to expressions in .groupings.

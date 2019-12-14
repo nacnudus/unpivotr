@@ -8,13 +8,15 @@
 #' @description
 #' Beheads multiple headers defined according to expressions in .groupings. 
 #' @param sheet data frame created by xlsx_cells
+#' @param direction direction of headers.
 #' @param value_ref  referece to where data cells are located. 
 #' @param table_data datacell dataframe.
 #' @param formats  format object created by tidyxl. 
+#' @param .hook_if expression determining whether direction is hooked.
+#' @param .hook_if_rev expression determining whether direction is reverse hooked.
 #' @param .groupings expressions representing how header cells are differentiated. Most naturally works with fmt_* functions. 
 #' @param default_col_header_direction Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N". 
 #' @param header_fill deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".
-#' @param filter_headers_by method for dealing with merged cells.
 #' @param min_header_index min header index
 
 
@@ -27,22 +29,19 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
                               default_col_header_direction = default_col_header_direction_temp,
                               table_data = tabledata,
                               min_header_index = min_header_index_temp) {
-  
+ 
   # Allow grouings to take names 
   # Create a vector of names so that they aren't identified from all functions with regex  
   
   # Filter for header cells to which directions will be allocated based on direction --------------------------
   
-  
-  
   header_df <-  direction_filter_header(sheet,direction,value_ref)
-  
   
   # Create additional row variables to allow for nesting
   
   header_df <- 
     header_df %>% 
-    dplyr::mutate(rowcol_group = case_when(
+    dplyr::mutate(rowcol_group = dplyr::case_when(
       direction %in% c("N", "S", "up","down") ~ row, 
       direction %in% c("W", "E", "left","right") ~ col))
   
@@ -128,7 +127,7 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
     dplyr::summarise(!!!.hook_if_rev)
   
   header_df <- 
-    full_join(header_df_hook,header_df_hook_rev,by = "header_label") %>% 
+    dplyr::full_join(header_df_hook,header_df_hook_rev,by = "header_label") %>% 
     dplyr::left_join(header_df,.,by = "header_label")
   
   # Create additional row variables to allow for nesting
@@ -149,7 +148,7 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   # Set direction ----
   header_df <-
     header_df %>%
-    dplyr::mutate(direction = case_when(
+    dplyr::mutate(direction = dplyr::case_when(
       hook_var_rev == TRUE ~ hook_direction_rev, 
       hook_var == TRUE     ~ hook_direction, 
       TRUE                 ~ direction)) %>%

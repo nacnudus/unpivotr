@@ -66,8 +66,8 @@ above 14 and below 56, and columns beyond 20.
 ```{r}
 cells <-
   xlsx_cells(path) %>%
-  dplyr::filter(!is_blank, between(row, 14L, 56L), col <= 20) %>%
-  dplyr::select(row, col, data_type, numeric, character, date)
+  filter(!is_blank, between(row, 14L, 56L), col <= 20) %>%
+  select(row, col, data_type, numeric, character, date)
 ```
 
 Cell formatting isn't required for this vignette, but if it were, it would be
@@ -85,9 +85,9 @@ title cells.  The title cells are the top-left corner cell of each table.
 
 ```{r}
 title <-
-  dplyr::filter(cells, character == "Fixed Price") %>%
-  dplyr::select(row, col) %>%
-  dplyr::mutate(row = row - 1L) %>%
+  filter(cells, character == "Fixed Price") %>%
+  select(row, col) %>%
+  mutate(row = row - 1L) %>%
   inner_join(cells, by = c("row", "col"))
 ```
 
@@ -118,7 +118,7 @@ unpivoted <-
                    behead("NNW", "title") %>%
                    behead("NNW", "price") %>%
                    behead("N", "bid_offer")) %>%
-  dplyr::select(-data_type, -character, -date)
+  select(-data_type, -character, -date)
 unpivoted
 ```
 
@@ -133,16 +133,16 @@ row_headers <-
   cells %>%
   dplyr::filter(between(row, 17, 56), between(col, 2, 4)) %>%
   # Concatenate rows like "Dec-01", "to", "Mar-02"
-  dplyr::mutate(character = ifelse(!is.na(character),
+  mutate(character = ifelse(!is.na(character),
                             character,
                             format(date, origin="1899-12-30", "%b-%y"))) %>%
-  dplyr::select(row, col, character) %>%
+  select(row, col, character) %>%
   nest(-row) %>%
-  dplyr::mutate(row_header = map(data,
+  mutate(row_header = map(data,
                           ~ str_trim(paste(.x$character, collapse = " ")))) %>%
   unnest(row_header) %>%
-  dplyr::mutate(col = 2L) %>%
-  dplyr::select(row, row_header)
+  mutate(col = 2L) %>%
+  select(row, row_header)
 unpivoted <- left_join(unpivoted, row_headers, by = "row")
 unpivoted
 ```
@@ -160,25 +160,25 @@ library(stringr)
 cells <-
   xlsx_cells(system.file("extdata/enron.xlsx", package = "unpivotr")) %>%
   dplyr::filter(!is_blank, between(row, 14L, 56L), col <= 20) %>%
-  dplyr::select(row, col, data_type, numeric, character, date)
+  select(row, col, data_type, numeric, character, date)
 
 row_headers <-
   dplyr::filter(cells, between(row, 17, 56), between(col, 2, 4)) %>%
-  dplyr::mutate(character = ifelse(!is.na(character),
+  mutate(character = ifelse(!is.na(character),
                             character,
                             format(date, origin="1899-12-30", "%b-%y"))) %>%
-  dplyr::select(row, col, character) %>%
+  select(row, col, character) %>%
   nest(-row) %>%
-  dplyr::mutate(row_header = map(data,
+  mutate(row_header = map(data,
                           ~ str_trim(paste(.x$character, collapse = " ")))) %>%
-  dplyr::unnest(row_header) %>%
-  dplyr::mutate(col = 2L) %>%
-  dplyr::select(row, row_header)
+  unnest(row_header) %>%
+  mutate(col = 2L) %>%
+  select(row, row_header)
 
 titles <-
-  dplyr::filter(cells, character == "Fixed Price") %>%
-  dplyr::select(row, col) %>%
-  dplyr::mutate(row = row - 1L) %>%
+  filter(cells, character == "Fixed Price") %>%
+  select(row, col) %>%
+  mutate(row = row - 1L) %>%
   inner_join(cells, by = c("row", "col"))
 
 partition(cells, titles)$cells %>%
@@ -186,6 +186,6 @@ partition(cells, titles)$cells %>%
                  behead("NNW", "title") %>%
                  behead("NNW", "price") %>%
                  behead("N", "bid_offer")) %>%
-  dplyr::select(-data_type, -character, -date) %>%
+  select(-data_type, -character, -date) %>%
   left_join(row_headers, by = "row")
 ```

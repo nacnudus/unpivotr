@@ -7,11 +7,13 @@
 fill_blanks_in_headers(header_df, header_fill, formats, direction)
 }
 \arguments{
-\item{df}{a data frame containing header cells.}
+\item{header_df}{a data frame containing header cells.}
 
-\item{form_list}{list of fomulae}
+\item{header_fill}{list of fomulae}
 
-\item{format}{the formats associated with the workbook containing the header_df cells.}
+\item{formats}{the formats associated with the workbook containing the header_df cells.}
+
+\item{direction}{the direction in which headers are filled.}
 }
 \description{
 This function ensures that merged cells are unmerged.

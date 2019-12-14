@@ -19,14 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 # Load all packages 
-library("pacman")
-
-load_outcome <- 
-  p_load(cowplot, dplyr,ggplot2, devtools, here, hrbrthemes,lubridate,magrittr,
-        magick, stringr, purrr, plotly, rlang, tidyverse, stringr, scales, tidyxl)
-
-p_load(hrbrthemes)
-
+library(hrbrthemes)
 library(cowplot)
 library(dplyr)
 library(ggplot2)
@@ -143,7 +136,7 @@ We can tidy this table by:
 ```{r message=FALSE, warning=FALSE}
 unpivotr_example("newresconst.xlsx") %>% 
   xlsx_cells_fmt(sheets = "Table 1 - Permits") %>%
-  filter(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
+  filter_fmt(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
   locate_data(data_type == "numeric" & col > 1) %>%
   locate_groups(direction = "W", .groupings = groupings(is.na(numeric))) %>% 
   locate_groups(direction = "N", header_fill = "style") %>% 

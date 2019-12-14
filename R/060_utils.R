@@ -65,7 +65,7 @@ get_range_dfs <- function(range){
 #' @description
 #' Supply an expression to identify which header groups are hooked.
 #'
-#' @param range  a string representing a range in standard excel format. For example, "A4:B15, C11:G22"
+#' @param ...  a string representing a range in standard excel format. For example, "A4:B15, C11:G22"
 #'
 #' @name get_range_dfs
 
@@ -138,10 +138,10 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats){
 #'
 #' This function ensures that merged cells are unmerged.
 #'
-#' @param df a data frame containing header cells. 
-#' @param form_list list of fomulae 
-#' @param format the formats associated with the workbook containing the header_df cells.
-#' 
+#' @param header_df a data frame containing header cells. 
+#' @param header_fill list of fomulae 
+#' @param formats the formats associated with the workbook containing the header_df cells.
+#' @param direction the direction in which headers are filled.
 
 
 fill_blanks_in_headers <- function(header_df, header_fill, formats, direction){
@@ -205,20 +205,20 @@ reduce_mutated <- function(df, form_list,format){
 #' @param header_df a data frame containing header cells. 
 #' @param header_fill the manner is which blank cells will be filled. 
 #' @param formats the formats associated with the workbook containing the header_df cells.
+
+fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
   
-  fill_blanks_in_col_headers <- function(header_df,header_fill, formats){
+  if(header_fill ==  "style"){
+    continue <- TRUE
     
-    if(header_fill ==  "style"){
-      continue <- TRUE
+    while (continue) {
+      sheet_original <- header_df
+      header_df <- header_df %>% unmerge_cells(strict_merging = FALSE)
       
-      while (continue) {
-        sheet_original <- header_df
-        header_df <- header_df %>% unmerge_cells(strict_merging = FALSE)
-        
-        continue <- !identical(sheet_original, header_df)
-      }
-      
+      continue <- !identical(sheet_original, header_df)
     }
+    
+  }
   if(header_fill ==  "local_format_id"){
     continue <- TRUE
     
@@ -239,7 +239,7 @@ reduce_mutated <- function(df, form_list,format){
       dplyr::group_by(h_border_group)  %>%  
       dplyr::select(row,col,h_border_group, character) %>% 
       dplyr::mutate(value = ifelse(is.na(character),paste3(character, collapse = " _ ") %>% 
-                              stringr::str_remove_all(" _ "),character)) %>% 
+                                     stringr::str_remove_all(" _ "),character)) %>% 
       dplyr::ungroup() %>% 
       dplyr::arrange(h_border_group, row,col ) %>% 
       dplyr::select(row,col, character = value) 
@@ -380,20 +380,6 @@ get_header_index <- function(labels, regex_term = "^col_header") {
 #' @format A character vector of length 702
 "cols_index"
 
-#' A data frame used for testing. 
-#'
-#' A dataframe with data_cells added correctly  
-#'
-#' @format A character vector of length 702
-"worked_example_datacells"
-
-#' A data frame used for testin locate_if 
-#'
-#' A dataframe with location information added correctly using lacate_if  
-#'
-#' @format A character vector of length 702
-"worked_example_locate_if"
-
 #' Matches directions to unicode arrows for an interative chart  
 #'
 #' A dataframe .direction, .arrow and .rate columns   
@@ -407,3 +393,4 @@ get_header_index <- function(labels, regex_term = "^col_header") {
 #'
 #' @format a dataframe
 "direction_plot_noninteractive"
+
