@@ -1,6 +1,6 @@
 #' Get column groups
 #'
-#' This function:
+#' This is an internal function that:
 #'          1. Identifies which cells are likely to be headers
 #'          2. groups them according to their indenting, bold and italic formatting
 #'          3. Specifies the unpivotr function specifying the direction of the header w.r.t. table data
@@ -8,7 +8,7 @@
 #' @description
 #' Beheads multiple headers defined according to expressions in .groupings. 
 #' @param sheet data frame created by xlsx_cells
-#' @param direction direction of headers.
+#' @param direction  a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right. 
 #' @param value_ref  referece to where data cells are located. 
 #' @param table_data datacell dataframe.
 #' @param formats  format object created by tidyxl. 
@@ -18,8 +18,6 @@
 #' @param default_col_header_direction Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N". 
 #' @param header_fill deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".
 #' @param min_header_index min header index
-
-
 
 get_header_groups <- function(sheet, direction, value_ref, formats,
                               .groupings = groupings(fmt_alignment_indent),

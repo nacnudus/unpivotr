@@ -2,13 +2,13 @@
 % Please edit documentation in R/060_utils.R
 \name{get_corner_cell_refs}
 \alias{get_corner_cell_refs}
-\title{get_corner_cell_refs}
+\title{Get the corner refencerexes of a tidyxl data frame.}
 \usage{
 get_corner_cell_refs(sheet)
 }
 \arguments{
-\item{sheet}{sheet object read in by \code{tidyxl::xlsx_cells}}
+\item{sheet}{a tidyxl data frame.}
 }
 \description{
-Identifies corners of sheet
+This is an internal function that takes a tidyxl data frame a returns a dataframe indicating the maximum and minimum corners.
 }

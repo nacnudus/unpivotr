@@ -2,17 +2,17 @@
 % Please edit documentation in R/060_utils.R
 \name{fill_blanks_in_row_headers}
 \alias{fill_blanks_in_row_headers}
-\title{Fill in blanks}
+\title{Unmerge and fill in blanks for row headers.}
 \usage{
 fill_blanks_in_row_headers(header_df, header_fill, formats)
 }
 \arguments{
 \item{header_df}{a data frame containing header cells.}
 
-\item{header_fill}{the manner is which blank cells will be filled.}
+\item{header_fill}{the criteria according to which blank cells will be filled.}
 
-\item{formats}{the formats associated with the workbook containing the header_df cells.}
+\item{formats}{the formats of the workbook associated with the tidyxl data frame.}
 }
 \description{
-This function ensures that merged cells are unmerged.
+This is an internal function that function ensures that merged cells are unmerged.
 }

@@ -41,13 +41,13 @@ library(tidyxl)
 load_all(".")
 ```
 
-The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl data frame and leave reshaping to a final function call. 
+The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl data frame with .direction, .header_group and .value columns, leaving reshaping to a final function call. 
 
 ### Minimal example : `locate` 
 
 Here's a minimal example involving a table with two row headers and two column headers. 
 
-```{r echo=FALSE, fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
+```{r echo=FALSE,  message=FALSE, warning=FALSE, out.width = "800px"}
 knitr::include_graphics("https://unpivotr.s3.amazonaws.com/pivot-annotations.png")
 ```
 
@@ -70,19 +70,35 @@ unpivotr_example("worked-examples.xlsx") %>%
   plot_cells()
 ```
 
-Once the data cells are identified, we can add header information using the `locate` function. This function requires direction and variable names. Again, `plot_cells` can be called to check that data cells have been identified correctly. 
+Once the data cells are identified, we can add header information to the tidyxl data frame (including .direction, .header_group and .value columns) using the `locate` function. This function requires direction and variable names. Again, `plot_cells` can be called to check that data cells have been identified correctly. 
 
 Once all header have directions and names, `migrate` reshapes the tidyxl data frame into a tidy structure.
 
 The gif below illustrate how direction informations is progressively added to the data frame. 
 
-![](https://unpivotr.s3.amazonaws.com/up_g01.gif)
+```{r echo=FALSE,  message=FALSE, warning=FALSE, out.width = "800px"}
+knitr::include_graphics("https://unpivotr.s3.amazonaws.com/unpivotr-locate-demo-02.gif")
+```
+
+And below is the code used in the gif. 
+
+```{r message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
+unpivotr_example("worked-examples.xlsx") %>%
+  xlsx_cells_fmt(sheets = "pivot-annotations") %>%
+  locate_data(data_type == "numeric") %>% 
+  locate(direction = "WNW", name = subject_type) %>% 
+  locate(direction = "W", name = subject) %>% 
+  locate(direction = "NNW", name = gender) %>% 
+  locate(direction = "N", name = name) %>% 
+  migrate()
+```
+
 
 ### Conditional headers : `locate_if` 
 
 Sometimes not all headers in the same column or row belong to the same group. For example, in the table below, the  row headers in column B represent a mix of subject type and subject name. 
 
-```{r echo=FALSE,  fig.height=4, fig.width=6, message=FALSE, warning=FALSE}
+```{r echo=FALSE,  message=FALSE, warning=FALSE, out.width = "800px"}
 knitr::include_graphics("https://unpivotr.s3.amazonaws.com/pivot-hierarchy.png")
 ```
 
@@ -97,15 +113,14 @@ unpivotr_example("worked-examples.xlsx") %>%
   locate_if(fmt_alignment_indent == 1, direction = "W", name = subject) %>% 
   locate(direction = "N", name = student) %>% 
   migrate()
-
 ```
 
 ### A more concise syntax : `locate_groups` 
 
-We can deal with headers differentiated by formatting more concisely using `locate_groups`. The `.grouping` argument allows us to indicate which formats differentiate headers. In this case, hierarchy is indicated by indenting, which can be accessed with the `fmt_alignment_indent` function. 
+We can deal with multiple headers differentiated by formatting more concisely using `locate_groups`. The `.grouping` argument allows us to indicate which formats differentiate headers. In this case, hierarchy is indicated by indenting, which can be accessed with the `fmt_alignment_indent` function. 
+The `.hook_if` argument receives an expression with `hook` that indicates which header_groups are "WNW" rather than "N".  The `.hook_if_rev` argument will switch directions from "N" to "WSW". Importantly the `hook` expression is passed into `summarise` so it needs to reduce columns to a single boolean value. This is the reason for using `any` in the example below. 
 
-```{r message=FALSE, warning=FALSE}
-
+```{r message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
 unpivotr_example("worked-examples.xlsx") %>%
   xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
   append_fmt(fmt_alignment_indent) %>% 
@@ -117,12 +132,26 @@ unpivotr_example("worked-examples.xlsx") %>%
   plot_cells()
 ```
 
+This concise sytax is now available for `behead` using `behead_groups`. See below the previous example reproduced using `behead_groups`.
+
+```{r message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
+unpivotr_example("worked-examples.xlsx") %>%
+  xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
+  append_fmt(fmt_alignment_indent) %>% 
+  locate_data(data_type == "numeric") %>%
+  behead_groups(direction = "W",
+                .groupings = groupings(fmt_alignment_indent),
+                .hook_if =     hook(any(fmt_alignment_indent == 0))) %>% 
+  behead(direction = "N", name = student) %>% 
+  attr("data_cells") %>% select(.value:student)
+```
+
 To browse different aspects of formatting on which to separate headers, type `fmt_` and tab 
 
 ## A more complicated example: Tidying new residential construction data from the US Census Bureau
 
 Here's a more complicate table.  
-```{r echo=FALSE, fig.height=6, fig.width=9, message=FALSE, warning=FALSE}
+```{r echo=FALSE,  message=FALSE, warning=FALSE, out.width = "800px"}
 knitr::include_graphics(unpivotr_example(path = "newconst.png"))
 ```
 
@@ -133,12 +162,27 @@ We can tidy this table by:
 * differentiating row groups based on whether they are numeric cells
 * identifying column headers, using the `header_fill` argument to deal with merged cells.
 
-```{r message=FALSE, warning=FALSE}
-unpivotr_example("newresconst.xlsx") %>% 
+```{r message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
+annotated_df <- 
+  unpivotr_example("newresconst.xlsx") %>% 
   xlsx_cells_fmt(sheets = "Table 1 - Permits") %>%
+  append_fmt(fmt_font_bold) %>% 
   filter_fmt(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
   locate_data(data_type == "numeric" & col > 1) %>%
-  locate_groups(direction = "W", .groupings = groupings(is.na(numeric))) %>% 
-  locate_groups(direction = "N", header_fill = "style") %>% 
-  migrate()
+  locate_groups(direction = "W", 
+                .groupings = groupings(is.na(numeric)), 
+                .hook_if = hook(any(data_type == "numeric"))) %>% 
+  locate_groups(direction = "N", header_fill = "style")  
+  
+annotated_df %>% plot_cells()
+
+annotated_df %>% migrate()
 ```
+
+
+
+
+
+
+
+

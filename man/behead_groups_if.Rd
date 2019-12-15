@@ -4,8 +4,9 @@
 \alias{behead_groups_if}
 \title{Behead multiple header groups}
 \usage{
-behead_groups_if(sheet = NULL, ..., type = "both",
+behead_groups_if(sheet = NULL, ..., direction = "W",
   .groupings = groupings(fmt_alignment_indent),
+  .hook_if = hook(any(FALSE)), .hook_if_rev = hook(any(FALSE)),
   default_col_header_direction = "N",
   default_row_header_direction = "W", header_fill = "local_format_id")
 }
@@ -14,9 +15,13 @@ behead_groups_if(sheet = NULL, ..., type = "both",
 
 \item{...}{filter expression identifying header cells.}
 
-\item{type}{indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta".}
+\item{direction}{a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right.}
 
 \item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
+
+\item{.hook_if}{expression determining whether directions are hooked.}
+
+\item{.hook_if_rev}{expression determining whether directions are reverse hooked.}
 
 \item{default_col_header_direction}{Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N".}
 

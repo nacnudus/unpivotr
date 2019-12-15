@@ -30,7 +30,6 @@ plot_cells <- function(sheet, text = values, interactive = FALSE) {
      
    }
   
-  
   if (interactive == FALSE) {
     sheet_01 <-
       sheet %>% dplyr::left_join(unpivotr::direction_plot_noninteractive, by = ".direction") %>% 

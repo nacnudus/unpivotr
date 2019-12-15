@@ -3,7 +3,7 @@
 \docType{data}
 \name{cols_index}
 \alias{cols_index}
-\title{Order set of excel column indexes.}
+\title{An ordered set of excel column indexes.}
 \format{A character vector of length 702}
 \usage{
 cols_index

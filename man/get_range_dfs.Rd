@@ -3,20 +3,15 @@
 \name{get_range_dfs}
 \alias{get_range_dfs}
 \alias{hook}
-\title{Produces a data frame with a row for each col/row combination in a the provided range.}
+\title{Supply an expression to identify which header groups are hooked.}
 \usage{
-get_range_dfs(range)
-
 hook(...)
 }
 \arguments{
-\item{range}{a string representing a range in standard excel format. For example, "A4:B15, C11:G22"}
-
-\item{...}{a string representing a range in standard excel format. For example, "A4:B15, C11:G22"}
+\item{...}{expression applied to a  identifies which header groups are hooked}
 }
 \description{
-This function produces a data frame with a row for each col/row combination in a the provided range.
-It handles instances where the range is a union of multiple ranges separate by commas.
-
-Supply an expression to identify which header groups are hooked.
+This function is used with the \code{.hook_if} or \code{.hook_if_rev} argumuents in the \code{locate_groups} function.
+It passes an expression to \code{dplyr::summarise} that identifies which header groups are hooked - for example swiched from N to NNW.
+See the the \code{locate_groups} documentation for more information and an example.
 }

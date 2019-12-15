@@ -1,8 +1,8 @@
 #' Locate multiple header groups 
 #' @description
-#' Adds annotations to the data frame, indicating which cells are headers and how they relate to data cells
+#' This function adds annotations to the data frame, indicating which cells are headers and how they relate to data cells
 #' @param sheet data frame created by xlsx_cells
-#' @param direction  indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta". 
+#' @param direction  a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right. 
 #' @param .groupings expressions representing how header cells are differentiated. Most naturally works with fmt_* functions. 
 #' @param default_col_header_direction Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N". 
 #' @param default_row_header_direction Indicates which direction is given to row headers by default. Only need if "WNW" is required, rather than "W". 
@@ -31,15 +31,14 @@ locate_groups <-
                      default_col_header_direction = default_col_header_direction_temp,
                      default_row_header_direction = default_row_header_direction_temp,
                      header_fill = header_fill_temp)
-    
   }
 
 
 #' Conditionally locate multiple header groups 
 #' @description
-#' Adds annotations to the data frame, indicating which cells are headers and how they relate to data cells
+#' This function adds annotations to the data frame, indicating which cells are headers and how they relate to data cells
 #' @param sheet data frame created by xlsx_cells
-#' @param direction  indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta". 
+#' @param direction  a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right. 
 #' @param .groupings expressions representing how header cells are differentiated. Most naturally works with fmt_* functions. 
 #' @param .hook_if expression determining whether direction is hooked.
 #' @param .hook_if_rev expression determining whether direction is reverse hooked.
@@ -68,15 +67,14 @@ locate_groups_if <-
       warning(paste0("Data cells have yet not been located in this this dataframe with `locate_data()`.",
                      " Continuing using defaults of `locate_data()`. Data cells have been located at :",
                      min_letter,corner_refs$min_row,":",max_letter,corner_refs$max_row))
-      
     }
+    
     # Add filtering if statements 
     if(length(rlang::quos(...))>0){
       filter_expr <- rlang::quos(...)
       
       filtered_header_cells <- sheet %>% dplyr::filter(!!!filter_expr)
     } 
-    
     
     # Assign attributes to objects  
     formats <- attr(sheet, "formats")
@@ -96,7 +94,6 @@ locate_groups_if <-
     .hook_if_temp <- .hook_if  
     .hook_if_rev_temp <- .hook_if_rev  
     
-    
     min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
     
     header_groups <- get_header_groups(sheet, direction, value_ref, formats,
@@ -109,7 +106,6 @@ locate_groups_if <-
     
     min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
     
-    
     if(exists("filtered_header_cells")){
       header_groups_in_filter <-
         paste0(header_groups$row,unpivotr::cols_index[header_groups$col]) %in%
@@ -118,7 +114,6 @@ locate_groups_if <-
       header_groups <- header_groups %>% dplyr::filter(header_groups_in_filter)
       
     }
-    
     
     # Create column values 
     
@@ -130,12 +125,12 @@ locate_groups_if <-
       dplyr::mutate(.direction = dplyr::coalesce(.direction.n,.direction.o)) %>% 
       dplyr::mutate(.value = dplyr::coalesce(.value.n,.value.o)) %>% 
       dplyr::select(-.value.n,-.value.o,-.direction.n,-.direction.o,-.header_label.n,-.header_label.o)
-        
+    
     attr(sheet, "formats") <- formats
     attr(sheet, "data_cells") <- tabledata
     
     sheet 
-
+    
   }
 
 

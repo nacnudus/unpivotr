@@ -9,6 +9,6 @@
 direction_plot_noninteractive
 }
 \description{
-A dataframe .direction, .arrow and .rate columns
+A data frame with .direction, .arrow and .rate columns
 }
 \keyword{datasets}

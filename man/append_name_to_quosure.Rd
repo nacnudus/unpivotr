@@ -12,5 +12,5 @@ append_name_to_quosure(x, prefix = "grp_")
 \item{prefix}{prefix to be added in name}
 }
 \description{
-Adds name of a quosure so that use in mutate automatically adds name.
+This is an internal function that adds a previxed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
 }

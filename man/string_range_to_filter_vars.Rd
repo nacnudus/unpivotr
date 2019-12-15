@@ -2,22 +2,15 @@
 % Please edit documentation in R/060_utils.R
 \name{string_range_to_filter_vars}
 \alias{string_range_to_filter_vars}
-\title{get tidyABS components}
+\title{Create a filtering variable based on a excel string range.}
 \usage{
 string_range_to_filter_vars(sheet, table_range)
 }
 \arguments{
-\item{sheet}{sheet nominated for tidying}
+\item{sheet}{a tidyxl data frame.}
 
-\item{table_range}{table_range}
+\item{table_range}{a table_range given by string. For example, "A1:B2"}
 }
 \description{
-Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
-}
-\examples{
-
- \donttest{tidyABS_example("australian-industry.xlsx") \%>\% process_sheet(sheets = "Table_1")  }
-
-
-
+This is an internal function that create a variabled prefixed "flt" based on whether cells are within a range specified by an excel string range.
 }

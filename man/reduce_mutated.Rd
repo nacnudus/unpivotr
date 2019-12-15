@@ -2,7 +2,7 @@
 % Please edit documentation in R/060_utils.R
 \name{reduce_mutated}
 \alias{reduce_mutated}
-\title{Fill in blanks}
+\title{Add a set of variables based on a list of formulae}
 \usage{
 reduce_mutated(df, form_list, format)
 }
@@ -14,5 +14,5 @@ reduce_mutated(df, form_list, format)
 \item{format}{the formats associated with the workbook containing the header_df cells.}
 }
 \description{
-This function ensures that merged cells are unmerged.
+This is an internal function that takes a data frame and a list of formulae and appends an arbitray number of columns to the data frame based on the formulae.
 }

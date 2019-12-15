@@ -1,23 +1,15 @@
-#' Conditionally adds direction annations to tidyxl data frame
+#' Reshape a tidyxl data frame such that each header group has its own column and each data cells has its own row.
 #'
 #' @description
-#' This function conditionally adds direction annations to tidyxl data frame.
+#' This function is used on a tidy data frame that has been annotated with `locate_data`, `locate_header` or  `locate_header_groups`. It creates a column for each header group. 
 #'
-#' @param numeric_value types
-#' @param cells types
-#' @param direction types
-#' @param name types
-#' @param values types
-#' @param types types
-#' @param formatters types
-#' @param drop_na types
+#' @param located_df a tidyxl data frame with .direction, .value, .header_label columns.
 #' @export
 
-
-migrate <- function(orientated_df, numeric_value = FALSE) {
+migrate <- function(located_df) {
   
   orientated_df_nested <-
-    orientated_df %>%
+    located_df %>%
     dplyr::filter(!is.na(.direction)) %>%
     dplyr::group_by(.direction, .header_label) %>%
     dplyr::mutate(value = dplyr::coalesce(character, as.character(numeric))) %>%
@@ -27,21 +19,21 @@ migrate <- function(orientated_df, numeric_value = FALSE) {
   header_dfs <- orientated_df_nested$data[orientated_df_nested$.direction != "data"]
   directions <- orientated_df_nested$.direction[orientated_df_nested$.direction != "data"]
   header_names <- orientated_df_nested$.header_label[orientated_df_nested$.direction != "data"]
-
-  if (!is.null(attr(orientated_df, "data_cells"))) {
-    data_cells <- attr(orientated_df, "data_cells") %>% dplyr::select(row, col, .value)
+  
+  if (!is.null(attr(located_df, "data_cells"))) {
+    data_cells <- attr(located_df, "data_cells") %>% dplyr::select(row, col, .value)
   } else {
     data_cells <- orientated_df_nested$data[orientated_df_nested$.direction == "data"][[1]]
   }
-
-
+  
+  
   header_dfs <-
     purrr::map2(header_dfs, header_names, function(header_df, header_name) {
       header_df %>%
-        rename(!!rlang::ensym(header_name) := .value)
+        dplyr::rename(!!rlang::ensym(header_name) := .value)
     })
-
-
+  
+  
   tidy_df <-
     list(
       x = header_dfs,
@@ -54,12 +46,7 @@ migrate <- function(orientated_df, numeric_value = FALSE) {
       )
     }) %>%
     purrr::reduce(dplyr::full_join, by = c("row", "col", ".value"))
-
-  if (numeric_value) {
-    tidy_df <-
-      tidy_df %>%
-      dplyr::mutate(.value = as.numeric(.value))
-  }
-
+  
+  
   tidy_df
 }

@@ -2,15 +2,15 @@
 % Please edit documentation in R/060_utils.R
 \name{add_variable_if_missing}
 \alias{add_variable_if_missing}
-\title{An internal function to add a variable to a tidyxl data frame in that variable is missing}
+\title{Add a variable to a tidyxl data frame if that variable is missing}
 \usage{
 add_variable_if_missing(sheet, var)
 }
 \arguments{
 \item{sheet}{sheet nominated for tidying}
 
-\item{var}{name of the var to be added.}
+\item{var}{name of the var to be added as a character string.}
 }
 \description{
-Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+This is an internal function that takes a tidyxl data frame and a variable name to be added if they are missing.
 }

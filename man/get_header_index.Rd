@@ -2,7 +2,7 @@
 % Please edit documentation in R/060_utils.R
 \name{get_header_index}
 \alias{get_header_index}
-\title{Get current column number}
+\title{The the current names of header groups.}
 \usage{
 get_header_index(labels, regex_term = "^col_header")
 }
@@ -12,5 +12,5 @@ get_header_index(labels, regex_term = "^col_header")
 \item{regex_term}{prefix for col_header.}
 }
 \description{
-This function gets the maximum col_group number
+This is an internal function that returns the names of header groups.
 }

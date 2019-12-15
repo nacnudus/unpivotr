@@ -13,7 +13,7 @@ get_header_groups(sheet, direction, value_ref, formats,
 \arguments{
 \item{sheet}{data frame created by xlsx_cells}
 
-\item{direction}{direction of headers.}
+\item{direction}{a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right.}
 
 \item{value_ref}{referece to where data cells are located.}
 
@@ -37,7 +37,7 @@ get_header_groups(sheet, direction, value_ref, formats,
 Beheads multiple headers defined according to expressions in .groupings.
 }
 \details{
-This function:
+This is an internal function that:
 1. Identifies which cells are likely to be headers
 2. groups them according to their indenting, bold and italic formatting
 3. Specifies the unpivotr function specifying the direction of the header w.r.t. table data

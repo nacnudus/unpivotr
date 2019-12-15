@@ -2,7 +2,7 @@
 % Please edit documentation in R/060_utils.R
 \name{enhead_tabledata}
 \alias{enhead_tabledata}
-\title{Fill in blanks}
+\title{This is an internal function to wrap \code{enhead}. It takes header cells, data cells and a direction and combines them into a tidy data frame.}
 \usage{
 enhead_tabledata(header_data, direction, values = tabledata)
 }
@@ -14,5 +14,5 @@ enhead_tabledata(header_data, direction, values = tabledata)
 \item{values}{the data values.}
 }
 \description{
-This function ensures that merged cells are unmerged.
+This is an internal function to wrap \code{enhead}. It takes header cells, data cells and a direction and combines them into a tidy data frame.
 }

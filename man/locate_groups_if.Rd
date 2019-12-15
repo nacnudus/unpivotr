@@ -15,7 +15,7 @@ locate_groups_if(sheet = NULL, ..., direction = "N",
 
 \item{...}{filter expression that identifies headers.}
 
-\item{direction}{indicating which type of headers are to be labelled. Options include "row", "col", "both" and "meta".}
+\item{direction}{a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right.}
 
 \item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
 
@@ -30,5 +30,5 @@ locate_groups_if(sheet = NULL, ..., direction = "N",
 \item{header_fill}{deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".}
 }
 \description{
-Adds annotations to the data frame, indicating which cells are headers and how they relate to data cells
+This function adds annotations to the data frame, indicating which cells are headers and how they relate to data cells
 }

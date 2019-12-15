@@ -12,5 +12,6 @@ paste3(..., sep = ", ")
 \item{sep}{separating string.}
 }
 \description{
-Removes NAs from paste. Taken from https://stackoverflow.com/users/1855677/42 stackoverflow answer.
+An internal fucntion that removes NAs from paste.
+Source: https://stackoverflow.com/users/1855677/42.
 }
