@@ -12,5 +12,5 @@ add_h_border_groups(sheet, formats)
 \item{formats}{the formats of the sheet's workbook.}
 }
 \description{
-An internal fucntion that adds a variable dilineating cell groups based on horizontal borders of header cells.
+An internal fucntion that adds a variable delineating cell groups based on horizontal borders of header cells.
 }

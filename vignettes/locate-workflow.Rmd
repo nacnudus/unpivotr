@@ -19,26 +19,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 # Load all packages 
-library(hrbrthemes)
-library(cowplot)
-library(dplyr)
-library(ggplot2)
-library(devtools)
 library(here)
-library(hrbrthemes)
-library(lubridate)
-library(magrittr)
-library(magick)
-library(stringr)
-library(purrr)
-library(plotly)
-library(rlang)
 library(tidyverse)
-library(stringr)
-library(scales)
-library(tidyxl)
-
-load_all(".")
+library(dplyr)
+library(devtools)
+library(plotly)
+load_all()
 ```
 
 The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl data frame with .direction, .header_group and .value columns, leaving reshaping to a final function call. 
@@ -102,7 +88,7 @@ Sometimes not all headers in the same column or row belong to the same group. Fo
 knitr::include_graphics("https://unpivotr.s3.amazonaws.com/pivot-hierarchy.png")
 ```
 
-To deal with this we create a variable that represents the indenting of cells, and then use  `locate_if` to selectively assocaiate cells with directions and header groups.  
+To deal with this we create a variable that represents the indenting of cells, and then use  `locate_if` to selectively associate cells with directions and header groups.  
 
 ```{r message=FALSE, warning=FALSE}
 unpivotr_example("worked-examples.xlsx") %>% 

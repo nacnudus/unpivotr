@@ -13,7 +13,7 @@ behead_groups(sheet = NULL, direction = "W",
 \arguments{
 \item{sheet}{a tidyxl data frame.}
 
-\item{direction}{a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right.}
+\item{direction}{a string indicating which type of headers are to be labeled. Options include compass direction or up/down/left/right.}
 
 \item{.groupings}{expressions representing how header cells are differentiated. Most naturally works with fmt_* functions.}
 

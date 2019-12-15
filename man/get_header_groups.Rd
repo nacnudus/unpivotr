@@ -15,7 +15,7 @@ get_header_groups(sheet, direction, value_ref, formats,
 
 \item{direction}{a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right.}
 
-\item{value_ref}{referece to where data cells are located.}
+\item{value_ref}{reference to where data cells are located.}
 
 \item{formats}{format object created by tidyxl.}
 

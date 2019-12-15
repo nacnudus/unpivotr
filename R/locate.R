@@ -29,10 +29,10 @@ locate <- function(cells, direction, name, values = NULL, types = data_type,
 }
 
 
-#' Conditionally adds direction annations to tidyxl data frame
+#' Conditionally adds direction annotations to tidyxl data frame
 #'
 #' @description
-#' This function conditionally adds direction annations to tidyxl data frame.
+#' This function conditionally adds direction annotations to tidyxl data frame.
 #'
 #' @param cells  a tidyxl data frame 
 #' @param direction  direction of new headers

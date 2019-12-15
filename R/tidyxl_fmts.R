@@ -1,5 +1,5 @@
-#' Format function1
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the indenting format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' indenting formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_format formats 
 #'
@@ -11,8 +11,8 @@ indenting <- function(format_id_vec= local_format_id,sheet_format = formats){
 }
 
 
-#' Format function2
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the text_color format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' text_color formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_format formats 
 #'
@@ -24,8 +24,8 @@ text_color <- function(format_id_vec= local_format_id,sheet_format = formats){
 }
 
 
-#' Format function3
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the bg_color format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' bg_color formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_format formats 
 #'
@@ -37,8 +37,8 @@ bg_color <- function(format_id_vec= local_format_id,sheet_format = formats){
 }
 
 
-#' Format function4
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the h_alignment format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' h_alignment formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_format formats 
 #'
@@ -49,8 +49,8 @@ h_alignment <- function(format_id_vec= local_format_id,sheet_format = formats){
   format_id_vec %>% map(purrr::possibly(get_h_alignment,NA_real_),sheet_format = sheet_format) %>% unlist
 }
 
-#' Format function5
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_numFmt format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' numFmt formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -62,8 +62,8 @@ fmt_numFmt <-
     format_id_vec %>% map(purrr::possibly(fmt_numFmt_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function6
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_bold format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_bold formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -76,8 +76,8 @@ fmt_font_bold <-
     format_id_vec %>% map(purrr::possibly(fmt_font_bold_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function7
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_italic format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_italic formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -90,8 +90,8 @@ fmt_font_italic <-
     format_id_vec %>% map(purrr::possibly(fmt_font_italic_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function8
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_underline format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_underline formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -103,8 +103,8 @@ fmt_font_underline <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_font_underline_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function9
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_strike format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_strike formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -116,8 +116,8 @@ fmt_font_strike <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_font_strike_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function10
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_vertAlign format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_vertAlign formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -129,8 +129,8 @@ fmt_font_vertAlign <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_font_vertAlign_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function11
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_size format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_size formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -142,8 +142,8 @@ fmt_font_size <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_font_size_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function12
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -154,8 +154,8 @@ fmt_font_color_rgb <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_font_color_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function13
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -168,8 +168,8 @@ fmt_font_color_theme <-
     format_id_vec %>% map(purrr::possibly(fmt_font_color_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function14
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -181,8 +181,8 @@ fmt_font_color_indexed <-
     format_id_vec %>% map(purrr::possibly(fmt_font_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function15
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -195,8 +195,8 @@ fmt_font_color_tint <-
     format_id_vec %>% map(purrr::possibly(fmt_font_color_tint_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function16
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_name format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_name formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -209,8 +209,8 @@ fmt_font_name <-
     format_id_vec %>% map(purrr::possibly(fmt_font_name_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function17
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_family format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_family formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -223,8 +223,8 @@ fmt_font_family <-
     format_id_vec %>% map(purrr::possibly(fmt_font_family_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function18
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_font_scheme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' font_scheme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -235,8 +235,8 @@ fmt_font_scheme <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_font_scheme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function19
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_fgColor_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_fgColor_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -246,8 +246,8 @@ fmt_fill_patternFill_fgColor_rgb <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_fill_patternFill_fgColor_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function20
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_fgColor_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_fgColor_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -259,8 +259,8 @@ fmt_fill_patternFill_fgColor_theme <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_patternFill_fgColor_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function21
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_fgColor_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_fgColor_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -272,8 +272,8 @@ fmt_fill_patternFill_fgColor_indexed <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_patternFill_fgColor_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function22
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_fgColor_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_fgColor_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -285,8 +285,8 @@ fmt_fill_patternFill_fgColor_tint <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_patternFill_fgColor_tint_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function23
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_bgColor_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_bgColor_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -297,8 +297,8 @@ fmt_fill_patternFill_bgColor_rgb <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_fill_patternFill_bgColor_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function24
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_bgColor_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_bgColor_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -310,8 +310,8 @@ fmt_fill_patternFill_bgColor_theme <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_patternFill_bgColor_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function25
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_bgColor_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_bgColor_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -324,8 +324,8 @@ fmt_fill_patternFill_bgColor_indexed <-
 
 
 
-#' Format function26
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_bgColor_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_bgColor_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -339,8 +339,8 @@ fmt_fill_patternFill_bgColor_tint <-
 
 
 
-#' Format function27
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_patternFill_patternType format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_patternFill_patternType formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -353,8 +353,8 @@ fmt_fill_patternFill_patternType <-
 
 
 
-#' Format function28
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_type format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_type formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -366,8 +366,8 @@ fmt_fill_gradientFill_type <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_type_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function29
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_degree format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_degree formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -379,8 +379,8 @@ fmt_fill_gradientFill_degree <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_degree_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function30
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_left format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_left formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -392,8 +392,8 @@ fmt_fill_gradientFill_left <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_left_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function31
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_right format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_right formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -405,8 +405,8 @@ fmt_fill_gradientFill_right <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_right_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function32
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_top format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_top formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -419,8 +419,8 @@ fmt_fill_gradientFill_top <-
 
 
 
-#' Format function33
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_bottom format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_bottom formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -432,8 +432,8 @@ fmt_fill_gradientFill_bottom <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_bottom_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function34
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop1_position format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop1_position formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -445,8 +445,8 @@ fmt_fill_gradientFill_stop1_position <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_stop1_position_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function35
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop1_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop1_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -457,8 +457,8 @@ fmt_fill_gradientFill_stop1_color_rgb <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_stop1_color_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function36
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop1_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop1_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -469,8 +469,8 @@ fmt_fill_gradientFill_stop1_color_theme <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_stop1_color_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function37
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop1_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop1_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -482,8 +482,8 @@ fmt_fill_gradientFill_stop1_color_indexed <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_stop1_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function38
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop1_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop1_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -495,8 +495,8 @@ fmt_fill_gradientFill_stop1_color_tint <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_stop1_color_tint_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function39
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop2_position format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop2_position formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -510,8 +510,8 @@ fmt_fill_gradientFill_stop2_position <-
 
 
 
-#' Format function40
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop2_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop2_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -524,8 +524,8 @@ fmt_fill_gradientFill_stop2_color_rgb <-
 
 
 
-#' Format function41
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop2_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop2_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -537,8 +537,8 @@ fmt_fill_gradientFill_stop2_color_theme <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_stop2_color_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function42
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop2_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop2_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -550,8 +550,8 @@ fmt_fill_gradientFill_stop2_color_indexed <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_stop2_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function43
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_fill_gradientFill_stop2_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' fill_gradientFill_stop2_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -563,8 +563,8 @@ fmt_fill_gradientFill_stop2_color_tint <-
     format_id_vec %>% map(purrr::possibly(fmt_fill_gradientFill_stop2_color_tint_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function44
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_diagonalDown format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_diagonalDown formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -576,8 +576,8 @@ fmt_border_diagonalDown <-
     format_id_vec %>% map(purrr::possibly(fmt_border_diagonalDown_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function45
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_diagonalUp format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_diagonalUp formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -589,8 +589,8 @@ fmt_border_diagonalUp <-
     format_id_vec %>% map(purrr::possibly(fmt_border_diagonalUp_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function46
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_outline format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_outline formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -602,8 +602,8 @@ fmt_border_outline <-
     format_id_vec %>% map(purrr::possibly(fmt_border_outline_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function47
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_left_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_left_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -615,8 +615,8 @@ fmt_border_left_style <-
     format_id_vec %>% map(purrr::possibly(fmt_border_left_style_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function48
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_left_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_left_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -627,8 +627,8 @@ fmt_border_left_color_rgb <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_left_color_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function49
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_left_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_left_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -640,8 +640,8 @@ fmt_border_left_color_theme <-
     format_id_vec %>% map(purrr::possibly(fmt_border_left_color_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function50
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_left_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_left_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -654,8 +654,8 @@ fmt_border_left_color_indexed <-
 
 
 
-#' Format function51
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_left_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_left_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -669,8 +669,8 @@ fmt_border_left_color_tint <-
 
 
 
-#' Format function52
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_right_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_right_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -682,8 +682,8 @@ fmt_border_right_style <-
     format_id_vec %>% map(purrr::possibly(fmt_border_right_style_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function53
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_right_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_right_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -694,8 +694,8 @@ fmt_border_right_color_rgb <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_right_color_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function54
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_right_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_right_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -706,8 +706,8 @@ fmt_border_right_color_theme <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_right_color_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function55
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_right_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_right_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -718,8 +718,8 @@ fmt_border_right_color_indexed <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_right_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function56
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_right_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_right_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -730,8 +730,8 @@ fmt_border_right_color_tint <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_right_color_tint_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function57
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_start_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_start_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -743,8 +743,8 @@ fmt_border_start_style <-
     format_id_vec %>% map(purrr::possibly(fmt_border_start_style_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function58
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_start_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_start_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -757,8 +757,8 @@ fmt_border_start_color_rgb <-
 
 
 
-#' Format function59
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_start_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_start_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -770,8 +770,8 @@ fmt_border_start_color_theme <-
     format_id_vec %>% map(purrr::possibly(fmt_border_start_color_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function60
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_start_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_start_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -783,8 +783,8 @@ fmt_border_start_color_indexed <-
     format_id_vec %>% map(purrr::possibly(fmt_border_start_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function61
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_start_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_start_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -795,8 +795,8 @@ fmt_border_start_color_tint <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_start_color_tint_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function62
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_end_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_end_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -808,8 +808,8 @@ fmt_border_end_style <-
     format_id_vec %>% map(purrr::possibly(fmt_border_end_style_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function63
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_end_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_end_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -821,8 +821,8 @@ fmt_border_end_color_rgb <-
     format_id_vec %>% map(purrr::possibly(fmt_border_end_color_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function64
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_end_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_end_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -834,8 +834,8 @@ fmt_border_end_color_theme <-
     format_id_vec %>% map(purrr::possibly(fmt_border_end_color_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function65
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_end_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_end_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -846,8 +846,8 @@ fmt_border_end_color_indexed <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_end_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function66
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_end_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_end_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -859,8 +859,8 @@ fmt_border_end_color_tint <-
     format_id_vec %>% map(purrr::possibly(fmt_border_end_color_tint_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function67
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_top_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_top_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -873,8 +873,8 @@ fmt_border_top_style <-
 
 
 
-#' Format function68
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_top_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_top_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -886,8 +886,8 @@ fmt_border_top_color_rgb <-
     format_id_vec %>% map(purrr::possibly(fmt_border_top_color_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function69
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_top_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_top_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -900,8 +900,8 @@ fmt_border_top_color_theme <-
 
 
 
-#' Format function70
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_top_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_top_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -914,8 +914,8 @@ fmt_border_top_color_indexed <-
 
 
 
-#' Format function71
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_top_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_top_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -928,8 +928,8 @@ fmt_border_top_color_tint <-
 
 
 
-#' Format function72
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_bottom_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_bottom_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -941,8 +941,8 @@ fmt_border_bottom_style <-
     format_id_vec %>% map(purrr::possibly(fmt_border_bottom_style_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function73
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_bottom_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_bottom_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -954,8 +954,8 @@ fmt_border_bottom_color_rgb <-
     format_id_vec %>% map(purrr::possibly(fmt_border_bottom_color_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function74
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_bottom_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_bottom_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -970,8 +970,8 @@ fmt_border_bottom_color_theme <-
 
 
 
-#' Format function75
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_bottom_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_bottom_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -982,8 +982,8 @@ fmt_border_bottom_color_indexed <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_bottom_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function76
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_bottom_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_bottom_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -996,8 +996,8 @@ fmt_border_bottom_color_tint <-
 
 
 
-#' Format function77
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_diagonal_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_diagonal_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1009,8 +1009,8 @@ fmt_border_diagonal_style <-
     format_id_vec %>% map(purrr::possibly(fmt_border_diagonal_style_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function78
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_diagonal_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_diagonal_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1024,8 +1024,8 @@ fmt_border_diagonal_color_rgb <-
 
 
 
-#' Format function79
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_diagonal_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_diagonal_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1038,8 +1038,8 @@ fmt_border_diagonal_color_theme <-
 
 
 
-#' Format function80
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_diagonal_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_diagonal_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1051,8 +1051,8 @@ fmt_border_diagonal_color_indexed <-
     format_id_vec %>% map(purrr::possibly(fmt_border_diagonal_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function81
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_diagonal_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_diagonal_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1065,8 +1065,8 @@ fmt_border_diagonal_color_tint <-
 
 
 
-#' Format function82
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_vertical_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_vertical_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1078,8 +1078,8 @@ fmt_border_vertical_style <-
     format_id_vec %>% map(purrr::possibly(fmt_border_vertical_style_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function83
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_vertical_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_vertical_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1092,8 +1092,8 @@ fmt_border_vertical_color_rgb <-
 
 
 
-#' Format function84
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_vertical_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_vertical_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1104,8 +1104,8 @@ fmt_border_vertical_color_theme <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_border_vertical_color_theme_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function85
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_vertical_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_vertical_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1119,8 +1119,8 @@ fmt_border_vertical_color_indexed <-
 
 
 
-#' Format function86
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_vertical_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_vertical_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1133,8 +1133,8 @@ fmt_border_vertical_color_tint <-
 
 
 
-#' Format function87
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_horizontal_style format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_horizontal_style formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1146,8 +1146,8 @@ fmt_border_horizontal_style <-
     format_id_vec %>% map(purrr::possibly(fmt_border_horizontal_style_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function88
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_horizontal_color_rgb format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_horizontal_color_rgb formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1159,8 +1159,8 @@ fmt_border_horizontal_color_rgb <-
     format_id_vec %>% map(purrr::possibly(fmt_border_horizontal_color_rgb_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function89
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_horizontal_color_theme format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_horizontal_color_theme formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1173,8 +1173,8 @@ fmt_border_horizontal_color_theme <-
 
 
 
-#' Format function90
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_horizontal_color_indexed format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_horizontal_color_indexed formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1188,8 +1188,8 @@ fmt_border_horizontal_color_indexed <-
     format_id_vec %>% map(purrr::possibly(fmt_border_horizontal_color_indexed_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function91
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_border_horizontal_color_tint format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' border_horizontal_color_tint formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1202,8 +1202,8 @@ fmt_border_horizontal_color_tint <-
 
 
 
-#' Format function92
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_alignment_horizontal format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' alignment_horizontal formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1216,8 +1216,8 @@ fmt_alignment_horizontal <-
 
 
 
-#' Format function93
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_alignment_vertical format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' alignment_vertical formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1230,8 +1230,8 @@ fmt_alignment_vertical <-
 
 
 
-#' Format function94
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_alignment_wrapText format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' alignment_wrapText formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1244,8 +1244,8 @@ fmt_alignment_wrapText <-
 
 
 
-#' Format function95
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_alignment_readingOrder format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' alignment_readingOrder formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1257,8 +1257,8 @@ fmt_alignment_readingOrder <-
     format_id_vec %>% map(purrr::possibly(fmt_alignment_readingOrder_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function96
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_alignment_indent format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' alignment_indent formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1270,8 +1270,8 @@ fmt_alignment_indent <-
     format_id_vec %>% map(purrr::possibly(fmt_alignment_indent_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function97
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_alignment_justifyLastLine format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' alignment_justifyLastLine formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1284,8 +1284,8 @@ fmt_alignment_justifyLastLine <-
 
 
 
-#' Format function98
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_alignment_shrinkToFit format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' alignment_shrinkToFit formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1296,8 +1296,8 @@ fmt_alignment_shrinkToFit <-
   function(format_id_vec= local_format_id,sheet_formats = formats){
     format_id_vec %>% map(purrr::possibly(fmt_alignment_shrinkToFit_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
-#' Format function99
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_alignment_textRotation format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' alignment_textRotation formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1309,8 +1309,8 @@ fmt_alignment_textRotation <-
     format_id_vec %>% map(purrr::possibly(fmt_alignment_textRotation_single,NA_real_),sheet_formats = sheet_formats) %>% unlist }
 
 
-#' Format function100
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_protection_locked format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' protection_locked formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'
@@ -1323,8 +1323,8 @@ fmt_protection_locked <-
 
 
 
-#' Format function101
-#' Produces the  tidyABS table components, which store information on column groups, row groups and tabledata.
+#' Add formatting information from the fmt_protection_hidden format object
+#' This function uses the format object created by `xlsx_formats` along with `local_format_id`` to create a vector representing cells' protection_hidden formatting.
 #' @param format_id_vec local format id vector 
 #' @param sheet_formats formats 
 #'

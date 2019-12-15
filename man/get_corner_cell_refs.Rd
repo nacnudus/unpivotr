@@ -2,7 +2,7 @@
 % Please edit documentation in R/060_utils.R
 \name{get_corner_cell_refs}
 \alias{get_corner_cell_refs}
-\title{Get the corner refencerexes of a tidyxl data frame.}
+\title{Get the corner references of a tidyxl data frame.}
 \usage{
 get_corner_cell_refs(sheet)
 }

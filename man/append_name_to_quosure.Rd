@@ -2,7 +2,7 @@
 % Please edit documentation in R/060_utils.R
 \name{append_name_to_quosure}
 \alias{append_name_to_quosure}
-\title{Give quasure a name}
+\title{Give quosure a name}
 \usage{
 append_name_to_quosure(x, prefix = "grp_")
 }
@@ -12,5 +12,5 @@ append_name_to_quosure(x, prefix = "grp_")
 \item{prefix}{prefix to be added in name}
 }
 \description{
-This is an internal function that adds a previxed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
+This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
 }

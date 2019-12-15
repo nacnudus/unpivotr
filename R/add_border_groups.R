@@ -48,7 +48,7 @@ create_h_border_groups <- function(df, formats) {
 
 #' Create horizontal border group variable
 #'
-#' An internal fucntion that adds a variable dilineating cell groups based on horizontal borders of header cells.
+#' An internal fucntion that adds a variable delineating cell groups based on horizontal borders of header cells.
 #'
 #' @param sheet a tidyxl data frame.
 #' @param formats the formats of the sheet's workbook.
@@ -72,7 +72,7 @@ add_h_border_groups <- function(sheet, formats) {
 
 #' Create vertical border group variable
 #'
-#' An internal fucntion that adds a variable dilineating cell groups based on borders of header cells.
+#' An internal fucntion that adds a variable delineating cell groups based on borders of header cells.
 #'
 #' @param sheet a tidyxl data frame.
 #' @param formats the formats of the sheet's workbook.

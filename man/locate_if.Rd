@@ -2,7 +2,7 @@
 % Please edit documentation in R/locate.R
 \name{locate_if}
 \alias{locate_if}
-\title{Conditionally adds direction annations to tidyxl data frame}
+\title{Conditionally adds direction annotations to tidyxl data frame}
 \usage{
 locate_if(cells, ..., direction, name, values = NULL,
   types = data_type, formatters = list(), drop_na = TRUE)
@@ -25,5 +25,5 @@ locate_if(cells, ..., direction, name, values = NULL,
 \item{drop_na}{drop_na}
 }
 \description{
-This function conditionally adds direction annations to tidyxl data frame.
+This function conditionally adds direction annotations to tidyxl data frame.
 }

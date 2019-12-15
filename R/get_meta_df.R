@@ -8,7 +8,7 @@
 #' @description
 #' Beheads multiple headers defined according to expressions in .groupings. 
 #' @param sheet data frame created by xlsx_cells
-#' @param value_ref  referece to where data cells are located. 
+#' @param value_ref  reference to where data cells are located. 
 #' @param table_data datacell dataframe.
 #' @param formats  format object created by tidyxl. 
 #' @param .groupings expressions representing how header cells are differentiated. Most naturally works with fmt_* functions. 

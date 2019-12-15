@@ -26,7 +26,7 @@ paste3 <- function(..., sep = ", ") {
 #' Supply an expression to identify which header groups are hooked.
 #'
 #' @description
-#' This function is used with the `.hook_if` or `.hook_if_rev` argumuents in the `locate_groups` function.
+#' This function is used with the `.hook_if` or `.hook_if_rev` arguments in the `locate_groups` function.
 #' It passes an expression to `dplyr::summarise` that identifies which header groups are hooked - for example swiched from N to NNW.
 #' See the the `locate_groups` documentation for more information and an example.
 #'
@@ -166,10 +166,10 @@ fill_blanks_in_headers <- function(header_df, header_fill, formats, direction) {
 
 #' Add a set of variables based on a list of formulae
 #'
-#' This is an internal function that takes a data frame and a list of formulae and appends an arbitray number of columns to the data frame based on the formulae.
+#' This is an internal function that takes a data frame and a list of formulae and appends an arbitrary number of columns to the data frame based on the formulae.
 #'
 #' @param df a data frame containing header cells.
-#' @param form_list list of fomulae
+#' @param form_list list of formulae
 #' @param format the formats associated with the workbook containing the header_df cells.
 #'
 
@@ -181,9 +181,9 @@ reduce_mutated <- function(df, form_list, format) {
     dplyr::mutate(!!var_name_sym := !!current_quosure)
 }
 
-#' Give quasure a name
+#' Give quosure a name
 #'
-#' This is an internal function that adds a previxed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
+#' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
 #' @param x quosure
 #' @param prefix prefix to be added in name
 #'
@@ -245,7 +245,7 @@ string_range_to_filter_vars <- function(sheet, table_range) {
         col <= table_range_df$max_col[1])
 }
 
-#' Get the corner refencerexes of a tidyxl data frame.
+#' Get the corner references of a tidyxl data frame.
 #'
 #' This is an internal function that takes a tidyxl data frame a returns a dataframe indicating the maximum and minimum corners.
 #'

@@ -2,7 +2,7 @@
 #' @description
 #' Beheads multiple headers defined according to expressions in .groupings. 
 #' @param sheet a tidyxl data frame.
-#' @param direction  a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right. 
+#' @param direction  a string indicating which type of headers are to be labeled. Options include compass direction or up/down/left/right. 
 #' @param .groupings expressions representing how header cells are differentiated. Most naturally works with fmt_* functions. 
 #' @param default_col_header_direction Indicates which direction is given to col headers by default. Only need if "NNW" is required, rather than "N". 
 #' @param default_row_header_direction Indicates which direction is given to row headers by default. Only need if "WNW" is required, rather than "W". 

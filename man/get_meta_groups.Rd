@@ -14,7 +14,7 @@ get_meta_groups(sheet, value_ref, formats,
 \arguments{
 \item{sheet}{data frame created by xlsx_cells}
 
-\item{value_ref}{referece to where data cells are located.}
+\item{value_ref}{reference to where data cells are located.}
 
 \item{formats}{format object created by tidyxl.}
 

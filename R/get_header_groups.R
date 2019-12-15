@@ -9,7 +9,7 @@
 #' Beheads multiple headers defined according to expressions in .groupings. 
 #' @param sheet data frame created by xlsx_cells
 #' @param direction  a string indicating which type of headers are to be labelled. Options include compass direction or up/down/left/right. 
-#' @param value_ref  referece to where data cells are located. 
+#' @param value_ref  reference to where data cells are located. 
 #' @param table_data datacell dataframe.
 #' @param formats  format object created by tidyxl. 
 #' @param .hook_if expression determining whether direction is hooked.

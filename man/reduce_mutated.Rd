@@ -9,10 +9,10 @@ reduce_mutated(df, form_list, format)
 \arguments{
 \item{df}{a data frame containing header cells.}
 
-\item{form_list}{list of fomulae}
+\item{form_list}{list of formulae}
 
 \item{format}{the formats associated with the workbook containing the header_df cells.}
 }
 \description{
-This is an internal function that takes a data frame and a list of formulae and appends an arbitray number of columns to the data frame based on the formulae.
+This is an internal function that takes a data frame and a list of formulae and appends an arbitrary number of columns to the data frame based on the formulae.
 }
