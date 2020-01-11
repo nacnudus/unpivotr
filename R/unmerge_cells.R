@@ -7,7 +7,7 @@
 #' @param strict_merging only merge on local_format_id.
 
 
-unmerge_cells <- function(sheet, strict_merging = T) {
+unmerge_cells <- function(sheet, strict_merging = T, merge_var) {
 
 
   # Define blank cells
@@ -30,7 +30,7 @@ unmerge_cells <- function(sheet, strict_merging = T) {
       dplyr::mutate(col_old = col, col = col - 1) %>%
       dplyr::mutate(address_old = address) %>%
       dplyr::select(sheet, row, col, col_old, local_format_id, address_old) %>%
-      dplyr::left_join(joiner) %>%
+      dplyr::left_join(joiner, by = c("sheet", "row", "col", merge_var)) %>%
       dplyr::mutate(address = address_old) %>%
       dplyr::select(-address_old) %>%
       dplyr::mutate(col = col_old) %>%
@@ -44,7 +44,7 @@ unmerge_cells <- function(sheet, strict_merging = T) {
       dplyr::mutate(col_old = col, col = col - 1) %>%
       dplyr::mutate(address_old = address) %>%
       dplyr::select(sheet, row, col, col_old, style_format, address_old) %>%
-      dplyr::left_join(joiner) %>%
+      dplyr::left_join(joiner,by = c("sheet", "row", "col", merge_var)) %>%
       dplyr::mutate(address = address_old) %>%
       dplyr::select(-address_old) %>%
       dplyr::mutate(col = col_old) %>%
@@ -73,7 +73,7 @@ unmerge_cells <- function(sheet, strict_merging = T) {
 # Rows
 
 
-unmerge_row_cells <- function(sheet, strict_merging = T) {
+unmerge_row_cells <- function(sheet, strict_merging = T,merge_var) {
 
   # Define blank cells
   blank_df <-
@@ -93,7 +93,7 @@ unmerge_row_cells <- function(sheet, strict_merging = T) {
       dplyr::mutate(row_old = row, row = row - 1) %>%
       dplyr::mutate(address_old = address) %>%
       dplyr::select(sheet, row, col, row_old, local_format_id, address_old) %>%
-      dplyr::left_join(joiner) %>%
+      dplyr::left_join(joiner,by = c("sheet", "row", "col", merge_var)) %>%
       dplyr::mutate(address = address_old) %>%
       dplyr::select(-address_old) %>%
       dplyr::mutate(row = row_old) %>%
@@ -107,7 +107,7 @@ unmerge_row_cells <- function(sheet, strict_merging = T) {
       dplyr::mutate(row_old = row, row = row - 1) %>%
       dplyr::mutate(address_old = address) %>%
       dplyr::select(sheet, row, col, row_old, style_format, address_old) %>%
-      dplyr::left_join(joiner) %>%
+      dplyr::left_join(joiner,by = c("sheet", "row", "col", merge_var)) %>%
       dplyr::mutate(address = address_old) %>%
       dplyr::select(-address_old) %>%
       dplyr::mutate(row = row_old) %>%

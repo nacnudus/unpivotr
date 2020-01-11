@@ -53,7 +53,7 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats) {
     
     while (continue) {
       sheet_original <- header_df
-      header_df <- header_df %>% unmerge_row_cells(strict_merging = FALSE)
+      header_df <- header_df %>% unmerge_row_cells(strict_merging = FALSE,merge_var = "style_format")
       
       continue <- !identical(sheet_original, header_df)
     }
@@ -64,7 +64,7 @@ fill_blanks_in_row_headers <- function(header_df, header_fill, formats) {
     
     while (continue) {
       sheet_original <- header_df
-      header_df <- header_df %>% unmerge_row_cells(strict_merging = TRUE)
+      header_df <- header_df %>% unmerge_row_cells(strict_merging = TRUE,merge_var = "local_format_id")
       
       continue <- !identical(sheet_original, header_df)
     }
@@ -104,7 +104,7 @@ fill_blanks_in_col_headers <- function(header_df, header_fill, formats) {
     
     while (continue) {
       sheet_original <- header_df
-      header_df <- header_df %>% unmerge_cells(strict_merging = FALSE)
+      header_df <- header_df %>% unmerge_cells(strict_merging = FALSE, merge_var = "style_format")
       
       continue <- !identical(sheet_original, header_df)
     }
@@ -114,7 +114,7 @@ fill_blanks_in_col_headers <- function(header_df, header_fill, formats) {
     
     while (continue) {
       sheet_original <- header_df
-      header_df <- header_df %>% unmerge_cells(strict_merging = TRUE)
+      header_df <- header_df %>% unmerge_cells(strict_merging = TRUE, merge_var = "local_format_id")
       
       continue <- !identical(sheet_original, header_df)
     }
@@ -154,9 +154,9 @@ fill_blanks_in_col_headers <- function(header_df, header_fill, formats) {
 
 fill_blanks_in_headers <- function(header_df, header_fill, formats, direction) {
   if (direction %in% c("N", "S", "up", "down")) {
-    header_df <- suppressMessages(fill_blanks_in_col_headers(header_df, header_fill, formats))
+    header_df <- fill_blanks_in_col_headers(header_df, header_fill, formats)
   } else if (direction %in% c("W", "E", "left", "right")) {
-    header_df <- suppressMessages(fill_blanks_in_row_headers(header_df, header_fill, formats))
+    header_df <- fill_blanks_in_row_headers(header_df, header_fill, formats)
   } else {
     stop("Please check the direction you are providing")
   }
