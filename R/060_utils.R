@@ -211,7 +211,7 @@ add_variable_if_missing <- function(sheet, var) {
   if (!var %in% names(sheet)) {
     var_sym <- rlang::sym(var)
 
-    sheet <- sheet %>% dplyr::mutate(!!var_sym := NA_character_)
+    sheet <- bind_rows(sheet , tibble(!!var_sym := character()))
   }
 
   sheet
