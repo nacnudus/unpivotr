@@ -52,8 +52,7 @@ Suggests:
     magick,
     plotly,
     scales,
-    tidyverse,
-    stringr
+    tidyverse
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 Remotes: git::https://github.com/ianmoran11/tidyxl.git
