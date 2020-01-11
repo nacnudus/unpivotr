@@ -253,14 +253,11 @@ string_range_to_filter_vars <- function(sheet, table_range) {
 
 get_corner_cell_refs <- function(sheet) {
 
-  # Automatic producedure
-  ref_df <-
-    sheet %>%
-    dplyr::summarise(
-      min_row = min(row), max_row = max(row),
-      min_col = min(col), max_col = max(col)
-    )
-  return(ref_df)
+  list(min_row = min(sheet$row),
+       max_row = max(sheet$row),
+       min_col = min(sheet$col),
+       max_col = max(sheet$col)
+  )
 }
 
 #' This is an internal function to wrap `enhead`. It takes header cells, data cells and a direction and combines them into a tidy data frame.
