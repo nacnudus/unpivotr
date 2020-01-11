@@ -47,7 +47,6 @@ Suggests:
     covr,
     here,
     ggplot2,
-    lubridate,
     magick,
     plotly,
     scales,
