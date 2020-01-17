@@ -1,0 +1,25 @@
+library(tibble)
+library(devtools)
+locate_data_test <-   
+  tibble::tribble(
+       ~.value, ~.direction, ~.header_label, ~address, ~row, ~col, ~data_type, ~character, ~numeric, ~date, ~logical, ~error, ~is_blank, ~local_format_id,              ~sheet, ~character_formatted, ~formula, ~is_array, ~formula_ref, ~formula_group, ~comment, ~height,    ~width, ~style_format,
+           "1",          NA,             NA,     "D4",   4L,   4L,  "numeric",         NA,        1,    NA,       NA,     NA,     FALSE,              18L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "2",          NA,             NA,     "E4",   4L,   5L,  "numeric",         NA,        2,    NA,       NA,     NA,     FALSE,              22L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "3",          NA,             NA,     "F4",   4L,   6L,  "numeric",         NA,        3,    NA,       NA,     NA,     FALSE,              18L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "0",          NA,             NA,     "G4",   4L,   7L,  "numeric",         NA,        0,    NA,       NA,     NA,     FALSE,              19L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "3",          NA,             NA,     "D5",   5L,   4L,  "numeric",         NA,        3,    NA,       NA,     NA,     FALSE,              23L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "4",          NA,             NA,     "E5",   5L,   5L,  "numeric",         NA,        4,    NA,       NA,     NA,     FALSE,              21L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "5",          NA,             NA,     "F5",   5L,   6L,  "numeric",         NA,        5,    NA,       NA,     NA,     FALSE,              20L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "1",          NA,             NA,     "G5",   5L,   7L,  "numeric",         NA,        1,    NA,       NA,     NA,     FALSE,              21L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "5",          NA,             NA,     "D6",   6L,   4L,  "numeric",         NA,        5,    NA,       NA,     NA,     FALSE,              20L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "6",          NA,             NA,     "E6",   6L,   5L,  "numeric",         NA,        6,    NA,       NA,     NA,     FALSE,              21L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "9",          NA,             NA,     "F6",   6L,   6L,  "numeric",         NA,        9,    NA,       NA,     NA,     FALSE,              20L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "2",          NA,             NA,     "G6",   6L,   7L,  "numeric",         NA,        2,    NA,       NA,     NA,     FALSE,              21L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "7",          NA,             NA,     "D7",   7L,   4L,  "numeric",         NA,        7,    NA,       NA,     NA,     FALSE,              24L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "8",          NA,             NA,     "E7",   7L,   5L,  "numeric",         NA,        8,    NA,       NA,     NA,     FALSE,              25L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+          "12",          NA,             NA,     "F7",   7L,   6L,  "numeric",         NA,       12,    NA,       NA,     NA,     FALSE,              26L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal",
+           "3",          NA,             NA,     "G7",   7L,   7L,  "numeric",         NA,        3,    NA,       NA,     NA,     FALSE,              25L, "pivot-annotations",                 NULL,       NA,     FALSE,           NA,             NA,       NA,      15, 8.7109375,      "Normal"
+       )
+    
+
+usethis::use_data(locate_data_test,overwrite = TRUE)
