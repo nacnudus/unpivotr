@@ -293,14 +293,19 @@ get_header_index <- function(labels, regex_term = "^col_header") {
 
 #' Matches directions to unicode arrows for an interative chart
 #'
-#' A data frame with .direction, .arrow and .rate columns
-#'
+#' A data frame with .direction, .arrow and .rate columns.
+#' Because rotation of unicode arrows is not possible with plotly, 
+#' a separate set of straight arrows is used for interative use of plot_cells.
+#' 
 #' @format a dataframe
 "direction_plot_interactive"
 
 #' Matches directions to unicode arrows for an interative chart
 #'
 #' A data frame with .direction, .arrow and .rate columns
+#' Since ggplot allows for rotation of plotted text, 
+#' this datafrom is comprised of right-angled arrows, 
+#' some of which are rotated by plot cells.
 #'
 #' @format a dataframe
 "direction_plot_noninteractive"
