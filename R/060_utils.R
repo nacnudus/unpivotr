@@ -296,7 +296,8 @@ current_index_numbers <-
     as.numeric() 
   
 if(length(current_index_numbers[!is.na(current_index_numbers)]) == 0 ){
-  return(0)
+  return(1)
+  
 }else{
 
 current_index_numbers %>% 
