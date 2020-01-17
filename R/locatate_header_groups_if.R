@@ -96,7 +96,7 @@ locate_groups_if <-
     .hook_if_temp <- .hook_if  
     .hook_if_rev_temp <- .hook_if_rev  
     
-    min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
+    min_header_index_temp <- get_header_index(sheet$.header_label,"^col_header")
     
     header_groups <- get_header_groups(sheet, direction, value_ref, formats,
                                        .groupings = groupings_temp,
@@ -106,7 +106,7 @@ locate_groups_if <-
                                        table_data = tabledata,
                                        min_header_index = min_header_index_temp) 
     
-    min_header_index_temp <- suppressWarnings(get_header_index(sheet$.header_label,"^col_header"))  
+    min_header_index_temp <- get_header_index(sheet$.header_label,"^col_header")  
     
     if(exists("filtered_header_cells")){
       header_groups_in_filter <-

@@ -286,19 +286,29 @@ enhead_tabledata <- function(header_data, direction, values = tabledata) {
 
 get_header_index <- function(labels, regex_term = "^col_header") {
 
+current_index_numbers <- 
 # Take a vector of header labels.
     labels %>%
 # Extract those that look like automatically generated header names.
     .[stringr::str_detect(., regex_term)] %>%
 # Extract index.
     stringr::str_extract("\\d")%>%
-    as.numeric() %>%
-# Get highest index.
-    max(., na.rm = TRUE) %>%
-# Deal with cases that have no index
+    as.numeric() 
+  
+if(length(current_index_numbers[!is.na(current_index_numbers)]) == 0 ){
+  return(0)
+}else{
+
+current_index_numbers %>% 
+  # Get highest index.
+  max(., na.rm = TRUE) %>%
+    # Deal with cases that have no index
     ifelse(is.finite(.), ., 0) %>%
-# increment on index.
-        `+`(1)
+    # increment on index.
+    `+`(1)
+  
+}
+  
 }
 
 #' Matches directions to unicode arrows for an interative chart
