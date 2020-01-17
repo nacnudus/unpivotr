@@ -276,19 +276,29 @@ enhead_tabledata <- function(header_data, direction, values = tabledata) {
 
 #' The the current names of header groups.
 #'
-#' This is an internal function that returns the names of header groups.
+#' This is an internal function that returns the names of header groups. 
+#' Because header group names are produced automatically (for example, W_header_label_01) and are indexed, 
+#' this function is required to determine what header names are already used
+#' in the annotated tidyxl data frame. 
 #'
 #' @param labels list of labels.
 #' @param regex_term prefix for col_header.
 
 get_header_index <- function(labels, regex_term = "^col_header") {
-  labels %>%
+
+# Take a vector of header labels.
+    labels %>%
+# Extract those that look like automatically generated header names.
     .[stringr::str_detect(., regex_term)] %>%
-    stringr::str_remove_all("[a-z]+|[:punct:]+") %>%
+# Extract index.
+    stringr::str_extract("\\d")%>%
     as.numeric() %>%
+# Get highest index.
     max(., na.rm = TRUE) %>%
+# Deal with cases that have no index
     ifelse(is.finite(.), ., 0) %>%
-    `+`(1)
+# increment on index.
+        `+`(1)
 }
 
 #' Matches directions to unicode arrows for an interative chart
