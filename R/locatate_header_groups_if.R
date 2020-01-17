@@ -61,8 +61,10 @@ locate_groups_if <-
       
       # Report location of data cells 
       corner_refs <-  get_corner_cell_refs(attr(sheet,"data_cells"))
-      min_letter <- unpivotr::cols_index[corner_refs$min_col]
-      max_letter <- unpivotr::cols_index[corner_refs$max_col]
+      min_letter <- cellranger::letter_to_num(corner_refs$min_col)
+      max_letter <- cellranger::letter_to_num(corner_refs$max_col)
+      
+
       
       warning(paste0("Data cells have yet not been located in this this dataframe with `locate_data()`.",
                      " Continuing using defaults of `locate_data()`. Data cells have been located at :",
@@ -108,8 +110,8 @@ locate_groups_if <-
     
     if(exists("filtered_header_cells")){
       header_groups_in_filter <-
-        paste0(header_groups$row,unpivotr::cols_index[header_groups$col]) %in%
-        paste0(filtered_header_cells$row,unpivotr::cols_index[filtered_header_cells$col])
+        paste0(header_groups$row,cellranger::letter_to_num(header_groups$col)) %in%
+        paste0(filtered_header_cells$row,cellranger::letter_to_num(filtered_header_cells$col))
       
       header_groups <- header_groups %>% dplyr::filter(header_groups_in_filter)
       

@@ -89,10 +89,9 @@ locate_if <- function(cells, ..., direction, name, values = NULL, types = data_t
     filter_expr <- rlang::enquos(...)
     
     headers <- cells_f %>% dplyr::filter(!!!filter_expr)
-    
     is_header_if <-
-      paste0(cells_f$row, unpivotr::cols_index[cells_f$col]) %in%
-      paste0(headers$row, unpivotr::cols_index[headers$col])
+      paste0("R",cells_f$row,"C",cells_f$col) %in%
+      paste0("R",headers$row,"C",headers$col)
     
     filter_expr <- direction_filter(direction)
     is_header_dir <- rlang::eval_tidy(filter_expr, cells_f)

@@ -291,13 +291,6 @@ get_header_index <- function(labels, regex_term = "^col_header") {
     `+`(1)
 }
 
-#' An ordered set of excel column indexes.
-#'
-#' A character vector containing and ordered set of excel column indexes
-#'
-#' @format A character vector of length 702
-"cols_index"
-
 #' Matches directions to unicode arrows for an interative chart
 #'
 #' A data frame with .direction, .arrow and .rate columns
