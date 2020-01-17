@@ -260,19 +260,6 @@ get_corner_cell_refs <- function(sheet) {
   )
 }
 
-#' This is an internal function to wrap `enhead`. It takes header cells, data cells and a direction and combines them into a tidy data frame.
-#'
-#' @param header_data a data frame containing header cells.
-#' @param direction direction suplied to enhead.
-#' @param values the data values.
-
-enhead_tabledata <- function(header_data, direction, values = tabledata) {
-  unpivotr::enhead(
-    data_cells = values,
-    header_cells = header_data,
-    direction = direction
-  )
-}
 
 #' The the current names of header groups.
 #'
@@ -307,7 +294,6 @@ current_index_numbers %>%
     ifelse(is.finite(.), ., 0) %>%
     # increment on index.
     `+`(1)
-  
 }
   
 }

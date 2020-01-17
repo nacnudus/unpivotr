@@ -40,10 +40,7 @@ migrate <- function(located_df) {
       y = directions
     ) %>%
     purrr::pmap(function(x, y) {
-      enhead_tabledata(
-        header_data = x, direction = y,
-        values = data_cells
-      )
+      enhead(data_cells =data_cells,header_cells =x,direction = y)
     }) %>%
     purrr::reduce(dplyr::full_join, by = c("row", "col", ".value"))
   
