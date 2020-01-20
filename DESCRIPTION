@@ -48,7 +48,10 @@ Suggests:
     here,
     ggplot2,
     plotly,
-    tidyverse
+    purrr,
+    magrittr,
+    dplyr, 
+    tidyr
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 Remotes: git::https://github.com/ianmoran11/tidyxl.git
