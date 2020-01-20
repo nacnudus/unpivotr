@@ -23,7 +23,6 @@ Imports:
     dplyr,
     forcats,
     purrr,
-    tidyr,
     pillar,
     tibble (>= 2.1.1),
     cellranger,
@@ -48,6 +47,7 @@ Suggests:
     testthat,
     covr,
     here,
+    devtools,
     plotly
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)

@@ -4,12 +4,14 @@
 \alias{unmerge_cells}
 \title{Fill in blanks}
 \usage{
-unmerge_cells(sheet, strict_merging = T)
+unmerge_cells(sheet, strict_merging = T, merge_var)
 }
 \arguments{
 \item{sheet}{sheet object read in by \code{tidyxl::xlsx_cells}}
 
 \item{strict_merging}{only merge on local_format_id.}
+
+\item{merge_var}{the variable determining whether cells a merged.}
 }
 \description{
 This function ensures that merged cells are unmerged.

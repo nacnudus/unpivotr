@@ -5,6 +5,7 @@
 #'
 #' @param sheet sheet object read in by `tidyxl::xlsx_cells`
 #' @param strict_merging only merge on local_format_id.
+#' @param merge_var the variable determining whether cells a merged.
 
 
 unmerge_cells <- function(sheet, strict_merging = T, merge_var) {
@@ -14,16 +15,16 @@ unmerge_cells <- function(sheet, strict_merging = T, merge_var) {
   blank_df <-
     sheet %>%
     dplyr::filter(data_type == "blank")
-
-
-
+  
+  
+  
   # Filter out blank cells - use this to check neighbours of blank cells
   joiner <- sheet %>%
     dplyr::select(-character_formatted) %>%
     dplyr::filter(!is_blank)
-
+  
   # Check each cells agains the column to the left
-
+  
   if (strict_merging) {
     inserter <-
       blank_df %>%
@@ -53,7 +54,7 @@ unmerge_cells <- function(sheet, strict_merging = T, merge_var) {
       dplyr::mutate(row_col = paste0(row, "_", col)) %>%
       dplyr::mutate(merged = 1)
   }
-
+  
   # Join sheet with inserter
   sheet <-
     sheet %>%
@@ -61,7 +62,7 @@ unmerge_cells <- function(sheet, strict_merging = T, merge_var) {
     dplyr::filter(!row_col %in% inserter$row_col) %>%
     dplyr::bind_rows(inserter) %>%
     dplyr::arrange(row, col)
-
+  
   # Remove duplicates
   sheet %>%
     dplyr::group_by(row, col) %>%
@@ -74,19 +75,19 @@ unmerge_cells <- function(sheet, strict_merging = T, merge_var) {
 
 
 unmerge_row_cells <- function(sheet, strict_merging = T,merge_var) {
-
+  
   # Define blank cells
   blank_df <-
     sheet %>%
     dplyr::filter(data_type == "blank")
-
+  
   # Filter out blank cells - use this to check neighbours of blank cells
   joiner <- sheet %>%
     dplyr::select(-character_formatted) %>%
     dplyr::filter(!is_blank)
-
+  
   # Check each cells agains the column to the left
-
+  
   if (strict_merging) {
     inserter <-
       blank_df %>%
@@ -116,7 +117,7 @@ unmerge_row_cells <- function(sheet, strict_merging = T,merge_var) {
       dplyr::mutate(row_col = paste0(row, "_", col)) %>%
       dplyr::mutate(merged = 1)
   }
-
+  
   # Join sheet with inserter
   sheet <-
     sheet %>%
@@ -124,7 +125,7 @@ unmerge_row_cells <- function(sheet, strict_merging = T,merge_var) {
     dplyr::filter(!row_col %in% inserter$row_col) %>%
     dplyr::bind_rows(inserter) %>%
     dplyr::arrange(row, col)
-
+  
   # Remove duplicates
   sheet %>%
     dplyr::group_by(row, col) %>%

@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(here)
 library(dplyr)
 library(stringr)
+library(unpivotr)
 ```
 
 The locate functions work much like `unpivotr::behead.` The key difference is that, rather than progressively removing headers, locate functions annotate the tidyxl data frame with .direction, .header_group and .value columns, leaving reshaping to a final function call. 

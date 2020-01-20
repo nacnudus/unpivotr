@@ -411,7 +411,7 @@ add_variable_if_missing <- function(sheet, var) {
   if (!var %in% names(sheet)) {
     var_sym <- rlang::sym(var)
     
-    sheet <- bind_rows(sheet , tibble(!!var_sym := character()))
+    sheet <- dplyr::bind_rows(sheet , tibble::tibble(!!var_sym := character()))
   }
   
   sheet
@@ -497,6 +497,22 @@ get_header_index <- function(labels, regex_term = "^col_header") {
   }
   
 }
+
+
+#' Get path to example data
+#' Unpivotr comes bundled with some example files in its `inst/extdata`
+#' directory. This function makes them easy to access.
+#'
+#' @param path Name of file. If `NULL`, the example files will be listed.
+#' @export
+unpivotr_example <- function(path = NULL) {
+  if (is.null(path)) {
+    dir(system.file("extdata", package = "unpivotr")) %>% .[stringr::str_detect(., "xlsx$")]
+  } else {
+    system.file("extdata", path, package = "unpivotr", mustWork = TRUE)
+  }
+}
+
 
 #' Matches directions to unicode arrows for an interative chart
 #'
