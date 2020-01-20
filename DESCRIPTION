@@ -29,7 +29,10 @@ Imports:
     cellranger,
     xml2,
     tidyselect,
-    vctrs
+    vctrs,
+    tidyxl,
+    ggplot2,
+    tidyr
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 6.1.1
@@ -37,7 +40,6 @@ Suggests:
     knitr,
     rmarkdown,
     readr,
-    tidyxl,
     readxl,
     htmltools,
     rvest,
@@ -46,12 +48,7 @@ Suggests:
     testthat,
     covr,
     here,
-    ggplot2,
-    plotly,
-    purrr,
-    magrittr,
-    dplyr, 
-    tidyr
+    plotly
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 
