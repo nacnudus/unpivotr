@@ -135,6 +135,21 @@ locate_groups_if <-
     
   }
 
+#' Supply an expression to identify which header groups are hooked.
+#'
+#' @description
+#' This function is used with the `.hook_if` or `.hook_if_rev` arguments in the `locate_groups` function.
+#' It passes an expression to `dplyr::summarise` that identifies which header groups are hooked - for example swiched from N to NNW.
+#' See the the `locate_groups` documentation for more information and an example.
+#'
+#' @param ...  expression applied to a  identifies which header groups are hooked
+#'
+#' @name get_range_dfs
+#' @export
+
+hook <- function(...) {
+  rlang::quos(...)
+}
 
 
 
