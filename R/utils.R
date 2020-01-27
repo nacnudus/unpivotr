@@ -543,6 +543,11 @@ unpivotr_example <- function(path = NULL) {
 "migrate_test"
 
 
+#' Convert spreadsheet range to a vector of row-col strings.
+#'
+#' This is an internal function that converts a spreadsheet range to a vector of row-col strings.
+#' @param x a string representing a spreadsheet range
+
 string_to_range <- function(string){
   
   limits_df <- 
@@ -556,30 +561,51 @@ string_to_range <- function(string){
   range
 }
 
-string_expression_to_quosure <- function(string_expression){
-  text <- paste0('paste0(row,"-",col) %in% string_to_range("',string_expression[[2]],'")')
+#' Convert  range to a filtering quosure 
+#' 
+#' Convert an expression that represents a spreadsheet range to a quosure 
+#' that can be used to create a variable that returns TRUE if row-col 
+#' combination is in the range.
+#' 
+#' @param x a string expression
+
+string_expressions_to_quosures <- function(string_expression){
+  
+  symbol_expression %>% map(function(x){
+    
+  text <- paste0('paste0(row,"-",col) %in% string_to_range("',x[[2]],'")')
   
   string_quo <- rlang::as_quosure(rlang::parse_expr(text),env = openenv)
   
-  string_quo
+  string_quo }
+  )
 }
 
+#' Convert symbol to a filtering quosure 
+#' 
+#' Convert an expression that represents a fmt_ function to a quosure 
+#' that can be used to create a variable that returns TRUE if row-col 
+#' combination is in the range.
+#' 
+#' @param symbol_expression a symbol expression
 
+symbol_expressions_to_quosures <- function(symbol_expression){
+  
+  symbol_expression %>% map(function(x){
+    function_text <- 
+      paste0('purrr::invoke(',
+             rlang::as_label(x),
+             ', format_id_vec = local_format_id,sheet_format = format)')
+    
+    filter_quosures_symbol <- 
+      rlang::as_quosure(rlang::parse_expr(function_text),env = openenv)
+    
+    filter_quosures_symbol
+  })
+  
 
-symbol_expression_to_quosure <- function(symbol_expression){
-  
-  function_text <- 
-    paste0('purrr::invoke(',
-           rlang::as_label(symbol_expression),
-           ', format_id_vec = local_format_id,sheet_format = format)')
-  
-  filter_quosures_symbol <- 
-    rlang::as_quosure(rlang::parse_expr(function_text),env = openenv)
-  
-  filter_quosures_symbol
   
 }
-
 
 #' Give quosure a name
 #'
@@ -602,19 +628,43 @@ append_name_to_quosure <- function(x, prefix = "grp_") {
 }
 
 
-#' Give quosure a name
+#' Get name from a language object 
 #'
 #' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
-#' @param x quosure
-#' @param prefix prefix to be added in name
-#'
+#' @param x a language
 
-name_quosure <- function(x) {
+name_language_expressions <- function(x) {
+    
+  purrr::map_chr(x,function(x){
     paste0(
       "flt_",
       x %>% rlang::as_label() %>% make.names() %>%
         stringr::str_replace_all("\\.+", ".") %>% stringr::str_remove_all("(\\.$)|(^X\\.)") %>%
         stringr::str_replace_all("\\.", "_") %>%
         ifelse(stringr::str_sub(., start = 1, 1) %in% as.character(0:9), paste0("x", .), .)
-    )
+     )
+   }
+ )
+}
+
+
+#' Get name from a vector of spreadsheet range strings 
+#'
+#' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
+#' @param x a vector of strings representing spreadsheet ranges 
+
+
+name_string_expressions <- function(x){
+  x %>% purrr::map(rlang::get_expr)  %>% unlist() %>% 
+    stringr::str_remove("\\:") %>% paste0("flt_",.) 
+} 
+
+
+#' Get name from a vector of symbols 
+#'
+#' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
+#' @param x a vector of symbols
+
+name_symbol_expressions <- function(symbols){
+    purrr::map(symbols,rlang::as_label)  %>% unlist() %>%stringr::str_remove("\\:") %>% paste0("flt_",.) 
 }
