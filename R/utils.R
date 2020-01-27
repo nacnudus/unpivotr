@@ -376,25 +376,7 @@ reduce_mutated <- function(df, form_list, format) {
     dplyr::mutate(!!var_name_sym := !!current_quosure)
 }
 
-#' Give quosure a name
-#'
-#' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
-#' @param x quosure
-#' @param prefix prefix to be added in name
-#'
 
-append_name_to_quosure <- function(x, prefix = "grp_") {
-  list(
-    x,
-    paste0(
-      prefix,
-      x %>% rlang::as_label() %>% make.names() %>%
-        stringr::str_replace_all("\\.+", ".") %>% stringr::str_remove_all("(\\.$)|(^X\\.)") %>%
-        stringr::str_replace_all("\\.", "_") %>%
-        ifelse(stringr::str_sub(., start = 1, 1) %in% as.character(0:9), paste0("x", .), .)
-    )
-  )
-}
 
 #' Add a variable to a tidyxl data frame if that variable is missing
 #'
@@ -561,3 +543,78 @@ unpivotr_example <- function(path = NULL) {
 "migrate_test"
 
 
+string_to_range <- function(string){
+  
+  limits_df <- 
+    cellranger::as.cell_limits(string) %>% 
+    as.data.frame() %>% 
+    tidyr::expand_grid(row = c(.$ul[[1]]:.$lr[[1]]), 
+                       col = c(.$ul[[2]]:.$lr[[2]]))
+  
+  range <- paste0(limits_df$row,"-",limits_df$col)
+  
+  range
+}
+
+string_expression_to_quosure <- function(string_expression){
+  text <- paste0('paste0(row,"-",col) %in% string_to_range("',string_expression[[2]],'")')
+  
+  string_quo <- rlang::as_quosure(rlang::parse_expr(text),env = openenv)
+  
+  string_quo
+}
+
+
+
+symbol_expression_to_quosure <- function(symbol_expression){
+  
+  function_text <- 
+    paste0('purrr::invoke(',
+           rlang::as_label(symbol_expression),
+           ', format_id_vec = local_format_id,sheet_format = format)')
+  
+  filter_quosures_symbol <- 
+    rlang::as_quosure(rlang::parse_expr(function_text),env = openenv)
+  
+  filter_quosures_symbol
+  
+}
+
+
+#' Give quosure a name
+#'
+#' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
+#' @param x quosure
+#' @param prefix prefix to be added in name
+#'
+
+append_name_to_quosure <- function(x, prefix = "grp_") {
+  list(
+    x,
+    paste0(
+      prefix,
+      x %>% rlang::as_label() %>% make.names() %>%
+        stringr::str_replace_all("\\.+", ".") %>% stringr::str_remove_all("(\\.$)|(^X\\.)") %>%
+        stringr::str_replace_all("\\.", "_") %>%
+        ifelse(stringr::str_sub(., start = 1, 1) %in% as.character(0:9), paste0("x", .), .)
+    )
+  )
+}
+
+
+#' Give quosure a name
+#'
+#' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
+#' @param x quosure
+#' @param prefix prefix to be added in name
+#'
+
+name_quosure <- function(x) {
+    paste0(
+      "flt_",
+      x %>% rlang::as_label() %>% make.names() %>%
+        stringr::str_replace_all("\\.+", ".") %>% stringr::str_remove_all("(\\.$)|(^X\\.)") %>%
+        stringr::str_replace_all("\\.", "_") %>%
+        ifelse(stringr::str_sub(., start = 1, 1) %in% as.character(0:9), paste0("x", .), .)
+    )
+}

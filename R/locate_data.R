@@ -8,10 +8,12 @@
 
 locate_data <-
   function(sheet= NULL, ...) {
+    
     format <-  attr(sheet, "formats")
     
     filter_expresions <- rlang::quos(...)
     
+    # Default filter expression - numeric cells 
     if(length(filter_expresions) == 0){
       filter_expresions <- rlang::quos(!is.na(numeric))
     }
@@ -19,7 +21,8 @@ locate_data <-
     # Add annotation variables if missing  
     added_var_list <- list(sheet,".header_label",".direction", ".value")
     sheet <-  added_var_list %>% purrr::reduce(add_variable_if_missing)
-    
+   
+    # Reorder variables  
     sheet <- 
       sheet %>% dplyr::select(.value, .direction, .header_label, dplyr::everything() )
     
@@ -29,49 +32,53 @@ locate_data <-
     filter_expresions_langage <- filter_expresions[filter_expresions_type == "language"]
     filter_expresions_symbol <- filter_expresions[filter_expresions_type == "symbol"]
     
-    # Limit to table Range ----
-    filter_expresions_string <- filter_expresions_string %>% append(dplyr::quo("A1"))  
-    
-    string_var_names <- purrr::map(filter_expresions_string,rlang::get_expr)  %>% unlist() %>% 
-      stringr::str_remove("\\:") %>% paste0("flt_",.) %>%  rlang::syms()
-    filter_expresions_list <-  list(sheet) %>% append(purrr::map(filter_expresions_string, rlang::get_expr))
-    
-    sheet <-  filter_expresions_list %>% purrr::reduce(string_range_to_filter_vars) 
-    
-    #---------------------------------------------------------------------------------------------
-    
-    closures <- filter_expresions_symbol  %>% append(rlang::quos(ones)) %>% append(rlang::quos(twos))
-    
     openenv <- environment()
     
-    seq_along(closures) %>% 
-      purrr::map(~ assign(paste0("flt_", rlang::as_label(closures[[.x]]) %>% stringr::str_remove_all("\\(\\)") ),
-                          rlang::set_env(rlang::eval_tidy(closures[[.x]])),envir = openenv))
+    # Limit to table Range ----
+  
+    if(length(filter_expresions_string) > 0){
+      
+        filter_expresions_string <- map(filter_expresions_string,string_expression_to_quosure)
+        
+        filter_quosures_string_names <- purrr::map(filter_expresions_string,rlang::get_expr)  %>% unlist() %>% 
+          stringr::str_remove("\\:") %>% paste0("flt_",.) 
+        
+        names(filter_expresions_string) <- filter_quosures_string_names
+      }
     
-    closure_list <- rlang::syms(ls()[stringr::str_detect(ls(),"flt_")]) 
-    closure_list <- rlang::syms(ls()[stringr::str_detect(ls(),"flt_")]) 
+    if(length(filter_expresions_symbol) > 0){
+      
+      filter_expresions_symbol <-  map(filter_expresions_symbol, symbol_expression_to_quosure)
+      
+      filter_quosures_symbol_names <- 
+        purrr::map(closures,rlang::as_label)  %>% unlist() %>%stringr::str_remove("\\:") %>% paste0("flt_",.) 
+      
+      names(filter_expresions_symbol) <- filter_quosures_symbol_names
+    }
     
-    sheet <- 
-      sheet %>% 
-      dplyr::mutate_at(.vars = "local_format_id",
-                       .funs = tibble::lst(!!!closure_list))
+    if(length(filter_expresions_langage) > 0){
     
-    #------------------------------------------------------------------------------------------
-    filter_expresions_langage <- filter_expresions_langage %>% append(rlang::quo(2 + 1))   
+      filter_expresions_langage
+  
+      filter_quosures_language_names <- purrr::map_chr(filter_expresions_langage,name_quosure)
+      
+      names(filter_expresions_langage) <- filter_quosures_language_names
     
-    fmt_forms <-  filter_expresions_langage     
+    }
     
-    form_list <-  fmt_forms %>% map(append_name_to_quosure,prefix = "flt_")
-    
-    sheet <- append(list(sheet),form_list) %>% purrr::reduce(reduce_mutated)
-    
+   filter_quosures <- 
+     list(filter_expresions_langage,filter_expresions_symbol,filter_expresions_string) %>% 
+     purrr::reduce(append)
+
+   if(length(filter_quosures) == 0) 
+     stop("Error: Please provide an expression to `locate_data`")
+   
     data_cell_filter <- 
-      sheet %>% dplyr::select(dplyr::starts_with("flt")) %>% dplyr::select(names(.)[!(names(.) %in% c("flt_X2_1", "flt_ones","flt_twos","flt_A1"))]) %>% 
+      sheet %>% mutate(!!!filter_quosures) %>% dplyr::select(names(filter_quosures)) %>%    
       as.list %>% purrr::map(as.logical) %>% purrr::pmap_lgl(~ sum(...,na.rm = TRUE) > 0 )
     
-    data_cells <- sheet[data_cell_filter,] %>% dplyr::select(-dplyr::starts_with("flt_"))
-    
-    sheet <- sheet[!data_cell_filter,] %>% dplyr::select(-dplyr::starts_with("flt_"))
+    data_cells <- sheet[data_cell_filter,] 
+    sheet <- sheet[!data_cell_filter,] 
     
     data_cells <- data_cells %>% 
       dplyr::mutate(.value = dplyr::coalesce(as.character(numeric),as.character(character),
