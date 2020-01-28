@@ -35,9 +35,13 @@ test_that("locate_groups() works", {
     locate_groups(direction = "W",
                   .groupings = groupings(fmt_alignment_indent),
                   .hook_if =     hook(any(fmt_alignment_indent == 0))) %>%
-    locate(direction = "N", name = student) 
+    locate(direction = "N", name = student) %>% 
+    dplyr::select(-character_formatted)
   
-  expect_identical(locate_groups_test_temp, unpivotr::locate_groups_test)
+  expect_identical(
+    locate_groups_test_temp, 
+    unpivotr::locate_groups_test %>% 
+      dplyr::select(-character_formatted))
 })
 
 test_that("migrate() works", {

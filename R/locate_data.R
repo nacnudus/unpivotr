@@ -9,6 +9,8 @@
 locate_data <-
   function(sheet= NULL, ...) {
     
+    
+    
     format <-  attr(sheet, "formats")
     
     filter_expresions <- rlang::quos(...)
@@ -40,18 +42,18 @@ locate_data <-
      
     if(length(filter_expresions_string) > 0){
       
-        filter_expresions_string <- filter_expresions_string %>% string_expressions_to_quosures
+        filter_expresions_string <- filter_expresions_string %>% string_expressions_to_quosures(environ = openenv)
         
-        filter_quosures_string_names <- filter_expresions_string %>% name_string_expressions
+        filter_quosures_string_names <- filter_expresions_string %>% name_string_expressions(prefix = "flt_")
         
         names(filter_expresions_string) <- filter_quosures_string_names
       }
     
     if(length(filter_expresions_symbol) > 0){
       
-      filter_expresions_symbol <-  filter_expresions_symbol %>% symbol_expressions_to_quosures
+      filter_expresions_symbol <-  filter_expresions_symbol %>% symbol_expressions_to_quosures(environ = openenv)
     
-      filter_quosures_symbol_names <- filter_expresions_symbol %>% name_symbol_expressions    
+      filter_quosures_symbol_names <- filter_expresions_symbol %>% name_symbol_expressions(prefix = "flt_")    
     
         names(filter_expresions_symbol) <- filter_quosures_symbol_names
     }
@@ -60,7 +62,7 @@ locate_data <-
     
       filter_expresions_langage
   
-      filter_quosures_language_names <- filter_expresions_langage %>% name_language_expressions()
+      filter_quosures_language_names <- filter_expresions_langage %>% name_language_expressions(prefix = "flt_")
       
       names(filter_expresions_langage) <- filter_quosures_language_names
     

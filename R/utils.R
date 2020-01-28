@@ -569,13 +569,13 @@ string_to_range <- function(string){
 #' 
 #' @param x a string expression
 
-string_expressions_to_quosures <- function(string_expression){
+string_expressions_to_quosures <- function(string_expression,environ){
   
   symbol_expression %>% map(function(x){
     
   text <- paste0('paste0(row,"-",col) %in% string_to_range("',x[[2]],'")')
   
-  string_quo <- rlang::as_quosure(rlang::parse_expr(text),env = openenv)
+  string_quo <- rlang::as_quosure(rlang::parse_expr(text),env = environ)
   
   string_quo }
   )
@@ -589,16 +589,16 @@ string_expressions_to_quosures <- function(string_expression){
 #' 
 #' @param symbol_expression a symbol expression
 
-symbol_expressions_to_quosures <- function(symbol_expression){
+symbol_expressions_to_quosures <- function(symbol_expression, environ){
   
   symbol_expression %>% map(function(x){
     function_text <- 
-      paste0('purrr::invoke(',
+      paste0('purrr::invoke(unpivotr::',
              rlang::as_label(x),
              ', format_id_vec = local_format_id,sheet_format = format)')
     
     filter_quosures_symbol <- 
-      rlang::as_quosure(rlang::parse_expr(function_text),env = openenv)
+      rlang::as_quosure(rlang::parse_expr(function_text),env = environ)
     
     filter_quosures_symbol
   })
@@ -633,11 +633,11 @@ append_name_to_quosure <- function(x, prefix = "grp_") {
 #' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
 #' @param x a language
 
-name_language_expressions <- function(x) {
+name_language_expressions <- function(x, prefix) {
     
   purrr::map_chr(x,function(x){
     paste0(
-      "flt_",
+      prefix,
       x %>% rlang::as_label() %>% make.names() %>%
         stringr::str_replace_all("\\.+", ".") %>% stringr::str_remove_all("(\\.$)|(^X\\.)") %>%
         stringr::str_replace_all("\\.", "_") %>%
@@ -654,9 +654,9 @@ name_language_expressions <- function(x) {
 #' @param x a vector of strings representing spreadsheet ranges 
 
 
-name_string_expressions <- function(x){
+name_string_expressions <- function(x,prefix){
   x %>% purrr::map(rlang::get_expr)  %>% unlist() %>% 
-    stringr::str_remove("\\:") %>% paste0("flt_",.) 
+    stringr::str_remove("\\:") %>% paste0(prefix,.) 
 } 
 
 
@@ -665,6 +665,6 @@ name_string_expressions <- function(x){
 #' This is an internal function that adds a prefixed name to a quosure so that variables added to a data frame using this quosure have a predictable name.
 #' @param x a vector of symbols
 
-name_symbol_expressions <- function(symbols){
-    purrr::map(symbols,rlang::as_label)  %>% unlist() %>%stringr::str_remove("\\:") %>% paste0("flt_",.) 
+name_symbol_expressions <- function(symbols,prefix){
+    purrr::map(symbols,rlang::as_label)  %>% unlist() %>%stringr::str_remove("\\:") %>% paste0(prefix,.) 
 }

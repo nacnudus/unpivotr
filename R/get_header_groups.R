@@ -30,7 +30,6 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
  
   # Allow grouings to take names 
   # Create a vector of names so that they aren't identified from all functions with regex  
-  
   # Filter for header cells to which directions will be allocated based on direction --------------------------
   
   header_df <-  direction_filter_header(sheet,direction,value_ref)
@@ -53,50 +52,63 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   
   header_df <- fill_blanks_in_headers(header_df, header_fill, formats, direction)
   
+  #---------------------------------------------------------------------------------------------------
   # Create grouping variables for symbols provided to grouping.
   
+  # Classify the filter expressions  
+  grouping_expresions_type <- .groupings %>% purrr::map_chr(~typeof(rlang::get_expr(.x)))
   
-  .groupings <- .groupings %>% append(rlang::quo(ones)) %>% append(rlang::quo(1 + 1))
+  grouping_expresions_string <- .groupings[grouping_expresions_type == "string"]
+  grouping_expresions_langage <- .groupings[grouping_expresions_type == "language"]
+  grouping_expresions_symbol <- .groupings[grouping_expresions_type == "symbol"]
   
-  symbol_filter <- .groupings %>% purrr::map_lgl(~ typeof(rlang::get_expr(.x)) == "symbol")
-  
-  closures <- .groupings[symbol_filter]
+  # Give expressions names, and convert to quosures where expressions are symbols (fmt_ functions) or strings (spreadsheet ranges) 
   
   openenv <- environment()
   
-  seq_along(closures) %>%
-    map(~ assign(paste0("grp_", rlang::as_label(closures[[.x]]) %>% stringr::str_remove_all("\\(\\)")),
-                 rlang::set_env(rlang::eval_tidy(closures[[.x]])),
-                 envir = openenv
-                 
-                 #!#!  create list of names of closures                
-                 
-    ))
+  if(length(grouping_expresions_string) > 0){
+    
+    grouping_expresions_string <- grouping_expresions_string %>% string_expressions_to_quosures(environ = openenv)
+    
+    grouping_quosures_string_names <- grouping_expresions_string %>% name_string_expressions(prefix = "grp_")
+    
+    names(grouping_expresions_string) <- grouping_quosures_string_names
+  }
   
-  closure_list <- rlang::syms(ls()[stringr::str_detect(ls(), "grp_")])
+  if(length(grouping_expresions_symbol) > 0){
+    
+    grouping_expresions_symbol_quo <-  grouping_expresions_symbol %>% symbol_expressions_to_quosures(environ = openenv)
+    
+    grouping_quosures_symbol_names <- grouping_expresions_symbol %>% name_symbol_expressions(prefix = "grp_")    
+    
+    names(grouping_expresions_symbol_quo) <- grouping_quosures_symbol_names
+  }
   
-  header_df <-
-    header_df %>% dplyr::mutate_at(.vars = "local_format_id",.funs = tibble::lst(!!!closure_list))
+  if(length(grouping_expresions_langage) > 0){
+    
+    grouping_quosures_language_names <- grouping_expresions_langage %>% name_language_expressions(prefix = "grp_")
+    
+    names(grouping_expresions_langage) <- grouping_quosures_language_names
+    
+  }
   
+  # Combine grouping quosures 
+  grouping_quosures <- 
+    list(grouping_expresions_langage,grouping_expresions_symbol_quo,grouping_expresions_string) %>% 
+    purrr::reduce(append)
   
-  # Create grouping variables for symbols provided to grouping.
-  
-  fmt_forms <-  .groupings[!symbol_filter]
-  
-  form_list <- fmt_forms %>% map(append_name_to_quosure)
-  
-  #!#!#! Add function to create list of names here 
-  
-  header_df <- append(list(header_df), form_list) %>% purrr::reduce(reduce_mutated)
-  
-  grouping_vars <- rlang::syms(names(header_df) %>% .[stringr::str_detect(., "^grp_")])
+  format <- formats
+  # Convert grouping vars (flt_) to a lgl vector
+  header_df <- header_df %>% mutate(!!!grouping_quosures)  
+
+  #--------------------------------------------------------------------------------------------
   
   # Nest header groups ----
   header_df <-
     header_df %>%
     dplyr::filter(dplyr::coalesce(as.character(logical), as.character(numeric),
                                   as.character(date), as.character(character)) != "") %>%
-    dplyr::group_by(rowcol_group, !!!grouping_vars) %>%
+    dplyr::group_by(rowcol_group, !!!grouping_quosures) %>%
     tidyr::nest() %>%
     dplyr::ungroup()
   
@@ -105,6 +117,8 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
     header_df %>%
     dplyr::mutate(row_no_name = dplyr::row_number() + min_header_index - 1) %>%
     dplyr::mutate(header_label = paste0(direction,"_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
+  
+  
   
   # Get directions --------------------------------------------------------------------------------------
   
@@ -150,7 +164,7 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
       hook_var_rev == TRUE ~ hook_direction_rev, 
       hook_var == TRUE     ~ hook_direction, 
       TRUE                 ~ direction)) %>%
-    dplyr::select(header_label, direction, data, !!!grouping_vars)
+    dplyr::select(header_label, direction, data, names(grouping_quosures))
   
   # remove extra variables ----
   header_df <-
