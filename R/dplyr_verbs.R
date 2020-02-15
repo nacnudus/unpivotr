@@ -92,6 +92,7 @@ select_fmt <- function(df, ...){
 #' @param df a data frame created by tidyxl::xlsx_cells 
 #' @param ... filter expression. 
 #' @export 
+#' @examples print("todo")
 
 filter_fmt <- function(df, ...){
   
