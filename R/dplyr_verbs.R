@@ -29,6 +29,7 @@ append_fmt_single <- function(cells, fmt_function){
 #' @param cells a data frame created by tidyxl::xlsx_cells 
 #' @param ... fmt_* function. 
 #' @export
+#' @examples print("todo")
 
 
 append_fmt <- function(cells, ...){
