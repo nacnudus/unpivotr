@@ -91,11 +91,16 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
     names(grouping_expresions_langage) <- grouping_quosures_language_names
     
   }
-  
+ 
   # Combine grouping quosures 
   grouping_quosures <- 
-    list(grouping_expresions_langage,grouping_expresions_symbol_quo,grouping_expresions_string) %>% 
+    list(
+      if(exists("grouping_expresions_langage")){grouping_expresions_langage},
+      if(exists("grouping_expresions_symbol_quo")){grouping_expresions_symbol_quo},
+      if(exists("grouping_expresions_string")){grouping_expresions_string}) %>% 
     purrr::reduce(append)
+  
+  grouping_quosures <- grouping_quosures[!is.null(grouping_quosures)]
   
   format <- formats
   # Convert grouping vars (flt_) to a lgl vector

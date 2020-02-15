@@ -97,6 +97,7 @@ unpivotr_example("worked-examples.xlsx") %>%
   locate_if(fmt_alignment_indent == 1, direction = "W", name = subject) %>% 
   locate(direction = "N", name = student) %>% 
   migrate()
+  
 ```
 
 ### A more concise syntax : `locate_groups` 
@@ -157,7 +158,7 @@ annotated_df <-
                 .groupings = groupings(is.na(numeric)), 
                 .hook_if = hook(any(data_type == "numeric"))) %>% 
   locate_groups(direction = "N", header_fill = "style")  
-  
+
 annotated_df %>% plot_cells()
 
 annotated_df %>% migrate()
