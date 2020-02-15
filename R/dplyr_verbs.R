@@ -63,6 +63,7 @@ append_fmt <- function(cells, ...){
 #' @param df a data frame created by tidyxl::xlsx_cells 
 #' @param ... select input. 
 #' @export 
+#' @examples print("todo")
 
 select_fmt <- function(df, ...){
   
