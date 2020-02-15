@@ -27,3 +27,6 @@ locate_if(cells, ..., direction, name, values = NULL,
 \description{
 This function conditionally adds direction annotations to tidyxl data frame.
 }
+\examples{
+print("todo")
+}

@@ -15,3 +15,6 @@ This function is used with the \code{.hook_if} or \code{.hook_if_rev} arguments 
 It passes an expression to \code{dplyr::summarise} that identifies which header groups are hooked - for example swiched from N to NNW.
 See the the \code{locate_groups} documentation for more information and an example.
 }
+\examples{
+print("todo")
+}

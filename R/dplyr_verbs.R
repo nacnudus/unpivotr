@@ -4,6 +4,7 @@
 #' @param cells a data frame created by tidyxl::xlsx_cells 
 #' @param fmt_function fmt_* function. 
 #' @export
+#' @examples print("todo")
 
 
 append_fmt_single <- function(cells, fmt_function){
@@ -119,6 +120,7 @@ filter_fmt <- function(df, ...){
 #' @param df a data frame created by tidyxl::xlsx_cells 
 #' @param ... select input. 
 #' @export 
+#' @examples print("todo")
 
 mutate_fmt <-  function(df, ...){
   

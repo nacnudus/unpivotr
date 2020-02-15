@@ -14,3 +14,6 @@ append_fmt(cells, ...)
 \description{
 Add a format variable.
 }
+\examples{
+print("todo")
+}

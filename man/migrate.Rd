@@ -12,3 +12,6 @@ migrate(located_df)
 \description{
 This function is used on a tidy data frame that has been annotated with \code{locate_data}, \code{locate_header} or  \code{locate_header_groups}. It creates a column for each header group.
 }
+\examples{
+print("todo")
+}

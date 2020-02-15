@@ -25,3 +25,6 @@ locate(cells, direction, name, values = NULL, types = data_type,
 \description{
 This adds direction annations to tidyxl data frame.
 }
+\examples{
+print("todo")
+}

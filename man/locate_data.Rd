@@ -14,3 +14,6 @@ locate_data(sheet = NULL, ...)
 \description{
 Removes data cells from data frame and stores in an attribute.
 }
+\examples{
+print("todo")
+}

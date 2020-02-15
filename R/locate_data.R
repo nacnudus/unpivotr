@@ -5,6 +5,7 @@
 #' @param ... filter expression that identifies data cells.
 #'
 #' @export
+#' @examples print("todo")
 
 locate_data <-
   function(sheet= NULL, ...) {

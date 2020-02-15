@@ -6,6 +6,7 @@
 #' @param sheets sheet to be extracted.
 #'
 #' @export
+#' @examples print("todo")
 
 xlsx_cells_fmt <-  function(path, sheets = NA) {
   

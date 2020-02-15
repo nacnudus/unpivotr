@@ -10,6 +10,7 @@
 #' @param .hook_if expression determining whether directions are hooked.
 #' @param .hook_if_rev expression determining whether directions are reverse hooked.
 #' @export
+#' @examples print("todo")
 
 locate_groups <-
   function(sheet= NULL, direction = "N", .groupings = groupings(fmt_alignment_indent), 
@@ -47,6 +48,7 @@ locate_groups <-
 #' @param header_fill deals with merged cells. Fills in neighbouring cells if they have the same "local_format_id", "style" or are within "borders".
 #' @param ... filter expression that identifies headers.
 #' @export
+#' @examples print("todo")
 
 locate_groups_if <-
   function(sheet= NULL,..., direction = "N", .groupings = groupings(fmt_alignment_indent), 
@@ -146,9 +148,25 @@ locate_groups_if <-
 #'
 #' @name get_range_dfs
 #' @export
+#' @examples print("todo")
 
 hook <- function(...) {
   rlang::quos(...)
+}
+
+
+
+#' Groupings 
+#' @description 
+#' This functions passes grouping expressions to the .groupings argument of locate_groups. It works most naturally with fmt_* functions.
+#' @param ... mutate expression to group headers.
+#' @export
+#' @examples print("todo")
+
+groupings <- function(...){
+  
+  rlang::quos(...)
+  
 }
 
 

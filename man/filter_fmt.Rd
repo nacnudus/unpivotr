@@ -14,3 +14,6 @@ filter_fmt(df, ...)
 \description{
 A wrapper for dplyr::filter that retains formatting information
 }
+\examples{
+print("todo")
+}

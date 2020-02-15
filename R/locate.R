@@ -11,6 +11,7 @@
 #' @param types  types
 #' @param drop_na  drop_na
 #' @export
+#' @examples print("todo")
 
 locate <- function(cells, direction, name, values = NULL, types = data_type,
                    formatters = list(), drop_na = TRUE) {
@@ -43,6 +44,7 @@ locate <- function(cells, direction, name, values = NULL, types = data_type,
 #' @param types types
 #' @param ... expression to filter for headers 
 #' @export
+#' @examples print("todo")
 
 locate_if <- function(cells, ..., direction, name, values = NULL, types = data_type,
                       formatters = list(), drop_na = TRUE) {

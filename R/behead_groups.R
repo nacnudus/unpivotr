@@ -11,6 +11,13 @@
 #' @param .hook_if_rev expression determining whether directions are reverse hooked.
 #'
 #' @export
+#' @examples print("todo")
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
 
 behead_groups <-
   function(sheet= NULL, direction = "W", .groupings = groupings(fmt_alignment_indent),

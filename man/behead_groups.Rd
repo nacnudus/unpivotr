@@ -30,3 +30,12 @@ behead_groups(sheet = NULL, direction = "W",
 \description{
 Beheads multiple headers defined according to expressions in .groupings.
 }
+\examples{
+print("todo")
+
+
+
+
+
+
+}

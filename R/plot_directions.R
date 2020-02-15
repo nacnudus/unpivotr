@@ -6,6 +6,7 @@
 #' @param text text variable to be represented in values plot.
 #' @param interactive TRUE produces an interactive plotly visualisation.
 #' @export
+#' @examples print("todo")
 
 plot_cells <- function(sheet, text = values, interactive = FALSE) {
 

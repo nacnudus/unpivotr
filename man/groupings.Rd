@@ -12,3 +12,6 @@ groupings(...)
 \description{
 This functions passes grouping expressions to the .groupings argument of locate_groups. It works most naturally with fmt_* functions.
 }
+\examples{
+print("todo")
+}

@@ -14,3 +14,6 @@ select_fmt(df, ...)
 \description{
 A wrapper for dplyr::select that retains formatting information
 }
+\examples{
+print("todo")
+}

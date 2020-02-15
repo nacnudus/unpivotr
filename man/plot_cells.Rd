@@ -16,3 +16,6 @@ plot_cells(sheet, text = values, interactive = FALSE)
 \description{
 This function plots the excel sheet, highlighting the relationship between headers and table values.
 }
+\examples{
+print("todo")
+}

@@ -14,3 +14,6 @@ arrange_fmt(df, ...)
 \description{
 A wrapper for dplyr::arrange that retains formatting information
 }
+\examples{
+print("todo")
+}
