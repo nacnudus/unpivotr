@@ -12,6 +12,7 @@
 #' @param ... filter expression identifying header cells.
 #'
 #' @export
+#' @examples print("todo")
 
 behead_groups_if <-
   function(sheet= NULL,..., direction = "W", .groupings = groupings(fmt_alignment_indent),
