@@ -4,7 +4,8 @@
 \alias{fill_blanks_in_col_headers}
 \title{Unmerge and fill in blanks for col headers.}
 \usage{
-fill_blanks_in_col_headers(header_df, header_fill, formats)
+fill_blanks_in_col_headers(header_df, header_fill = c("style",
+  "local_format_id", "borders"), formats)
 }
 \arguments{
 \item{header_df}{a data frame containing header cells.}
