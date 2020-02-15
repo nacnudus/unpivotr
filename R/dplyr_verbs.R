@@ -151,6 +151,7 @@ mutate_fmt <-  function(df, ...){
 #' @param df a data frame created by tidyxl::xlsx_cells 
 #' @param ... select input. 
 #' @export 
+#' @examples print("todo")
 
 arrange_fmt <-  function(df, ...){
   
