@@ -8,19 +8,19 @@ test_that("rectify() has the right row/col headers", {
     chr = c("a", "b", "c", "d"),
     stringsAsFactors = FALSE
   )
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 1:2,
     `1(A)` = 1:2,
     `2(B)` = 1:2,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, values = row), rectify_correct)
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 1:2,
     `1(A)` = 1L,
     `2(B)` = 2L,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, values = col), rectify_correct)
@@ -35,12 +35,11 @@ test_that("rectify() isn't confused by same-named variables in context", {
     stringsAsFactors = FALSE
   )
   data_type <- "Oops!"
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 1:2,
     `1(A)` = c("a", "c"),
     `2(B)` = c("b", "d"),
-    stringsAsFactors = FALSE,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, types = data_type), rectify_correct)
@@ -55,30 +54,27 @@ test_that("rectify() can use 'row', 'col' and 'data_type' as values", {
     int = c(NA, NA, 3L, 4L),
     stringsAsFactors = FALSE
   )
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 1:2,
     `1(A)` = 1:2,
     `2(B)` = 1:2,
-    stringsAsFactors = FALSE,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, values = row), rectify_correct)
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 1:2,
     `1(A)` = 1L,
     `2(B)` = 2L,
-    stringsAsFactors = FALSE,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, values = col), rectify_correct)
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 1:2,
     `1(A)` = c("chr", "int"),
     `2(B)` = c("chr", "int"),
-    stringsAsFactors = FALSE,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x, values = data_type), rectify_correct)
@@ -92,12 +88,11 @@ test_that("Blank initial rows and columns are handled", {
     int = c(1L, 2L, 3L, NA),
     stringsAsFactors = FALSE
   )
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 2:3,
     `2(B)` = c(1L, 3L),
     `3(C)` = c(2L, NA_integer_),
-    stringsAsFactors = FALSE,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x), rectify_correct)
@@ -112,12 +107,11 @@ test_that("rectify() allows formatting formulas", {
     int = c(NA, NA, 3L, 4L),
     stringsAsFactors = FALSE
   )
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 1:2,
     `1(A)` = c("A", "30"),
     `2(B)` = c("B", "40"),
-    stringsAsFactors = FALSE,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(
@@ -135,12 +129,11 @@ test_that("Extraneous columns on the edges are dropped", {
     foo = 1:4,
     stringsAsFactors = FALSE
   )
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 2:3,
     `2(B)` = c(1L, 3L),
     `3(C)` = c(2L, NA_integer_),
-    stringsAsFactors = FALSE,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x), rectify_correct)
@@ -154,13 +147,12 @@ test_that("Blank columns amongst the data are retained", {
     int = c(1L, 2L, 3L, NA),
     stringsAsFactors = FALSE
   )
-  rectify_correct <- data.frame(
+  rectify_correct <- tibble::tibble(
     `row/col` = 2:4,
     `2(B)` = c(1L, NA_integer_, 3L),
     `3(C)` = c(NA, NA, NA),
     `4(D)` = c(2L, NA_integer_, NA_integer_),
-    stringsAsFactors = FALSE,
-    check.names = FALSE
+    .name_repair = "minimal"
   )
   class(rectify_correct) <- c("cell_grid", class(rectify_correct))
   expect_equal(rectify(x), rectify_correct)
