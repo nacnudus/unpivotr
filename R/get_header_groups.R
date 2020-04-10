@@ -20,7 +20,7 @@
 #' @param min_header_index min header index
 
 get_header_groups <- function(sheet, direction, value_ref, formats,
-                              .groupings = groupings(fmt_alignment_indent),
+                              .groupings = groupings(ones),
                               .hook_if = hook(ones),
                               .hook_if_rev = hook(ones),
                               header_fill = "local_format_id",
