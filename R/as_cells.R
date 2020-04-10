@@ -93,7 +93,7 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
   values <- do.call(c, purrr::map(x, as.list))
   nrows <- nrow(x)
   ncols <- ncol(x)
-  types <- purrr::map_chr(x, pillar::type_sum)
+  types <- unname(purrr::map_chr(x, pillar::type_sum))
   # Spread cells into different columns by data type
   out <- tibble::tibble(
     row = rep.int(seq_len(nrow(x)), ncols),

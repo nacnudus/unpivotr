@@ -81,7 +81,7 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
       # c() omits NULLs, so replace them with NA, which c() will promote when
       # necessary.
       dots[dots_is_null] <- NA
-      dots <- do.call(c, dots)
+      dots <- do.call(c, c(dots, use.names = FALSE))
       # c() demotes dates etc. when the first element is NA, so replace the
       # classes.
       class(dots) <- all_classes
@@ -100,7 +100,7 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
   dots[dates] <- purrr::map(dots[dates], format, justify = "none", trim = TRUE)
   # Finally go with c()'s default homegnising of remaining classes.  Don't use
   # purrr::flatten(), because it strips classes from dates.
-  do.call(c, dots)
+  do.call(c, c(dots, use.names = FALSE))
 }
 
 # Return an NA of the same type as the given vector
