@@ -14,10 +14,12 @@
 #' @export
 #' @examples
 #'  
+#' library(tidyverse)
+#'
 #' xl_df <- 
 #'  unpivotr_example("anzsic.xlsx") %>%
 #'  xlsx_cells_fmt(sheets = "Classes") %>%
-#'  filter(row > 6) # Remove irrelevant rows  
+#'  filter_fmt(row > 6) # Remove irrelevant rows  
 #'
 #' # Identify data cells. 
 #' xl_df <- 
@@ -27,7 +29,7 @@
 #' # Add annotations for header cells that are numbers first, and then for header cells that are words.
 #' xl_df <- 
 #'  xl_df %>%
-#'  behead_groups_if(str_detect(character,"[a-z]") ,direction = "W", .hook_if = unpivotr::hook(T)) 
+#'  behead_groups_if(str_detect(character,"[a-z]") ,direction = "W", .hook_if = unpivotr::hook(TRUE)) 
 #'
 #' xl_df %>% attr("data_cells")
 

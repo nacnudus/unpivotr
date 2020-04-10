@@ -37,6 +37,7 @@ Beheads multiple headers defined according to expressions in .groupings.
 }
 \examples{
 print("todo")
+ library(tidyverse)
 # Read in tidyxl data frame
 xl_df <-
   unpivotr_example("worked-examples.xlsx") \%>\%
@@ -54,5 +55,5 @@ xl_df <-
   behead(direction = "N", name = student)
 
 # Extract data_cells
-xl_df \%>\% attr("data_cells") \%>\% select(.value:student)
+xl_df \%>\% attr("data_cells") \%>\% dplyr::select(.value:student)
 }

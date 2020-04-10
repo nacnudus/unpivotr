@@ -15,6 +15,9 @@ select_fmt(df, ...)
 A wrapper for dplyr::select that retains formatting information
 }
 \examples{
+ 
+library(tidyverse)
+
 
 annotated_df <- 
 unpivotr_example("newresconst.xlsx") \%>\% 

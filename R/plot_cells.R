@@ -7,7 +7,9 @@
 #' @param interactive TRUE produces an interactive plotly visualisation.
 #' @export
 #' @examples 
-#'
+#' 
+#' library(tidyverse)
+#' 
 #' # Create annotated tidyxl data frame
 #' xl_df <- 
 #' unpivotr_example("worked-examples.xlsx") %>%

@@ -37,7 +37,9 @@ The header cells for which annotations are the outermost.
 For example, if "left" of "W" is used for the direction argument, cells furthest to the left in your spreadsheet will have location information added.
 }
 \examples{
-# Read in a formatted tidyxl data frame. 
+
+library(tidyverse)
+
 xl_df <- 
 unpivotr_example("worked-examples.xlsx") \%>\%
  xlsx_cells_fmt(sheets = "pivot-annotations") 

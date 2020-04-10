@@ -7,18 +7,16 @@
 #'
 #' @export
 #' @examples 
-#'
+#' 
+#' library(tidyverse)
+#' 
 #' # Read in tidyxl data frame
-#'  xl_df <-  
-#'   unpivotr_example("worked-examples.xlsx") %>% 
-#    xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
-#   
-# Identify numeric cells as data cells using the data_type column of xl_df
-#  xl_df <- 
-#  xl_df %>% 
-#   locate_data(data_type == "numeric")
+#'  xl_df <- unpivotr_example("worked-examples.xlsx") %>% xlsx_cells_fmt(sheets = "pivot-hierarchy") 
+#'   
+#' # Identify numeric cells as data cells using the data_type column of xl_df
+#'  xl_df <- xl_df %>%locate_data(data_type == "numeric")
 #'  
-#' Visually inspect the result 
+#' # Visually inspect the result 
 #' xl_df %>% plot_cells 
 #'  
 
@@ -89,7 +87,7 @@ locate_data <-
 
    # Convert filter vars (flt_) to a lgl vector
     data_cell_filter <- 
-      sheet %>% mutate(!!!filter_quosures) %>% # Create flt_ vars 
+      sheet %>% dplyr::mutate(!!!filter_quosures) %>% # Create flt_ vars 
       dplyr::select(names(filter_quosures)) %>% # filter for flt_ vars     
       as.list %>% purrr::map(as.logical) %>%   # Convert flt_ vars to logical 
       purrr::pmap_lgl( ~ sum(...,na.rm = TRUE) > 0) # Combine lgls from flt_ vars 

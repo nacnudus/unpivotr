@@ -20,6 +20,9 @@ See the the \code{locate_groups} documentation for more information and an examp
 }
 \examples{
 
+
+library(tidyverse)
+
 # Read in tidyxl data frame
 xl_df <-  
 unpivotr_example("worked-examples.xlsx") \%>\%

@@ -104,7 +104,7 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   
   format <- formats
   # Convert grouping vars (flt_) to a lgl vector
-  header_df <- header_df %>% mutate(!!!grouping_quosures)  
+  header_df <- header_df %>% dplyr::mutate(!!!grouping_quosures)  
 
   #--------------------------------------------------------------------------------------------
   

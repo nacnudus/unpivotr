@@ -6,7 +6,10 @@
 #' @export
 #' @examples 
 #' 
-#' #' # Read in a formatted tidyxl data frame. 
+#'  
+#' library(tidyverse)
+#'
+#' # Read in a formatted tidyxl data frame. 
 #' 
 #' xl_df <- 
 #'  unpivotr_example("worked-examples.xlsx") %>% 
@@ -16,8 +19,7 @@
 #' xl_df <- 
 #'  xl_df %>% 
 #'   append_fmt(fmt_alignment_indent) %>%
-#'   locate_data(data_type == "numeric") %>%
-
+#'   locate_data(data_type == "numeric") 
 #' # Add annotations for header cells. First for header cells to the left of the table with no indenting, and then for cells for one level of indenting.
 #' xl_df <- 
 #'  xl_df %>% 
@@ -53,7 +55,10 @@ append_fmt_single <- function(cells, fmt_function){
 #' @export
 #' @examples 
 #' 
-#' #' # Read in a formatted tidyxl data frame. 
+#'  
+#' library(tidyverse)
+#'
+#' # Read in a formatted tidyxl data frame. 
 #' 
 #' xl_df <- 
 #'  unpivotr_example("worked-examples.xlsx") %>% 
@@ -63,8 +68,7 @@ append_fmt_single <- function(cells, fmt_function){
 #' xl_df <- 
 #'  xl_df %>% 
 #'   append_fmt(fmt_alignment_indent) %>%
-#'   locate_data(data_type == "numeric") %>%
-
+#'   locate_data(data_type == "numeric") 
 #' # Add annotations for header cells. First for header cells to the left of the table with no indenting, and then for cells for one level of indenting.
 #' xl_df <- 
 #'  xl_df %>% 
@@ -108,6 +112,9 @@ append_fmt <- function(cells, ...){
 #' @param ... select input. 
 #' @export 
 #' @examples 
+#'  
+#' library(tidyverse)
+#'
 #' 
 #' annotated_df <- 
 #' unpivotr_example("newresconst.xlsx") %>% 
@@ -151,8 +158,11 @@ select_fmt <- function(df, ...){
 #' @param ... filter expression. 
 #' @export 
 #' @examples 
-#' #' annotated_df <- 
-#' unpivotr_example("newresconst.xlsx") %>% 
+#'  
+#' library(tidyverse)
+#'
+#' annotated_df <- 
+#'  unpivotr_example("newresconst.xlsx") %>% 
 #'   xlsx_cells_fmt(sheets = "Table 1 - Permits") %>%
 #'   append_fmt(fmt_font_bold) %>% 
 #'   filter_fmt(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
@@ -196,7 +206,10 @@ filter_fmt <- function(df, ...){
 #' @param ... select input. 
 #' @export 
 #' @examples 
-#' #' annotated_df <- 
+#'  
+#' library(tidyverse)
+#'
+#' annotated_df <- 
 #' unpivotr_example("newresconst.xlsx") %>% 
 #'   xlsx_cells_fmt(sheets = "Table 1 - Permits") %>%
 #'   append_fmt(fmt_font_bold) %>% 
@@ -238,12 +251,15 @@ mutate_fmt <-  function(df, ...){
 #' @param df a data frame created by tidyxl::xlsx_cells 
 #' @param ... select input. 
 #' @export 
-#' @examples 
-#' #' annotated_df <- 
+#' @examples
+#'   
+#' library(tidyverse)
+#'
+#' annotated_df <- 
 #' unpivotr_example("newresconst.xlsx") %>% 
 #'   xlsx_cells_fmt(sheets = "Table 1 - Permits") %>%
 #'   append_fmt(fmt_font_bold) %>% 
-#'   filter_fmt(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) %>% 
+#'   filter_fmt(row < min(row[stringr::str_detect(character,"RSE")],na.rm = TRUE)) %>% 
 #'   arrange_fmt(height) %>% 
 #'   locate_data(data_type == "numeric" & col > 1) %>%
 #'   locate_groups(direction = "W", 

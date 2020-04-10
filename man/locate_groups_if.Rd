@@ -48,11 +48,13 @@ These columns indicate the value, direction and name of the header columns that 
 }
 \examples{
 
+library(tidyverse)
+
 # Read in tidyxl data frame
 xl_df <- 
   unpivotr_example("anzsic.xlsx") \%>\%
    xlsx_cells_fmt(sheets = "Classes") \%>\%
-   filter(row > 6) # Remove irrelevant rows  
+   filter_fmt(row > 6) # Remove irrelevant rows  
    
 # Identify data cells. 
 xl_df <- 
@@ -62,6 +64,6 @@ xl_df <-
 # Add annotations for header cells that are numbers first, and then for header cells that are words.
  xl_df <- 
   xl_df \%>\%
-   locate_groups_if(str_detect(character,"[0-9]") ,direction = "W", .hook_if = unpivotr::hook(T)) \%>\% 
-   locate_groups_if(str_detect(character,"[a-z]") ,direction = "W", .hook_if = unpivotr::hook(T)) 
+   locate_groups_if(str_detect(character,"[0-9]") ,direction = "W", .hook_if = unpivotr::hook(TRUE)) \%>\% 
+   locate_groups_if(str_detect(character,"[a-z]") ,direction = "W", .hook_if = unpivotr::hook(TRUE)) 
 }

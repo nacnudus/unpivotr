@@ -46,6 +46,8 @@ These columns indicate the value, direction and name of the header columns that 
 }
 \examples{
 
+library(tidyverse)
+
 # Read in tidyxl data frame
 xl_df <-  
 unpivotr_example("worked-examples.xlsx") \%>\%

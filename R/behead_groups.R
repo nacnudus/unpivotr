@@ -12,6 +12,7 @@
 #'
 #' @export
 #' @examples print("todo")
+#'  library(tidyverse)
 #' # Read in tidyxl data frame
 #' xl_df <-
 #'   unpivotr_example("worked-examples.xlsx") %>%
@@ -29,7 +30,7 @@
 #'   behead(direction = "N", name = student)
 #' 
 #' # Extract data_cells
-#' xl_df %>% attr("data_cells") %>% select(.value:student)
+#' xl_df %>% attr("data_cells") %>% dplyr::select(.value:student)
 
 behead_groups <-
   function(sheet= NULL, direction = "W", .groupings = groupings(fmt_alignment_indent),

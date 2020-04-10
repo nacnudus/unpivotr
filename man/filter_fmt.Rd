@@ -15,8 +15,11 @@ filter_fmt(df, ...)
 A wrapper for dplyr::filter that retains formatting information
 }
 \examples{
-#' annotated_df <- 
-unpivotr_example("newresconst.xlsx") \%>\% 
+ 
+library(tidyverse)
+
+annotated_df <- 
+ unpivotr_example("newresconst.xlsx") \%>\% 
   xlsx_cells_fmt(sheets = "Table 1 - Permits") \%>\%
   append_fmt(fmt_font_bold) \%>\% 
   filter_fmt(row < min(row[str_detect(character,"RSE")],na.rm = TRUE)) \%>\% 

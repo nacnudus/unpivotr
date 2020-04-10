@@ -17,7 +17,9 @@
 #' @param drop_na  drop_na
 #' @export
 #' @examples 
-#' # Read in a formatted tidyxl data frame. 
+#' 
+#' library(tidyverse)
+#' 
 #' xl_df <- 
 #' unpivotr_example("worked-examples.xlsx") %>%
 #'  xlsx_cells_fmt(sheets = "pivot-annotations") 
@@ -77,7 +79,9 @@ locate <- function(cells, direction, name, values = NULL, types = data_type,
 #' @param ... expression to filter for headers 
 #' @export
 #' @examples
-#'
+#' 
+#' library(tidyverse)
+#' 
 #' # Read in a formatted tidyxl data frame. 
 #' 
 #' xl_df <- 
@@ -88,8 +92,9 @@ locate <- function(cells, direction, name, values = NULL, types = data_type,
 #' xl_df <- 
 #'  xl_df %>% 
 #'   append_fmt(fmt_alignment_indent) %>%
-#'   locate_data(data_type == "numeric") %>%
-
+#'   locate_data(data_type == "numeric") 
+#'   
+#'   
 #' # Add annotations for header cells. First for header cells to the left of the table with no indenting, and then for cells for one level of indenting.
 #' xl_df <- 
 #'  xl_df %>% 

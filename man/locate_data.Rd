@@ -17,11 +17,15 @@ It removes data cells from data frame and stores them in an attribute of the res
 }
 \examples{
 
+library(tidyverse)
+
 # Read in tidyxl data frame
- xl_df <-  
-  unpivotr_example("worked-examples.xlsx") \%>\% 
+ xl_df <- unpivotr_example("worked-examples.xlsx") \%>\% xlsx_cells_fmt(sheets = "pivot-hierarchy") 
+  
+# Identify numeric cells as data cells using the data_type column of xl_df
+ xl_df <- xl_df \%>\%locate_data(data_type == "numeric")
  
-Visually inspect the result 
+# Visually inspect the result 
 xl_df \%>\% plot_cells 
  
 }

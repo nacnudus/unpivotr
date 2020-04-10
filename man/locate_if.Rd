@@ -43,6 +43,8 @@ The \code{...} arguments take explressions that identify which cells we have ann
 }
 \examples{
 
+library(tidyverse)
+
 # Read in a formatted tidyxl data frame. 
 
 xl_df <- 
@@ -53,7 +55,9 @@ xl_df <-
 xl_df <- 
  xl_df \%>\% 
   append_fmt(fmt_alignment_indent) \%>\%
-  locate_data(data_type == "numeric") \%>\%
+  locate_data(data_type == "numeric") 
+  
+  
 # Add annotations for header cells. First for header cells to the left of the table with no indenting, and then for cells for one level of indenting.
 xl_df <- 
  xl_df \%>\% 

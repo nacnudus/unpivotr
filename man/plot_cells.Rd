@@ -18,6 +18,8 @@ This function plots the excel sheet, highlighting the relationship between heade
 }
 \examples{
 
+library(tidyverse)
+
 # Create annotated tidyxl data frame
 xl_df <- 
 unpivotr_example("worked-examples.xlsx") \%>\%
