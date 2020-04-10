@@ -27,7 +27,7 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
                               default_col_header_direction = default_col_header_direction_temp,
                               table_data = tabledata,
                               min_header_index = min_header_index_temp) {
- 
+  
   # Allow grouings to take names 
   # Create a vector of names so that they aren't identified from all functions with regex  
   # Filter for header cells to which directions will be allocated based on direction --------------------------
@@ -120,11 +120,10 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   # Name header groups
   header_df <-
     header_df %>%
-    dplyr::mutate(row_no_name = dplyr::row_number() + min_header_index - 1) %>%
+    dplyr::mutate(row_no_name = dplyr::row_number() + min_header_index + 1) %>%
     dplyr::mutate(header_label = paste0(direction,"_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
   
-  
-  
+
   # Get directions --------------------------------------------------------------------------------------
   
   
@@ -161,7 +160,6 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
     direction %in% c("S","down") ~ "SSE",
     direction %in% c("E","right") ~ "ESE")
   
-  
   # Set direction ----
   header_df <-
     header_df %>%
@@ -189,7 +187,6 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
         temp_df %>% dplyr::select(-value)
       }
     ))
-  
   
   # Add information to output df ----
   

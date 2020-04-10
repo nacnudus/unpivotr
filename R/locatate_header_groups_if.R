@@ -54,7 +54,7 @@ locate_groups_if <-
   function(sheet= NULL,..., direction = "N", .groupings = groupings(fmt_alignment_indent), 
            .hook_if = hook(any(FALSE)), .hook_if_rev = hook(any(FALSE)),
            default_col_header_direction = "N",default_row_header_direction = "W",header_fill = "local_format_id") {
-    
+   
     # If data_cells are missing, locate them automatically  
     if(is.null(attr(sheet,"data_cells"))){
       # Set data location 
@@ -98,7 +98,10 @@ locate_groups_if <-
     .hook_if_temp <- .hook_if  
     .hook_if_rev_temp <- .hook_if_rev  
     
-    min_header_index_temp <- get_header_index(sheet$.header_label,"^col_header")
+    
+    min_header_index_temp <- 
+      sheet$.header_label %>% str_remove_all(paste0(direction,"_header_label_"))%>% 
+      as.integer() %>% max(na.rm = T)  %>% ifelse(!is.finite(.),0,.) + 1  
     
     header_groups <- get_header_groups(sheet, direction, value_ref, formats,
                                        .groupings = groupings_temp,
@@ -108,14 +111,13 @@ locate_groups_if <-
                                        table_data = tabledata,
                                        min_header_index = min_header_index_temp) 
     
-    min_header_index_temp <- get_header_index(sheet$.header_label,"^col_header")  
-    
+   
     if(exists("filtered_header_cells")){
-      header_groups_in_filter <-
-        paste0(header_groups$row,cellranger::letter_to_num(header_groups$col)) %in%
-        paste0(filtered_header_cells$row,cellranger::letter_to_num(filtered_header_cells$col))
-      
-      header_groups <- header_groups %>% dplyr::filter(header_groups_in_filter)
+       header_groups_row_cols <- paste0(header_groups$row, "-",header_groups$col)
+       filtered_header_row_cols <- paste0(filtered_header_cells$row,"-", filtered_header_cells$col)
+       
+       header_groups <- header_groups %>% 
+         dplyr::filter(header_groups_row_cols %in% filtered_header_row_cols)
       
     }
     
