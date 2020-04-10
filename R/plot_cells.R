@@ -6,7 +6,21 @@
 #' @param text text variable to be represented in values plot.
 #' @param interactive TRUE produces an interactive plotly visualisation.
 #' @export
-#' @examples print("todo")
+#' @examples 
+#'
+#' # Create annotated tidyxl data frame
+#' xl_df <- 
+#' unpivotr_example("worked-examples.xlsx") %>%
+#' xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
+#'   append_fmt(fmt_alignment_indent) %>% 
+#'   locate_data(data_type == "numeric") %>%
+#'   locate_groups(direction = "W",
+#'                 .groupings = groupings(fmt_alignment_indent),
+#'                 .hook_if =     hook(any(fmt_alignment_indent == 0))) %>%
+#'   locate(direction = "N", name = student) 
+#'  
+#' # Plot direction annotations  
+#'  xl_df %>% plot_cells()
 
 plot_cells <- function(sheet, text = values, interactive = FALSE) {
 
