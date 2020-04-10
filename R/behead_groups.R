@@ -12,12 +12,24 @@
 #'
 #' @export
 #' @examples print("todo")
+#' # Read in tidyxl data frame
+#' xl_df <-
+#'   unpivotr_example("worked-examples.xlsx") %>%
+#'   xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
+#'   append_fmt(fmt_alignment_indent) 
 #' 
 #' 
+#' # Add location annotations
+#' xl_df <-
+#'   xl_df %>%
+#'   locate_data(data_type == "numeric") %>%
+#'   behead_groups(direction = "W",
+#'                 .groupings = groupings(fmt_alignment_indent),
+#'                 .hook_if =     hook(any(fmt_alignment_indent == 0))) %>%
+#'   behead(direction = "N", name = student)
 #' 
-#' 
-#' 
-#' 
+#' # Extract data_cells
+#' xl_df %>% attr("data_cells") %>% select(.value:student)
 
 behead_groups <-
   function(sheet= NULL, direction = "W", .groupings = groupings(fmt_alignment_indent),

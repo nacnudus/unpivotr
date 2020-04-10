@@ -7,13 +7,21 @@
 locate_data(sheet = NULL, ...)
 }
 \arguments{
-\item{sheet}{data frame produced by xlsx_cells}
+\item{sheet}{a data frame produced by xlsx_cells}
 
-\item{...}{filter expression that identifies data cells.}
+\item{...}{a filter expression that identifies data cells.}
 }
 \description{
-Removes data cells from data frame and stores in an attribute.
+This function identifies which cells is a tidyxl dataframe represent data cells.
+It removes data cells from data frame and stores them in an attribute of the resulting tidyxl data frame.
 }
 \examples{
-print("todo")
+
+# Read in tidyxl data frame
+ xl_df <-  
+  unpivotr_example("worked-examples.xlsx") \%>\% 
+ 
+Visually inspect the result 
+xl_df \%>\% plot_cells 
+ 
 }

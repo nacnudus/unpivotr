@@ -10,8 +10,29 @@ migrate(located_df)
 \item{located_df}{a tidyxl data frame with .direction, .value, .header_label columns.}
 }
 \description{
-This function is used on a tidy data frame that has been annotated with \code{locate_data}, \code{locate_header} or  \code{locate_header_groups}. It creates a column for each header group.
+This function is used on a tidy data frame that has been annotated with \code{locate_data}, \code{locate_header} or  \code{locate_header_groups}.
+It creates a dataframe with a row for each data cell and a column for each header group.
 }
 \examples{
-print("todo")
+
+# Read in a formatted tidyxl data frame. 
+
+xl_df <- 
+ unpivotr_example("worked-examples.xlsx") \%>\% 
+ xlsx_cells_fmt(sheets = "pivot-hierarchy")
+ 
+# Add a column indicate the leveling of indenting for each cell and locate data cell.
+xl_df <- 
+ xl_df \%>\% 
+  append_fmt(fmt_alignment_indent) \%>\%
+  locate_data(data_type == "numeric") \%>\%
+# Add annotations for header cells. First for header cells to the left of the table with no indenting, and then for cells for one level of indenting.
+xl_df <- 
+ xl_df \%>\% 
+  locate_if(fmt_alignment_indent == 0, direction = "WNW", name = subject_type) \%>\% 
+  locate_if(fmt_alignment_indent == 1, direction = "W", name = subject) \%>\% 
+  locate(direction = "N", name = student) 
+  
+# Use `migrate` to reshape the data frame such that each data cells has its own row and each header variable has its own column.  
+ xl_df \%>\% migrate()
 }

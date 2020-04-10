@@ -39,5 +39,21 @@ behead_groups_if(
 Beheads multiple headers defined according to expressions in .groupings.
 }
 \examples{
-print("todo")
+ 
+xl_df <- 
+ unpivotr_example("anzsic.xlsx") \%>\%
+ xlsx_cells_fmt(sheets = "Classes") \%>\%
+ filter(row > 6) # Remove irrelevant rows  
+
+# Identify data cells. 
+xl_df <- 
+ xl_df \%>\% 
+ locate_data(col == 6 & is_blank == FALSE) 
+
+# Add annotations for header cells that are numbers first, and then for header cells that are words.
+xl_df <- 
+ xl_df \%>\%
+ behead_groups_if(str_detect(character,"[a-z]") ,direction = "W", .hook_if = unpivotr::hook(T)) 
+
+xl_df \%>\% attr("data_cells")
 }

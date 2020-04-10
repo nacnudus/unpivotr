@@ -1,17 +1,30 @@
 #' Locates data cells 
 #' @description
-#' Removes data cells from data frame and stores in an attribute.  
-#' @param sheet data frame produced by xlsx_cells
-#' @param ... filter expression that identifies data cells.
+#' This function identifies which cells is a tidyxl dataframe represent data cells. 
+#' It removes data cells from data frame and stores them in an attribute of the resulting tidyxl data frame.   
+#' @param sheet a data frame produced by xlsx_cells
+#' @param ... a filter expression that identifies data cells.
 #'
 #' @export
-#' @examples print("todo")
+#' @examples 
+#'
+#' # Read in tidyxl data frame
+#'  xl_df <-  
+#'   unpivotr_example("worked-examples.xlsx") %>% 
+#    xlsx_cells_fmt(sheets = "pivot-hierarchy") %>%
+#   
+# Identify numeric cells as data cells using the data_type column of xl_df
+#  xl_df <- 
+#  xl_df %>% 
+#   locate_data(data_type == "numeric")
+#'  
+#' Visually inspect the result 
+#' xl_df %>% plot_cells 
+#'  
 
 locate_data <-
   function(sheet= NULL, ...) {
-    
-    
-    
+
     format <-  attr(sheet, "formats")
     
     filter_expresions <- rlang::quos(...)
