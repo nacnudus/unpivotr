@@ -4,11 +4,16 @@
 \alias{behead_groups}
 \title{Behead multiple header groups}
 \usage{
-behead_groups(sheet = NULL, direction = "W",
+behead_groups(
+  sheet = NULL,
+  direction = "W",
   .groupings = groupings(fmt_alignment_indent),
-  .hook_if = hook(any(FALSE)), .hook_if_rev = hook(any(FALSE)),
+  .hook_if = hook(any(FALSE)),
+  .hook_if_rev = hook(any(FALSE)),
   default_col_header_direction = "N",
-  default_row_header_direction = "W", header_fill = "local_format_id")
+  default_row_header_direction = "W",
+  header_fill = "local_format_id"
+)
 }
 \arguments{
 \item{sheet}{a tidyxl data frame.}

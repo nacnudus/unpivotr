@@ -5,8 +5,7 @@
 \title{Add formatting information from the fmt_font_color_theme format object
 This function uses the format object created by \code{xlsx_formats} along with `local_format_id`` to create a vector representing cells' font_color_theme formatting.}
 \usage{
-fmt_font_color_theme(format_id_vec = local_format_id,
-  sheet_formats = formats)
+fmt_font_color_theme(format_id_vec = local_format_id, sheet_formats = formats)
 }
 \arguments{
 \item{format_id_vec}{local format id vector}

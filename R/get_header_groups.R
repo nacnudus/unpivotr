@@ -120,7 +120,7 @@ get_header_groups <- function(sheet, direction, value_ref, formats,
   # Name header groups
   header_df <-
     header_df %>%
-    dplyr::mutate(row_no_name = dplyr::row_number() + min_header_index + 1) %>%
+    dplyr::mutate(row_no_name = dplyr::row_number() + min_header_index) %>%
     dplyr::mutate(header_label = paste0(direction,"_header_label_", stringr::str_pad(row_no_name, 2, side = "left", "0")))
   
 

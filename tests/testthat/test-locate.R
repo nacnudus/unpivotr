@@ -8,7 +8,10 @@ test_that("locate_data() works", {
     locate_data(data_type == "numeric") %>% 
     attr("data_cells") 
     
-  expect_identical(locate_data_test_temp, unpivotr::locate_data_test)
+  expect_identical(
+    dplyr::select(locate_data_test_temp,-character_formatted), 
+    dplyr::select(unpivotr::locate_data_test,-character_formatted)
+  )
 })
 
 test_that("locate() works", {
@@ -37,11 +40,10 @@ test_that("locate_groups() works", {
                   .hook_if =     hook(any(fmt_alignment_indent == 0))) %>%
     locate(direction = "N", name = student) %>% 
     dplyr::select(-character_formatted)
-  
+    
   expect_identical(
     locate_groups_test_temp, 
-    unpivotr::locate_groups_test %>% 
-      dplyr::select(-character_formatted))
+    unpivotr::locate_groups_test %>% dplyr::select(-character_formatted))
 })
 
 test_that("migrate() works", {

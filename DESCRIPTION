@@ -34,7 +34,7 @@ Imports:
     tidyr
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Suggests: 
     knitr,
     rmarkdown,
@@ -51,7 +51,3 @@ Suggests:
     plotly
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-
-
-
-

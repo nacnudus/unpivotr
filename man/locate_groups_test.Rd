@@ -4,7 +4,9 @@
 \name{locate_groups_test}
 \alias{locate_groups_test}
 \title{Data frame used for testing locate_groups()}
-\format{a dataframe}
+\format{
+a dataframe
+}
 \usage{
 locate_groups_test
 }

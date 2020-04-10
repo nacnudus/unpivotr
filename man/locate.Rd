@@ -4,8 +4,15 @@
 \alias{locate}
 \title{Add direction annations to tidyxl data frame}
 \usage{
-locate(cells, direction, name, values = NULL, types = data_type,
-  formatters = list(), drop_na = TRUE)
+locate(
+  cells,
+  direction,
+  name,
+  values = NULL,
+  types = data_type,
+  formatters = list(),
+  drop_na = TRUE
+)
 }
 \arguments{
 \item{cells}{a tidyxl data frame}

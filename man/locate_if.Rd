@@ -4,8 +4,16 @@
 \alias{locate_if}
 \title{Conditionally adds direction annotations to tidyxl data frame}
 \usage{
-locate_if(cells, ..., direction, name, values = NULL,
-  types = data_type, formatters = list(), drop_na = TRUE)
+locate_if(
+  cells,
+  ...,
+  direction,
+  name,
+  values = NULL,
+  types = data_type,
+  formatters = list(),
+  drop_na = TRUE
+)
 }
 \arguments{
 \item{cells}{a tidyxl data frame}
@@ -28,5 +36,25 @@ locate_if(cells, ..., direction, name, values = NULL,
 This function conditionally adds direction annotations to tidyxl data frame.
 }
 \examples{
-print("todo")
+
+# Read in a formatted tidyxl data frame. 
+xl_df <- 
+unpivotr_example("worked-examples.xlsx") \%>\%
+ xlsx_cells_fmt(sheets = "pivot-annotations") 
+ 
+# Identfy which cells are data cells using `locate_data` 
+ 
+ xl_df <- xl_df \%>\% locate_data(data_type == "numeric") 
+ 
+ # Identify header cells, indicating their direction with respect to the data and a name for their column in the final tidy data frame.
+ xl_df <- 
+  xl_df \%>\% 
+   locate(direction = "WNW", name = subject_type) \%>\% 
+   locate(direction = "W", name = subject) \%>\%
+   locate(direction = "NNW", name = gender) \%>\% 
+   locate(direction = "N", name = name)  
+   
+ # Use `migrate` to reshape the data frame such that each data cells has its own row and each header variable has its own column.  
+ xl_df \%>\% migrate()
+
 }

@@ -4,11 +4,19 @@
 \alias{get_header_groups}
 \title{Get column groups}
 \usage{
-get_header_groups(sheet, direction, value_ref, formats,
-  .groupings = groupings(fmt_alignment_indent), .hook_if = hook(ones),
-  .hook_if_rev = hook(ones), header_fill = "local_format_id",
+get_header_groups(
+  sheet,
+  direction,
+  value_ref,
+  formats,
+  .groupings = groupings(fmt_alignment_indent),
+  .hook_if = hook(ones),
+  .hook_if_rev = hook(ones),
+  header_fill = "local_format_id",
   default_col_header_direction = default_col_header_direction_temp,
-  table_data = tabledata, min_header_index = min_header_index_temp)
+  table_data = tabledata,
+  min_header_index = min_header_index_temp
+)
 }
 \arguments{
 \item{sheet}{data frame created by xlsx_cells}

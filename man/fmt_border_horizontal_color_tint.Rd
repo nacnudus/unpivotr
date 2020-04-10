@@ -5,8 +5,10 @@
 \title{Add formatting information from the fmt_border_horizontal_color_tint format object
 This function uses the format object created by \code{xlsx_formats} along with `local_format_id`` to create a vector representing cells' border_horizontal_color_tint formatting.}
 \usage{
-fmt_border_horizontal_color_tint(format_id_vec = local_format_id,
-  sheet_formats = formats)
+fmt_border_horizontal_color_tint(
+  format_id_vec = local_format_id,
+  sheet_formats = formats
+)
 }
 \arguments{
 \item{format_id_vec}{local format id vector}

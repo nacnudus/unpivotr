@@ -4,7 +4,9 @@
 \name{direction_plot_interactive}
 \alias{direction_plot_interactive}
 \title{Matches directions to unicode arrows for an interative chart}
-\format{a dataframe}
+\format{
+a dataframe
+}
 \usage{
 direction_plot_interactive
 }

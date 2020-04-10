@@ -5,8 +5,10 @@
 \title{Add formatting information from the fmt_fill_gradientFill_bottom format object
 This function uses the format object created by \code{xlsx_formats} along with `local_format_id`` to create a vector representing cells' fill_gradientFill_bottom formatting.}
 \usage{
-fmt_fill_gradientFill_bottom(format_id_vec = local_format_id,
-  sheet_formats = formats)
+fmt_fill_gradientFill_bottom(
+  format_id_vec = local_format_id,
+  sheet_formats = formats
+)
 }
 \arguments{
 \item{format_id_vec}{local format id vector}

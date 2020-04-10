@@ -5,8 +5,10 @@
 \title{Add formatting information from the fmt_alignment_textRotation format object
 This function uses the format object created by \code{xlsx_formats} along with `local_format_id`` to create a vector representing cells' alignment_textRotation formatting.}
 \usage{
-fmt_alignment_textRotation(format_id_vec = local_format_id,
-  sheet_formats = formats)
+fmt_alignment_textRotation(
+  format_id_vec = local_format_id,
+  sheet_formats = formats
+)
 }
 \arguments{
 \item{format_id_vec}{local format id vector}

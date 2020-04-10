@@ -4,7 +4,9 @@
 \name{migrate_test}
 \alias{migrate_test}
 \title{Data frame used for testing migrate()}
-\format{a dataframe}
+\format{
+a dataframe
+}
 \usage{
 migrate_test
 }

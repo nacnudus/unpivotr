@@ -4,7 +4,9 @@
 \name{locate_test}
 \alias{locate_test}
 \title{Data frame used for testing locate}
-\format{a dataframe}
+\format{
+a dataframe
+}
 \usage{
 locate_test
 }

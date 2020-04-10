@@ -5,8 +5,7 @@
 \title{Add formatting information from the fmt_border_outline format object
 This function uses the format object created by \code{xlsx_formats} along with `local_format_id`` to create a vector representing cells' border_outline formatting.}
 \usage{
-fmt_border_outline(format_id_vec = local_format_id,
-  sheet_formats = formats)
+fmt_border_outline(format_id_vec = local_format_id, sheet_formats = formats)
 }
 \arguments{
 \item{format_id_vec}{local format id vector}
