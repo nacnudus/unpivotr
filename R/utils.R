@@ -10,7 +10,7 @@ magrittr::`%>%`
 
 NULL
 
-globalVariables(c(
+utils::globalVariables(c(
   ".",
   "inner_join",
   "mutate",
