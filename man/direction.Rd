@@ -13,7 +13,7 @@ cell at the edge of the table, which is the header cell."
 
 Scroll down to the "Tables" section for a visual explanation.
 
-Legacy directions \code{"N"}, \code{"NNW", }"W"\code{, }"WNW"`, etc. are still supported.
+Legacy directions \code{"N"}, \verb{"NNW", }"W"\verb{, }"WNW"`, etc. are still supported.
 Scroll down to the "Legacy directions" section for how they map to the new
 directions.
 \itemize{
