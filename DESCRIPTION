@@ -27,12 +27,11 @@ Imports:
     tibble (>= 2.1.1),
     cellranger,
     xml2,
-    tidyselect,
-    vctrs
+    tidyselect
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
-RoxygenNote: 6.1.1
-Suggests: 
+RoxygenNote: 7.1.0
+Suggests:
     knitr,
     rmarkdown,
     readr,
