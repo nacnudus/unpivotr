@@ -13,8 +13,7 @@ The following URIs were detected as invalid:
      URI: example5.co.nz
        From: inst/doc/html.html
 
-These are not intended to be valid URIs.  They are given as examples in the
-documentation of how to handle `<href>` tags within HTML tables.
+They have been replaced.
 
 ## Test environments
 
