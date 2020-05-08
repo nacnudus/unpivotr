@@ -1,3 +1,21 @@
+# Resubmission
+
+The following URIs were detected as invalid:
+
+     URI: example1.co.nz
+       From: inst/doc/html.html
+     URI: example2.co.nz
+       From: inst/doc/html.html
+     URI: example3.co.nz
+       From: inst/doc/html.html
+     URI: example4.co.nz
+       From: inst/doc/html.html
+     URI: example5.co.nz
+       From: inst/doc/html.html
+
+These are not intended to be valid URIs.  They are given as examples in the
+documentation of how to handle `<href>` tags within HTML tables.
+
 ## Test environments
 
 ### Local
