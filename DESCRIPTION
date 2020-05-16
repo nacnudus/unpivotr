@@ -1,6 +1,6 @@
 Package: unpivotr
 Title: Unpivot Complex and Irregular Data Layouts
-Version: 0.5.1.9000
+Version: 0.6.0
 Authors@R: c(
     person("Duncan", "Garmonsway", email = "nacnudus@gmail.com", role = c("aut", "cre"))
     )
@@ -27,6 +27,7 @@ Imports:
     tibble (>= 2.1.1),
     cellranger,
     xml2,
+<<<<<<< HEAD
     tidyselect,
     vctrs,
     tidyxl,
@@ -36,6 +37,13 @@ URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 7.1.0
 Suggests: 
+=======
+    tidyselect
+URL: https://github.com/nacnudus/unpivotr
+BugReports: https://github.com/nacnudus/unpivotr/issues
+RoxygenNote: 7.1.0
+Suggests:
+>>>>>>> master
     knitr,
     rmarkdown,
     readr,

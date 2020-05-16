@@ -1,24 +1,53 @@
+# Resubmission
+
+The following URIs were detected as invalid:
+
+     URI: example1.co.nz
+       From: inst/doc/html.html
+     URI: example2.co.nz
+       From: inst/doc/html.html
+     URI: example3.co.nz
+       From: inst/doc/html.html
+     URI: example4.co.nz
+       From: inst/doc/html.html
+     URI: example5.co.nz
+       From: inst/doc/html.html
+
+They have been replaced.
+
 ## Test environments
 
 ### Local
-* Arch Linux 5.0.0-arch1-1-ARCH      R-release 3.5.2
+* Arch Linux 5.6.6-arch1- 1                       R-release 4.0.0
 
 ### Win-builder
-* R-release 3.5.3 (2019-03-11)
-* R-devel   3.6.0 alpha (2019-03-29 r76300)
+* R-devel                                         R 2020-04-30 r78335
 
 ### Travis
-* Ubuntu Linux 14.04.5 LTS x64       3.4.4 (2017-01-27)
-* Ubuntu Linux 14.04.5 LTS x64       3.5.2 (2017-01-27)
-* Ubuntu Linux 14.04.5 LTS x64       2019-03-18 r76245
+## Test environments
+
+### Local
+* Arch Linux 5.6.6-arch1- 1                       R-release 4.0.0
+
+### Win-builder
+* R-devel                                         R 2020-04-30 r78335
+
+### Travis
+* Ubuntu 16.04.6 LTS x64                          R 3.5.3 (2017-01-27)
+* Ubuntu 16.04.6 LTS x64                          R 3.6.2 (2017-01-27)
+* Ubuntu 16.04.6 LTS x64                          R 2020-04-10 r78194
+
+### Appveyor
+* Windows Server 2012 R2 x64                      R 3.6.3 (2020-02-29)
+* Windows Server 2012 R2 x64                      R 2020-03-11 r78063
+* Windows Server 2012 R2 x64                      R 3.5.3 (2019-03-11)
 
 ### Rhub
-* Windows Server 2008 R2 SP1, R-devel, 32/64 bit, R 2019-03-25 r76268
-* Ubuntu Linux 16.04 LTS, R-release, GCC, R 3.5.3 (2019-03-11)
-* Fedora Linux, R-devel, clang, gfortran, R 2019-03-22 r76262
+* Ubuntu Linux 16.04 LTS, R-release, GCC          R 3.6.1 (2019-07-05)
+* Fedora Linux, R-devel, clang, gfortran          R 2020-04-26 r78302
 
 ## R CMD check results
-0 errors | 0 warnings | 0 notes
-
+0 errors | 0 warnings | 0 notes: 
 ## Downstream dependencies
-There are currently no downstream dependencies for this package.
+There is one reverse dependency, tidycells, which passes R CMD check.
+>>>>>>> master
