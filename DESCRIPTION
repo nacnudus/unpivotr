@@ -27,23 +27,16 @@ Imports:
     tibble (>= 2.1.1),
     cellranger,
     xml2,
-<<<<<<< HEAD
     tidyselect,
     vctrs,
     tidyxl,
     ggplot2,
-    tidyr
-URL: https://github.com/nacnudus/unpivotr
-BugReports: https://github.com/nacnudus/unpivotr/issues
-RoxygenNote: 7.1.0
-Suggests: 
-=======
-    tidyselect
+    tidyr,
+    tidyselect,
 URL: https://github.com/nacnudus/unpivotr
 BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 7.1.0
 Suggests:
->>>>>>> master
     knitr,
     rmarkdown,
     readr,
