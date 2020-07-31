@@ -55,10 +55,11 @@ test_that("behead() works with all common datatypes", {
     int = c(1L, 2L),
     dbl = c(1, 2),
     cpl = c(1i, 2i),
-    date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+    date = c(as.Date("2001-01-01", tz = "UTC"),
+             as.Date("2001-01-02", tz = "UTC")),
     dttm = c(
-      as.POSIXct("2001-01-01 01:01:01"),
-      as.POSIXct("2001-01-01 01:01:02")
+      as.POSIXct("2001-01-01 01:01:01", tz = "UTC"),
+      as.POSIXct("2001-01-01 01:01:02", tz = "UTC")
     ),
     chr = c("a", "b"),
     fct = factor(c("c", "d")),
@@ -77,8 +78,9 @@ test_that("behead() works with all common datatypes", {
   expect_equal(y$date[9], as.Date("2001-01-01"))
   expect_equal(y$dbl[4], NA_real_)
   expect_equal(y$dbl[5], 1)
-  expect_equal(y$dttm[10], as.POSIXct(NA))
-  expect_equal(y$dttm[11], as.POSIXct("2001-01-01 01:01:01"))
+  # With plain NA, the tz attribute is dropped.
+  expect_equal(y$dttm[10], as.POSIXct(NA_character_, tz = "UTC"))
+  expect_equal(y$dttm[11], as.POSIXct("2001-01-01 01:01:01", tz = "UTC"))
   expect_equal(y$fct[[16]], factor("d", levels = c("c", "d")))
   expect_equal(y$fct[[17]], NULL)
   expect_equal(y$int[2], NA_integer_)
@@ -98,8 +100,8 @@ test_that("behead() handles headers of mixed data types including dates", {
     col = c(1L, 2L, 1L, 2L, 1L, 2L),
     data_type = c("dttm", "date", "chr", "dbl", "chr", "dbl"),
     chr = c(NA, NA, "Matilda", NA, "Nicholas", NA),
-    date = as.Date(c(NA, "2000-01-01", rep(NA, 4))),
-    dttm = as.POSIXct(c("2001-01-01 11:00:00", rep(NA, 5))),
+    date = as.Date(c(NA, "2000-01-01", rep(NA, 4)), tz = "UTC"),
+    dttm = as.POSIXct(c("2001-01-01 11:00:00", rep(NA, 5)), tz = "UTC"),
     dbl = c(NA, NA, NA, 11, NA, 12),
     stringsAsFactors = FALSE
   )
