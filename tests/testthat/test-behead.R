@@ -78,8 +78,8 @@ test_that("behead() works with all common datatypes", {
   expect_equal(y$date[9], as.Date("2001-01-01"))
   expect_equal(y$dbl[4], NA_real_)
   expect_equal(y$dbl[5], 1)
-  # With plain NA instead of NA_real_, the tz attribute is dropped.
-  expect_equal(y$dttm[10], as.POSIXct(NA_real_, tz = "UTC"))
+  # With plain NA, the tz attribute is dropped.
+  expect_equal(y$dttm[10], as.POSIXct(NA_character_, tz = "UTC"))
   expect_equal(y$dttm[11], as.POSIXct("2001-01-01 01:01:01", tz = "UTC"))
   expect_equal(y$fct[[16]], factor("d", levels = c("c", "d")))
   expect_equal(y$fct[[17]], NULL)

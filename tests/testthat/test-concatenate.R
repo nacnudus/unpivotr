@@ -28,7 +28,7 @@ test_that("concatenate() works on common datatypes", {
   expect_equal(
     concatenate(list(
       NULL,
-      as.POSIXct(NA, tz = "UTC"),
+      as.POSIXct(NA_character_, tz = "UTC"),
       as.POSIXct("2001-01-01 01:01:01", tz = "UTC")
     )),
     as.POSIXct(c(NA, NA, "2001-01-01 01:01:01"), tz = "UTC")
