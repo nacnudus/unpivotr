@@ -1,5 +1,7 @@
 # unpivotr (development version)
 
+* Fix concatenation of `NULL` `POSIXct` (dates) (#39 @romainfrancois)
+
 # unpivotr 0.6.0
 
 * Change `"NNW"` to `"up-left"` etc.  Compass directions still work, but the

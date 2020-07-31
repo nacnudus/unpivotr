@@ -79,11 +79,17 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
       }
     } else {
       # c() omits NULLs, so replace them with NA, which c() will promote when
-      # necessary.
-      dots[dots_is_null] <- NA
+      # necessary.  c() demotes dates etc. when the first element is NA, so
+      # replace the classes.
+      NA_class_ <- NA
+      if (is.list(dots)) { # e.g. dates POSIXct
+        class(NA_class_) <- all_classes
+        # without list() the POSIXct classes are stripped on assignment.
+        dots[dots_is_null] <- list(NA_class_)
+      } else {
+        dots[dots_is_null] <- NA_class_
+      }
       dots <- do.call(c, c(dots, use.names = FALSE))
-      # c() demotes dates etc. when the first element is NA, so replace the
-      # classes.
       class(dots) <- all_classes
       return(dots)
     }
