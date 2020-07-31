@@ -1,3 +1,5 @@
+# unpivotr (development version)
+
 # unpivotr 0.6.0
 
 * Change `"NNW"` to `"up-left"` etc.  Compass directions still work, but the
