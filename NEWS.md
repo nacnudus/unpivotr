@@ -1,4 +1,4 @@
-# unpivotr (development version)
+# unpivotr 0.6.1
 
 * Fix concatenation of `NULL` `POSIXct` (dates) (#39 @romainfrancois)
 
