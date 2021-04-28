@@ -14,8 +14,8 @@
 #'   tables.  Can also be cells that aren't among `cells`, in which case see the
 #'   `strict` argument.
 #' @param align Character, the position of the corner cells relative to their
-#'   tables, one of `"top-left"` (default), `"top-right"`, `"bottom-left"`,
-#'   `"bottom-right"`.
+#'   tables, one of `"top_left"` (default), `"top_right"`, `"bottom_left"`,
+#'   `"bottom_right"`.
 #' @param nest Logical, whether to nest the partitions in a list-column of data
 #'   frames.
 #' @param strict Logical, whether to omit partitions that don't contain a corner
