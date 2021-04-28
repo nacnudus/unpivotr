@@ -18,8 +18,8 @@ tables.  Can also be cells that aren't among \code{cells}, in which case see the
 \code{strict} argument.}
 
 \item{align}{Character, the position of the corner cells relative to their
-tables, one of \code{"top-left"} (default), \code{"top-right"}, \code{"bottom-left"},
-\code{"bottom-right"}.}
+tables, one of \code{"top_left"} (default), \code{"top_right"}, \code{"bottom_left"},
+\code{"bottom_right"}.}
 
 \item{nest}{Logical, whether to nest the partitions in a list-column of data
 frames.}
