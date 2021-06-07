@@ -192,3 +192,54 @@ test_that("behead_if() works", {
     )
   expect_equal(x, y)
 })
+
+test_that("behead.grouped_df works (fix #46)", {
+  # This structure is made from a slight simplification of
+  # path <- system.file("extdata", "worked-examples.xlsx", package = "unpivotr")
+  # all_cells <-
+  #   tidyxl::xlsx_cells(path, sheets = c("humanities", "performance")) %>%
+  #   dplyr::filter(!is_blank) %>%
+  #   dplyr::select(sheet, row, col, data_type, character, numeric)
+  # dput(all_cells)
+
+  multi_sheet <-
+    data.frame(
+      sheet =
+        c(
+          "humanities", "humanities", "humanities", "humanities",
+          "humanities", "humanities", "humanities", "humanities", 
+          "performance", "performance", "performance", "performance",
+          "performance", "performance", "performance", "performance"
+        ),
+      row = c(1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L),
+      col = c(2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L), 
+      data_type =
+        c(
+          "character", "character", "character", "numeric", "numeric",
+          "character", "numeric", "numeric", "character", "character",
+          "character", "numeric", "numeric", "character", "numeric",
+          "numeric"
+        ),
+      character =
+        c(
+          "Matilda", "Nicholas", "Classics", NA, NA, "History", NA, NA,
+          "Matilda", "Nicholas", "Music", NA, NA, "Drama", NA, NA
+        ),
+      numeric = c(NA, NA, NA, 1, 3, NA, 3, 5, NA, NA, NA, 5, 9, NA, 7, 12)
+    )
+
+  result <-
+    multi_sheet %>%
+    dplyr::group_by(sheet) %>%
+    behead(direction="up", name="name") %>%
+    behead(direction="left", name="subject")
+  expect_equal(
+    result$sheet, rep(c("humanities", "performance"), each=4)
+  )
+  expect_equal(
+    result$name, rep(c("Matilda", "Nicholas"), 4)
+  )
+  expect_equal(
+    result$subject, rep(c("Classics", "History", "Music", "Drama"), each=2)
+  )
+})
