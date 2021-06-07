@@ -110,7 +110,7 @@ behead.grouped_df <- function(cells, direction, name, values = NULL,
                               drop_na = TRUE) {
   ret_list <-
     lapply(
-      X = group_rows(cells),
+      X = dplyr::group_rows(cells),
       FUN = behead_grouped_df_helper,
       # Convert to a data.frame to prevent interactions with the grouping
       # columns being dropped.
@@ -123,7 +123,7 @@ behead.grouped_df <- function(cells, direction, name, values = NULL,
       drop_na = drop_na
     )
   # ret will be a data.frame
-  ret <- bind_rows(ret_list)
+  ret <- dplyr::bind_rows(ret_list)
   # Restore the grouping variables
   dplyr::group_by(
     ret,
