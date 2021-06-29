@@ -1,3 +1,7 @@
+# unpivotr 0.6.1.9000 (not yet released)
+
+* Allow behead() to work on grouped data (#46 @billdenney)
+
 # unpivotr 0.6.1
 
 * Fix concatenation of `NULL` `POSIXct` (dates) (#39 @romainfrancois)
