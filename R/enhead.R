@@ -183,7 +183,11 @@ side_join <- function(data_cells, header_cells, corner, drop = TRUE) {
     header_cells,
     !!pos := corner_pos(!!pos, corner)
   )
-  rlang::as_function(corner)(data_cells, header_cells, drop = drop)
+  match_function(corner)(data_cells, header_cells, drop = drop)
+}
+
+match_function <- function(x, env = parent.frame()) {
+  rlang::as_function(x, env = env)
 }
 
 corner_pos <- function(cells, corner) {
