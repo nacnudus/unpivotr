@@ -192,8 +192,8 @@ corner_pos <- function(cells, corner) {
       "down-right", "down-left", "left-down", "left-up")
   corner_poss <- rep(c("col", "col", "row", "row"), 2L)
   corner_looks <- c(
-    rep(c(dplyr::lag, dplyr::lead), 2L),
-    rep(c(dplyr::lead, dplyr::lag), 2L)
+    rep(list(dplyr::lag, dplyr::lead), 2L),
+    rep(list(dplyr::lead, dplyr::lag), 2L)
   )
   corner_defaults <- c(1L, 16384L, 1L, 1048576L, 16384L, 1L, 1048576L, 1L)
   corner_coefs <- c(2L, -2L, 2L, -2L, -2L, 2L, -2L, 2L)
@@ -203,7 +203,7 @@ corner_pos <- function(cells, corner) {
   )
   corner_i <- match(corner, corner_names)
   pos <- rlang::sym(corner_poss[corner_i])
-  look <- rlang::as_function(corner_looks[[corner_i]], ns_env("dplyr"))
+  look <- corner_looks[[corner_i]]
   default <- corner_defaults[corner_i]
   extreme <- corner_extremes[[corner_i]]
   coef <- corner_coefs[corner_i]
