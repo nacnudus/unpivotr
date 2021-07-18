@@ -1,3 +1,7 @@
+# unpivotr 0.6.2
+
+* Fix for upstream changes in rlang (#49 thanks @lionel-)
+
 # unpivotr 0.6.1
 
 * Fix concatenation of `NULL` `POSIXct` (dates) (#39 @romainfrancois)
@@ -162,6 +166,3 @@ original data types of table cells and to support HTML tables.
 # unpivotr 0.0.0.9000
 
 * Added a `NEWS.md` file to track changes to the package.
-
-
-
