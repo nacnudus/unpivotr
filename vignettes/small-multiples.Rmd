@@ -20,7 +20,7 @@ Gnumeric.
 ## Introduction
 
 The spreadsheet is from the famous Enron subpoena, made available by [Felienne
-Hermans](http://www.felienne.com/archives/3634), and has has previously been
+Hermans](https://www.felienne.com/archives/3634), and has has previously been
 publicised by Jenny Bryan and David Robinson, in particular in Robinson's
 article ['Tidying an untidyable
 dataset'](https://rpubs.com/dgrtwo/tidying-enron).

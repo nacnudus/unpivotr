@@ -73,8 +73,8 @@ Like this.
 What can you do with tidy cells?  The best places to start are:
 
 * [Spreadsheet Munging
-  Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies), a
-  free, online cookbook using [tidyxl](https://github.com/nacnudus/tidyxl) and
+  Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies/), a
+  free, online cookbook using [tidyxl](https://github.com/nacnudus/tidyxl/) and
   [unpivotr](https://github.com/nacnudus/unpivotr)
 * [Screencasts](https://www.youtube.com/watch?v=1sinC7wsS5U) on YouTube.
 * [Worked examples](https://github.com/nacnudus/ukfarm) on GitHub.
@@ -82,7 +82,7 @@ What can you do with tidy cells?  The best places to start are:
 Otherwise the basic idea is:
 
 1. Read the data with a specialist tool.
-   * For spreadsheets, use [tidyxl](https://nacnudus.github.io/tidyxl).
+   * For spreadsheets, use [tidyxl](https://nacnudus.github.io/tidyxl/).
    * For plain text files, you might soon be able to use
      [readr](https://readr.tidyverse.org), but for now you'll have to install a
      pull-request on that package with
@@ -147,7 +147,7 @@ devtools::install_version("unpivotr", version = "0.3.1", repos = "http://cran.us
 
 [unpivotr](https://github.com/nacnudus/unpivotr) is inspired by
 [Databaker](https://github.com/sensiblecodeio/databaker), a collaboration
-between the [United Kingdom Office of National Statistics](http://ons.gov.uk)
+between the [United Kingdom Office of National Statistics](https://www.ons.gov.uk/)
 and [The Sensible Code Company](https://sensiblecode.io/).
 [unpivotr](https://github.com/nacnudus/unpivotr).
 

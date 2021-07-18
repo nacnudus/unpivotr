@@ -12,47 +12,48 @@ Status](http://www.r-pkg.org/badges/version/unpivotr)](https://CRAN.R-project.or
 [![Cran
 Downloads](https://cranlogs.r-pkg.org/badges/unpivotr)](https://www.r-pkg.org/pkg/unpivotr)
 [![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://codecov.io/gh/nacnudus/unpivotr)
+[![R-CMD-check](https://github.com/nacnudus/unpivotr/workflows/R-CMD-check/badge.svg)](https://github.com/nacnudus/unpivotr/actions)
 
 [unpivotr](https://github.com/nacnudus/unpivotr) deals with non-tabular
 data, especially from spreadsheets. Use unpivotr when your source data
 has any of these ‘features’:
 
-  - Multi-headered hydra
-  - Meaningful formatting
-  - Headers anywhere but at the top of each column
-  - Non-text headers e.g. dates
-  - Other stuff around the table
-  - Several similar tables in one sheet
-  - Sentinel values
-  - Superscript symbols
-  - Meaningful comments
-  - Nested HTML tables
+-   Multi-headered hydra
+-   Meaningful formatting
+-   Headers anywhere but at the top of each column
+-   Non-text headers e.g. dates
+-   Other stuff around the table
+-   Several similar tables in one sheet
+-   Sentinel values
+-   Superscript symbols
+-   Meaningful comments
+-   Nested HTML tables
 
 If that list makes your blood boil, you’ll enjoy the function names.
 
-  - `behead()` deals with multi-headered hydra tables one layer of
+-   `behead()` deals with multi-headered hydra tables one layer of
     headers at a time, working from the edge of the table inwards. It’s
     a bit like using `header = TRUE` in `read.csv()`, but because it’s a
     function, you can apply it to as many layers of headers as you need.
     You end up with all the headers in columns.
-  - `spatter()` is like `tidyr::spread()` but preserves mixed data
+-   `spatter()` is like `tidyr::spread()` but preserves mixed data
     types. You get into a mixed-data-type situation by delaying type
     coercion until *after* the table is tidy (rather than before, like
     `read.csv()` et al). And yes, it usually follows `behead()`.
 
 More positive, corrective functions:
 
-  - `justify()` aligns column headers before `behead()`ing, and has
+-   `justify()` aligns column headers before `behead()`ing, and has
     deliberate moral overtones.
-  - `enhead()` attaches a header to the body of the data, *a la*
+-   `enhead()` attaches a header to the body of the data, *a la*
     Frankenstein. The effect is the same as `behead()`, but is more
     powerful because you can choose exactly which header cells you want,
     paying attention to formatting (which `behead()` doesn’t
     understand).
-  - `isolate_sentinels()` separates meaningful symbols like `"N/A"` or
+-   `isolate_sentinels()` separates meaningful symbols like `"N/A"` or
     `"confidential"` from the rest of the data, giving them some time
     alone think about what they’ve done.
-  - `partition()` takes a sheet with several tables on it, and slashes
+-   `partition()` takes a sheet with several tables on it, and slashes
     into pieces that each contain one table. You can then unpivot each
     table in turn with `purrr::map()` or similar.
 
@@ -66,26 +67,26 @@ per cell](./vignettes/tidy_xlsx.gif)
 
 What can you do with tidy cells? The best places to start are:
 
-  - [Spreadsheet Munging
-    Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies),
+-   [Spreadsheet Munging
+    Strategies](https://nacnudus.github.io/spreadsheet-munging-strategies/),
     a free, online cookbook using
-    [tidyxl](https://github.com/nacnudus/tidyxl) and
+    [tidyxl](https://github.com/nacnudus/tidyxl/) and
     [unpivotr](https://github.com/nacnudus/unpivotr)
-  - [Screencasts](https://www.youtube.com/watch?v=1sinC7wsS5U) on
+-   [Screencasts](https://www.youtube.com/watch?v=1sinC7wsS5U) on
     YouTube.
-  - [Worked examples](https://github.com/nacnudus/ukfarm) on GitHub.
+-   [Worked examples](https://github.com/nacnudus/ukfarm) on GitHub.
 
 Otherwise the basic idea is:
 
 1.  Read the data with a specialist tool.
-      - For spreadsheets, use
-        [tidyxl](https://nacnudus.github.io/tidyxl).
-      - For plain text files, you might soon be able to use
+    -   For spreadsheets, use
+        [tidyxl](https://nacnudus.github.io/tidyxl/).
+    -   For plain text files, you might soon be able to use
         [readr](https://readr.tidyverse.org), but for now you’ll have to
         install a pull-request on that package with
         `devtools::install_github("tidyverse/readr#760")`.
-      - For tables in html pages, use `unpivotr::tidy_html()`
-      - For data frames, use `unpivotr::as_cells()` – this should be a
+    -   For tables in html pages, use `unpivotr::tidy_html()`
+    -   For data frames, use `unpivotr::as_cells()` – this should be a
         last resort, because by the time the data is in a conventional
         data frame, it is often too late – formatting has been lost, and
         most data types have been coerced to strings.
@@ -94,19 +95,19 @@ Otherwise the basic idea is:
     `enhead()`.
 3.  `spatter()` so that each column has one data type.
 
-<!-- end list -->
-
 ``` r
 library(unpivotr)
 library(tidyverse)
-#> ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
-#> ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-#> ✔ tibble  2.1.3     ✔ dplyr   0.8.3
-#> ✔ tidyr   0.8.3     ✔ stringr 1.4.0
-#> ✔ readr   1.3.1     ✔ forcats 0.4.0
-#> ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+#> ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+#> ✔ tibble  3.1.2     ✔ dplyr   1.0.7
+#> ✔ tidyr   1.1.3     ✔ stringr 1.4.0
+#> ✔ readr   1.4.0     ✔ forcats 0.5.1
+#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
+#> ✖ tidyr::pack()   masks unpivotr::pack()
+#> ✖ tidyr::unpack() masks unpivotr::unpack()
 x <- purpose$`up-left left-up`
 x # A pivot table in a conventional data frame.  Four levels of headers, in two
 #>                            X2      X3     X4     X5    X6     X7
@@ -193,14 +194,14 @@ y %>%
 Note the compass directions in the code above, which hint to `behead()`
 where to find the header cell for each data cell.
 
-  - `"up-left"` means the header (`Female`, `Male`) is positioned up and
+-   `"up-left"` means the header (`Female`, `Male`) is positioned up and
     to the left of the columns of data cells it describes.
-  - `"up"` means the header (`0 - 6`, `7 - 10`) is positioned directly
+-   `"up"` means the header (`0 - 6`, `7 - 10`) is positioned directly
     above the columns of data cells it describes.
-  - `"left-up"` means the header (`Bachelor's degree`, `Certificate`,
+-   `"left-up"` means the header (`Bachelor's degree`, `Certificate`,
     etc.) is positioned to the left and upwards of the rows of data
     cells it describes.
-  - `"left"` means the header (`15 - 24`, `25 - 44`, etc.) is positioned
+-   `"left"` means the header (`15 - 24`, `25 - 44`, etc.) is positioned
     directly to the left of the rows of data cells it describes.
 
 ## Installation
@@ -222,7 +223,7 @@ devtools::install_version("unpivotr", version = "0.3.1", repos = "http://cran.us
 [unpivotr](https://github.com/nacnudus/unpivotr) is inspired by
 [Databaker](https://github.com/sensiblecodeio/databaker), a
 collaboration between the [United Kingdom Office of National
-Statistics](http://ons.gov.uk) and [The Sensible Code
+Statistics](https://www.ons.gov.uk/) and [The Sensible Code
 Company](https://sensiblecode.io/).
 [unpivotr](https://github.com/nacnudus/unpivotr).
 
