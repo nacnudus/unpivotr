@@ -1,10 +1,10 @@
 ---
-title: "Introduction to {unpivotr}"
+title: "Introduction to unpivotr"
 output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{introduction}
+  %\VignetteIndexEntry{introduction to unpivotr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
