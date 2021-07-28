@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">unpivotr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -50,7 +50,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -68,7 +68,7 @@
       <a href="articles/html.html">HTML Tables</a>
     </li>
     <li>
-      <a href="articles/introduction.html">Introduction to {unpivotr}</a>
+      <a href="articles/introduction.html">Introduction to unpivotr</a>
     </li>
     <li>
       <a href="articles/small-multiples.html">Small Multiples</a>
@@ -82,7 +82,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/nacnudus/unpivotr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -141,7 +141,7 @@
 <p>What can you do with tidy cells? The best places to start are:</p>
 <ul>
 <li>
-<a href="https://nacnudus.github.io/spreadsheet-munging-strategies">Spreadsheet Munging Strategies</a>, a free, online cookbook using <a href="https://github.com/nacnudus/tidyxl">tidyxl</a> and <a href="https://github.com/nacnudus/unpivotr">unpivotr</a>
+<a href="https://nacnudus.github.io/spreadsheet-munging-strategies/">Spreadsheet Munging Strategies</a>, a free, online cookbook using <a href="https://github.com/nacnudus/tidyxl/">tidyxl</a> and <a href="https://github.com/nacnudus/unpivotr">unpivotr</a>
 </li>
 <li>
 <a href="https://www.youtube.com/watch?v=1sinC7wsS5U">Screencasts</a> on YouTube.</li>
@@ -152,7 +152,7 @@
 <ol>
 <li>Read the data with a specialist tool.
 <ul>
-<li>For spreadsheets, use <a href="https://nacnudus.github.io/tidyxl">tidyxl</a>.</li>
+<li>For spreadsheets, use <a href="https://nacnudus.github.io/tidyxl/">tidyxl</a>.</li>
 <li>For plain text files, you might soon be able to use <a href="https://readr.tidyverse.org">readr</a>, but for now you’ll have to install a pull-request on that package with <code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("tidyverse/readr#760")</a></code>.</li>
 <li>For tables in html pages, use <code>unpivotr::tidy_html()</code>
 </li>
@@ -163,18 +163,21 @@
 <li>
 <code><a href="reference/spatter.html">spatter()</a></code> so that each column has one data type.</li>
 </ol>
-<!-- end list --><div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">unpivotr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
-<span class="co">#&gt; ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──</span>
-<span class="co">#&gt; ✔ ggplot2 3.2.1     ✔ purrr   0.3.2</span>
-<span class="co">#&gt; ✔ tibble  2.1.3     ✔ dplyr   0.8.3</span>
-<span class="co">#&gt; ✔ tidyr   0.8.3     ✔ stringr 1.4.0</span>
-<span class="co">#&gt; ✔ readr   1.3.1     ✔ forcats 0.4.0</span>
-<span class="co">#&gt; ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/unpivotr">unpivotr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="co">#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</span>
+<span class="co">#&gt; ✔ ggplot2 3.3.5     ✔ purrr   0.3.4</span>
+<span class="co">#&gt; ✔ tibble  3.1.2     ✔ dplyr   1.0.7</span>
+<span class="co">#&gt; ✔ tidyr   1.1.3     ✔ stringr 1.4.0</span>
+<span class="co">#&gt; ✔ readr   1.4.0     ✔ forcats 0.5.1</span>
+<span class="co">#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──</span>
 <span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span>
 <span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span>
-<span class="no">x</span> <span class="kw">&lt;-</span> <span class="no">purpose</span>$<span class="no">`up-left left-up`</span>
-<span class="no">x</span> <span class="co"># A pivot table in a conventional data frame.  Four levels of headers, in two</span>
+<span class="co">#&gt; ✖ tidyr::pack()   masks unpivotr::pack()</span>
+<span class="co">#&gt; ✖ tidyr::unpack() masks unpivotr::unpack()</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="va">purpose</span><span class="op">$</span><span class="va">`up-left left-up`</span>
+<span class="va">x</span> <span class="co"># A pivot table in a conventional data frame.  Four levels of headers, in two</span>
 <span class="co">#&gt;                            X2      X3     X4     X5    X6     X7</span>
 <span class="co">#&gt; 1                        &lt;NA&gt;    &lt;NA&gt; Female   &lt;NA&gt;  Male   &lt;NA&gt;</span>
 <span class="co">#&gt; 2                        &lt;NA&gt;    &lt;NA&gt;  0 - 6 7 - 10 0 - 6 7 - 10</span>
@@ -200,8 +203,8 @@
 <span class="co">#&gt; 22                       &lt;NA&gt;     65+   &lt;NA&gt;  13000  &lt;NA&gt;  18000</span>
   <span class="co"># rows and two columns.</span>
 
-<span class="no">y</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/as_cells.html">as_cells</a></span>(<span class="no">x</span>) <span class="co"># 'Tokenize' or 'melt' the data frame into one row per cell</span>
-<span class="no">y</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_cells.html">as_cells</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># 'Tokenize' or 'melt' the data frame into one row per cell</span>
+<span class="va">y</span>
 <span class="co">#&gt; # A tibble: 132 x 4</span>
 <span class="co">#&gt;      row   col data_type chr              </span>
 <span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;            </span>
@@ -217,7 +220,7 @@
 <span class="co">#&gt; 10    10     1 chr       &lt;NA&gt;             </span>
 <span class="co">#&gt; # … with 122 more rows</span>
 
-<span class="fu"><a href="reference/rectify.html">rectify</a></span>(<span class="no">y</span>) <span class="co"># useful for reviewing the melted form as though in a spreadsheet</span>
+<span class="fu"><a href="reference/rectify.html">rectify</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="co"># useful for reviewing the melted form as though in a spreadsheet</span>
 <span class="co">#&gt; # A tibble: 22 x 7</span>
 <span class="co">#&gt;    `row/col` `1(A)`            `2(B)`  `3(C)` `4(D)` `5(E)` `6(F)`</span>
 <span class="co">#&gt;        &lt;int&gt; &lt;chr&gt;             &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; </span>
@@ -233,13 +236,13 @@
 <span class="co">#&gt; 10        10 &lt;NA&gt;              65+     12000  77000  8000   107000</span>
 <span class="co">#&gt; # … with 12 more rows</span>
 
-<span class="no">y</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"sex"</span>) <span class="kw">%&gt;%</span>               <span class="co"># Strip headers</span>
-  <span class="fu"><a href="reference/behead.html">behead</a></span>(<span class="st">"up"</span>, <span class="st">"life-satisfication"</span>) <span class="kw">%&gt;%</span>  <span class="co"># one</span>
-  <span class="fu"><a href="reference/behead.html">behead</a></span>(<span class="st">"left-up"</span>, <span class="st">"qualification"</span>) <span class="kw">%&gt;%</span>     <span class="co"># by</span>
-  <span class="fu"><a href="reference/behead.html">behead</a></span>(<span class="st">"left"</span>, <span class="st">"age-band"</span>) <span class="kw">%&gt;%</span>            <span class="co"># one.</span>
-  <span class="fu">select</span>(-<span class="no">row</span>, -<span class="no">col</span>, -<span class="no">data_type</span>, <span class="kw">count</span> <span class="kw">=</span> <span class="no">chr</span>) <span class="kw">%&gt;%</span> <span class="co"># cleanup</span>
-  <span class="fu">mutate</span>(<span class="kw">count</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span>(<span class="no">count</span>))
+<span class="va">y</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"sex"</span><span class="op">)</span> <span class="op">%&gt;%</span>               <span class="co"># Strip headers</span>
+  <span class="fu"><a href="reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"life-satisfication"</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># one</span>
+  <span class="fu"><a href="reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"left-up"</span>, <span class="st">"qualification"</span><span class="op">)</span> <span class="op">%&gt;%</span>     <span class="co"># by</span>
+  <span class="fu"><a href="reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"age-band"</span><span class="op">)</span> <span class="op">%&gt;%</span>            <span class="co"># one.</span>
+  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">row</span>, <span class="op">-</span><span class="va">col</span>, <span class="op">-</span><span class="va">data_type</span>, count <span class="op">=</span> <span class="va">chr</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># cleanup</span>
+  <span class="fu">mutate</span><span class="op">(</span>count <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 80 x 5</span>
 <span class="co">#&gt;     count sex    `life-satisfication` qualification     `age-band`</span>
 <span class="co">#&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;                &lt;chr&gt;             &lt;chr&gt;     </span>
@@ -253,7 +256,7 @@
 <span class="co">#&gt;  8  18000 Female 7 - 10               Bachelor's degree 65+       </span>
 <span class="co">#&gt;  9     NA Male   0 - 6                Bachelor's degree 15 - 24   </span>
 <span class="co">#&gt; 10   9000 Male   0 - 6                Bachelor's degree 25 - 44   </span>
-<span class="co">#&gt; # … with 70 more rows</span></pre></div>
+<span class="co">#&gt; # … with 70 more rows</span></code></pre></div>
 <p>Note the compass directions in the code above, which hint to <code><a href="reference/behead.html">behead()</a></code> where to find the header cell for each data cell.</p>
 <ul>
 <li>
@@ -269,15 +272,17 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("devtools") # If you don't already have devtools</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"nacnudus/unpivotr"</span>, <span class="kw">build_vignettes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools") # If you don't already have devtools</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"nacnudus/unpivotr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>The version 0.4.0 release had somee breaking changes. See <code>NEWS.md</code> for details. The previous version can be installed as follow:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_version</a></span>(<span class="st">"unpivotr"</span>, <span class="kw">version</span> <span class="kw">=</span> <span class="st">"0.3.1"</span>, <span class="kw">repos</span> <span class="kw">=</span> <span class="st">"http://cran.us.r-project.org"</span>)</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_version</a></span><span class="op">(</span><span class="st">"unpivotr"</span>, version <span class="op">=</span> <span class="st">"0.3.1"</span>, repos <span class="op">=</span> <span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="similar-projects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#similar-projects" class="anchor"></a>Similar projects</h2>
-<p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> is inspired by <a href="https://github.com/sensiblecodeio/databaker">Databaker</a>, a collaboration between the <a href="http://ons.gov.uk">United Kingdom Office of National Statistics</a> and <a href="https://sensiblecode.io/">The Sensible Code Company</a>. <a href="https://github.com/nacnudus/unpivotr">unpivotr</a>.</p>
+<p><a href="https://github.com/nacnudus/unpivotr">unpivotr</a> is inspired by <a href="https://github.com/sensiblecodeio/databaker">Databaker</a>, a collaboration between the <a href="https://www.ons.gov.uk/">United Kingdom Office of National Statistics</a> and <a href="https://sensiblecode.io/">The Sensible Code Company</a>. <a href="https://github.com/nacnudus/unpivotr">unpivotr</a>.</p>
 <p><a href="https://github.com/rsheets/jailbreakr">jailbreaker</a> attempts to extract non-tabular data from spreadsheets into tabular structures automatically via some clever algorithms. <a href="https://github.com/nacnudus/unpivotr">unpivotr</a> differs by being less magic, and equipping you to express what you want to do.</p>
 </div>
 </div>
@@ -318,6 +323,7 @@
 <li><a href="https://CRAN.R-project.org/package=unpivotr"><img src="http://www.r-pkg.org/badges/version/unpivotr" alt="Cran Status"></a></li>
 <li><a href="https://www.r-pkg.org/pkg/unpivotr"><img src="https://cranlogs.r-pkg.org/badges/unpivotr" alt="Cran Downloads"></a></li>
 <li><a href="https://codecov.io/gh/nacnudus/unpivotr"><img src="https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master" alt="codecov"></a></li>
+<li><a href="https://github.com/nacnudus/unpivotr/actions"><img src="https://github.com/nacnudus/unpivotr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 </div>
@@ -329,7 +335,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

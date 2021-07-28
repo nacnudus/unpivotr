@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Introduction to {unpivotr} • unpivotr</title>
+<title>Introduction to unpivotr • unpivotr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to {unpivotr}">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to unpivotr">
 <meta property="og:description" content="unpivotr">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -63,7 +63,7 @@
       <a href="../articles/html.html">HTML Tables</a>
     </li>
     <li>
-      <a href="../articles/introduction.html">Introduction to {unpivotr}</a>
+      <a href="../articles/introduction.html">Introduction to unpivotr</a>
     </li>
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/nacnudus/unpivotr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,10 +91,10 @@
 
       
 
-      </header><script src="introduction_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
+      </header><script src="introduction_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Introduction to {unpivotr}</h1>
+      <h1 data-toc-skip>Introduction to unpivotr</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/nacnudus/unpivotr/blob/master/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
@@ -121,16 +121,17 @@
 <li>Consistent data types in each column, e.g. all numbers or all text</li>
 </ul>
 <p>Here is an example, a dataset of student test marks in different subjects.</p>
-<p><img src="images/hp-tidy.png"><!-- --></p>
+<p><img src="images/hp-tidy.png" width="254"></p>
 <p>To test whether a table will be easy to import, ask yourself “Is every row self-sufficient? Could I read only one row and understand all the data in it?” In this case, one row will tell you that Ron got two marks in potions in his second year.</p>
 <p>Because this table is simple – or ‘tidy’ – it is easily imported into a data frame, using the {readxl} package.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">readxl</span>) <span class="co"># for read_excel()</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span> <span class="co"># for read_excel()</span>
 
-<span class="no">hp_xlsx</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/harry-potter.xlsx"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"unpivotr"</span>)
+<span class="va">hp_xlsx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/harry-potter.xlsx"</span>, package <span class="op">=</span> <span class="st">"unpivotr"</span><span class="op">)</span>
 
-<span class="no">tidy</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span>(<span class="no">hp_xlsx</span>, <span class="kw">sheet</span> <span class="kw">=</span> <span class="st">"tidy"</span>)
+<span class="va">tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="va">hp_xlsx</span>, sheet <span class="op">=</span> <span class="st">"tidy"</span><span class="op">)</span>
 
-<span class="no">tidy</span>
+<span class="va">tidy</span>
 <span class="co">#&gt; # A tibble: 8 x 4</span>
 <span class="co">#&gt;   Pupil Year     Subject    Mark</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;dbl&gt;</span>
@@ -141,22 +142,23 @@
 <span class="co">#&gt; 5 Ginny 1st year Potions       8</span>
 <span class="co">#&gt; 6 Ginny 1st year Herbology     9</span>
 <span class="co">#&gt; 7 Ginny 2nd year Potions       9</span>
-<span class="co">#&gt; 8 Ginny 2nd year Herbology     7</span></pre></body></html></div>
+<span class="co">#&gt; 8 Ginny 2nd year Herbology     7</span></code></pre></div>
 <p>Note that the row of column names in the spreadsheet has been used as column names of the data frame. Also the data type of each column is either <code>dbl</code> (double, which means a number), or <code>chr</code> (character) as appropriate.</p>
 </div>
 <div id="trying-to-read-a-hard-spreadsheet-with-readxl" class="section level2">
 <h2 class="hasAnchor">
 <a href="#trying-to-read-a-hard-spreadsheet-with-readxl" class="anchor"></a>2. Trying to read a hard spreadsheet with {readxl}</h2>
 <p>Here’s is the same data but this time it is in a spreadsheet that the {readxl} package can’t read so easily. Why not?</p>
-<p><img src="images/hp-untidy.png"><!-- --></p>
+<p><img src="images/hp-untidy.png" width="198"></p>
 <p>The <code>Pupil</code> and <code>Year</code> columns have been combined into one, so the names of the pupils aren’t in the same rows as their marks, nor are they in the same columns. There is also a text value <code>"10 - really?"</code> amongst a column of numbers.</p>
 <p>Is every row self-sufficient? Could you read only one row and understand all the data in it? No, because one row will only tell you the mark, subject and year, but not the name. Or else it will tell you the name, but not the mark, subject or year.</p>
 <p>Here is what happens when the table is read with the {readxl} package.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">untidy</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span>(<span class="no">hp_xlsx</span>, <span class="kw">sheet</span> <span class="kw">=</span> <span class="st">"untidy"</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">untidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="va">hp_xlsx</span>, sheet <span class="op">=</span> <span class="st">"untidy"</span><span class="op">)</span>
 <span class="co">#&gt; New names:</span>
 <span class="co">#&gt; * `` -&gt; ...1</span>
 
-<span class="no">untidy</span>
+<span class="va">untidy</span>
 <span class="co">#&gt; # A tibble: 6 x 3</span>
 <span class="co">#&gt;   ...1     Potions Herbology   </span>
 <span class="co">#&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;       </span>
@@ -165,7 +167,7 @@
 <span class="co">#&gt; 3 2nd year       2 10 - really?</span>
 <span class="co">#&gt; 4 Ginny         NA &lt;NA&gt;        </span>
 <span class="co">#&gt; 5 1st year       8 9           </span>
-<span class="co">#&gt; 6 2nd year       9 7</span></pre></body></html></div>
+<span class="co">#&gt; 6 2nd year       9 7</span></code></pre></div>
 <p>What has gone wrong? The spreadsheet has broken the assumptions that the {readxl} package makes about data.</p>
 <ul>
 <li>A rectangular shape. The spreadsheet is not rectangular because the top-left cell is deliberately blank (is not ‘missing’ data), and so are the cells to the right of <code>"Ron"</code> and <code>"Ginny"</code>.</li>
@@ -180,14 +182,15 @@
 </ul>
 <p>Unfortunately {readxl} hasn’t been able to make the data tidy. Each row still isn’t self-sufficient. You couldn’t read only one row and understand all the data in it.</p>
 <p>Here is a final example of a spreadsheet that breaks the one remaining assumption: that there is a single row of column headers. This file has two rows of column headers.</p>
-<p><img src="images/hp-pivoted.png"><!-- --></p>
+<p><img src="images/hp-pivoted.png" width="312"></p>
 <p>The rest of this tutorial will demonstrate how to use the {tidyxl} and {unpivotr} packages to import that spreadsheet.</p>
 </div>
 <div id="demonstration-of-tidyxl-and-unpivotr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#demonstration-of-tidyxl-and-unpivotr" class="anchor"></a>3. Demonstration of {tidyxl} and {unpivotr}</h2>
 <p>Don’t expect to understand yet how the following code works. It is here to show you what to expect later, and it is the entire code to import the spreadsheet above.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -196,35 +199,35 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyxl</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">unpivotr</span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/tidyxl">tidyxl</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/unpivotr">unpivotr</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'unpivotr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:tidyr':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     pack, unpack</span>
 
-<span class="no">hp_xlsx</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/harry-potter.xlsx"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"unpivotr"</span>)
+<span class="va">hp_xlsx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/harry-potter.xlsx"</span>, package <span class="op">=</span> <span class="st">"unpivotr"</span><span class="op">)</span>
 
-<span class="no">cells</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span>(<span class="no">hp_xlsx</span>, <span class="kw">sheet</span> <span class="kw">=</span> <span class="st">"pivoted"</span>)
-<span class="no">formats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span>(<span class="no">hp_xlsx</span>)
+<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span><span class="op">(</span><span class="va">hp_xlsx</span>, sheet <span class="op">=</span> <span class="st">"pivoted"</span><span class="op">)</span>
+<span class="va">formats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span><span class="op">(</span><span class="va">hp_xlsx</span><span class="op">)</span>
 
-<span class="no">indent</span> <span class="kw">&lt;-</span> <span class="no">formats</span>$<span class="no">local</span>$<span class="no">alignment</span>$<span class="no">indent</span>
+<span class="va">indent</span> <span class="op">&lt;-</span> <span class="va">formats</span><span class="op">$</span><span class="va">local</span><span class="op">$</span><span class="va">alignment</span><span class="op">$</span><span class="va">indent</span>
 
-<span class="no">tidied</span> <span class="kw">&lt;-</span>
-  <span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"dormitory"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up"</span>, <span class="st">"name"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead_if</a></span>(<span class="no">indent</span>[<span class="no">local_format_id</span>] <span class="kw">==</span> <span class="fl">0</span>,
-            <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"left-up"</span>,
-            <span class="kw">name</span> <span class="kw">=</span> <span class="st">"location"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"left"</span>, <span class="st">"subject"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">address</span>, <span class="no">dormitory</span>, <span class="no">name</span>, <span class="no">location</span>, <span class="no">subject</span>, <span class="kw">mark</span> <span class="kw">=</span> <span class="no">numeric</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="no">dormitory</span>, <span class="no">name</span>, <span class="no">location</span>, <span class="no">subject</span>)
+<span class="va">tidied</span> <span class="op">&lt;-</span>
+  <span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead_if</a></span><span class="op">(</span><span class="va">indent</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>,
+            direction <span class="op">=</span> <span class="st">"left-up"</span>,
+            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"subject"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">address</span>, <span class="va">dormitory</span>, <span class="va">name</span>, <span class="va">location</span>, <span class="va">subject</span>, mark <span class="op">=</span> <span class="va">numeric</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">dormitory</span>, <span class="va">name</span>, <span class="va">location</span>, <span class="va">subject</span><span class="op">)</span>
 
-<span class="no">tidied</span>
+<span class="va">tidied</span>
 <span class="co">#&gt; # A tibble: 24 x 6</span>
 <span class="co">#&gt;    address dormitory name     location subject                    mark</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;                     &lt;dbl&gt;</span>
@@ -251,19 +254,20 @@
 <span class="co">#&gt; 21 E3      Wizard    Ron      Castle   &lt;NA&gt;                          2</span>
 <span class="co">#&gt; 22 E8      Wizard    Ron      Grounds  Care of Magical Creatures     3</span>
 <span class="co">#&gt; 23 E7      Wizard    Ron      Grounds  Herbology                    NA</span>
-<span class="co">#&gt; 24 E6      Wizard    Ron      Grounds  &lt;NA&gt;                          3</span></pre></body></html></div>
+<span class="co">#&gt; 24 E6      Wizard    Ron      Grounds  &lt;NA&gt;                          3</span></code></pre></div>
 </div>
 <div id="explanation-of-tidyxlxlsx_cells" class="section level2">
 <h2 class="hasAnchor">
 <a href="#explanation-of-tidyxlxlsx_cells" class="anchor"></a>4. Explanation of tidyxl::xlsx_cells()</h2>
 <p>The first step to import a difficult spreadsheet is to read it with <code><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">tidyxl::xlsx_cells()</a></code>.</p>
 <p>What does <code><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">tidyxl::xlsx_cells()</a></code> do that is different from <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_excel()</a></code>? Instead of returning the <em>data</em> in a data frame, it returns <em>individual cells</em> in a data frame. Try matching each row of the output of <code><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells()</a></code> to a cell in the spreadsheet.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span>(<span class="no">hp_xlsx</span>, <span class="kw">sheet</span> <span class="kw">=</span> <span class="st">"pivoted"</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span><span class="op">(</span><span class="va">hp_xlsx</span>, sheet <span class="op">=</span> <span class="st">"pivoted"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="co"># Drop some columns to make it clearer what is going on</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">col</span>, <span class="no">is_blank</span>, <span class="no">data_type</span>, <span class="no">character</span>, <span class="no">numeric</span>, <span class="no">local_format_id</span>)
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">col</span>, <span class="va">is_blank</span>, <span class="va">data_type</span>, <span class="va">character</span>, <span class="va">numeric</span>, <span class="va">local_format_id</span><span class="op">)</span>
 
-<span class="no">cells</span>
+<span class="va">cells</span>
 <span class="co">#&gt; # A tibble: 47 x 7</span>
 <span class="co">#&gt;      row   col is_blank data_type character              numeric local_format_id</span>
 <span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;                    &lt;dbl&gt;           &lt;int&gt;</span>
@@ -313,7 +317,7 @@
 <span class="co">#&gt; 44    10     2 TRUE     blank     &lt;NA&gt;                        NA              15</span>
 <span class="co">#&gt; 45    10     3 TRUE     blank     &lt;NA&gt;                        NA              17</span>
 <span class="co">#&gt; 46    10     4 TRUE     blank     &lt;NA&gt;                        NA              15</span>
-<span class="co">#&gt; 47    10     5 TRUE     blank     &lt;NA&gt;                        NA              16</span></pre></body></html></div>
+<span class="co">#&gt; 47    10     5 TRUE     blank     &lt;NA&gt;                        NA              16</span></code></pre></div>
 <p>The first row of the output describes the cell B2 (row 1, column 2) of the spreadsheet, with the character value <code>"Witch"</code>.</p>
 <pre><code># A tibble: 47 x 7
      row   col is_blank data_type character numeric local_format_id
@@ -321,8 +325,9 @@
  1     1     2 FALSE    character Witch          NA               2</code></pre>
 <p>Row 10 describes the cell C3 (row 3, column 3) of the spreadsheet, with the numeric value <code>11</code>.</p>
 <p>So what <code><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells()</a></code> has done is give you a data frame that isn’t data itself, but it <em>describes</em> the data in the spreadsheet. Each row describes one cell. This allows you to do some fancy tricks, like filter for all the numeric cells.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">data_type</span> <span class="kw">==</span> <span class="st">"numeric"</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">data_type</span> <span class="op">==</span> <span class="st">"numeric"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 23 x 7</span>
 <span class="co">#&gt;      row   col is_blank data_type character numeric local_format_id</span>
 <span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;           &lt;int&gt;</span>
@@ -348,17 +353,19 @@
 <span class="co">#&gt; 20     8     2 FALSE    numeric   &lt;NA&gt;            2              15</span>
 <span class="co">#&gt; 21     8     3 FALSE    numeric   &lt;NA&gt;            7              17</span>
 <span class="co">#&gt; 22     8     4 FALSE    numeric   &lt;NA&gt;            3              15</span>
-<span class="co">#&gt; 23     8     5 FALSE    numeric   &lt;NA&gt;            3              16</span></pre></body></html></div>
+<span class="co">#&gt; 23     8     5 FALSE    numeric   &lt;NA&gt;            3              16</span></code></pre></div>
 <p>Or you could filter for a particular cell by its row and column position.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">row</span> <span class="kw">==</span> <span class="fl">2</span>, <span class="no">col</span> <span class="kw">==</span> <span class="fl">4</span>)
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">row</span> <span class="op">==</span> <span class="fl">2</span>, <span class="va">col</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 7</span>
 <span class="co">#&gt;     row   col is_blank data_type character numeric local_format_id</span>
 <span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;           &lt;int&gt;</span>
-<span class="co">#&gt; 1     2     4 FALSE    character Harry          NA               3</span></pre></body></html></div>
+<span class="co">#&gt; 1     2     4 FALSE    character Harry          NA               3</span></code></pre></div>
 <p>And you can filter out all ‘blank’ cells. A cell is ‘blank’ if it has formatting but no value. Sometimes it’s useful to have these, but usually you should discard them.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 36 x 7</span>
 <span class="co">#&gt;      row   col is_blank data_type character              numeric local_format_id</span>
 <span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;                    &lt;dbl&gt;           &lt;int&gt;</span>
@@ -397,7 +404,7 @@
 <span class="co">#&gt; 33     8     2 FALSE    numeric   &lt;NA&gt;                         2              15</span>
 <span class="co">#&gt; 34     8     3 FALSE    numeric   &lt;NA&gt;                         7              17</span>
 <span class="co">#&gt; 35     8     4 FALSE    numeric   &lt;NA&gt;                         3              15</span>
-<span class="co">#&gt; 36     8     5 FALSE    numeric   &lt;NA&gt;                         3              16</span></pre></body></html></div>
+<span class="co">#&gt; 36     8     5 FALSE    numeric   &lt;NA&gt;                         3              16</span></code></pre></div>
 <p>That is all you need to know about the tidyxl package for now. Later you will be shown how to filter for cells by their formatting (e.g. bold cells, indented cells, or cells with coloured text).</p>
 </div>
 <div id="explanation-of-unpivotrbehead" class="section level2">
@@ -406,11 +413,12 @@
 <p>You’ve seen that <code><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">tidyxl::xlsx_cells()</a></code> reads a spreadsheet one cell at a time, so that you can filter for particular cells by their position, their value, their data type, etc. You could now write code to tidy up any spreadsheet.</p>
 <p>The unpivotr package gives you some pre-packaged tools for tidying up a spreadsheet. The most important tool is <code><a href="../reference/behead.html">behead()</a></code>, which deals with one layer of header cells at a time.</p>
 <p>Let’s look again at the original spreadsheet. I have highlighted the first row of header cells.</p>
-<p><img src="images/untidy-header-row-1.png"><!-- --></p>
+<p><img src="images/untidy-header-row-1.png" width="314"></p>
 <p>Use <code><a href="../reference/behead.html">unpivotr::behead()</a></code> to tag data cells with <code>"Witch"</code> or <code>"Wizard"</code>, and then strip (or behead!) those header cells from the rest – they are no longer required.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"dormitory"</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 34 x 8</span>
 <span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span>
 <span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
@@ -447,15 +455,16 @@
 <span class="co">#&gt; 31     5     1 FALSE    character Potions           NA              11 &lt;NA&gt;     </span>
 <span class="co">#&gt; 32     6     1 FALSE    character Grounds           NA              12 &lt;NA&gt;     </span>
 <span class="co">#&gt; 33     7     1 FALSE    character Herbology         NA              10 &lt;NA&gt;     </span>
-<span class="co">#&gt; 34     8     1 FALSE    character Care of Mag…      NA              14 &lt;NA&gt;</span></pre></body></html></div>
+<span class="co">#&gt; 34     8     1 FALSE    character Care of Mag…      NA              14 &lt;NA&gt;</span></code></pre></div>
 <p>Click through table to check that every cell belonging to the Witch header has been taggged <code>"Witch"</code> in the column <code>dormitory</code>, and the same for wizards Notice that the locations <code>Castle</code> and <code>Grounds</code> have also been tagged witch or wizard. Also, all the cells in row 1 have disappeared – they have become values in the <code>dormitory</code> column.</p>
 <p>What do the arguments to <code><a href="../reference/behead.html">behead("up-left", "dormitory")</a></code> mean? The second one, <code>"dormitory"</code> becomes the column name of the male/female tags. But the direction <code>"up-left"</code> is the most important one. It tells <code><a href="../reference/behead.html">behead()</a></code> which way to look for a header cell.</p>
 <p>For example, starting from the cell C3 (row 3 column 3), <code><a href="../reference/behead.html">behead()</a></code> looks up and to the left to find the header <code>"Witch"</code>. Starting from the cell D4 (row 4, column 4) it finds the header <code>"Wizard"</code>. Starting from cells in the first column, there is no header cell in the <code>"up-left"</code> direction, so they are tagged with missing values. Don’t worry about them – they will come right later.</p>
 <p>What if we try a different direction instead, <code>"up-right"</code> (up and to the right)? Again, compare the table with the spreadsheet</p>
-<p><img src="images/untidy-header-row-1.png"><!-- --></p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-right"</span>, <span class="st">"dormitory"</span>)
+<p><img src="images/untidy-header-row-1.png" width="314"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-right"</span>, <span class="st">"dormitory"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 34 x 8</span>
 <span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span>
 <span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
@@ -492,7 +501,7 @@
 <span class="co">#&gt; 31     5     5 FALSE    numeric   &lt;NA&gt;               2               4 &lt;NA&gt;     </span>
 <span class="co">#&gt; 32     6     5 FALSE    numeric   &lt;NA&gt;               3               6 &lt;NA&gt;     </span>
 <span class="co">#&gt; 33     7     5 FALSE    character 10 - really?      NA              13 &lt;NA&gt;     </span>
-<span class="co">#&gt; 34     8     5 FALSE    numeric   &lt;NA&gt;               3              16 &lt;NA&gt;</span></pre></body></html></div>
+<span class="co">#&gt; 34     8     5 FALSE    numeric   &lt;NA&gt;               3              16 &lt;NA&gt;</span></code></pre></div>
 <p>Check that Ginny has been tagged <code>"Wizard"</code>, and so have her marks in cells below. Unpivotr doesn’t know that this is wrong, it has just done what it was told. The <code><a href="../reference/behead.html">behead()</a></code> function isn’t magic, it just enables you to tell unpivotr which data cells relate to which header cells.</p>
 </div>
 <div id="continuing-unpivotrbehead" class="section level2">
@@ -500,45 +509,46 @@
 <a href="#continuing-unpivotrbehead" class="anchor"></a>6. Continuing <code>unpivotr::behead()</code>
 </h2>
 <p>Let’s carry on with the second row of header cells (highlighted). This time the direction is simply <code>"up"</code> for directly up because there is a header in every column. Notice that we’re building up a pipeline of transformations, one set of headers at a time.</p>
-<p><img src="images/untidy-header-row-2.png"><!-- --></p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"dormitory"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up"</span>, <span class="st">"name"</span>)
+<p><img src="images/untidy-header-row-2.png" width="316"></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"name"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 30 x 9</span>
-<span class="co">#&gt;      row   col is_blank data_type character numeric local_format_id dormitory</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt;  1     3     2 FALSE    numeric   &lt;NA&gt;           11               5 Witch    </span>
-<span class="co">#&gt;  2     3     3 FALSE    numeric   &lt;NA&gt;           11               6 Witch    </span>
-<span class="co">#&gt;  3     4     2 FALSE    numeric   &lt;NA&gt;            2               2 Witch    </span>
-<span class="co">#&gt;  4     4     3 FALSE    numeric   &lt;NA&gt;            6               1 Witch    </span>
-<span class="co">#&gt;  5     5     2 FALSE    numeric   &lt;NA&gt;            9               3 Witch    </span>
-<span class="co">#&gt;  6     5     3 FALSE    numeric   &lt;NA&gt;            5               4 Witch    </span>
-<span class="co">#&gt;  7     6     2 FALSE    numeric   &lt;NA&gt;            7               5 Witch    </span>
-<span class="co">#&gt;  8     6     3 FALSE    numeric   &lt;NA&gt;            8               6 Witch    </span>
-<span class="co">#&gt;  9     7     2 FALSE    numeric   &lt;NA&gt;            5               2 Witch    </span>
-<span class="co">#&gt; 10     7     3 FALSE    numeric   &lt;NA&gt;            1               1 Witch    </span>
-<span class="co">#&gt; 11     8     2 FALSE    numeric   &lt;NA&gt;            2              15 Witch    </span>
-<span class="co">#&gt; 12     8     3 FALSE    numeric   &lt;NA&gt;            7              17 Witch    </span>
-<span class="co">#&gt; 13     3     4 FALSE    numeric   &lt;NA&gt;            7               5 Wizard   </span>
-<span class="co">#&gt; 14     3     5 FALSE    numeric   &lt;NA&gt;            2               6 Wizard   </span>
-<span class="co">#&gt; 15     4     4 FALSE    numeric   &lt;NA&gt;            0               2 Wizard   </span>
-<span class="co">#&gt; 16     4     5 FALSE    numeric   &lt;NA&gt;            0               1 Wizard   </span>
-<span class="co">#&gt; 17     5     4 FALSE    numeric   &lt;NA&gt;            7               3 Wizard   </span>
-<span class="co">#&gt; 18     5     5 FALSE    numeric   &lt;NA&gt;            2               4 Wizard   </span>
-<span class="co">#&gt; 19     6     4 FALSE    numeric   &lt;NA&gt;           11               5 Wizard   </span>
-<span class="co">#&gt; 20     6     5 FALSE    numeric   &lt;NA&gt;            3               6 Wizard   </span>
-<span class="co">#&gt; 21     7     4 FALSE    numeric   &lt;NA&gt;            8               2 Wizard   </span>
-<span class="co">#&gt; 22     7     5 FALSE    character 10 - rea…      NA              13 Wizard   </span>
-<span class="co">#&gt; 23     8     4 FALSE    numeric   &lt;NA&gt;            3              15 Wizard   </span>
-<span class="co">#&gt; 24     8     5 FALSE    numeric   &lt;NA&gt;            3              16 Wizard   </span>
-<span class="co">#&gt; 25     3     1 FALSE    character Castle         NA              12 &lt;NA&gt;     </span>
-<span class="co">#&gt; 26     4     1 FALSE    character Charms         NA              10 &lt;NA&gt;     </span>
-<span class="co">#&gt; 27     5     1 FALSE    character Potions        NA              11 &lt;NA&gt;     </span>
-<span class="co">#&gt; 28     6     1 FALSE    character Grounds        NA              12 &lt;NA&gt;     </span>
-<span class="co">#&gt; 29     7     1 FALSE    character Herbology      NA              10 &lt;NA&gt;     </span>
-<span class="co">#&gt; 30     8     1 FALSE    character Care of …      NA              14 &lt;NA&gt;     </span>
-<span class="co">#&gt; # … with 1 more variable: name &lt;chr&gt;</span></pre></body></html></div>
+<span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
+<span class="co">#&gt;  1     3     2 FALSE    numeric   &lt;NA&gt;              11               5 Witch    </span>
+<span class="co">#&gt;  2     3     3 FALSE    numeric   &lt;NA&gt;              11               6 Witch    </span>
+<span class="co">#&gt;  3     4     2 FALSE    numeric   &lt;NA&gt;               2               2 Witch    </span>
+<span class="co">#&gt;  4     4     3 FALSE    numeric   &lt;NA&gt;               6               1 Witch    </span>
+<span class="co">#&gt;  5     5     2 FALSE    numeric   &lt;NA&gt;               9               3 Witch    </span>
+<span class="co">#&gt;  6     5     3 FALSE    numeric   &lt;NA&gt;               5               4 Witch    </span>
+<span class="co">#&gt;  7     6     2 FALSE    numeric   &lt;NA&gt;               7               5 Witch    </span>
+<span class="co">#&gt;  8     6     3 FALSE    numeric   &lt;NA&gt;               8               6 Witch    </span>
+<span class="co">#&gt;  9     7     2 FALSE    numeric   &lt;NA&gt;               5               2 Witch    </span>
+<span class="co">#&gt; 10     7     3 FALSE    numeric   &lt;NA&gt;               1               1 Witch    </span>
+<span class="co">#&gt; 11     8     2 FALSE    numeric   &lt;NA&gt;               2              15 Witch    </span>
+<span class="co">#&gt; 12     8     3 FALSE    numeric   &lt;NA&gt;               7              17 Witch    </span>
+<span class="co">#&gt; 13     3     4 FALSE    numeric   &lt;NA&gt;               7               5 Wizard   </span>
+<span class="co">#&gt; 14     3     5 FALSE    numeric   &lt;NA&gt;               2               6 Wizard   </span>
+<span class="co">#&gt; 15     4     4 FALSE    numeric   &lt;NA&gt;               0               2 Wizard   </span>
+<span class="co">#&gt; 16     4     5 FALSE    numeric   &lt;NA&gt;               0               1 Wizard   </span>
+<span class="co">#&gt; 17     5     4 FALSE    numeric   &lt;NA&gt;               7               3 Wizard   </span>
+<span class="co">#&gt; 18     5     5 FALSE    numeric   &lt;NA&gt;               2               4 Wizard   </span>
+<span class="co">#&gt; 19     6     4 FALSE    numeric   &lt;NA&gt;              11               5 Wizard   </span>
+<span class="co">#&gt; 20     6     5 FALSE    numeric   &lt;NA&gt;               3               6 Wizard   </span>
+<span class="co">#&gt; 21     7     4 FALSE    numeric   &lt;NA&gt;               8               2 Wizard   </span>
+<span class="co">#&gt; 22     7     5 FALSE    character 10 - really?      NA              13 Wizard   </span>
+<span class="co">#&gt; 23     8     4 FALSE    numeric   &lt;NA&gt;               3              15 Wizard   </span>
+<span class="co">#&gt; 24     8     5 FALSE    numeric   &lt;NA&gt;               3              16 Wizard   </span>
+<span class="co">#&gt; 25     3     1 FALSE    character Castle            NA              12 &lt;NA&gt;     </span>
+<span class="co">#&gt; 26     4     1 FALSE    character Charms            NA              10 &lt;NA&gt;     </span>
+<span class="co">#&gt; 27     5     1 FALSE    character Potions           NA              11 &lt;NA&gt;     </span>
+<span class="co">#&gt; 28     6     1 FALSE    character Grounds           NA              12 &lt;NA&gt;     </span>
+<span class="co">#&gt; 29     7     1 FALSE    character Herbology         NA              10 &lt;NA&gt;     </span>
+<span class="co">#&gt; 30     8     1 FALSE    character Care of Mag…      NA              14 &lt;NA&gt;     </span>
+<span class="co">#&gt; # … with 1 more variable: name &lt;chr&gt;</span></code></pre></div>
 <p>Click through the table to match it to the spreadsheet. The header cells in rows 1 and 2 have all disappeared to become values in the <code>dormitory</code> and <code>name</code> columns. The cell C3 (row 3, column 3) has been tagged <code>"Witch"</code> and <code>"Ginny"</code></p>
 </div>
 <div id="handling-meaningful-formatting-with-unpivotrbehead_if" class="section level2">
@@ -547,160 +557,165 @@
 </h2>
 <p>Applying the same procedure to the headers in column A, which describe the location and subject, what are the directions?</p>
 <p>Starting from a data cell, say, B7 (row 7, column 2), the location is<code>"Grounds"</code>, which is to the left and then up, <code>"left-up"</code>.</p>
-<p><img src="images/untidy-header-col-1.png"><!-- --></p>
+<p><img src="images/untidy-header-col-1.png" width="315"></p>
 <p>But there is a complication. When <code><a href="../reference/behead.html">unpivotr::behead()</a></code> is travelling up the cells in column 1, how does it know to stop at <code>"Grounds"</code> and not overshoot to <code>"Potions"</code> or any of the cells further up? You must tell <code><a href="../reference/behead.html">behead()</a></code> to stop at the first cell that isn’t indented. Alternatively, you could tell it to stop at the first cell that is bold.</p>
 <p>Use <code><a href="../reference/behead.html">unpivotr::behead_if()</a></code> when there is a rule to identify a header cell. In this case the rule will be “when the cell has bold formatting”.</p>
 <p>A spreadsheet cell can have so many different formats that it would be unweildy for {tidyxl} to import them all at once. Instead, {tidyxl} imports a kind of lookup table of formatting, and each cell has a key into the lookup table, called <code>local_format_id</code>.</p>
 <p>Here’s how to look up the <code>indented</code> property of a cell.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">formats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span>(<span class="no">hp_xlsx</span>) <span class="co"># load the format lookup table from the file</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">formats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span><span class="op">(</span><span class="va">hp_xlsx</span><span class="op">)</span> <span class="co"># load the format lookup table from the file</span>
 
-<span class="no">indent</span> <span class="kw">&lt;-</span> <span class="no">formats</span>$<span class="no">local</span>$<span class="no">alignment</span>$<span class="no">indent</span> <span class="co"># find the 'indent' property</span>
+<span class="va">indent</span> <span class="op">&lt;-</span> <span class="va">formats</span><span class="op">$</span><span class="va">local</span><span class="op">$</span><span class="va">alignment</span><span class="op">$</span><span class="va">indent</span> <span class="co"># find the 'indent' property</span>
 
-<span class="no">indent</span>[<span class="no">cells</span>$<span class="no">local_format_id</span>] <span class="co"># look up the indent property of each cell</span>
+<span class="va">indent</span><span class="op">[</span><span class="va">cells</span><span class="op">$</span><span class="va">local_format_id</span><span class="op">]</span> <span class="co"># look up the indent property of each cell</span>
 <span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</span>
-<span class="co">#&gt; [39] 0 0 0 0 1 0 0 0 0</span></pre></body></html></div>
+<span class="co">#&gt; [39] 0 0 0 0 1 0 0 0 0</span></code></pre></div>
 <p>When you look up a format from inside <code><a href="../reference/behead.html">behead_if()</a></code>, you don’t need to mention <code>cell$</code>, but you do have to name the other arguments to <code><a href="../reference/behead.html">behead()</a></code>.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">formats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span>(<span class="no">hp_xlsx</span>) <span class="co"># load the format lookup table from the file</span>
-<span class="no">indent</span> <span class="kw">&lt;-</span> <span class="no">formats</span>$<span class="no">local</span>$<span class="no">alignment</span>$<span class="no">indent</span> <span class="co"># find the 'indent' property</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">formats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span><span class="op">(</span><span class="va">hp_xlsx</span><span class="op">)</span> <span class="co"># load the format lookup table from the file</span>
+<span class="va">indent</span> <span class="op">&lt;-</span> <span class="va">formats</span><span class="op">$</span><span class="va">local</span><span class="op">$</span><span class="va">alignment</span><span class="op">$</span><span class="va">indent</span> <span class="co"># find the 'indent' property</span>
 
-<span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"dormitory"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up"</span>, <span class="st">"name"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead_if</a></span>(<span class="no">indent</span>[<span class="no">local_format_id</span>] <span class="kw">==</span> <span class="fl">0</span>,
-            <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"left-up"</span>, <span class="co"># This argument has to be named now.</span>
-            <span class="kw">name</span> <span class="kw">=</span> <span class="st">"location"</span>)     <span class="co"># So does this one.</span>
+<span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead_if</a></span><span class="op">(</span><span class="va">indent</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>,
+            direction <span class="op">=</span> <span class="st">"left-up"</span>, <span class="co"># This argument has to be named now.</span>
+            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span>     <span class="co"># So does this one.</span>
 <span class="co">#&gt; # A tibble: 28 x 10</span>
-<span class="co">#&gt;      row   col is_blank data_type character numeric local_format_id dormitory</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt;  1     3     2 FALSE    numeric   &lt;NA&gt;           11               5 Witch    </span>
-<span class="co">#&gt;  2     3     3 FALSE    numeric   &lt;NA&gt;           11               6 Witch    </span>
-<span class="co">#&gt;  3     4     2 FALSE    numeric   &lt;NA&gt;            2               2 Witch    </span>
-<span class="co">#&gt;  4     4     3 FALSE    numeric   &lt;NA&gt;            6               1 Witch    </span>
-<span class="co">#&gt;  5     5     2 FALSE    numeric   &lt;NA&gt;            9               3 Witch    </span>
-<span class="co">#&gt;  6     5     3 FALSE    numeric   &lt;NA&gt;            5               4 Witch    </span>
-<span class="co">#&gt;  7     3     4 FALSE    numeric   &lt;NA&gt;            7               5 Wizard   </span>
-<span class="co">#&gt;  8     3     5 FALSE    numeric   &lt;NA&gt;            2               6 Wizard   </span>
-<span class="co">#&gt;  9     4     4 FALSE    numeric   &lt;NA&gt;            0               2 Wizard   </span>
-<span class="co">#&gt; 10     4     5 FALSE    numeric   &lt;NA&gt;            0               1 Wizard   </span>
-<span class="co">#&gt; 11     5     4 FALSE    numeric   &lt;NA&gt;            7               3 Wizard   </span>
-<span class="co">#&gt; 12     5     5 FALSE    numeric   &lt;NA&gt;            2               4 Wizard   </span>
-<span class="co">#&gt; 13     4     1 FALSE    character Charms         NA              10 &lt;NA&gt;     </span>
-<span class="co">#&gt; 14     5     1 FALSE    character Potions        NA              11 &lt;NA&gt;     </span>
-<span class="co">#&gt; 15     6     2 FALSE    numeric   &lt;NA&gt;            7               5 Witch    </span>
-<span class="co">#&gt; 16     6     3 FALSE    numeric   &lt;NA&gt;            8               6 Witch    </span>
-<span class="co">#&gt; 17     7     2 FALSE    numeric   &lt;NA&gt;            5               2 Witch    </span>
-<span class="co">#&gt; 18     7     3 FALSE    numeric   &lt;NA&gt;            1               1 Witch    </span>
-<span class="co">#&gt; 19     8     2 FALSE    numeric   &lt;NA&gt;            2              15 Witch    </span>
-<span class="co">#&gt; 20     8     3 FALSE    numeric   &lt;NA&gt;            7              17 Witch    </span>
-<span class="co">#&gt; 21     6     4 FALSE    numeric   &lt;NA&gt;           11               5 Wizard   </span>
-<span class="co">#&gt; 22     6     5 FALSE    numeric   &lt;NA&gt;            3               6 Wizard   </span>
-<span class="co">#&gt; 23     7     4 FALSE    numeric   &lt;NA&gt;            8               2 Wizard   </span>
-<span class="co">#&gt; 24     7     5 FALSE    character 10 - rea…      NA              13 Wizard   </span>
-<span class="co">#&gt; 25     8     4 FALSE    numeric   &lt;NA&gt;            3              15 Wizard   </span>
-<span class="co">#&gt; 26     8     5 FALSE    numeric   &lt;NA&gt;            3              16 Wizard   </span>
-<span class="co">#&gt; 27     7     1 FALSE    character Herbology      NA              10 &lt;NA&gt;     </span>
-<span class="co">#&gt; 28     8     1 FALSE    character Care of …      NA              14 &lt;NA&gt;     </span>
-<span class="co">#&gt; # … with 2 more variables: name &lt;chr&gt;, location &lt;chr&gt;</span></pre></body></html></div>
+<span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
+<span class="co">#&gt;  1     3     2 FALSE    numeric   &lt;NA&gt;              11               5 Witch    </span>
+<span class="co">#&gt;  2     3     3 FALSE    numeric   &lt;NA&gt;              11               6 Witch    </span>
+<span class="co">#&gt;  3     4     2 FALSE    numeric   &lt;NA&gt;               2               2 Witch    </span>
+<span class="co">#&gt;  4     4     3 FALSE    numeric   &lt;NA&gt;               6               1 Witch    </span>
+<span class="co">#&gt;  5     5     2 FALSE    numeric   &lt;NA&gt;               9               3 Witch    </span>
+<span class="co">#&gt;  6     5     3 FALSE    numeric   &lt;NA&gt;               5               4 Witch    </span>
+<span class="co">#&gt;  7     3     4 FALSE    numeric   &lt;NA&gt;               7               5 Wizard   </span>
+<span class="co">#&gt;  8     3     5 FALSE    numeric   &lt;NA&gt;               2               6 Wizard   </span>
+<span class="co">#&gt;  9     4     4 FALSE    numeric   &lt;NA&gt;               0               2 Wizard   </span>
+<span class="co">#&gt; 10     4     5 FALSE    numeric   &lt;NA&gt;               0               1 Wizard   </span>
+<span class="co">#&gt; 11     5     4 FALSE    numeric   &lt;NA&gt;               7               3 Wizard   </span>
+<span class="co">#&gt; 12     5     5 FALSE    numeric   &lt;NA&gt;               2               4 Wizard   </span>
+<span class="co">#&gt; 13     4     1 FALSE    character Charms            NA              10 &lt;NA&gt;     </span>
+<span class="co">#&gt; 14     5     1 FALSE    character Potions           NA              11 &lt;NA&gt;     </span>
+<span class="co">#&gt; 15     6     2 FALSE    numeric   &lt;NA&gt;               7               5 Witch    </span>
+<span class="co">#&gt; 16     6     3 FALSE    numeric   &lt;NA&gt;               8               6 Witch    </span>
+<span class="co">#&gt; 17     7     2 FALSE    numeric   &lt;NA&gt;               5               2 Witch    </span>
+<span class="co">#&gt; 18     7     3 FALSE    numeric   &lt;NA&gt;               1               1 Witch    </span>
+<span class="co">#&gt; 19     8     2 FALSE    numeric   &lt;NA&gt;               2              15 Witch    </span>
+<span class="co">#&gt; 20     8     3 FALSE    numeric   &lt;NA&gt;               7              17 Witch    </span>
+<span class="co">#&gt; 21     6     4 FALSE    numeric   &lt;NA&gt;              11               5 Wizard   </span>
+<span class="co">#&gt; 22     6     5 FALSE    numeric   &lt;NA&gt;               3               6 Wizard   </span>
+<span class="co">#&gt; 23     7     4 FALSE    numeric   &lt;NA&gt;               8               2 Wizard   </span>
+<span class="co">#&gt; 24     7     5 FALSE    character 10 - really?      NA              13 Wizard   </span>
+<span class="co">#&gt; 25     8     4 FALSE    numeric   &lt;NA&gt;               3              15 Wizard   </span>
+<span class="co">#&gt; 26     8     5 FALSE    numeric   &lt;NA&gt;               3              16 Wizard   </span>
+<span class="co">#&gt; 27     7     1 FALSE    character Herbology         NA              10 &lt;NA&gt;     </span>
+<span class="co">#&gt; 28     8     1 FALSE    character Care of Mag…      NA              14 &lt;NA&gt;     </span>
+<span class="co">#&gt; # … with 2 more variables: name &lt;chr&gt;, location &lt;chr&gt;</span></code></pre></div>
 <p>You can give more than one rule to <code><a href="../reference/behead.html">behead_if()</a></code> at once. They are applied together, so all the rules must evaluate to <code>TRUE</code> for a cell to be treated as a header cell. Here’s an example applying the additional rule that a cell must be bold. The result in this case is the same.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">formats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span>(<span class="no">hp_xlsx</span>)
-<span class="no">indent</span> <span class="kw">&lt;-</span> <span class="no">formats</span>$<span class="no">local</span>$<span class="no">alignment</span>$<span class="no">indent</span>
-<span class="no">bold</span> <span class="kw">&lt;-</span> <span class="no">formats</span>$<span class="no">local</span>$<span class="no">font</span>$<span class="no">bold</span> <span class="co"># find the 'bold' property</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">formats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span><span class="op">(</span><span class="va">hp_xlsx</span><span class="op">)</span>
+<span class="va">indent</span> <span class="op">&lt;-</span> <span class="va">formats</span><span class="op">$</span><span class="va">local</span><span class="op">$</span><span class="va">alignment</span><span class="op">$</span><span class="va">indent</span>
+<span class="va">bold</span> <span class="op">&lt;-</span> <span class="va">formats</span><span class="op">$</span><span class="va">local</span><span class="op">$</span><span class="va">font</span><span class="op">$</span><span class="va">bold</span> <span class="co"># find the 'bold' property</span>
 
-<span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"dormitory"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up"</span>, <span class="st">"name"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead_if</a></span>(<span class="no">indent</span>[<span class="no">local_format_id</span>] <span class="kw">==</span> <span class="fl">0</span>, <span class="co"># First rule</span>
-            <span class="no">bold</span>[<span class="no">local_format_id</span>],        <span class="co"># Second rule. Both must be TRUE</span>
-            <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"left-up"</span>,
-            <span class="kw">name</span> <span class="kw">=</span> <span class="st">"location"</span>)
+<span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead_if</a></span><span class="op">(</span><span class="va">indent</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>, <span class="co"># First rule</span>
+            <span class="va">bold</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span>,        <span class="co"># Second rule. Both must be TRUE</span>
+            direction <span class="op">=</span> <span class="st">"left-up"</span>,
+            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 28 x 10</span>
-<span class="co">#&gt;      row   col is_blank data_type character numeric local_format_id dormitory</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt;  1     3     2 FALSE    numeric   &lt;NA&gt;           11               5 Witch    </span>
-<span class="co">#&gt;  2     3     3 FALSE    numeric   &lt;NA&gt;           11               6 Witch    </span>
-<span class="co">#&gt;  3     4     2 FALSE    numeric   &lt;NA&gt;            2               2 Witch    </span>
-<span class="co">#&gt;  4     4     3 FALSE    numeric   &lt;NA&gt;            6               1 Witch    </span>
-<span class="co">#&gt;  5     5     2 FALSE    numeric   &lt;NA&gt;            9               3 Witch    </span>
-<span class="co">#&gt;  6     5     3 FALSE    numeric   &lt;NA&gt;            5               4 Witch    </span>
-<span class="co">#&gt;  7     3     4 FALSE    numeric   &lt;NA&gt;            7               5 Wizard   </span>
-<span class="co">#&gt;  8     3     5 FALSE    numeric   &lt;NA&gt;            2               6 Wizard   </span>
-<span class="co">#&gt;  9     4     4 FALSE    numeric   &lt;NA&gt;            0               2 Wizard   </span>
-<span class="co">#&gt; 10     4     5 FALSE    numeric   &lt;NA&gt;            0               1 Wizard   </span>
-<span class="co">#&gt; 11     5     4 FALSE    numeric   &lt;NA&gt;            7               3 Wizard   </span>
-<span class="co">#&gt; 12     5     5 FALSE    numeric   &lt;NA&gt;            2               4 Wizard   </span>
-<span class="co">#&gt; 13     4     1 FALSE    character Charms         NA              10 &lt;NA&gt;     </span>
-<span class="co">#&gt; 14     5     1 FALSE    character Potions        NA              11 &lt;NA&gt;     </span>
-<span class="co">#&gt; 15     6     2 FALSE    numeric   &lt;NA&gt;            7               5 Witch    </span>
-<span class="co">#&gt; 16     6     3 FALSE    numeric   &lt;NA&gt;            8               6 Witch    </span>
-<span class="co">#&gt; 17     7     2 FALSE    numeric   &lt;NA&gt;            5               2 Witch    </span>
-<span class="co">#&gt; 18     7     3 FALSE    numeric   &lt;NA&gt;            1               1 Witch    </span>
-<span class="co">#&gt; 19     8     2 FALSE    numeric   &lt;NA&gt;            2              15 Witch    </span>
-<span class="co">#&gt; 20     8     3 FALSE    numeric   &lt;NA&gt;            7              17 Witch    </span>
-<span class="co">#&gt; 21     6     4 FALSE    numeric   &lt;NA&gt;           11               5 Wizard   </span>
-<span class="co">#&gt; 22     6     5 FALSE    numeric   &lt;NA&gt;            3               6 Wizard   </span>
-<span class="co">#&gt; 23     7     4 FALSE    numeric   &lt;NA&gt;            8               2 Wizard   </span>
-<span class="co">#&gt; 24     7     5 FALSE    character 10 - rea…      NA              13 Wizard   </span>
-<span class="co">#&gt; 25     8     4 FALSE    numeric   &lt;NA&gt;            3              15 Wizard   </span>
-<span class="co">#&gt; 26     8     5 FALSE    numeric   &lt;NA&gt;            3              16 Wizard   </span>
-<span class="co">#&gt; 27     7     1 FALSE    character Herbology      NA              10 &lt;NA&gt;     </span>
-<span class="co">#&gt; 28     8     1 FALSE    character Care of …      NA              14 &lt;NA&gt;     </span>
-<span class="co">#&gt; # … with 2 more variables: name &lt;chr&gt;, location &lt;chr&gt;</span></pre></body></html></div>
+<span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
+<span class="co">#&gt;  1     3     2 FALSE    numeric   &lt;NA&gt;              11               5 Witch    </span>
+<span class="co">#&gt;  2     3     3 FALSE    numeric   &lt;NA&gt;              11               6 Witch    </span>
+<span class="co">#&gt;  3     4     2 FALSE    numeric   &lt;NA&gt;               2               2 Witch    </span>
+<span class="co">#&gt;  4     4     3 FALSE    numeric   &lt;NA&gt;               6               1 Witch    </span>
+<span class="co">#&gt;  5     5     2 FALSE    numeric   &lt;NA&gt;               9               3 Witch    </span>
+<span class="co">#&gt;  6     5     3 FALSE    numeric   &lt;NA&gt;               5               4 Witch    </span>
+<span class="co">#&gt;  7     3     4 FALSE    numeric   &lt;NA&gt;               7               5 Wizard   </span>
+<span class="co">#&gt;  8     3     5 FALSE    numeric   &lt;NA&gt;               2               6 Wizard   </span>
+<span class="co">#&gt;  9     4     4 FALSE    numeric   &lt;NA&gt;               0               2 Wizard   </span>
+<span class="co">#&gt; 10     4     5 FALSE    numeric   &lt;NA&gt;               0               1 Wizard   </span>
+<span class="co">#&gt; 11     5     4 FALSE    numeric   &lt;NA&gt;               7               3 Wizard   </span>
+<span class="co">#&gt; 12     5     5 FALSE    numeric   &lt;NA&gt;               2               4 Wizard   </span>
+<span class="co">#&gt; 13     4     1 FALSE    character Charms            NA              10 &lt;NA&gt;     </span>
+<span class="co">#&gt; 14     5     1 FALSE    character Potions           NA              11 &lt;NA&gt;     </span>
+<span class="co">#&gt; 15     6     2 FALSE    numeric   &lt;NA&gt;               7               5 Witch    </span>
+<span class="co">#&gt; 16     6     3 FALSE    numeric   &lt;NA&gt;               8               6 Witch    </span>
+<span class="co">#&gt; 17     7     2 FALSE    numeric   &lt;NA&gt;               5               2 Witch    </span>
+<span class="co">#&gt; 18     7     3 FALSE    numeric   &lt;NA&gt;               1               1 Witch    </span>
+<span class="co">#&gt; 19     8     2 FALSE    numeric   &lt;NA&gt;               2              15 Witch    </span>
+<span class="co">#&gt; 20     8     3 FALSE    numeric   &lt;NA&gt;               7              17 Witch    </span>
+<span class="co">#&gt; 21     6     4 FALSE    numeric   &lt;NA&gt;              11               5 Wizard   </span>
+<span class="co">#&gt; 22     6     5 FALSE    numeric   &lt;NA&gt;               3               6 Wizard   </span>
+<span class="co">#&gt; 23     7     4 FALSE    numeric   &lt;NA&gt;               8               2 Wizard   </span>
+<span class="co">#&gt; 24     7     5 FALSE    character 10 - really?      NA              13 Wizard   </span>
+<span class="co">#&gt; 25     8     4 FALSE    numeric   &lt;NA&gt;               3              15 Wizard   </span>
+<span class="co">#&gt; 26     8     5 FALSE    numeric   &lt;NA&gt;               3              16 Wizard   </span>
+<span class="co">#&gt; 27     7     1 FALSE    character Herbology         NA              10 &lt;NA&gt;     </span>
+<span class="co">#&gt; 28     8     1 FALSE    character Care of Mag…      NA              14 &lt;NA&gt;     </span>
+<span class="co">#&gt; # … with 2 more variables: name &lt;chr&gt;, location &lt;chr&gt;</span></code></pre></div>
 <p>Check that Hermione got 5 marks in a subject taken in Hogwarts grounds, by looking at cell B7 (row 7, column 2).</p>
 </div>
 <div id="finishing-and-cleaning-up" class="section level2">
 <h2 class="hasAnchor">
 <a href="#finishing-and-cleaning-up" class="anchor"></a>8. Finishing and cleaning up</h2>
 <p>Only one layer of headers remains: the subjects in column 1. The direction is directly <code>"left"</code>.</p>
-<p><img src="images/untidy-header-col-2.png"><!-- --></p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"dormitory"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up"</span>, <span class="st">"name"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead_if</a></span>(<span class="no">indent</span>[<span class="no">local_format_id</span>] <span class="kw">==</span> <span class="fl">0</span>,
-            <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"left-up"</span>,
-            <span class="kw">name</span> <span class="kw">=</span> <span class="st">"location"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"left"</span>, <span class="st">"subject"</span>)
+<p><img src="images/untidy-header-col-2.png" width="314"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead_if</a></span><span class="op">(</span><span class="va">indent</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>,
+            direction <span class="op">=</span> <span class="st">"left-up"</span>,
+            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"subject"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 24 x 11</span>
-<span class="co">#&gt;      row   col is_blank data_type character numeric local_format_id dormitory</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt;  1     3     2 FALSE    numeric   &lt;NA&gt;           11               5 Witch    </span>
-<span class="co">#&gt;  2     3     3 FALSE    numeric   &lt;NA&gt;           11               6 Witch    </span>
-<span class="co">#&gt;  3     4     2 FALSE    numeric   &lt;NA&gt;            2               2 Witch    </span>
-<span class="co">#&gt;  4     4     3 FALSE    numeric   &lt;NA&gt;            6               1 Witch    </span>
-<span class="co">#&gt;  5     5     2 FALSE    numeric   &lt;NA&gt;            9               3 Witch    </span>
-<span class="co">#&gt;  6     5     3 FALSE    numeric   &lt;NA&gt;            5               4 Witch    </span>
-<span class="co">#&gt;  7     3     4 FALSE    numeric   &lt;NA&gt;            7               5 Wizard   </span>
-<span class="co">#&gt;  8     3     5 FALSE    numeric   &lt;NA&gt;            2               6 Wizard   </span>
-<span class="co">#&gt;  9     4     4 FALSE    numeric   &lt;NA&gt;            0               2 Wizard   </span>
-<span class="co">#&gt; 10     4     5 FALSE    numeric   &lt;NA&gt;            0               1 Wizard   </span>
-<span class="co">#&gt; 11     5     4 FALSE    numeric   &lt;NA&gt;            7               3 Wizard   </span>
-<span class="co">#&gt; 12     5     5 FALSE    numeric   &lt;NA&gt;            2               4 Wizard   </span>
-<span class="co">#&gt; 13     6     2 FALSE    numeric   &lt;NA&gt;            7               5 Witch    </span>
-<span class="co">#&gt; 14     6     3 FALSE    numeric   &lt;NA&gt;            8               6 Witch    </span>
-<span class="co">#&gt; 15     7     2 FALSE    numeric   &lt;NA&gt;            5               2 Witch    </span>
-<span class="co">#&gt; 16     7     3 FALSE    numeric   &lt;NA&gt;            1               1 Witch    </span>
-<span class="co">#&gt; 17     8     2 FALSE    numeric   &lt;NA&gt;            2              15 Witch    </span>
-<span class="co">#&gt; 18     8     3 FALSE    numeric   &lt;NA&gt;            7              17 Witch    </span>
-<span class="co">#&gt; 19     6     4 FALSE    numeric   &lt;NA&gt;           11               5 Wizard   </span>
-<span class="co">#&gt; 20     6     5 FALSE    numeric   &lt;NA&gt;            3               6 Wizard   </span>
-<span class="co">#&gt; 21     7     4 FALSE    numeric   &lt;NA&gt;            8               2 Wizard   </span>
-<span class="co">#&gt; 22     7     5 FALSE    character 10 - rea…      NA              13 Wizard   </span>
-<span class="co">#&gt; 23     8     4 FALSE    numeric   &lt;NA&gt;            3              15 Wizard   </span>
-<span class="co">#&gt; 24     8     5 FALSE    numeric   &lt;NA&gt;            3              16 Wizard   </span>
-<span class="co">#&gt; # … with 3 more variables: name &lt;chr&gt;, location &lt;chr&gt;, subject &lt;chr&gt;</span></pre></body></html></div>
+<span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lgl&gt;    &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;           &lt;int&gt; &lt;chr&gt;    </span>
+<span class="co">#&gt;  1     3     2 FALSE    numeric   &lt;NA&gt;              11               5 Witch    </span>
+<span class="co">#&gt;  2     3     3 FALSE    numeric   &lt;NA&gt;              11               6 Witch    </span>
+<span class="co">#&gt;  3     4     2 FALSE    numeric   &lt;NA&gt;               2               2 Witch    </span>
+<span class="co">#&gt;  4     4     3 FALSE    numeric   &lt;NA&gt;               6               1 Witch    </span>
+<span class="co">#&gt;  5     5     2 FALSE    numeric   &lt;NA&gt;               9               3 Witch    </span>
+<span class="co">#&gt;  6     5     3 FALSE    numeric   &lt;NA&gt;               5               4 Witch    </span>
+<span class="co">#&gt;  7     3     4 FALSE    numeric   &lt;NA&gt;               7               5 Wizard   </span>
+<span class="co">#&gt;  8     3     5 FALSE    numeric   &lt;NA&gt;               2               6 Wizard   </span>
+<span class="co">#&gt;  9     4     4 FALSE    numeric   &lt;NA&gt;               0               2 Wizard   </span>
+<span class="co">#&gt; 10     4     5 FALSE    numeric   &lt;NA&gt;               0               1 Wizard   </span>
+<span class="co">#&gt; 11     5     4 FALSE    numeric   &lt;NA&gt;               7               3 Wizard   </span>
+<span class="co">#&gt; 12     5     5 FALSE    numeric   &lt;NA&gt;               2               4 Wizard   </span>
+<span class="co">#&gt; 13     6     2 FALSE    numeric   &lt;NA&gt;               7               5 Witch    </span>
+<span class="co">#&gt; 14     6     3 FALSE    numeric   &lt;NA&gt;               8               6 Witch    </span>
+<span class="co">#&gt; 15     7     2 FALSE    numeric   &lt;NA&gt;               5               2 Witch    </span>
+<span class="co">#&gt; 16     7     3 FALSE    numeric   &lt;NA&gt;               1               1 Witch    </span>
+<span class="co">#&gt; 17     8     2 FALSE    numeric   &lt;NA&gt;               2              15 Witch    </span>
+<span class="co">#&gt; 18     8     3 FALSE    numeric   &lt;NA&gt;               7              17 Witch    </span>
+<span class="co">#&gt; 19     6     4 FALSE    numeric   &lt;NA&gt;              11               5 Wizard   </span>
+<span class="co">#&gt; 20     6     5 FALSE    numeric   &lt;NA&gt;               3               6 Wizard   </span>
+<span class="co">#&gt; 21     7     4 FALSE    numeric   &lt;NA&gt;               8               2 Wizard   </span>
+<span class="co">#&gt; 22     7     5 FALSE    character 10 - really?      NA              13 Wizard   </span>
+<span class="co">#&gt; 23     8     4 FALSE    numeric   &lt;NA&gt;               3              15 Wizard   </span>
+<span class="co">#&gt; 24     8     5 FALSE    numeric   &lt;NA&gt;               3              16 Wizard   </span>
+<span class="co">#&gt; # … with 3 more variables: name &lt;chr&gt;, location &lt;chr&gt;, subject &lt;chr&gt;</span></code></pre></div>
 <p>Check that Hermione got 5 marks in Herbology in particular, taken in Hogwarts grounds, by looking at cell B7 (row 7, column 2).</p>
 <p>The final cleanup is straightforward; choose the columns to keep, using the standard tidyverse function <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code>. At the same time you can rename the column <code>numeric</code> to <code>mark</code>, and the column <code>character</code> to <code>other</code>. What is the column <code>other</code> for? For the value <code>"10 - really?"</code>.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"dormitory"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up"</span>, <span class="st">"name"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead_if</a></span>(<span class="no">indent</span>[<span class="no">local_format_id</span>] <span class="kw">==</span> <span class="fl">0</span>,
-            <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"left-up"</span>,
-            <span class="kw">name</span> <span class="kw">=</span> <span class="st">"location"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"left"</span>, <span class="st">"subject"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">dormitory</span>, <span class="no">name</span>, <span class="no">location</span>, <span class="no">subject</span>, <span class="kw">mark</span> <span class="kw">=</span> <span class="no">numeric</span>, <span class="kw">other</span> <span class="kw">=</span> <span class="no">character</span>)
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead_if</a></span><span class="op">(</span><span class="va">indent</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>,
+            direction <span class="op">=</span> <span class="st">"left-up"</span>,
+            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"subject"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">dormitory</span>, <span class="va">name</span>, <span class="va">location</span>, <span class="va">subject</span>, mark <span class="op">=</span> <span class="va">numeric</span>, other <span class="op">=</span> <span class="va">character</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 24 x 6</span>
 <span class="co">#&gt;    dormitory name     location subject                    mark other       </span>
 <span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;                     &lt;dbl&gt; &lt;chr&gt;       </span>
@@ -727,33 +742,34 @@
 <span class="co">#&gt; 21 Wizard    Harry    Grounds  Herbology                     8 &lt;NA&gt;        </span>
 <span class="co">#&gt; 22 Wizard    Ron      Grounds  Herbology                    NA 10 - really?</span>
 <span class="co">#&gt; 23 Wizard    Harry    Grounds  Care of Magical Creatures     3 &lt;NA&gt;        </span>
-<span class="co">#&gt; 24 Wizard    Ron      Grounds  Care of Magical Creatures     3 &lt;NA&gt;</span></pre></body></html></div>
+<span class="co">#&gt; 24 Wizard    Ron      Grounds  Care of Magical Creatures     3 &lt;NA&gt;</span></code></pre></div>
 <p>It is up to you now what to do with the ‘total’ values for the castle and the grounds. If you don’t want to keep them, it’s easy enough to filter them out using <code>!is.na(subject)</code>. That is done in the final code listing below.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyxl</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">unpivotr</span>)
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/tidyxl">tidyxl</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/unpivotr">unpivotr</a></span><span class="op">)</span>
 
-<span class="no">hp_xlsx</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/harry-potter.xlsx"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"unpivotr"</span>)
+<span class="va">hp_xlsx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/harry-potter.xlsx"</span>, package <span class="op">=</span> <span class="st">"unpivotr"</span><span class="op">)</span>
 
-<span class="no">cells</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span>(<span class="no">hp_xlsx</span>, <span class="kw">sheet</span> <span class="kw">=</span> <span class="st">"pivoted"</span>)
-<span class="no">formats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span>(<span class="no">hp_xlsx</span>)
+<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span><span class="op">(</span><span class="va">hp_xlsx</span>, sheet <span class="op">=</span> <span class="st">"pivoted"</span><span class="op">)</span>
+<span class="va">formats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span><span class="op">(</span><span class="va">hp_xlsx</span><span class="op">)</span>
 
-<span class="no">indent</span> <span class="kw">&lt;-</span> <span class="no">formats</span>$<span class="no">local</span>$<span class="no">alignment</span>$<span class="no">indent</span>
+<span class="va">indent</span> <span class="op">&lt;-</span> <span class="va">formats</span><span class="op">$</span><span class="va">local</span><span class="op">$</span><span class="va">alignment</span><span class="op">$</span><span class="va">indent</span>
 
-<span class="no">tidied</span> <span class="kw">&lt;-</span>
-  <span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up-left"</span>, <span class="st">"dormitory"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"up"</span>, <span class="st">"name"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead_if</a></span>(<span class="no">indent</span>[<span class="no">local_format_id</span>] <span class="kw">==</span> <span class="fl">0</span>,
-            <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"left-up"</span>,
-            <span class="kw">name</span> <span class="kw">=</span> <span class="st">"location"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"left"</span>, <span class="st">"subject"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">address</span>, <span class="no">dormitory</span>, <span class="no">name</span>, <span class="no">location</span>, <span class="no">subject</span>, <span class="kw">mark</span> <span class="kw">=</span> <span class="no">numeric</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="no">dormitory</span>, <span class="no">name</span>, <span class="no">location</span>, <span class="no">subject</span>)
+<span class="va">tidied</span> <span class="op">&lt;-</span>
+  <span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead_if</a></span><span class="op">(</span><span class="va">indent</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>,
+            direction <span class="op">=</span> <span class="st">"left-up"</span>,
+            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"subject"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">address</span>, <span class="va">dormitory</span>, <span class="va">name</span>, <span class="va">location</span>, <span class="va">subject</span>, mark <span class="op">=</span> <span class="va">numeric</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">dormitory</span>, <span class="va">name</span>, <span class="va">location</span>, <span class="va">subject</span><span class="op">)</span>
 
-<span class="no">tidied</span>
+<span class="va">tidied</span>
 <span class="co">#&gt; # A tibble: 24 x 6</span>
 <span class="co">#&gt;    address dormitory name     location subject                    mark</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;                     &lt;dbl&gt;</span>
@@ -780,7 +796,7 @@
 <span class="co">#&gt; 21 E3      Wizard    Ron      Castle   &lt;NA&gt;                          2</span>
 <span class="co">#&gt; 22 E8      Wizard    Ron      Grounds  Care of Magical Creatures     3</span>
 <span class="co">#&gt; 23 E7      Wizard    Ron      Grounds  Herbology                    NA</span>
-<span class="co">#&gt; 24 E6      Wizard    Ron      Grounds  &lt;NA&gt;                          3</span></pre></body></html></div>
+<span class="co">#&gt; 24 E6      Wizard    Ron      Grounds  &lt;NA&gt;                          3</span></code></pre></div>
 </div>
 <div id="review" class="section level2">
 <h2 class="hasAnchor">
@@ -804,7 +820,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

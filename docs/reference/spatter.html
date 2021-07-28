@@ -86,7 +86,7 @@ data type." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ data type." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -112,7 +112,7 @@ data type." />
       <a href="../articles/html.html">HTML Tables</a>
     </li>
     <li>
-      <a href="../articles/introduction.html">Introduction to {unpivotr}</a>
+      <a href="../articles/introduction.html">Introduction to unpivotr</a>
     </li>
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
@@ -126,7 +126,7 @@ data type." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/nacnudus/unpivotr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -156,7 +156,7 @@ the value of the cell is represented in a different column, depending on the
 data type.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>spatter</span>(<span class='no'>cells</span>, <span class='no'>key</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type</span>, <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
+    <pre class="usage"><span class='fu'>spatter</span><span class='op'>(</span><span class='va'>cells</span>, <span class='va'>key</span>, values <span class='op'>=</span> <span class='cn'>NULL</span>, types <span class='op'>=</span> <span class='va'>data_type</span>, formatters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,14 +193,15 @@ contains the cell value.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># A tidy representation of cells of mixed data types</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-        <span class='kw'>row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>3L</span>, <span class='fl'>3L</span>, <span class='fl'>4L</span>, <span class='fl'>4L</span>),
-        <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>),
-  <span class='kw'>data_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"character"</span>, <span class='st'>"character"</span>, <span class='st'>"character"</span>, <span class='st'>"numeric"</span>, <span class='st'>"character"</span>,
-                <span class='st'>"numeric"</span>, <span class='st'>"character"</span>, <span class='st'>"numeric"</span>),
-  <span class='kw'>character</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Name"</span>, <span class='st'>"Age"</span>, <span class='st'>"Matilda"</span>, <span class='fl'>NA</span>, <span class='st'>"Nicholas"</span>, <span class='fl'>NA</span>, <span class='st'>"Olivia"</span>, <span class='fl'>NA</span>),
-    <span class='kw'>numeric</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='fl'>1</span>, <span class='fl'>NA</span>, <span class='fl'>3</span>, <span class='fl'>NA</span>, <span class='fl'>5</span>))
-<span class='no'>x</span></div><div class='output co'>#&gt;   row col data_type character numeric
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span>,
+        row <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>3L</span>, <span class='fl'>3L</span>, <span class='fl'>4L</span>, <span class='fl'>4L</span><span class='op'>)</span>,
+        col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span><span class='op'>)</span>,
+  data_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"character"</span>, <span class='st'>"character"</span>, <span class='st'>"character"</span>, <span class='st'>"numeric"</span>, <span class='st'>"character"</span>,
+                <span class='st'>"numeric"</span>, <span class='st'>"character"</span>, <span class='st'>"numeric"</span><span class='op'>)</span>,
+  character <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Name"</span>, <span class='st'>"Age"</span>, <span class='st'>"Matilda"</span>, <span class='cn'>NA</span>, <span class='st'>"Nicholas"</span>, <span class='cn'>NA</span>, <span class='st'>"Olivia"</span>, <span class='cn'>NA</span><span class='op'>)</span>,
+    numeric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span>, <span class='fl'>1</span>, <span class='cn'>NA</span>, <span class='fl'>3</span>, <span class='cn'>NA</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>x</span>
+</div><div class='output co'>#&gt;   row col data_type character numeric
 #&gt; 1   1   1 character      Name      NA
 #&gt; 2   1   2 character       Age      NA
 #&gt; 3   2   1 character   Matilda      NA
@@ -210,105 +211,115 @@ contains the cell value.</p></td>
 #&gt; 7   4   1 character    Olivia      NA
 #&gt; 8   4   2   numeric      &lt;NA&gt;       5</div><div class='input'>
 <span class='co'># How it would look in a spreadsheet</span>
-<span class='fu'><a href='rectify.html'>rectify</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 3</span><span>
+<span class='fu'><a href='rectify.html'>rectify</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 3</span>
 #&gt;   `row/col` `1(A)`   `2(B)`
-#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'>1</span><span>         1 Name     Age   
-#&gt; </span><span style='color: #555555;'>2</span><span>         2 Matilda  1     
-#&gt; </span><span style='color: #555555;'>3</span><span>         3 Nicholas 3     
-#&gt; </span><span style='color: #555555;'>4</span><span>         4 Olivia   5     </div><div class='input'>
+#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>1</span>         1 Name     Age   
+#&gt; <span style='color: #BCBCBC;'>2</span>         2 Matilda  1     
+#&gt; <span style='color: #BCBCBC;'>3</span>         3 Nicholas 3     
+#&gt; <span style='color: #BCBCBC;'>4</span>         4 Olivia   5     </div><div class='input'>
 <span class='co'># How it looks after treating the cells in row 1 as headers</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='behead.html'>behead</a></span>(<span class='no'>x</span>, <span class='st'>"N"</span>, <span class='no'>header</span>)
-<span class='no'>y</span>$<span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span> <span class='co'># Drop the 'col' column</span>
-<span class='no'>y</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 5</span><span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='behead.html'>behead</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"N"</span>, <span class='va'>header</span><span class='op'>)</span>
+<span class='va'>y</span><span class='op'>$</span><span class='va'>col</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span> <span class='co'># Drop the 'col' column</span>
+<span class='va'>y</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 5</span>
 #&gt;     row data_type character numeric header
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'>1</span><span>     2 character Matilda        </span><span style='color: #BB0000;'>NA</span><span> Name  
-#&gt; </span><span style='color: #555555;'>2</span><span>     2 numeric   </span><span style='color: #BB0000;'>NA</span><span>              1 Age   
-#&gt; </span><span style='color: #555555;'>3</span><span>     3 character Nicholas       </span><span style='color: #BB0000;'>NA</span><span> Name  
-#&gt; </span><span style='color: #555555;'>4</span><span>     3 numeric   </span><span style='color: #BB0000;'>NA</span><span>              3 Age   
-#&gt; </span><span style='color: #555555;'>5</span><span>     4 character Olivia         </span><span style='color: #BB0000;'>NA</span><span> Name  
-#&gt; </span><span style='color: #555555;'>6</span><span>     4 numeric   </span><span style='color: #BB0000;'>NA</span><span>              5 Age   </div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>1</span>     2 character Matilda        <span style='color: #BB0000;'>NA</span> Name  
+#&gt; <span style='color: #BCBCBC;'>2</span>     2 numeric   <span style='color: #BB0000;'>NA</span>              1 Age   
+#&gt; <span style='color: #BCBCBC;'>3</span>     3 character Nicholas       <span style='color: #BB0000;'>NA</span> Name  
+#&gt; <span style='color: #BCBCBC;'>4</span>     3 numeric   <span style='color: #BB0000;'>NA</span>              3 Age   
+#&gt; <span style='color: #BCBCBC;'>5</span>     4 character Olivia         <span style='color: #BB0000;'>NA</span> Name  
+#&gt; <span style='color: #BCBCBC;'>6</span>     4 numeric   <span style='color: #BB0000;'>NA</span>              5 Age   </div><div class='input'>
 <span class='co'># At this point you might want to do tidyr::spread(), but it won't work because</span>
 <span class='co'># you want to use both the `character` and `numeric` columns as the values.</span>
-<span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span>(<span class='no'>y</span>, <span class='no'>header</span>, <span class='no'>numeric</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 5</span><span>
+<span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>header</span>, <span class='va'>numeric</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 5</span>
 #&gt;     row data_type character   Age  Name
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>     2 character Matilda      </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span>     2 numeric   </span><span style='color: #BB0000;'>NA</span><span>            1    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span>     3 character Nicholas     </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>4</span><span>     3 numeric   </span><span style='color: #BB0000;'>NA</span><span>            3    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>5</span><span>     4 character Olivia       </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'>6</span><span>     4 numeric   </span><span style='color: #BB0000;'>NA</span><span>            5    </span><span style='color: #BB0000;'>NA</span><span></div><div class='input'><span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span>(<span class='no'>y</span>, <span class='no'>header</span>, <span class='no'>character</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 5</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>     2 character Matilda      <span style='color: #BB0000;'>NA</span>    <span style='color: #BB0000;'>NA</span>
+#&gt; <span style='color: #BCBCBC;'>2</span>     2 numeric   <span style='color: #BB0000;'>NA</span>            1    <span style='color: #BB0000;'>NA</span>
+#&gt; <span style='color: #BCBCBC;'>3</span>     3 character Nicholas     <span style='color: #BB0000;'>NA</span>    <span style='color: #BB0000;'>NA</span>
+#&gt; <span style='color: #BCBCBC;'>4</span>     3 numeric   <span style='color: #BB0000;'>NA</span>            3    <span style='color: #BB0000;'>NA</span>
+#&gt; <span style='color: #BCBCBC;'>5</span>     4 character Olivia       <span style='color: #BB0000;'>NA</span>    <span style='color: #BB0000;'>NA</span>
+#&gt; <span style='color: #BCBCBC;'>6</span>     4 numeric   <span style='color: #BB0000;'>NA</span>            5    <span style='color: #BB0000;'>NA</span></div><div class='input'><span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>header</span>, <span class='va'>character</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 5</span>
 #&gt;     row data_type numeric Age   Name    
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'>1</span><span>     2 character      </span><span style='color: #BB0000;'>NA</span><span> </span><span style='color: #BB0000;'>NA</span><span>    Matilda 
-#&gt; </span><span style='color: #555555;'>2</span><span>     2 numeric         1 </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #555555;'>3</span><span>     3 character      </span><span style='color: #BB0000;'>NA</span><span> </span><span style='color: #BB0000;'>NA</span><span>    Nicholas
-#&gt; </span><span style='color: #555555;'>4</span><span>     3 numeric         3 </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #555555;'>5</span><span>     4 character      </span><span style='color: #BB0000;'>NA</span><span> </span><span style='color: #BB0000;'>NA</span><span>    Olivia  
-#&gt; </span><span style='color: #555555;'>6</span><span>     4 numeric         5 </span><span style='color: #BB0000;'>NA</span><span>    </span><span style='color: #BB0000;'>NA</span><span>      </div><div class='input'><span class='fu'>spatter</span>(<span class='no'>y</span>, <span class='no'>header</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 3</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span>     2 character      <span style='color: #BB0000;'>NA</span> <span style='color: #BB0000;'>NA</span>    Matilda 
+#&gt; <span style='color: #BCBCBC;'>2</span>     2 numeric         1 <span style='color: #BB0000;'>NA</span>    <span style='color: #BB0000;'>NA</span>      
+#&gt; <span style='color: #BCBCBC;'>3</span>     3 character      <span style='color: #BB0000;'>NA</span> <span style='color: #BB0000;'>NA</span>    Nicholas
+#&gt; <span style='color: #BCBCBC;'>4</span>     3 numeric         3 <span style='color: #BB0000;'>NA</span>    <span style='color: #BB0000;'>NA</span>      
+#&gt; <span style='color: #BCBCBC;'>5</span>     4 character      <span style='color: #BB0000;'>NA</span> <span style='color: #BB0000;'>NA</span>    Olivia  
+#&gt; <span style='color: #BCBCBC;'>6</span>     4 numeric         5 <span style='color: #BB0000;'>NA</span>    <span style='color: #BB0000;'>NA</span>      </div><div class='input'><span class='fu'>spatter</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>header</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 3</span>
 #&gt;     row   Age Name    
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'>1</span><span>     2     1 Matilda 
-#&gt; </span><span style='color: #555555;'>2</span><span>     3     3 Nicholas
-#&gt; </span><span style='color: #555555;'>3</span><span>     4     5 Olivia  </div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span>     2     1 Matilda 
+#&gt; <span style='color: #BCBCBC;'>2</span>     3     3 Nicholas
+#&gt; <span style='color: #BCBCBC;'>3</span>     4     5 Olivia  </div><div class='input'>
 <span class='co'># The difference between spatter() and tidyr::spread() is that spatter()</span>
 <span class='co'># needs to know which data-type to use for each cell beneath the headers.  By</span>
 <span class='co'># default, it looks at the `data_type` column to decide, but you can change</span>
 <span class='co'># that with the `types` argument.</span>
-<span class='no'>y</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>data_type</span>, -<span class='no'>numeric</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>data_type_2</span> <span class='kw'>=</span> <span class='st'>"character"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>spatter</span>(<span class='no'>header</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='no'>data_type_2</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 3</span><span>
+<span class='va'>y</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>data_type</span>, <span class='op'>-</span><span class='va'>numeric</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>data_type_2 <span class='op'>=</span> <span class='st'>"character"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>spatter</span><span class='op'>(</span><span class='va'>header</span>, types <span class='op'>=</span> <span class='va'>data_type_2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 3</span>
 #&gt;     row Age   Name    
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'>1</span><span>     2 </span><span style='color: #BB0000;'>NA</span><span>    Matilda 
-#&gt; </span><span style='color: #555555;'>2</span><span>     3 </span><span style='color: #BB0000;'>NA</span><span>    Nicholas
-#&gt; </span><span style='color: #555555;'>3</span><span>     4 </span><span style='color: #BB0000;'>NA</span><span>    Olivia  </div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span>     2 <span style='color: #BB0000;'>NA</span>    Matilda 
+#&gt; <span style='color: #BCBCBC;'>2</span>     3 <span style='color: #BB0000;'>NA</span>    Nicholas
+#&gt; <span style='color: #BCBCBC;'>3</span>     4 <span style='color: #BB0000;'>NA</span>    Olivia  </div><div class='input'>
 <span class='co'># Alternatively you can name one specific column to use for the cell values.</span>
-<span class='no'>y</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>6</span>]) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>header</span>, <span class='no'>row</span>, <span class='no'>foo</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>spatter</span>(<span class='no'>header</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='no'>foo</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 3</span><span>
+<span class='va'>y</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>foo <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>header</span>, <span class='va'>row</span>, <span class='va'>foo</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>spatter</span><span class='op'>(</span><span class='va'>header</span>, values <span class='op'>=</span> <span class='va'>foo</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 3</span>
 #&gt;     row Age   Name 
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>     2 b     a    
-#&gt; </span><span style='color: #555555;'>2</span><span>     3 d     c    
-#&gt; </span><span style='color: #555555;'>3</span><span>     4 f     e    </div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>     2 b     a    
+#&gt; <span style='color: #BCBCBC;'>2</span>     3 d     c    
+#&gt; <span style='color: #BCBCBC;'>3</span>     4 f     e    </div><div class='input'>
 <span class='co'># The column used for the values is consumed before the spread occurs. If</span>
 <span class='co'># it's necessary for demarking the rows, then make a copy of it first,</span>
 <span class='co'># otherwise you'll get an error like "Duplicate identifiers for rows ..."</span>
-<span class='no'>y</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>row2</span> <span class='kw'>=</span> <span class='no'>row</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>header</span>, <span class='no'>row2</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>spatter</span>(<span class='no'>header</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='no'>row2</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 3</span><span>
+<span class='va'>y</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>row2 <span class='op'>=</span> <span class='va'>row</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>row</span>, <span class='va'>header</span>, <span class='va'>row2</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>spatter</span><span class='op'>(</span><span class='va'>header</span>, values <span class='op'>=</span> <span class='va'>row2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 3</span>
 #&gt;     row   Age  Name
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>     2     2     2
-#&gt; </span><span style='color: #555555;'>2</span><span>     3     3     3
-#&gt; </span><span style='color: #555555;'>3</span><span>     4     4     4</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>     2     2     2
+#&gt; <span style='color: #BCBCBC;'>2</span>     3     3     3
+#&gt; <span style='color: #BCBCBC;'>3</span>     4     4     4</div><div class='input'>
 <span class='co'># Like tidyr::spread(), you need to discard extraneous columns beforehand.</span>
 <span class='co'># Otherwise you can get more rows out than you want.</span>
-<span class='no'>y</span>$<span class='no'>extra</span> <span class='kw'>&lt;-</span> <span class='fl'>11</span>:<span class='fl'>16</span>
-<span class='fu'>spatter</span>(<span class='no'>y</span>, <span class='no'>header</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 4</span><span>
+<span class='va'>y</span><span class='op'>$</span><span class='va'>extra</span> <span class='op'>&lt;-</span> <span class='fl'>11</span><span class='op'>:</span><span class='fl'>16</span>
+<span class='fu'>spatter</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>header</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 4</span>
 #&gt;     row extra   Age Name    
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'>1</span><span>     2    11    </span><span style='color: #BB0000;'>NA</span><span> Matilda 
-#&gt; </span><span style='color: #555555;'>2</span><span>     2    12     1 </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #555555;'>3</span><span>     3    13    </span><span style='color: #BB0000;'>NA</span><span> Nicholas
-#&gt; </span><span style='color: #555555;'>4</span><span>     3    14     3 </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #555555;'>5</span><span>     4    15    </span><span style='color: #BB0000;'>NA</span><span> Olivia  
-#&gt; </span><span style='color: #555555;'>6</span><span>     4    16     5 </span><span style='color: #BB0000;'>NA</span><span>      </div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span>     2    11    <span style='color: #BB0000;'>NA</span> Matilda 
+#&gt; <span style='color: #BCBCBC;'>2</span>     2    12     1 <span style='color: #BB0000;'>NA</span>      
+#&gt; <span style='color: #BCBCBC;'>3</span>     3    13    <span style='color: #BB0000;'>NA</span> Nicholas
+#&gt; <span style='color: #BCBCBC;'>4</span>     3    14     3 <span style='color: #BB0000;'>NA</span>      
+#&gt; <span style='color: #BCBCBC;'>5</span>     4    15    <span style='color: #BB0000;'>NA</span> Olivia  
+#&gt; <span style='color: #BCBCBC;'>6</span>     4    16     5 <span style='color: #BB0000;'>NA</span>      </div><div class='input'>
 <span class='co'># pack() is an easy way to keep just the columns you need, without knowing</span>
 <span class='co'># in advance which data-type columns you need.  This examples adds a new</span>
 <span class='co'># column, which is then removed by the pack-unpack sequence without having to</span>
 <span class='co'># mention it by name.</span>
-<span class='no'>x</span>$<span class='no'>extra</span> <span class='kw'>&lt;-</span> <span class='fl'>11</span>:<span class='fl'>18</span>
-<span class='no'>x</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pack.html'>pack</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>row</span>, <span class='no'>col</span>, <span class='no'>value</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pack.html'>unpack</a></span>()</div><div class='output co'>#&gt;   row col data_type character numeric
+<span class='va'>x</span><span class='op'>$</span><span class='va'>extra</span> <span class='op'>&lt;-</span> <span class='fl'>11</span><span class='op'>:</span><span class='fl'>18</span>
+<span class='va'>x</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='pack.html'>pack</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>row</span>, <span class='va'>col</span>, <span class='va'>value</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='pack.html'>unpack</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   row col data_type character numeric
 #&gt; 1   1   1 character      Name      NA
 #&gt; 2   1   2 character       Age      NA
 #&gt; 3   2   1 character   Matilda      NA
@@ -325,16 +336,17 @@ contains the cell value.</p></td>
 <span class='co'># by the data type of the cells they are to convert (look at the `data_type`</span>
 <span class='co'># column).  If your custom functions aren't sufficient to avoid the need for</span>
 <span class='co'># coercion, then they will be overridden.</span>
-<span class='fu'>spatter</span>(<span class='no'>y</span>, <span class='no'>header</span>,
-        <span class='kw'>formatters</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>character</span> <span class='kw'>=</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='no'>.</span>), <span class='kw'>numeric</span> <span class='kw'>=</span> <span class='no'>as.complex</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 4</span><span>
+<span class='fu'>spatter</span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>header</span>,
+        formatters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>character <span class='op'>=</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span>, numeric <span class='op'>=</span> <span class='va'>as.complex</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 4</span>
 #&gt;     row extra Age   Name    
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;cpl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'>1</span><span>     2    11   NA  MATILDA 
-#&gt; </span><span style='color: #555555;'>2</span><span>     2    12 1+0i  </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #555555;'>3</span><span>     3    13   NA  NICHOLAS
-#&gt; </span><span style='color: #555555;'>4</span><span>     3    14 3+0i  </span><span style='color: #BB0000;'>NA</span><span>      
-#&gt; </span><span style='color: #555555;'>5</span><span>     4    15   NA  OLIVIA  
-#&gt; </span><span style='color: #555555;'>6</span><span>     4    16 5+0i  </span><span style='color: #BB0000;'>NA</span><span>      </div></span></pre>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;cpl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span>     2    11   NA  MATILDA 
+#&gt; <span style='color: #BCBCBC;'>2</span>     2    12 1+0i  <span style='color: #BB0000;'>NA</span>      
+#&gt; <span style='color: #BCBCBC;'>3</span>     3    13   NA  NICHOLAS
+#&gt; <span style='color: #BCBCBC;'>4</span>     3    14 3+0i  <span style='color: #BB0000;'>NA</span>      
+#&gt; <span style='color: #BCBCBC;'>5</span>     4    15   NA  OLIVIA  
+#&gt; <span style='color: #BCBCBC;'>6</span>     4    16 5+0i  <span style='color: #BB0000;'>NA</span>      </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -350,7 +362,7 @@ contains the cell value.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

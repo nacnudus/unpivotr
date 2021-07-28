@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -63,7 +63,7 @@
       <a href="../articles/html.html">HTML Tables</a>
     </li>
     <li>
-      <a href="../articles/introduction.html">Introduction to {unpivotr}</a>
+      <a href="../articles/introduction.html">Introduction to unpivotr</a>
     </li>
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/nacnudus/unpivotr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,13 +91,13 @@
 
       
 
-      </header><script src="small-multiples_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
+      </header><script src="small-multiples_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Small Multiples</h1>
                         <h4 class="author">Duncan Garmonsway</h4>
             
-            <h4 class="date">2020-05-09</h4>
+            <h4 class="date">2021-07-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/nacnudus/unpivotr/blob/master/vignettes/small-multiples.Rmd"><code>vignettes/small-multiples.Rmd</code></a></small>
       <div class="hidden name"><code>small-multiples.Rmd</code></div>
@@ -110,18 +110,20 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>The spreadsheet is from the famous Enron subpoena, made available by <a href="http://www.felienne.com/archives/3634">Felienne Hermans</a>, and has has previously been publicised by Jenny Bryan and David Robinson, in particular in Robinson’s article <a href="https://rpubs.com/dgrtwo/tidying-enron">‘Tidying an untidyable dataset’</a>.</p>
+<p>The spreadsheet is from the famous Enron subpoena, made available by <a href="https://www.felienne.com/archives/3634">Felienne Hermans</a>, and has has previously been publicised by Jenny Bryan and David Robinson, in particular in Robinson’s article <a href="https://rpubs.com/dgrtwo/tidying-enron">‘Tidying an untidyable dataset’</a>.</p>
 <p>Here’s a screenshot:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="st">"enron-screenshot.png"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="st">"enron-screenshot.png"</span><span class="op">)</span></code></pre></div>
 <p><img src="enron-screenshot.png" width="850px"></p>
 </div>
 <div id="preparation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preparation" class="anchor"></a>Preparation</h2>
 <p>This vignette uses several common packages.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">unpivotr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyxl</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/unpivotr">unpivotr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/tidyxl">tidyxl</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -130,16 +132,19 @@
 <pre><code>## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">purrr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org">purrr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'tidyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:unpivotr':
 ## 
 ##     pack, unpack</code></pre>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">stringr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></code></pre></div>
 <p>The spreadsheet is distributed with the unpivotr package, so can be loaded as a system file.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/enron.xlsx"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"unpivotr"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/enron.xlsx"</span>, package <span class="op">=</span> <span class="st">"unpivotr"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="main" class="section level2">
 <h2 class="hasAnchor">
@@ -148,67 +153,73 @@
 <h3 class="hasAnchor">
 <a href="#importing-the-data" class="anchor"></a>Importing the data</h3>
 <p>Spreadsheet cells are imported with the <code><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells()</a></code> function, which returns a data frame of all the cells in all the requested sheets. By default, every sheet is imported, but we don’t have to worry about that in this case because there is only one sheet in the file. We can also straightaway discard rows above 14 and below 56, and columns beyond 20.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">cells</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span>(<span class="no">path</span>) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span>(<span class="no">row</span>, <span class="fl">14L</span>, <span class="fl">56L</span>), <span class="no">col</span> <span class="kw">&lt;=</span> <span class="fl">20</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">col</span>, <span class="no">data_type</span>, <span class="no">numeric</span>, <span class="no">character</span>, <span class="no">date</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cells</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">row</span>, <span class="fl">14L</span>, <span class="fl">56L</span><span class="op">)</span>, <span class="va">col</span> <span class="op">&lt;=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">col</span>, <span class="va">data_type</span>, <span class="va">numeric</span>, <span class="va">character</span>, <span class="va">date</span><span class="op">)</span></code></pre></div>
 <p>Cell formatting isn’t required for this vignette, but if it were, it would be imported via <code><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats(path)</a></code>.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">formatting</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span>(<span class="no">path</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">formatting</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_formats.html">xlsx_formats</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="importing-one-of-the-multiples" class="section level3">
 <h3 class="hasAnchor">
 <a href="#importing-one-of-the-multiples" class="anchor"></a>Importing one of the multiples</h3>
 <p>The small multiples each have exactly one ‘Fixed Price’ header cell, so begin by filtering for those cells, and then move the selection up one row to get the title cells. The title cells are the top-left corner cell of each table.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">title</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">cells</span>, <span class="no">character</span> <span class="kw">==</span> <span class="st">"Fixed Price"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">col</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">row</span> <span class="kw">=</span> <span class="no">row</span> - <span class="fl">1L</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span>(<span class="no">cells</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"row"</span>, <span class="st">"col"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">title</span> <span class="op">&lt;-</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cells</span>, <span class="va">character</span> <span class="op">==</span> <span class="st">"Fixed Price"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">col</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>row <span class="op">=</span> <span class="va">row</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">cells</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"row"</span>, <span class="st">"col"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Use these title cells to partition the sheet.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">partitions</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/partition.html">partition</a></span>(<span class="no">cells</span>, <span class="no">title</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">partitions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/partition.html">partition</a></span><span class="op">(</span><span class="va">cells</span>, <span class="va">title</span><span class="op">)</span></code></pre></div>
 <p>Taking one of the partitions, unpivot with <code><a href="../reference/behead.html">behead()</a></code>. The compass directions <code>"NNW"</code> and <code>"N"</code> express the direction from each data cell to its header. <code>"NNW"</code> means “look up and then left to find the nearest header.”</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">partitions</span>$<span class="no">cells</span><span class="kw">[[</span><span class="fl">1</span>]] <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"NNW"</span>, <span class="st">"title"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"NNW"</span>, <span class="st">"price"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"N"</span>, <span class="st">"bid_offer"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">n</span> <span class="kw">=</span> <span class="fl">Inf</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">partitions</span><span class="op">$</span><span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"NNW"</span>, <span class="st">"title"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"NNW"</span>, <span class="st">"price"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"N"</span>, <span class="st">"bid_offer"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span>n <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 24 x 9
-##      row   col data_type numeric character date                title price
-##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;     &lt;dttm&gt;              &lt;chr&gt; &lt;chr&gt;
-##  1    17    17 numeric     1.89  &lt;NA&gt;      NA                  IF N… Fixe…
-##  2    17    18 numeric     1.91  &lt;NA&gt;      NA                  IF N… Fixe…
-##  3    18    17 numeric     2.06  &lt;NA&gt;      NA                  IF N… Fixe…
-##  4    18    18 numeric     2.08  &lt;NA&gt;      NA                  IF N… Fixe…
-##  5    19    17 numeric     2.40  &lt;NA&gt;      NA                  IF N… Fixe…
-##  6    19    18 numeric     2.42  &lt;NA&gt;      NA                  IF N… Fixe…
-##  7    20    17 numeric     2.59  &lt;NA&gt;      NA                  IF N… Fixe…
-##  8    20    18 numeric     2.61  &lt;NA&gt;      NA                  IF N… Fixe…
-##  9    21    17 numeric     2.58  &lt;NA&gt;      NA                  IF N… Fixe…
-## 10    21    18 numeric     2.60  &lt;NA&gt;      NA                  IF N… Fixe…
-## 11    22    17 numeric     3.36  &lt;NA&gt;      NA                  IF N… Fixe…
-## 12    22    18 numeric     3.38  &lt;NA&gt;      NA                  IF N… Fixe…
-## 13    23    17 numeric     2.63  &lt;NA&gt;      NA                  IF N… Fixe…
-## 14    23    18 numeric     2.65  &lt;NA&gt;      NA                  IF N… Fixe…
-## 15    19    19 numeric    -0.565 &lt;NA&gt;      NA                  IF N… Basis
-## 16    19    20 numeric    -0.545 &lt;NA&gt;      NA                  IF N… Basis
-## 17    20    19 numeric    -0.494 &lt;NA&gt;      NA                  IF N… Basis
-## 18    20    20 numeric    -0.474 &lt;NA&gt;      NA                  IF N… Basis
-## 19    21    19 numeric    -0.585 &lt;NA&gt;      NA                  IF N… Basis
-## 20    21    20 numeric    -0.565 &lt;NA&gt;      NA                  IF N… Basis
-## 21    22    19 numeric    -0.295 &lt;NA&gt;      NA                  IF N… Basis
-## 22    22    20 numeric    -0.275 &lt;NA&gt;      NA                  IF N… Basis
-## 23    23    19 numeric    -0.530 &lt;NA&gt;      NA                  IF N… Basis
-## 24    23    20 numeric    -0.510 &lt;NA&gt;      NA                  IF N… Basis
+##      row   col data_type numeric character date                title      price 
+##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;     &lt;dttm&gt;              &lt;chr&gt;      &lt;chr&gt; 
+##  1    17    17 numeric     1.89  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+##  2    17    18 numeric     1.91  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+##  3    18    17 numeric     2.06  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+##  4    18    18 numeric     2.08  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+##  5    19    17 numeric     2.40  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+##  6    19    18 numeric     2.42  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+##  7    20    17 numeric     2.59  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+##  8    20    18 numeric     2.61  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+##  9    21    17 numeric     2.58  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+## 10    21    18 numeric     2.60  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+## 11    22    17 numeric     3.36  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+## 12    22    18 numeric     3.38  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+## 13    23    17 numeric     2.63  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+## 14    23    18 numeric     2.65  &lt;NA&gt;      NA                  IF NWPL R… Fixed…
+## 15    19    19 numeric    -0.565 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 16    19    20 numeric    -0.545 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 17    20    19 numeric    -0.494 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 18    20    20 numeric    -0.474 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 19    21    19 numeric    -0.585 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 20    21    20 numeric    -0.565 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 21    22    19 numeric    -0.295 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 22    22    20 numeric    -0.275 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 23    23    19 numeric    -0.530 &lt;NA&gt;      NA                  IF NWPL R… Basis 
+## 24    23    20 numeric    -0.510 &lt;NA&gt;      NA                  IF NWPL R… Basis 
 ## # … with 1 more variable: bid_offer &lt;chr&gt;</code></pre>
 <p>The same procedure can be mapped to every small multiple.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">unpivoted</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">purrr</span><span class="kw ns">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span>(<span class="no">partitions</span>$<span class="no">cells</span>,
-                 ~ <span class="no">.x</span> <span class="kw">%&gt;%</span>
-                   <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"NNW"</span>, <span class="st">"title"</span>) <span class="kw">%&gt;%</span>
-                   <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"NNW"</span>, <span class="st">"price"</span>) <span class="kw">%&gt;%</span>
-                   <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"N"</span>, <span class="st">"bid_offer"</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">data_type</span>, -<span class="no">character</span>, -<span class="no">date</span>)
-<span class="no">unpivoted</span></pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">unpivoted</span> <span class="op">&lt;-</span>
+  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span><span class="op">(</span><span class="va">partitions</span><span class="op">$</span><span class="va">cells</span>,
+                 <span class="op">~</span> <span class="va">.x</span> <span class="op">%&gt;%</span>
+                   <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"NNW"</span>, <span class="st">"title"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+                   <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"NNW"</span>, <span class="st">"price"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+                   <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"N"</span>, <span class="st">"bid_offer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">data_type</span>, <span class="op">-</span><span class="va">character</span>, <span class="op">-</span><span class="va">date</span><span class="op">)</span>
+<span class="va">unpivoted</span></code></pre></div>
 <pre><code>## # A tibble: 240 x 6
 ##      row   col numeric title                   price       bid_offer
 ##    &lt;int&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                   &lt;chr&gt;       &lt;chr&gt;    
@@ -224,24 +235,26 @@
 ## 10    21    18    2.60 IF NWPL Rocky Mountains Fixed Price OFFER    
 ## # … with 230 more rows</code></pre>
 <p>So far, only the column headers have been joined, but there are also row headers on the left-hand side of the spreadsheet. The following code incorporates these into the final dataset.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">row_headers</span> <span class="kw">&lt;-</span>
-  <span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span>(<span class="no">row</span>, <span class="fl">17</span>, <span class="fl">56</span>), <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span>(<span class="no">col</span>, <span class="fl">2</span>, <span class="fl">4</span>)) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">row_headers</span> <span class="op">&lt;-</span>
+  <span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">row</span>, <span class="fl">17</span>, <span class="fl">56</span><span class="op">)</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">col</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="co"># Concatenate rows like "Dec-01", "to", "Mar-02"</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">character</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="no">character</span>),
-                            <span class="no">character</span>,
-                            <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="no">date</span>, <span class="kw">origin</span><span class="kw">=</span><span class="st">"1899-12-30"</span>, <span class="st">"%b-%y"</span>))) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">col</span>, <span class="no">character</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span>(-<span class="no">row</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">row_header</span> <span class="kw">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(<span class="no">data</span>,
-                          ~ <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_trim.html">str_trim</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="no">.x</span>$<span class="no">character</span>, <span class="kw">collapse</span> <span class="kw">=</span> <span class="st">" "</span>)))) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span>(<span class="no">row_header</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">col</span> <span class="kw">=</span> <span class="fl">2L</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">row_header</span>)</pre></body></html></div>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>character <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">character</span><span class="op">)</span>,
+                            <span class="va">character</span>,
+                            <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="va">date</span>, origin<span class="op">=</span><span class="st">"1899-12-30"</span>, <span class="st">"%b-%y"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">col</span>, <span class="va">character</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">-</span><span class="va">row</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>row_header <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>,
+                          <span class="op">~</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_trim.html">str_trim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">.x</span><span class="op">$</span><span class="va">character</span>, collapse <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">row_header</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">row_header</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: All elements of `...` must be named.
 ## Did you want `data = c(col, character)`?</code></pre>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">unpivoted</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">unpivoted</span>, <span class="no">row_headers</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"row"</span>)
-<span class="no">unpivoted</span></pre></body></html></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">unpivoted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">unpivoted</span>, <span class="va">row_headers</span>, by <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span>
+<span class="va">unpivoted</span></code></pre></div>
 <pre><code>## # A tibble: 240 x 7
 ##      row   col numeric title                price      bid_offer row_header     
 ##    &lt;int&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;          
@@ -261,44 +274,45 @@
 <div id="line-code-listing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#line-code-listing" class="anchor"></a>34-line code listing</h2>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">unpivotr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyxl</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">purrr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">stringr</span>)
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/unpivotr">unpivotr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nacnudus/tidyxl">tidyxl</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org">purrr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org">stringr</a></span><span class="op">)</span>
 
-<span class="no">cells</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/enron.xlsx"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"unpivotr"</span>)) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(!<span class="no">is_blank</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span>(<span class="no">row</span>, <span class="fl">14L</span>, <span class="fl">56L</span>), <span class="no">col</span> <span class="kw">&lt;=</span> <span class="fl">20</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">col</span>, <span class="no">data_type</span>, <span class="no">numeric</span>, <span class="no">character</span>, <span class="no">date</span>)
+<span class="va">cells</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tidyxl/man/xlsx_cells.html">xlsx_cells</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/enron.xlsx"</span>, package <span class="op">=</span> <span class="st">"unpivotr"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">row</span>, <span class="fl">14L</span>, <span class="fl">56L</span><span class="op">)</span>, <span class="va">col</span> <span class="op">&lt;=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">col</span>, <span class="va">data_type</span>, <span class="va">numeric</span>, <span class="va">character</span>, <span class="va">date</span><span class="op">)</span>
 
-<span class="no">row_headers</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">cells</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span>(<span class="no">row</span>, <span class="fl">17</span>, <span class="fl">56</span>), <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span>(<span class="no">col</span>, <span class="fl">2</span>, <span class="fl">4</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">character</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="no">character</span>),
-                            <span class="no">character</span>,
-                            <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="no">date</span>, <span class="kw">origin</span><span class="kw">=</span><span class="st">"1899-12-30"</span>, <span class="st">"%b-%y"</span>))) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">col</span>, <span class="no">character</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span>(-<span class="no">row</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">row_header</span> <span class="kw">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(<span class="no">data</span>,
-                          ~ <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_trim.html">str_trim</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="no">.x</span>$<span class="no">character</span>, <span class="kw">collapse</span> <span class="kw">=</span> <span class="st">" "</span>)))) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span>(<span class="no">row_header</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">col</span> <span class="kw">=</span> <span class="fl">2L</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">row_header</span>)
+<span class="va">row_headers</span> <span class="op">&lt;-</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cells</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">row</span>, <span class="fl">17</span>, <span class="fl">56</span><span class="op">)</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">col</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>character <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">character</span><span class="op">)</span>,
+                            <span class="va">character</span>,
+                            <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="va">date</span>, origin<span class="op">=</span><span class="st">"1899-12-30"</span>, <span class="st">"%b-%y"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">col</span>, <span class="va">character</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span><span class="op">-</span><span class="va">row</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>row_header <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>,
+                          <span class="op">~</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_trim.html">str_trim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">.x</span><span class="op">$</span><span class="va">character</span>, collapse <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">row_header</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">row_header</span><span class="op">)</span>
 
-<span class="no">titles</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">cells</span>, <span class="no">character</span> <span class="kw">==</span> <span class="st">"Fixed Price"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">row</span>, <span class="no">col</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">row</span> <span class="kw">=</span> <span class="no">row</span> - <span class="fl">1L</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span>(<span class="no">cells</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"row"</span>, <span class="st">"col"</span>))
+<span class="va">titles</span> <span class="op">&lt;-</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cells</span>, <span class="va">character</span> <span class="op">==</span> <span class="st">"Fixed Price"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">col</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>row <span class="op">=</span> <span class="va">row</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">cells</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"row"</span>, <span class="st">"col"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/partition.html">partition</a></span>(<span class="no">cells</span>, <span class="no">titles</span>)$<span class="no">cells</span> <span class="kw">%&gt;%</span>
-  <span class="kw pkg">purrr</span><span class="kw ns">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span>(~ <span class="no">.x</span> <span class="kw">%&gt;%</span>
-                 <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"NNW"</span>, <span class="st">"title"</span>) <span class="kw">%&gt;%</span>
-                 <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"NNW"</span>, <span class="st">"price"</span>) <span class="kw">%&gt;%</span>
-                 <span class="fu"><a href="../reference/behead.html">behead</a></span>(<span class="st">"N"</span>, <span class="st">"bid_offer"</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">data_type</span>, -<span class="no">character</span>, -<span class="no">date</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="no">row_headers</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"row"</span>)</pre></body></html></div>
+<span class="fu"><a href="../reference/partition.html">partition</a></span><span class="op">(</span><span class="va">cells</span>, <span class="va">titles</span><span class="op">)</span><span class="op">$</span><span class="va">cells</span> <span class="op">%&gt;%</span>
+  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.x</span> <span class="op">%&gt;%</span>
+                 <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"NNW"</span>, <span class="st">"title"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+                 <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"NNW"</span>, <span class="st">"price"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+                 <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"N"</span>, <span class="st">"bid_offer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">data_type</span>, <span class="op">-</span><span class="va">character</span>, <span class="op">-</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">row_headers</span>, by <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
@@ -317,7 +331,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

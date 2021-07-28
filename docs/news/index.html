@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">unpivotr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +107,7 @@
       <a href="../articles/html.html">HTML Tables</a>
     </li>
     <li>
-      <a href="../articles/introduction.html">Introduction to {unpivotr}</a>
+      <a href="../articles/introduction.html">Introduction to unpivotr</a>
     </li>
     <li>
       <a href="../articles/small-multiples.html">Small Multiples</a>
@@ -121,7 +121,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/nacnudus/unpivotr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -142,6 +142,22 @@
       <small>Source: <a href='https://github.com/nacnudus/unpivotr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="unpivotr-062" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.2">
+<a href="#unpivotr-062" class="anchor"></a>unpivotr 0.6.2<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fix for upstream changes in rlang (<a href='https://github.com/nacnudus/unpivotr/issues/49'>#49</a> thanks <a href='https://github.com/lionel-'>@lionel-</a>)</li>
+</ul>
+</div>
+    <div id="unpivotr-061" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.1">
+<a href="#unpivotr-061" class="anchor"></a>unpivotr 0.6.1<small> 2020-08-03 </small>
+</h1>
+<ul>
+<li>Fix concatenation of <code>NULL</code> <code>POSIXct</code> (dates) (<a href='https://github.com/nacnudus/unpivotr/issues/39'>#39</a> <a href='https://github.com/romainfrancois'>@romainfrancois</a>)</li>
+</ul>
+</div>
     <div id="unpivotr-060" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.0">
 <a href="#unpivotr-060" class="anchor"></a>unpivotr 0.6.0<small> 2020-05-08 </small>
@@ -203,7 +219,9 @@
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <p>The previous version can be installed as follows.</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_version</a></span>(<span class="st">"unpivotr"</span>, <span class="kw">version</span> <span class="kw">=</span> <span class="st">"0.3.1"</span>, <span class="kw">repos</span> <span class="kw">=</span> <span class="st">"http://cran.us.r-project.org"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_version</a></span><span class="op">(</span><span class="st">"unpivotr"</span>, version <span class="op">=</span> <span class="st">"0.3.1"</span>, repos <span class="op">=</span> <span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>The family of functions <code>NNW()</code> etc. has been removed in favour of the verbose <code>join_header()</code>, which has itself been renamed to <code><a href="../reference/enhead.html">enhead()</a></code> to suggest its similarity to <code><a href="../reference/behead.html">behead()</a></code> (though they are <em>not</em> complements).</li>
 <li>
@@ -283,7 +301,7 @@
 <li>There is a new <code><a href="../reference/tidy_table.html">tidy_table()</a></code> method and vignette for HTML.</li>
 <li>There is no <code><a href="../reference/tidy_table.html">tidy_table()</a></code> method for matrices. Convert matrices to data.frames first, choosing what to do with row and column names.</li>
 <li>
-<code><a href="../reference/tidy_table.html">tidy_table()</a></code> returns only relevant columns, according to the data types of the columns in the given data frame. It uses <code><a href="https://tibble.tidyverse.org/reference/reexports.html">tibble::type_sum()</a></code> to determine the column type and to name the columns, so whereas characters used to be returned in a column called <code>character</code>, they are now returned in a column called <code>chr</code>. The full list of column names is in <code><a href="../reference/tidy_table.html">?tidy_table</a></code> and is <code>chr</code>, <code>cplx</code>, <code>cplx</code>, <code>dbl</code>, <code>fctr</code>, <code>int</code>, <code>lgl</code>, <code>list</code>. The columns <code>fctr</code> and <code>list</code> are list-columns, where each element is itself a list. This means that factors with different levels are kept separate. For HTML tables, an <code>html</code> column is returned containing the standalone HTML of each cell.</li>
+<code><a href="../reference/tidy_table.html">tidy_table()</a></code> returns only relevant columns, according to the data types of the columns in the given data frame. It uses <code><a href="https://pillar.r-lib.org/reference/type_sum.html">tibble::type_sum()</a></code> to determine the column type and to name the columns, so whereas characters used to be returned in a column called <code>character</code>, they are now returned in a column called <code>chr</code>. The full list of column names is in <code><a href="../reference/tidy_table.html">?tidy_table</a></code> and is <code>chr</code>, <code>cplx</code>, <code>cplx</code>, <code>dbl</code>, <code>fctr</code>, <code>int</code>, <code>lgl</code>, <code>list</code>. The columns <code>fctr</code> and <code>list</code> are list-columns, where each element is itself a list. This means that factors with different levels are kept separate. For HTML tables, an <code>html</code> column is returned containing the standalone HTML of each cell.</li>
 <li>Both <code>rowname</code> and <code>colname</code> arguments to <code><a href="../reference/tidy_table.html">tidy_table()</a></code> now default to <code>FALSE</code>.</li>
 <li>All functions consistently return a <code>tibble</code>.</li>
 <li>Some error messages are more helpful.</li>
@@ -339,7 +357,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
