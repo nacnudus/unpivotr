@@ -1,6 +1,7 @@
 # unpivotr (development version)
 
 * Allow behead() to work on grouped data (#46 @billdenney)
+* Add as_cells.matrix (#41 @billdenney)
 
 # unpivotr 0.6.2
 

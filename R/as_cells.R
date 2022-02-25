@@ -145,6 +145,15 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
   dplyr::arrange(out, col, row)
 }
 
+#' @export
+as_cells.matrix <- function(x, row_names = FALSE, col_names = FALSE) {
+  as_cells(
+    as.data.frame(x),
+    row_names = row_names,
+    col_names = col_names
+  )
+}
+
 grow_matrix <- function(x, i, j, value) {
   dim_x <- dim(x)
   grow <- c(i, j) > dim_x

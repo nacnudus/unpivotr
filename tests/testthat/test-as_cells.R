@@ -115,3 +115,36 @@ test_that("as_cells() works with all common datatypes", {
   expect_equal(y$list[[5]], 1:2)
   expect_equal(y$list[[6]], list("a", "b"))
 })
+
+test_that("as_cells.matrix", {
+  rnames <- c("r1", "r2")
+  cnames <- c("c1", "c2", "c3")
+  x <- matrix(1:6, nrow=2, dimnames=list(rnames, cnames))
+  y <-
+    tibble::tibble(
+      row=rep(1:2, 3),
+      col=rep(1:3, each=2),
+      data_type="int",
+      int=1:6
+    )
+  y_rows <-
+    tibble::tibble(
+      row=rep(1:2, 4),
+      col=c(1, 1, rep(2:4, each=2)),
+      data_type=c(rep("chr", 2), rep("int", 6)),
+      chr=c(rnames, rep(NA, 6)),
+      int=c(NA, NA, 1:6)
+    )
+  y_cols <-
+    tibble::tibble(
+      row=rep(1:3, 3),
+      col=rep(1:3, each=3),
+      data_type=rep(c("chr", rep("int", 2)), 3),
+      chr=c(cnames[1], NA, NA, cnames[2], NA, NA, cnames[3], NA, NA),
+      int=c(NA, 1:2, NA, 3:4, NA, 5:6)
+    )
+  
+  expect_equal(as_cells(x), y)
+  expect_equal(as_cells(x, row_names=TRUE), y_rows)
+  expect_equal(as_cells(x, col_names=TRUE), y_cols)
+})
