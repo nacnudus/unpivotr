@@ -30,6 +30,7 @@ test_that("the `drop_na` argument of behead() works", {
   # Check against the provided 'tidy' version of the data.
   expect_equal(nrow(tidy), 80)
   expect_equal(tidy$Sex, rep(rep(c("Female", "Male"), each = 8), 5))
+
   tidy <-
     cells %>%
     behead("NNW", "Sex", drop_na = FALSE) %>%
@@ -207,12 +208,12 @@ test_that("behead.grouped_df works (fix #46)", {
       sheet =
         c(
           "humanities", "humanities", "humanities", "humanities",
-          "humanities", "humanities", "humanities", "humanities", 
+          "humanities", "humanities", "humanities", "humanities",
           "performance", "performance", "performance", "performance",
           "performance", "performance", "performance", "performance"
         ),
       row = c(1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L),
-      col = c(2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L), 
+      col = c(2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
       data_type =
         c(
           "character", "character", "character", "numeric", "numeric",
