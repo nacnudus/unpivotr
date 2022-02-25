@@ -1,5 +1,7 @@
 # unpivotr (development version)
 
+* Allow behead() to work on grouped data (#46 @billdenney)
+
 # unpivotr 0.6.2
 
 * Fix for upstream changes in rlang (#49 thanks @lionel-)

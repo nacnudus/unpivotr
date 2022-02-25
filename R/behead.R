@@ -105,6 +105,27 @@ behead <- function(cells, direction, name, values = NULL, types = data_type,
 }
 
 #' @export
+behead.grouped_df <- function(cells, direction, name, values = NULL,
+                              types = data_type, formatters = list(),
+                              drop_na = TRUE) {
+  # Remember the grouping variables
+  grouping_variables <- dplyr::group_vars(cells)
+  cells %>%
+    dplyr::group_split() %>%
+    purrr::map_dfr(
+      behead,
+      direction = direction,
+      name = !!rlang::ensym(name),
+      values = !!rlang::enexpr(values),
+      types = !!rlang::ensym(types),
+      formatters = formatters,
+      drop_na = drop_na
+    ) %>%
+    # Restore the grouping variables
+    dplyr::group_by(!!!rlang::syms(grouping_variables))
+}
+
+#' @export
 behead.data.frame <- function(cells, direction, name, values = NULL,
                               types = data_type, formatters = list(),
                               drop_na = TRUE) {
@@ -113,7 +134,8 @@ behead.data.frame <- function(cells, direction, name, values = NULL,
     name = !!rlang::ensym(name),
     values = !!rlang::enexpr(values),
     types = !!rlang::ensym(types),
-    formatters = formatters, drop_na = drop_na
+    formatters = formatters,
+    drop_na = drop_na
   )
 }
 
