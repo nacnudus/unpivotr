@@ -1,3 +1,5 @@
+# unpivotr (development version)
+
 # unpivotr 0.6.2
 
 * Fix for upstream changes in rlang (#49 thanks @lionel-)
