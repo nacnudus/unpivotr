@@ -147,45 +147,11 @@ as_cells.data.frame <- function(x, row_names = FALSE, col_names = FALSE) {
 
 #' @export
 as_cells.matrix <- function(x, row_names = FALSE, col_names = FALSE) {
-  out <-
-    tibble::tibble(
-      row=rep.int(seq_len(nrow(x)), ncol(x)),
-      col=rep(seq_len(ncol(x)), each=nrow(x)),
-      value=as.vector(x),
-      type=pillar::type_sum(x[1]),
-      data_type=pillar::type_sum(x[1])
-    )
-  out <- tidyr::spread(out, type, value)
-  if (row_names) {
-    rnames <- row.names(x)
-    out$col <- out$col + 1L
-    out <-
-      dplyr::bind_rows(
-        out,
-        tibble::tibble(
-          col = 1L, 
-          row = seq_along(rnames),
-          chr = rnames,
-          data_type = "chr"
-        )
-      )
-  }
-  if (col_names) {
-    cnames <- colnames(x)
-    out$row <- out$row + 1L
-    out <-
-      dplyr::bind_rows(
-        out,
-        tibble::tibble(
-          row = 1L, 
-          col = seq_along(cnames) + row_names,
-          chr = cnames,
-          data_type = "chr"
-        )
-      )
-  }
-  out <- dplyr::select(out, row, col, data_type, sort(colnames(out)))
-  dplyr::arrange(out, col, row)
+  as_cells(
+    as.data.frame(x),
+    row_names = row_names,
+    col_names = col_names
+  )
 }
 
 grow_matrix <- function(x, i, j, value) {
