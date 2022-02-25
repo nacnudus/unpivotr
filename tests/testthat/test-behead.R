@@ -242,4 +242,7 @@ test_that("behead.grouped_df works (fix #46)", {
   expect_equal(
     result$subject, rep(c("Classics", "History", "Music", "Drama"), each=2)
   )
+  expect_equal(
+    dplyr::group_vars(result), "sheet"
+  )
 })

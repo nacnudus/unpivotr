@@ -108,31 +108,21 @@ behead <- function(cells, direction, name, values = NULL, types = data_type,
 behead.grouped_df <- function(cells, direction, name, values = NULL,
                               types = data_type, formatters = list(),
                               drop_na = TRUE) {
-  ret_list <-
-    lapply(
-      X = dplyr::group_rows(cells),
-      FUN = behead_grouped_df_helper,
-      # Convert to a data.frame to prevent interactions with the grouping
-      # columns being dropped.
-      cells = as.data.frame(cells),
+  # Remember the grouping variables
+  grouping_variables <- dplyr::group_vars(cells)
+  cells %>%
+    dplyr::group_split() %>%
+    purrr::map_dfr(
+      behead,
       direction = direction,
       name = !!rlang::ensym(name),
       values = !!rlang::enexpr(values),
       types = !!rlang::ensym(types),
       formatters = formatters,
       drop_na = drop_na
-    )
-  # ret will be a data.frame
-  ret <- dplyr::bind_rows(ret_list)
-  # Restore the grouping variables
-  dplyr::group_by(
-    ret,
-    dplyr::across(dplyr::all_of(dplyr::group_vars(cells)))
-  )
-}
-
-behead_grouped_df_helper <- function(cells, idx, ...) {
-  behead.data.frame(cells=cells[idx, , drop=FALSE], ...)
+    ) %>%
+    # Restore the grouping variables
+    dplyr::group_by(!!!rlang::syms(grouping_variables))
 }
 
 #' @export
