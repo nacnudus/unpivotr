@@ -3,10 +3,6 @@
 
 # unpivotr
 
-[![Travis-CI Build
-Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr)
 [![Cran
 Status](http://www.r-pkg.org/badges/version/unpivotr)](https://CRAN.R-project.org/package=unpivotr)
 [![Cran
@@ -138,30 +134,30 @@ x # A pivot table in a conventional data frame.  Four levels of headers, in two
 y <- as_cells(x) # 'Tokenize' or 'melt' the data frame into one row per cell
 y
 #> # A tibble: 132 x 4
-#>      row   col data_type chr              
-#>    <int> <int> <chr>     <chr>            
-#>  1     1     1 chr       <NA>             
-#>  2     2     1 chr       <NA>             
+#>      row   col data_type chr
+#>    <int> <int> <chr>     <chr>
+#>  1     1     1 chr       <NA>
+#>  2     2     1 chr       <NA>
 #>  3     3     1 chr       Bachelor's degree
-#>  4     4     1 chr       <NA>             
-#>  5     5     1 chr       <NA>             
-#>  6     6     1 chr       <NA>             
-#>  7     7     1 chr       Certificate      
-#>  8     8     1 chr       <NA>             
-#>  9     9     1 chr       <NA>             
-#> 10    10     1 chr       <NA>             
+#>  4     4     1 chr       <NA>
+#>  5     5     1 chr       <NA>
+#>  6     6     1 chr       <NA>
+#>  7     7     1 chr       Certificate
+#>  8     8     1 chr       <NA>
+#>  9     9     1 chr       <NA>
+#> 10    10     1 chr       <NA>
 #> # … with 122 more rows
 
 rectify(y) # useful for reviewing the melted form as though in a spreadsheet
 #> # A tibble: 22 x 7
 #>    `row/col` `1(A)`            `2(B)`  `3(C)` `4(D)` `5(E)` `6(F)`
-#>        <int> <chr>             <chr>   <chr>  <chr>  <chr>  <chr> 
-#>  1         1 <NA>              <NA>    Female <NA>   Male   <NA>  
+#>        <int> <chr>             <chr>   <chr>  <chr>  <chr>  <chr>
+#>  1         1 <NA>              <NA>    Female <NA>   Male   <NA>
 #>  2         2 <NA>              <NA>    0 - 6  7 - 10 0 - 6  7 - 10
-#>  3         3 Bachelor's degree 15 - 24 7000   27000  <NA>   13000 
-#>  4         4 <NA>              25 - 44 12000  137000 9000   81000 
-#>  5         5 <NA>              45 - 64 10000  64000  7000   66000 
-#>  6         6 <NA>              65+     <NA>   18000  7000   17000 
+#>  3         3 Bachelor's degree 15 - 24 7000   27000  <NA>   13000
+#>  4         4 <NA>              25 - 44 12000  137000 9000   81000
+#>  5         5 <NA>              45 - 64 10000  64000  7000   66000
+#>  6         6 <NA>              65+     <NA>   18000  7000   17000
 #>  7         7 Certificate       15 - 24 29000  161000 30000  190000
 #>  8         8 <NA>              25 - 44 34000  179000 31000  219000
 #>  9         9 <NA>              45 - 64 30000  210000 23000  199000
@@ -177,17 +173,17 @@ y %>%
   mutate(count = as.integer(count))
 #> # A tibble: 80 x 5
 #>     count sex    `life-satisfication` qualification     `age-band`
-#>     <int> <chr>  <chr>                <chr>             <chr>     
-#>  1   7000 Female 0 - 6                Bachelor's degree 15 - 24   
-#>  2  12000 Female 0 - 6                Bachelor's degree 25 - 44   
-#>  3  10000 Female 0 - 6                Bachelor's degree 45 - 64   
-#>  4     NA Female 0 - 6                Bachelor's degree 65+       
-#>  5  27000 Female 7 - 10               Bachelor's degree 15 - 24   
-#>  6 137000 Female 7 - 10               Bachelor's degree 25 - 44   
-#>  7  64000 Female 7 - 10               Bachelor's degree 45 - 64   
-#>  8  18000 Female 7 - 10               Bachelor's degree 65+       
-#>  9     NA Male   0 - 6                Bachelor's degree 15 - 24   
-#> 10   9000 Male   0 - 6                Bachelor's degree 25 - 44   
+#>     <int> <chr>  <chr>                <chr>             <chr>
+#>  1   7000 Female 0 - 6                Bachelor's degree 15 - 24
+#>  2  12000 Female 0 - 6                Bachelor's degree 25 - 44
+#>  3  10000 Female 0 - 6                Bachelor's degree 45 - 64
+#>  4     NA Female 0 - 6                Bachelor's degree 65+
+#>  5  27000 Female 7 - 10               Bachelor's degree 15 - 24
+#>  6 137000 Female 7 - 10               Bachelor's degree 25 - 44
+#>  7  64000 Female 7 - 10               Bachelor's degree 45 - 64
+#>  8  18000 Female 7 - 10               Bachelor's degree 65+
+#>  9     NA Male   0 - 6                Bachelor's degree 15 - 24
+#> 10   9000 Male   0 - 6                Bachelor's degree 25 - 44
 #> # … with 70 more rows
 ```
 
