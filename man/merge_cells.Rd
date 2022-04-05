@@ -42,6 +42,13 @@ output cells so that they are all in the same row, and similarly
 These functions apply only to cells with character values because it doesn't
 make sense to concatenate non-character values.  Convert cell values to
 characters first if you need to merge non-character cells.
+
+Columns other than the one that is concatenated will take the value of the
+top or left-most cell.  For example, if \code{cells} has the columns \code{data_type}
+and \code{is_blank}, and the top or left-most cell has the values \code{blank} or
+\code{TRUE} in those columns, then the resulting merged cell will also have the
+values \code{blank} or \code{TRUE} in those columns, even if the concatenated value is
+no longer blank.
 }
 \examples{
  x <- tibble::tribble(

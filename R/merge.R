@@ -15,6 +15,13 @@
 #' make sense to concatenate non-character values.  Convert cell values to
 #' characters first if you need to merge non-character cells.
 #'
+#' Columns other than the one that is concatenated will take the value of the
+#' top or left-most cell.  For example, if `cells` has the columns `data_type`
+#' and `is_blank`, and the top or left-most cell has the values `blank` or
+#' `TRUE` in those columns, then the resulting merged cell will also have the
+#' values `blank` or `TRUE` in those columns, even if the concatenated value is
+#' no longer blank.
+#'
 #' @param cells Data frame. The cells of a pivot table, usually the output of
 #'   [as_cells()] or [tidyxl::xlsx_cells()], or of a subsequent operation on
 #'   those outputs.
