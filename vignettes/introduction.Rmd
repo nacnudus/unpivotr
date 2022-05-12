@@ -151,7 +151,7 @@ library(unpivotr)
 
 hp_xlsx <- system.file("extdata/harry-potter.xlsx", package = "unpivotr")
 
-cells <- xlsx_cells(hp_xlsx, sheet = "pivoted")
+cells <- xlsx_cells(hp_xlsx, sheets = "pivoted")
 formats <- xlsx_formats(hp_xlsx)
 
 indent <- formats$local$alignment$indent
@@ -183,7 +183,7 @@ of `xlsx_cells()` to a cell in the spreadsheet.
 
 ```{r xlsx_cells}
 cells <-
-  xlsx_cells(hp_xlsx, sheet = "pivoted") %>%
+  xlsx_cells(hp_xlsx, sheets = "pivoted") %>%
   # Drop some columns to make it clearer what is going on
   select(row, col, is_blank, data_type, character, numeric, local_format_id)
 
