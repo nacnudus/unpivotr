@@ -110,14 +110,7 @@ concatenate <- function(..., combine_factors = TRUE, fill_factor_na = TRUE) {
 }
 
 # Return an NA of the same type as the given vector
-na_types <- list(
-  logical = NA,
-  integer = NA_integer_,
-  double = NA_real_,
-  character = NA_character_,
-  complex = NA_complex_
-)
-na_of_type <- function(x) structure(na_types[[typeof(x)]], class = class(x))
+na_of_type <- function(x) x[NA]
 
 # Apply custom functions to list-elements of a list-column created by pack()
 # whose type matches the custom function.
