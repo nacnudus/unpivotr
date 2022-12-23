@@ -203,11 +203,12 @@ behead_if.data.frame <- function(cells, ..., direction, name, values = NULL,
 # Construct a filter expression for stripping a header from a pivot table
 direction_filter <- function(direction) {
   direction <- substr(direction, 1L, 1L)
-  dplyr::case_when(
-    direction == "u" ~ rlang::expr(.data$row == min(.data$row)),
-    direction == "r" ~ rlang::expr(.data$col == max(.data$col)),
-    direction == "d" ~ rlang::expr(.data$row == max(.data$row)),
-    direction == "l" ~ rlang::expr(.data$col == min(.data$col))
+  switch(
+    direction,
+    u = rlang::expr(.data$row == min(.data$row)),
+    r = rlang::expr(.data$col == max(.data$col)),
+    d = rlang::expr(.data$row == max(.data$row)),
+    l = rlang::expr(.data$col == min(.data$col))
   )
 }
 
