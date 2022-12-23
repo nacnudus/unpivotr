@@ -40,26 +40,30 @@ will be displayed in the browser or the RStudio viewer pane.
 This is for viewing only; the output is not designed to be used in other
 functions.
 
-Example: The following cells\preformatted{row col value
+Example: The following cells
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{row col value
   1   1   "a"
   1   2   "b"
   2   1   "c"
   2   2   "d"
-}
+}\if{html}{\out{</div>}}
 
-Would be presented as\preformatted{row/col 1(A) 2(B)
+Would be presented as
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{row/col 1(A) 2(B)
       1 "a"  "b"
       2 "c"  "d"
-}
+}\if{html}{\out{</div>}}
 
 The letters in the column names are for comparing this view with a
 spreadsheet application.
 }
-\section{Methods (by class)}{
+\section{Functions}{
 \itemize{
-\item \code{cell_grid}: S3 method for class \code{cell_grid}
-}}
+\item \code{print(cell_grid)}: S3 method for class \code{cell_grid}
 
+}}
 \examples{
 x <- data.frame(name = c("Matilda", "Nicholas"),
                 score = c(14L, 10L),

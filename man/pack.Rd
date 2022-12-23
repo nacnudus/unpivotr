@@ -64,24 +64,28 @@ column.
 
 This can be useful for dropping all columns of \code{cells} except the ones that
 contain data.  For example, \code{\link[tidyxl:xlsx_cells]{tidyxl::xlsx_cells()}} returns a very wide data
-frame, and to make it narrow you might do:\preformatted{select(cells, row, col, character, numeric, date)
-}
+frame, and to make it narrow you might do:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{select(cells, row, col, character, numeric, date)
+}\if{html}{\out{</div>}}
 
 But what if you don't know in advance that the data types you need are
 \code{character}, \code{numeric} and \code{date}?  You might also need \code{logical} and
 \code{error}.
 
 Instead, \code{\link[=pack]{pack()}} all the data types into a single column, select it, and
-then unpack.\preformatted{pack(cells) \%>\%
+then unpack.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{pack(cells) \%>\%
   select(row, col, value) \%>\%
   unpack()
-}
+}\if{html}{\out{</div>}}
 }
 \section{Functions}{
 \itemize{
-\item \code{unpack}: Unpack cell values from one list-column into separate columns per data type
-}}
+\item \code{unpack()}: Unpack cell values from one list-column into separate columns per data type
 
+}}
 \examples{
 # A normal data frame
 w <- data.frame(foo = 1:2,

@@ -67,9 +67,9 @@ applied to it, but should be ignored.}
 the variables in \code{.data}.  Multiple conditions are combined with \code{&}. Only
 rows where the condition evaluates to \code{TRUE} are kept.
 
-The arguments in \code{...} are automatically \link[rlang:nse-defuse]{quoted} and
+The arguments in \code{...} are automatically \link[rlang:defusing-advanced]{quoted} and
 \link[rlang:eval_tidy]{evaluated} in the context of the data frame. They
-support \link[rlang:nse-force]{unquoting} and splicing. See the dplyr
+support \link[rlang:topic-inject]{unquoting} and splicing. See the dplyr
 \code{vignette("programming")} for an introduction to these concepts.}
 }
 \value{

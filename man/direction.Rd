@@ -76,7 +76,9 @@ crossing a border defined by the \code{border} parameter.
 }
 
 \section{Tables}{
-\preformatted{+----------------+-------------+-------------+
+
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{+----------------+-------------+-------------+
 |                | up-left     | up-left     |
 +                +-------------+-------------+
 |                | up   | up   | up   | up   |
@@ -89,7 +91,9 @@ crossing a border defined by the \code{border} parameter.
 +         +------+------+------+------+------+
 |         | left | data | data | data | data |
 +---------+------+------+------+------+------+
-}\preformatted{+-------------+-------------+------------------+
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{+-------------+-------------+------------------+
 | up-right    | up-right    |                  |
 +-------------+-------------+                  +
 | up   | up   | up   | up   |                  |
@@ -102,7 +106,9 @@ crossing a border defined by the \code{border} parameter.
 +------+------+------+------+-------+          +
 | data | data | data | data | right |          |
 +------+------+------+------+-------+----------+
-}\preformatted{+-----------+------+------+------+------+------+
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{+-----------+------+------+------+------+------+
 |           | left | data | data | data | data |
 +           +------+------+------+------+------+
 | left-down | left | data | data | data | data |
@@ -115,7 +121,9 @@ crossing a border defined by the \code{border} parameter.
 +                  +------+------+------+------+
 |                  | down-left   | down-left   |
 +-----------+------+-------------+-------------+
-}\preformatted{'+------+------+------+------+-------+------------+
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{'+------+------+------+------+-------+------------+
 | data | data | data | data | right |            |
 +------+------+------+------+-------+            +
 | data | data | data | data | right | right-down |
@@ -128,7 +136,9 @@ crossing a border defined by the \code{border} parameter.
 +------+------+------+------+                    +
 |  down-right |  down-right |                    |
 +-------------+-------------+--------------------+
-}\preformatted{+-----------------+----------------------+-----------------------------+
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{+-----------------+----------------------+-----------------------------+
 |                 |        up-ish        |               up-ish        |
 +                 +----------------------+-----------------------------+
 |                 | up   | up     | up   | up   | up   | up     | up   |
@@ -147,7 +157,9 @@ crossing a border defined by the \code{border} parameter.
 +          +------+------+--------+------+------+------+--------+------+
 |          | left | data | data   | data | data | data | data   | data |
 +----------+------+------+--------+------+------+------+-----  -+------+
-}\preformatted{+------+----------+------+------+------+----------+------+-------+-----------+
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{+------+----------+------+------+------+----------+------+-------+-----------+
 | data | data     | data | data | data | data     | data | right |           |
 +------+----------+------+------+------+----------+------+-------+           +
 | data | data     | data | data | data | data     | data | right | right-ish |
@@ -166,14 +178,16 @@ crossing a border defined by the \code{border} parameter.
 +------+----------+------+------+------+----------+------+                   +
 |        down-ish        |               down-ish        |                   |
 +------------------------+-------------------------------+-------------------+
-}
+}\if{html}{\out{</div>}}
 }
 
 \section{Legacy directions}{
 
 
 Older versions of unpivotr used different names for the directions, based on
-the points of the compass.  These are still supported but are discouraged.\preformatted{| old direction | new direction |
+the points of the compass.  These are still supported but are discouraged.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{| old direction | new direction |
 |---------------|---------------|
 | N             | up            |
 | NNW           | up-left       |
@@ -187,6 +201,6 @@ the points of the compass.  These are still supported but are discouraged.\prefo
 | S             | down          |
 | SSW           | down-left     |
 | SSE           | down-right    |
-}
+}\if{html}{\out{</div>}}
 }
 

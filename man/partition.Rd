@@ -65,9 +65,9 @@ cells.  The individual tables can then be worked on independently.
 }
 \section{Functions}{
 \itemize{
-\item \code{partition_dim}: Divide a grid of cells into chunks along one dimension
-}}
+\item \code{partition_dim()}: Divide a grid of cells into chunks along one dimension
 
+}}
 \examples{
 # The `purpose` dataset, represented in four summary tables
 multiples <- purpose$small_multiples
