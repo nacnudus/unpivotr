@@ -36,6 +36,7 @@ utils::globalVariables(c(
   "ns_env",
   "corner_row",
   "corner_col",
+  ".data",
   ".boundary"
 ))
 
