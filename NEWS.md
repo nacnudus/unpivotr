@@ -1,4 +1,4 @@
-# unpivotr (development version)
+# unpivotr 0.6.3
 
 * Make compatible with dplyr v1.1.0 (#58 @DavisVaughan)
 * Implement `as_cells.matrix()` (#52 @billdenney)
