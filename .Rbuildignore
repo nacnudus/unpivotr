@@ -22,3 +22,5 @@
 ^_pkgdown\.yaml$
 ^\.github$
 ^LICENSE.md
+^CRAN-SUBMISSION$
+^LICENSE\.md$

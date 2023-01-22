@@ -1,4 +1,4 @@
-This is a resubmission after fixing a URL.
+This is a resubmission after fixing the MIT licence.
 
 ## Test environments
 
