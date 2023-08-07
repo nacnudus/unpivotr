@@ -150,6 +150,6 @@ spatter.data.frame <- function(cells, key, values = NULL, types = data_type,
   }
   first_colnames <- setdiff(colnames(out), new_colnames)
   last_colnames <- new_colnames
-  out <- dplyr::select(out, first_colnames, last_colnames)
+  out <- dplyr::select(out, !!first_colnames, !!last_colnames)
   out
 }
