@@ -3,6 +3,8 @@
 
 # unpivotr
 
+<!-- badges: start -->
+
 [![Travis-CI Build
 Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr)
 [![AppVeyor Build
@@ -12,7 +14,8 @@ Status](http://www.r-pkg.org/badges/version/unpivotr)](https://CRAN.R-project.or
 [![Cran
 Downloads](https://cranlogs.r-pkg.org/badges/unpivotr)](https://www.r-pkg.org/pkg/unpivotr)
 [![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://app.codecov.io/gh/nacnudus/unpivotr)
-[![R-CMD-check](https://github.com/nacnudus/unpivotr/workflows/R-CMD-check/badge.svg)](https://github.com/nacnudus/unpivotr/actions)
+[![R-CMD-check](https://github.com/nacnudus/unpivotr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/nacnudus/unpivotr/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 [unpivotr](https://github.com/nacnudus/unpivotr) deals with non-tabular
 data, especially from spreadsheets. Use unpivotr when your source data
@@ -61,8 +64,12 @@ More positive, corrective functions:
 Unpivotr uses data where each cells is represented by one row in a
 dataframe. Like this.
 
-![Gif of tidyxl converting cells into a tidy representation of one row
-per cell](./vignettes/tidy_xlsx.gif)
+<figure>
+<img src="./vignettes/tidy_xlsx.gif"
+alt="Gif of tidyxl converting cells into a tidy representation of one row per cell" />
+<figcaption aria-hidden="true">Gif of tidyxl converting cells into a
+tidy representation of one row per cell</figcaption>
+</figure>
 
 What can you do with tidy cells? The best places to start are:
 
@@ -96,16 +103,18 @@ Otherwise the basic idea is:
 ``` r
 library(unpivotr)
 library(tidyverse)
-#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-#> ✔ ggplot2 3.3.6      ✔ purrr   0.3.4 
-#> ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-#> ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-#> ✔ readr   2.1.2      ✔ forcats 0.5.2 
+#> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+#> ✔ dplyr     1.1.4     ✔ readr     2.1.5
+#> ✔ forcats   1.0.0     ✔ stringr   1.5.1
+#> ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+#> ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+#> ✔ purrr     1.0.2     
 #> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 #> ✖ tidyr::pack()   masks unpivotr::pack()
 #> ✖ tidyr::unpack() masks unpivotr::unpack()
+#> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 x <- purpose$`up-left left-up`
 x # A pivot table in a conventional data frame.  Four levels of headers, in two
 #>                            X2      X3     X4     X5    X6     X7
@@ -148,7 +157,7 @@ y
 #>  8     8     1 chr       <NA>             
 #>  9     9     1 chr       <NA>             
 #> 10    10     1 chr       <NA>             
-#> # … with 122 more rows
+#> # ℹ 122 more rows
 
 rectify(y) # useful for reviewing the melted form as though in a spreadsheet
 #> # A tibble: 22 × 7
@@ -164,7 +173,7 @@ rectify(y) # useful for reviewing the melted form as though in a spreadsheet
 #>  8         8 <NA>              25 - 44 34000  179000 31000  219000
 #>  9         9 <NA>              45 - 64 30000  210000 23000  199000
 #> 10        10 <NA>              65+     12000  77000  8000   107000
-#> # … with 12 more rows
+#> # ℹ 12 more rows
 
 y %>%
   behead("up-left", "sex") %>%               # Strip headers
@@ -186,7 +195,7 @@ y %>%
 #>  8  18000 Female 7 - 10               Bachelor's degree 65+       
 #>  9     NA Male   0 - 6                Bachelor's degree 15 - 24   
 #> 10   9000 Male   0 - 6                Bachelor's degree 25 - 44   
-#> # … with 70 more rows
+#> # ℹ 70 more rows
 ```
 
 Note the compass directions in the code above, which hint to `behead()`
