@@ -101,7 +101,7 @@ test_that("concatenate() handles timezones", {
     )
   )
   x <- as.POSIXct("2018-01-01 01:00:00", tz = "UTC")
-  y <- as.POSIXct("2018-04-01 01:00:00", tz = "EST")
+  y <- as.POSIXct("2018-04-01 01:00:00", tz = "America/Panama")
   expect_equal(
     concatenate(list(x, y)),
     as.POSIXct(c(
