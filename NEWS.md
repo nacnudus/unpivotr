@@ -1,3 +1,7 @@
+# unpivotr 0.6.4
+
+* Make tests compatible with recent versions of tzdata (CRAN)
+
 # unpivotr 0.6.3
 
 * Make compatible with dplyr v1.1.0 (#58 @DavisVaughan)
