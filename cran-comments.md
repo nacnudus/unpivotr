@@ -1,14 +1,11 @@
-This is a resubmission after fixing the MIT licence.
-
 ## Test environments
 
-Operating system   | devel | release | oldrel |
--------------------|-------|---------|--------|
-Arch linux 5.15.83 |       | release |        |
-macOS Catalina     |       | release |        |
-ubuntu 20.04       | devel | release |        |
-Windows Server x64 | devel |         |        |
-win-builder        | devel |         |        |
+Operating system  | devel | release | oldrel |
+------------------|-------|---------|--------|
+Arch linux        |       | release |        |
+macOS             |       | release |        |
+ubuntu            | devel | release | oldrel |
+Windows Server    |       | release |        |
 
 ## R CMD check results
 0 errors | 0 warnings | 0 notes
