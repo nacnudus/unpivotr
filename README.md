@@ -5,14 +5,9 @@
 
 <!-- badges: start -->
 
-[![Travis-CI Build
-Status](https://travis-ci.org/nacnudus/unpivotr.svg?branch=master)](https://travis-ci.org/nacnudus/unpivotr)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/nacnudus/unpivotr?branch=master&svg=true)](https://ci.appveyor.com/project/nacnudus/unpivotr)
 [![Cran
 Status](http://www.r-pkg.org/badges/version/unpivotr)](https://CRAN.R-project.org/package=unpivotr)
-[![Cran
-Downloads](https://cranlogs.r-pkg.org/badges/unpivotr)](https://www.r-pkg.org/pkg/unpivotr)
+![Cran Downloads](https://cranlogs.r-pkg.org/badges/unpivotr)
 [![codecov](https://codecov.io/github/nacnudus/unpivotr/coverage.svg?branch=master)](https://app.codecov.io/gh/nacnudus/unpivotr)
 [![R-CMD-check](https://github.com/nacnudus/unpivotr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/nacnudus/unpivotr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->

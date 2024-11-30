@@ -22,9 +22,8 @@
 #'
 #' @source
 #' The data is 'Sense of purpose by highest qualification, age group, and sex,
-#' 2014' from the Statistics New Zealand portal NZ.Stat
-#' <https://nzdotstat.stats.govt.nz/wbos/Index.aspx#>, retrieved on
-#' 2016-08-19.  It can be found in the section 'People and communities' >
+#' 2014' from the Statistics New Zealand portal NZ.Stat, retrieved on
+#' 2016-08-19.  It was found in the section 'People and communities',
 #' 'Self-rated well-being (NZGSS)'.  The data was exported in the Excel (.xlsx)
 #' file format and is available at 'extdata/purpose.xlsx' in the package
 #' directory.
