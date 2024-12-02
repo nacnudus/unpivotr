@@ -154,7 +154,7 @@ unpack <- function(cells, values = value, name = "data_type",
     )
   first_colnames <- setdiff(colnames(out), type_names)
   last_colnames <- sort(type_names)
-  out <- dplyr::select(out, first_colnames, last_colnames)
+  out <- dplyr::select(out, !!first_colnames, !!last_colnames)
   if (drop_packed) out <- dplyr::select(out, -!!values)
   out
 }
