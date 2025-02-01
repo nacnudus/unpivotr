@@ -19,8 +19,9 @@
 ^insta/extdata/logo\.svg$
 ^cran-comments\.md$
 ^docs$
-^_pkgdown\.yaml$
 ^\.github$
 ^LICENSE.md
 ^CRAN-SUBMISSION$
 ^LICENSE\.md$
+^_pkgdown\.yml$
+^pkgdown$

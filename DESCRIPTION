@@ -28,7 +28,7 @@ Imports:
     cellranger,
     xml2,
     tidyselect
-URL: https://github.com/nacnudus/unpivotr
+URL: https://github.com/nacnudus/unpivotr, https://nacnudus.github.io/unpivotr/
 BugReports: https://github.com/nacnudus/unpivotr/issues
 RoxygenNote: 7.3.2
 Suggests:
