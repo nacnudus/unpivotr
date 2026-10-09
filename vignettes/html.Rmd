@@ -96,7 +96,7 @@ includeHTML(nested)
 # rvest parses both tables
 nested %>%
   read_html() %>%
-  html_table(fill = TRUE)
+  html_table()
 
 # unpivotr
 x <-

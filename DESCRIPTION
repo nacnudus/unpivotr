@@ -39,7 +39,7 @@ Suggests:
     readxl,
     stringr,
     htmltools,
-    rvest,
+    rvest (>= 1.0.0),
     selectr,
     DT,
     testthat,
