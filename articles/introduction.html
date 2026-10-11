@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Introduction to unpivotr • unpivotr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to unpivotr">
 </head>
@@ -88,7 +88,7 @@ text</li>
 </ul>
 <p>Here is an example, a dataset of student test marks in different
 subjects.</p>
-<p><img src="images%2Fhp-tidy.png"><!-- --></p>
+<p><img src="images/hp-tidy.png"><!-- --></p>
 <p>To test whether a table will be easy to import, ask yourself “Is
 every row self-sufficient? Could I read only one row and understand all
 the data in it?” In this case, one row will tell you that Ron got two
@@ -103,11 +103,6 @@ a data frame, using the {readxl} package.</p>
 <span><span class="va">tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="va">hp_xlsx</span>, sheet <span class="op">=</span> <span class="st">"tidy"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tidy</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 4</span></span></span>
 <span><span class="co">#&gt;   Pupil Year     Subject    Mark</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -129,7 +124,7 @@ either <code>dbl</code> (double, which means a number), or
 </h2>
 <p>Here’s is the same data but this time it is in a spreadsheet that the
 {readxl} package can’t read so easily. Why not?</p>
-<p><img src="images%2Fhp-untidy.png"><!-- --></p>
+<p><img src="images/hp-untidy.png"><!-- --></p>
 <p>The <code>Pupil</code> and <code>Year</code> columns have been
 combined into one, so the names of the pupils aren’t in the same rows as
 their marks, nor are they in the same columns. There is also a text
@@ -146,11 +141,6 @@ package.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `` -&gt; `...1`</span></span>
 <span></span>
 <span><span class="va">untidy</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   ...1     Potions Herbology   </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
@@ -173,7 +163,7 @@ meaningful formatting to distinguish between names in bold
 (<code>"1st year"</code>, <code>"2nd year"</code>).</li>
 <li>Consistent data types in each column. The spreadsheet has mixed data
 types in the Herbology column, where some cells are numbers and one is
-text: <code>"10 -   really?"</code>.</li>
+text: <code>"10 - really?"</code>.</li>
 </ul>
 <p>The <code>readxl</code> package has done its best with a difficult
 file.</p>
@@ -195,7 +185,7 @@ understand all the data in it.</p>
 <p>Here is a final example of a spreadsheet that breaks the one
 remaining assumption: that there is a single row of column headers. This
 file has two rows of column headers.</p>
-<p><img src="images%2Fhp-pivoted.png"><!-- --></p>
+<p><img src="images/hp-pivoted.png"><!-- --></p>
 <p>The rest of this tutorial will demonstrate how to use the {tidyxl}
 and {unpivotr} packages to import that spreadsheet.</p>
 </div>
@@ -244,11 +234,6 @@ import the spreadsheet above.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">dormitory</span>, <span class="va">name</span>, <span class="va">location</span>, <span class="va">subject</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tidied</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 6</span></span></span>
 <span><span class="co">#&gt;    address dormitory name     location subject                    mark</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -294,11 +279,6 @@ data frame. Try matching each row of the output of
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">row</span>, <span class="va">col</span>, <span class="va">is_blank</span>, <span class="va">data_type</span>, <span class="va">character</span>, <span class="va">numeric</span>, <span class="va">local_format_id</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">cells</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 47 × 7</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character              numeric local_format_id</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -364,11 +344,6 @@ fancy tricks, like filter for all the numeric cells.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">data_type</span> <span class="op">==</span> <span class="st">"numeric"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 23 × 7</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character numeric local_format_id</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -400,11 +375,6 @@ position.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">row</span> <span class="op">==</span> <span class="fl">2</span>, <span class="va">col</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 7</span></span></span>
 <span><span class="co">#&gt;     row   col is_blank data_type character numeric local_format_id</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -415,11 +385,6 @@ usually you should discard them.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 36 × 7</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character              numeric local_format_id</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -475,7 +440,7 @@ a spreadsheet. The most important tool is <code><a href="../reference/behead.htm
 deals with one layer of header cells at a time.</p>
 <p>Let’s look again at the original spreadsheet. I have highlighted the
 first row of header cells.</p>
-<p><img src="images%2Funtidy-header-row-1.png"><!-- --></p>
+<p><img src="images/untidy-header-row-1.png"><!-- --></p>
 <p>Use <code><a href="../reference/behead.html">unpivotr::behead()</a></code> to tag data cells with
 <code>"Witch"</code> or <code>"Wizard"</code>, and then strip (or
 behead!) those header cells from the rest – they are no longer
@@ -484,11 +449,6 @@ required.</p>
 <code class="sourceCode R"><span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 34 × 8</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
@@ -546,16 +506,11 @@ so they are tagged with missing values. Don’t worry about them – they
 will come right later.</p>
 <p>What if we try a different direction instead, <code>"up-right"</code>
 (up and to the right)? Again, compare the table with the spreadsheet</p>
-<p><img src="images%2Funtidy-header-row-1.png"><!-- --></p>
+<p><img src="images/untidy-header-row-1.png"><!-- --></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-right"</span>, <span class="st">"dormitory"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 34 × 8</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
@@ -606,17 +561,12 @@ which header cells.</p>
 This time the direction is simply <code>"up"</code> for directly up
 because there is a header in every column. Notice that we’re building up
 a pipeline of transformations, one set of headers at a time.</p>
-<p><img src="images%2Funtidy-header-row-2.png"><!-- --></p>
+<p><img src="images/untidy-header-row-2.png"><!-- --></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up-left"</span>, <span class="st">"dormitory"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"up"</span>, <span class="st">"name"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 30 × 9</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
@@ -666,7 +616,7 @@ describe the location and subject, what are the directions?</p>
 <p>Starting from a data cell, say, B7 (row 7, column 2), the location
 is<code>"Grounds"</code>, which is to the left and then up,
 <code>"left-up"</code>.</p>
-<p><img src="images%2Funtidy-header-col-1.png"><!-- --></p>
+<p><img src="images/untidy-header-col-1.png"><!-- --></p>
 <p>But there is a complication. When <code><a href="../reference/behead.html">unpivotr::behead()</a></code> is
 travelling up the cells in column 1, how does it know to stop at
 <code>"Grounds"</code> and not overshoot to <code>"Potions"</code> or
@@ -704,11 +654,6 @@ other arguments to <code><a href="../reference/behead.html">behead()</a></code>.
 <span>  <span class="fu"><a href="../reference/behead.html">behead_if</a></span><span class="op">(</span><span class="va">indent</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span> <span class="op">==</span> <span class="fl">0</span>,</span>
 <span>            direction <span class="op">=</span> <span class="st">"left-up"</span>, <span class="co"># This argument has to be named now.</span></span>
 <span>            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span>     <span class="co"># So does this one.</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 28 × 10</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
@@ -759,11 +704,6 @@ result in this case is the same.</p>
 <span>            <span class="va">bold</span><span class="op">[</span><span class="va">local_format_id</span><span class="op">]</span>,        <span class="co"># Second rule. Both must be TRUE</span></span>
 <span>            direction <span class="op">=</span> <span class="st">"left-up"</span>,</span>
 <span>            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 28 × 10</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
@@ -804,7 +744,7 @@ grounds, by looking at cell B7 (row 7, column 2).</p>
 </h2>
 <p>Only one layer of headers remains: the subjects in column 1. The
 direction is directly <code>"left"</code>.</p>
-<p><img src="images%2Funtidy-header-col-2.png"><!-- --></p>
+<p><img src="images/untidy-header-col-2.png"><!-- --></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cells</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_blank</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -814,11 +754,6 @@ direction is directly <code>"left"</code>.</p>
 <span>            direction <span class="op">=</span> <span class="st">"left-up"</span>,</span>
 <span>            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"subject"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 11</span></span></span>
 <span><span class="co">#&gt;      row   col is_blank data_type character    numeric local_format_id dormitory</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
@@ -865,11 +800,6 @@ value <code>"10 - really?"</code>.</p>
 <span>            name <span class="op">=</span> <span class="st">"location"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/behead.html">behead</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"subject"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">dormitory</span>, <span class="va">name</span>, <span class="va">location</span>, <span class="va">subject</span>, mark <span class="op">=</span> <span class="va">numeric</span>, other <span class="op">=</span> <span class="va">character</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 6</span></span></span>
 <span><span class="co">#&gt;    dormitory name     location subject                    mark other       </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
@@ -927,11 +857,6 @@ final code listing below.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">dormitory</span>, <span class="va">name</span>, <span class="va">location</span>, <span class="va">subject</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tidied</span></span>
-<span><span class="co">#&gt; Warning: `...` must be empty in `format.tbl()`</span></span>
-<span><span class="co">#&gt; Caused by error in `format_tbl()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `...` must be empty.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Problematic argument:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> options = options</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 6</span></span></span>
 <span><span class="co">#&gt;    address dormitory name     location subject                    mark</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -978,7 +903,7 @@ or third time, and change parts of the code to see what happens.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
